@@ -1,14 +1,17 @@
-package com.mdvns.mdvn.tag.papi.web;
+package com.mdvns.mdvn.tag.sapi.web;
 
-import com.mdvns.mdvn.tag.papi.domain.CreateTagRequest;
-import com.mdvns.mdvn.tag.papi.domain.CreateTagResponse;
-import com.mdvns.mdvn.tag.papi.service.TagService;
+import com.mdvns.mdvn.tag.sapi.domain.entity.Tag;
+import com.mdvns.mdvn.tag.sapi.service.TagService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * 标签控制层
+ */
 
 @RestController
 public class TagController {
@@ -19,21 +22,33 @@ public class TagController {
     @Autowired
     private TagService tagService;
 
-    /* 新建标签response*/
-    @Autowired
-    private CreateTagResponse createTagResponse;
+
+    /*注入Tag*/
+    private Tag  tag;
+
+
     /**
      *新建标签
-     * @param request
+     * @param tg
      * @return
      */
-    @PostMapping("/createTag")
-    public CreateTagResponse createTag(@RequestBody CreateTagRequest request ){
+    @PostMapping("/saveTag")
+    public Tag saveTag(@RequestBody Tag tg ) throws Exception {
         LOG.info("开始执行 createTag 方法.");
-        createTagResponse = this.tagService.createTag(request);
+
+        tag =  this.tagService.saveTag(tg);
+
         LOG.info("执行结束 createTag 方法.");
-        return createTagResponse;
+        return tag;
     }
 
+    /**
+     * 获取Tag列表，分页/排序
+     */
+/*
+    @GetMapping(value="/rtrvTagList")
+    public List<Tag> rtrvTagList(){
+
+    }*/
 
 }

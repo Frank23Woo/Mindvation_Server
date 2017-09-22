@@ -1,58 +1,61 @@
 package com.mdvns.mdvn.tag.papi.domain;
 
-public class CreateTagRequest {
+import org.springframework.stereotype.Component;
 
-    private String name;
-    private Integer quoteCnt;
-    private Integer creatorId;
-    private String color;
-    private String remarks;
+/**
+     * 創建標簽
+     */
+    @Component
+    public class CreateTagRequest {
 
-    public String getName() {
-        return name;
-    }
+        /* 新建標簽名稱*/
+        private String name;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+        /* 新建标签人的编号*/
+        private Integer  creatorId;
 
-    public Integer getQuoteCnt() {
-        return quoteCnt;
-    }
+        /* 標簽色值*/
+        private String color;
 
-    public void setQuoteCnt(Integer quoteCnt) {
-        this.quoteCnt = quoteCnt;
-    }
+        /* 備注*/
+        private String remarks;
 
-    public Integer getCreatorId() {
-        return creatorId;
-    }
+        public String getName() {
+            return name;
+        }
 
-    public void setCreatorId(Integer creatorId) {
-        this.creatorId = creatorId;
-    }
+        public void setName(String name) {
+            this.name = name;
+        }
 
-    public String getColor() {
-        return color;
-    }
+        public Integer getCreatorId() {
+            return creatorId;
+        }
 
-    public void setColor(String color) {
-        this.color = color;
-    }
+        public void setCreatorId(Integer creatorId) {
+            this.creatorId = creatorId;
+        }
 
-    public String getRemarks() {
-        return remarks;
-    }
+        public String getColor() {
+            return color;
+        }
 
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
+        public void setColor(String color) {
+            this.color = color;
+        }
 
-    @Override
+        public String getRemarks() {
+            return remarks;
+        }
+
+        public void setRemarks(String remarks) {
+            this.remarks = remarks;
+        }
+
+        @Override
     public String toString() {
         return "CreateTagRequest{" +
                 "name='" + name + '\'' +
-                ", quoteCnt=" + quoteCnt +
                 ", creatorId=" + creatorId +
                 ", color='" + color + '\'' +
                 ", remarks='" + remarks + '\'' +
