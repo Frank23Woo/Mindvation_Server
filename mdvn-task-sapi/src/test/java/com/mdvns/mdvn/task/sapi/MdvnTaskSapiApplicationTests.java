@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.task.sapi;
 
+import com.mdvns.mdvn.task.sapi.service.impl.TaskServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,6 +12,13 @@ public class MdvnTaskSapiApplicationTests {
 
 	@Test
 	public void contextLoads() {
+
 	}
+
+	@Test
+	public void testRetriTaskList() {
+		TaskServiceImpl taskService = new TaskServiceImpl();
+	}
+
 
 }

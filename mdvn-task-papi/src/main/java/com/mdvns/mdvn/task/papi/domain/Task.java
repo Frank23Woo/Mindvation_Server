@@ -1,45 +1,35 @@
-package com.mdvns.mdvn.task.sapi.entity;
+package com.mdvns.mdvn.task.papi.domain;
 
 import org.springframework.stereotype.Component;
 
-import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
 
-@Entity
 @Component
 public class Task {
-
-    @Id
-    @GeneratedValue
     private Integer uuid;
 
     private String taskId;
 
     private String description;
 
-    @Column(nullable = false)
     private Integer asigneeId;
-    @Column(nullable = false)
+
     private Integer asignerId;
-    @Column(nullable = false)
+
     private String storyId;
-    @Column(nullable = false)
+
     private Integer status;
-    @Column(nullable = false)
+
     private String priority;
-    @Column(columnDefinition="TIMESTAMP", insertable = false, updatable = false, nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createTime;
+
+    private Timestamp createTime;
 
     private Date updateTime;
 
     private Date closeTime;
 
     private String remarks;
-
-    public Task() {
-    }
 
     public Integer getUuid() {
         return uuid;
@@ -105,11 +95,11 @@ public class Task {
         this.priority = priority;
     }
 
-    public Date getCreateTime() {
+    public Timestamp getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
 
