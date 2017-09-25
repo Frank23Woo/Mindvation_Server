@@ -1,4 +1,4 @@
-package com.mdvns.mdvn.tag.papi.domain;
+package com.mdvns.mdvn.tag.sapi.domain;
 
 import org.springframework.stereotype.Component;
 
@@ -16,7 +16,7 @@ public class RetrieveTagListRequest {
     /*排序条件：字段名*/
     private String sortBy;
 
-    private List<String> remarks;
+    protected List<String> remarks;
 
     public RetrieveTagListRequest() {
     }
@@ -93,4 +93,3 @@ public class RetrieveTagListRequest {
                 '}';
     }
 }
-

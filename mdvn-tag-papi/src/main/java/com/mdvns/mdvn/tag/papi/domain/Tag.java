@@ -18,7 +18,7 @@ public class Tag {
     private  Integer quoteCnt;
 
     /* 創建標簽人的編號,即員工編號(staffId) */
-    private Integer creatorId;
+    private String creatorId;
 
     /* 標簽色值*/
     private String color;
@@ -27,8 +27,6 @@ public class Tag {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Long createTime;
 
-    /* 备注*/
-    private String remarks;
 
 
 
@@ -56,11 +54,11 @@ public class Tag {
         this.quoteCnt = quoteCnt;
     }
 
-    public Integer getCreatorId() {
+    public String getCreatorId() {
         return creatorId;
     }
 
-    public void setCreatorId(Integer creatorId) {
+    public void setCreatorId(String creatorId) {
         this.creatorId = creatorId;
     }
 
@@ -78,14 +76,6 @@ public class Tag {
 
     public void setCreateTime(Long createTime) {
         this.createTime = createTime;
-    }
-
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
     }
 
     @Override
@@ -121,10 +111,9 @@ public class Tag {
                 "tagId=" + tagId +
                 ", name='" + name + '\'' +
                 ", quoteCnt=" + quoteCnt +
-                ", creatorId=" + creatorId +
+                ", creatorId='" + creatorId + '\'' +
                 ", color='" + color + '\'' +
                 ", createTime=" + createTime +
-                ", remarks='" + remarks + '\'' +
                 '}';
     }
 }

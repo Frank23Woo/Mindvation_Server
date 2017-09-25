@@ -11,36 +11,34 @@ import java.sql.Timestamp;
  */
 @Entity
 @Component
-@Table(name = "tag", uniqueConstraints = {@UniqueConstraint(columnNames="name")})
+@Table(name = "tag", uniqueConstraints = {@UniqueConstraint(columnNames = "name")})
 public class Tag {
 
-/* 标签编号 */
-@Id
-@GeneratedValue
-private Integer tagId ;
+    /* 标签编号 */
+    @Id
+    @GeneratedValue
+    private Integer tagId;
 
-/* 标签名称 */
-@Column(nullable = false)
-private String name;
+    /* 标签名称 */
+    @Column(nullable = false)
+    private String name;
 
-/* 标签被引用的次数*/
-@Column(name="quote_cnt", columnDefinition="INT default 0")
-private  Integer quoteCnt;
+    /* 标签被引用的次数*/
+    @Column(name = "quote_cnt", columnDefinition = "INT default 0")
+    private Integer quoteCnt;
 
-/* 創建標簽人的編號,即員工編號(staffId) */
-@Column(name="creator_id", columnDefinition = "INT", nullable =false)
-private Integer creatorId;
+    /* 創建標簽人的編號,即員工編號(staffId) */
+    @Column(name = "creator_id", columnDefinition = "INT", nullable = false)
+    private Integer creatorId;
 
-/* 標簽色值*/
-@Column(name="color", nullable = false)
-private String color;
+    /* 標簽色值*/
+    @Column(name = "color", nullable = false)
+    private String color;
 
-/* 標簽創建時間*/
-@Column(name="create_time", columnDefinition = "timestamp default current_timestamp", nullable = false)
-private Timestamp createTime;
+    /* 標簽創建時間*/
+    @Column(name = "create_time", columnDefinition = "timestamp default current_timestamp", nullable = false)
+    private Timestamp createTime;
 
-/* 注解*/
-private String remarks;
 
     public Integer getTagId() {
         return tagId;
@@ -90,14 +88,6 @@ private String remarks;
         this.createTime = createTime;
     }
 
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -111,9 +101,7 @@ private String remarks;
         if (getCreatorId() != null ? !getCreatorId().equals(tag.getCreatorId()) : tag.getCreatorId() != null)
             return false;
         if (getColor() != null ? !getColor().equals(tag.getColor()) : tag.getColor() != null) return false;
-        if (getCreateTime() != null ? !getCreateTime().equals(tag.getCreateTime()) : tag.getCreateTime() != null)
-            return false;
-        return getRemarks() != null ? getRemarks().equals(tag.getRemarks()) : tag.getRemarks() == null;
+        return getCreateTime() != null ? getCreateTime().equals(tag.getCreateTime()) : tag.getCreateTime() == null;
     }
 
     @Override
@@ -124,7 +112,6 @@ private String remarks;
         result = 31 * result + (getCreatorId() != null ? getCreatorId().hashCode() : 0);
         result = 31 * result + (getColor() != null ? getColor().hashCode() : 0);
         result = 31 * result + (getCreateTime() != null ? getCreateTime().hashCode() : 0);
-        result = 31 * result + (getRemarks() != null ? getRemarks().hashCode() : 0);
         return result;
     }
 
@@ -137,7 +124,6 @@ private String remarks;
                 ", creatorId=" + creatorId +
                 ", color='" + color + '\'' +
                 ", createTime=" + createTime +
-                ", remarks='" + remarks + '\'' +
                 '}';
     }
 }

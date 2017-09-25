@@ -1,14 +1,16 @@
 package com.mdvns.mdvn.tag.papi.service.impl;
 
-import com.mdvns.mdvn.tag.papi.domain.CreateTagRequest;
-import com.mdvns.mdvn.tag.papi.domain.CreateTagResponse;
-import com.mdvns.mdvn.tag.papi.domain.Tag;
+import com.mdvns.mdvn.tag.papi.config.WebConfig;
+import com.mdvns.mdvn.tag.papi.domain.*;
 import com.mdvns.mdvn.tag.papi.service.TagService;
 import com.mdvns.mdvn.tag.papi.utils.LogUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class TagServiceImpl implements TagService {
@@ -25,17 +27,27 @@ public class TagServiceImpl implements TagService {
     @Autowired
     private CreateTagResponse createTagResponse;
 
+    @Autowired
+    private RetrieveTagListResponse retrieveTagListResponse;
 
-    /*
-    *调用SAPI保存Tag
-    * 1. 根据
-    */
+    /*注入WebConfig*/
+    @Autowired
+    private WebConfig webConfig;
+
+    /**
+     * 调用Sapi 保存Tag：
+     * 1. 如果createTagRequest 为空, 抛出异常 NullPointException
+     * 2. 依次对createTagRequest的字段做非空校验并赋值给Tag对象
+     * 3. 调用SAPI保存tag数据
+     * @param createTagRequest
+     * @return
+     */
     @Override
     public CreateTagResponse createTag(CreateTagRequest createTagRequest) {
         LogUtil.sreviceStartLog("createTag");
 
-        if (createTagRequest == null|| createTagRequest.getCreatorId()==null) {
-            throw new NullPointerException("createTagRequest 或 creatorId 不能为空");
+        if (createTagRequest == null) {
+            throw new NullPointerException("createTagRequest 不能为空");
         }
 
         tag.setCreatorId(createTagRequest.getCreatorId());
@@ -46,12 +58,9 @@ public class TagServiceImpl implements TagService {
         if (!StringUtils.isEmpty(createTagRequest.getColor())) {
             tag.setColor(createTagRequest.getColor());
         }
-        if (!StringUtils.isEmpty(createTagRequest.getRemarks())) {
-            tag.setRemarks(createTagRequest.getRemarks());
-        }
 
-        /*sapi srevice url*/
-        String url = "http://localhost:10002/mdvn-tag-sapi/saveTag";
+        /*调用sapi保存tag 的 url*/
+        String url = webConfig.getSaveTagUrl();
         try {
             tag = this.restTemplate.postForObject(url, tag, Tag.class);
         }catch (Exception ex){
@@ -60,8 +69,22 @@ public class TagServiceImpl implements TagService {
         }
 
         createTagResponse.setTag(tag);
-
         LogUtil.sreviceEndLog("createTag");
         return createTagResponse;
     }
+
+
+    /**
+     * 调用SAPI获取Tag列表
+     * @param retrieveTagListRequest
+     * @return
+     */
+    public RetrieveTagListResponse rtrvTagList(RetrieveTagListRequest retrieveTagListRequest) {
+
+        String url = webConfig.getRtrvTagListUrl();
+        List<Tag> tags = (ArrayList<Tag>)this.restTemplate.postForEntity(url, retrieveTagListRequest, List.class).getBody();
+        retrieveTagListResponse.setTags(tags);
+        return retrieveTagListResponse;
+    }
+
 }

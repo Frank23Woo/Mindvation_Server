@@ -1,0 +1,3 @@
+url:
+  saveTagUrl: http://localhost:10002/mdvn-tag-sapi/saveTag/tag
+  rtrvTagListUrl: http://localhost:10002/mdvn-tag-s/tags
