@@ -77,9 +77,11 @@ public class TagController {
      * @param tagId
      * @return
      */
-    @PatchMapping(value = "/tags/{tagId}")
-    public Tag updateQuoteCnt(@PathVariable Integer tagId) {
-        return this.tagService.updateQupteCnt(tagId);
+    @PostMapping(value = "/tags/{tagId}")
+    public Tag updateQuoteCnt(@PathVariable String tagId) {
+        tag = this.tagService.updateQupteCnt(tagId);
+
+        return tag;
     }
 
 

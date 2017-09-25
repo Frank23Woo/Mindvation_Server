@@ -61,6 +61,7 @@ public class TagServiceImpl implements TagService {
 //           throw new BusinessException();
         }
         tag.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        tag.setQuoteCnt(0);
         tg = this.tagRepository.save(tag);
 
         LOG.info("执行结束{} createTag()方法.", this.CLASS);
@@ -93,13 +94,15 @@ public class TagServiceImpl implements TagService {
      * @return 跟新后的标签
      */
     @Override
-    public Tag updateQupteCnt(Integer tagId) {
-        tg = this.tagRepository.findOne(tagId);
+    public Tag updateQupteCnt(String tagId) {
+
+        tg = this.tagRepository.findByTagId(tagId);
         if (null == tg) {
             throw new NullPointerException("标签不存在.");
         }
-        tg.setQuoteCnt(tg.getQuoteCnt() + 1);
-        return this.tagRepository.saveAndFlush(tg);
+        LOG.info("标签:{}", tg.toString());
+        tg.setQuoteCnt(tg.getQuoteCnt()+1);
+        return this.tagRepository.save(tg);
     }
 
 

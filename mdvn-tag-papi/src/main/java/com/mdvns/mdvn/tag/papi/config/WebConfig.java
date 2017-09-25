@@ -13,6 +13,17 @@ public class WebConfig {
     /*获取标签列表Url*/
     private String rtrvTagListUrl;
 
+    /*更新标签引用次数Url*/
+    private String updateQuoteCntUrl;
+
+    public String getUpdateQuoteCntUrl() {
+        return updateQuoteCntUrl;
+    }
+
+    public void setUpdateQuoteCntUrl(String updateQuoteCntUrl) {
+        this.updateQuoteCntUrl = updateQuoteCntUrl;
+    }
+
     public String getSaveTagUrl() {
         return saveTagUrl;
     }

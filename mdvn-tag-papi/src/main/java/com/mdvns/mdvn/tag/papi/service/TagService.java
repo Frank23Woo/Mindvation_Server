@@ -8,4 +8,6 @@ public interface TagService {
     CreateTagResponse createTag(CreateTagRequest request);
 
     RetrieveTagListResponse rtrvTagList(RetrieveTagListRequest request);
+
+    Tag updateQuoteCnt(UpdateQuoteCntRequest updateQuoteCntRequest);
 }
