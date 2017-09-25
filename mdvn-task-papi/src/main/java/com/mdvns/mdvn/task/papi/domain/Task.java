@@ -23,11 +23,11 @@ public class Task {
 
     private String priority;
 
-    private Timestamp createTime;
+    private Long createTime;
 
-    private Date updateTime;
+    private Long updateTime;
 
-    private Date closeTime;
+    private Long closeTime;
 
     private String remarks;
 
@@ -95,27 +95,27 @@ public class Task {
         this.priority = priority;
     }
 
-    public Timestamp getCreateTime() {
+    public Long getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Long createTime) {
         this.createTime = createTime;
     }
 
-    public Date getUpdateTime() {
+    public Long getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(Long updateTime) {
         this.updateTime = updateTime;
     }
 
-    public Date getCloseTime() {
+    public Long getCloseTime() {
         return closeTime;
     }
 
-    public void setCloseTime(Date closeTime) {
+    public void setCloseTime(Long closeTime) {
         this.closeTime = closeTime;
     }
 

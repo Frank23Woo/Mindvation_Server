@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -35,6 +36,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task createTask(Task task) throws SQLException{
         LOG.info("开始执行{} createTask()方法.", CLASS);
+        task.setCreateTime(new Date());
         Task result =  taskRepository.save(task);
         LOG.info("执行结束{} createTask()方法.", CLASS);
         return result;
