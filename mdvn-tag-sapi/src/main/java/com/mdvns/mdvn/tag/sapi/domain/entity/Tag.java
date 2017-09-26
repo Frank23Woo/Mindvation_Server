@@ -17,7 +17,9 @@ public class Tag {
     /* 标签编号 */
     @Id
     @GeneratedValue
-    private Integer tagId;
+    private Integer uuid;
+
+    private String tagId;
 
     /* 标签名称 */
     @Column(nullable = false)
@@ -28,8 +30,8 @@ public class Tag {
     private Integer quoteCnt;
 
     /* 創建標簽人的編號,即員工編號(staffId) */
-    @Column(name = "creator_id", columnDefinition = "INT", nullable = false)
-    private Integer creatorId;
+    @Column(name = "creator_id", columnDefinition = "Varchar (50)", nullable = false)
+    private String creatorId;
 
     /* 標簽色值*/
     @Column(name = "color", nullable = false)
@@ -40,11 +42,11 @@ public class Tag {
     private Timestamp createTime;
 
 
-    public Integer getTagId() {
+    public String getTagId() {
         return tagId;
     }
 
-    public void setTagId(Integer tagId) {
+    public void setTagId(String tagId) {
         this.tagId = tagId;
     }
 
@@ -64,11 +66,11 @@ public class Tag {
         this.quoteCnt = quoteCnt;
     }
 
-    public Integer getCreatorId() {
+    public String getCreatorId() {
         return creatorId;
     }
 
-    public void setCreatorId(Integer creatorId) {
+    public void setCreatorId(String creatorId) {
         this.creatorId = creatorId;
     }
 

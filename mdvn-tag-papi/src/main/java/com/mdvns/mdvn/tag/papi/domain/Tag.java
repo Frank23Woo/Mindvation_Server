@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class Tag {
 
     /* 标签编号 */
-    private Integer tagId ;
+    private String tagId;
 
     /* 标签名称 */
     private String name;
@@ -30,11 +30,11 @@ public class Tag {
 
 
 
-    public Integer getTagId() {
+    public String getTagId() {
         return tagId;
     }
 
-    public void setTagId(Integer tagId) {
+    public void setTagId(String tagId) {
         this.tagId = tagId;
     }
 

@@ -19,7 +19,7 @@ public interface TagService {
     Tag findByName(String name);
 
     /*更新标签引用次数*/
-    Tag updateQupteCnt(Integer tagId);
+    Tag updateQupteCnt(String tagId);
 
     List<Tag> rtrvTagList(RetrieveTagListRequest retrieveTagListRequest) throws SQLException;
 }
