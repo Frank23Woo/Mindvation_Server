@@ -16,7 +16,7 @@ public interface TagRepository extends JpaRepository<Tag, Integer> {
 
     Tag findByTagId(String tagId);
 
-   
+
 
 //    Page<Tag> findAllOrderByQuoteCnt(Pageable pageable);
 }
