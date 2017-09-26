@@ -1,0 +1,3 @@
+url:
+  createPCheckListUrl: http://localhost:10006/mdvn-pchklst-sapi/createPCheckList/pCheckList
+  rtrvPCheckListUrl: http://localhost:10006/mdvn-pchklst-sapi/pCheckList
