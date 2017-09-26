@@ -3,7 +3,6 @@ package com.mdvns.mdvn.task.sapi.entity;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -28,7 +27,8 @@ public class Task {
     private Integer status;
     @Column(nullable = false)
     private String priority;
-    @Column(columnDefinition="TIMESTAMP", insertable = false, updatable = false, nullable = false)
+
+    @Column(columnDefinition="timestamp default CURRENT_TIMESTAMP", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
 
