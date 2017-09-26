@@ -1,0 +1,5 @@
+config:
+  rtrvProjInfoListUrl: http://localhost:10005/mdvn-project-sapi/project/rtrvProjInfoList
+  saveProjLeadersUrl: http://localhost:10005/mdvn-project-sapi/project/saveProjLeaders
+  saveProjectUrl: http://localhost:10005/mdvn-project-sapi/project/saveProject
+  createProjectUrl: http://localhost:10005/mdvn-project-sapi/project/createProject
