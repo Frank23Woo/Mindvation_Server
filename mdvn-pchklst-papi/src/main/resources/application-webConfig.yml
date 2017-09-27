@@ -1,3 +1,11 @@
 url:
-  createPCheckListUrl: http://localhost:10006/mdvn-pchklst-sapi/createPCheckList/pCheckList
-  rtrvPCheckListUrl: http://localhost:10006/mdvn-pchklst-sapi/pCheckList
+  createPCheckListUrl: http://localhost:10008/mdvn-pchklst-sapi/createPCheckList/pCheckList
+  rtrvPCheckListUrl: http://localhost:10008/mdvn-pchklst-sapi/pCheckList
+  createMultiPCheckListUrl: http://localhost:10008/mdvn-pchklst-sapi/createMultiPCheckList/pCheckLists
+
+  updatePCheckListUrl: http://localhost:10008/mdvn-pchklst-sapi/updatePCheckList/pCheckList
+  updateMultiPCheckListUrl: http://localhost:10008/mdvn-pchklst-sapi/updateMultiPCheckList/pCheckLists
+
+  deletePCheckListUrl: http://localhost:10008/mdvn-pchklst-sapi/deletePCheckList/pCheckList
+  deleteMultiPCheckListUrl: http://localhost:10008/mdvn-pchklst-sapi/deleteMultiPCheckList/pCheckLists
+

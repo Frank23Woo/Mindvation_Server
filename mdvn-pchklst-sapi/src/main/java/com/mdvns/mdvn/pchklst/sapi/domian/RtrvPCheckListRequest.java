@@ -10,6 +10,7 @@ public class RtrvPCheckListRequest {
 
     /* The project ID which this Check List belongs to*/
     private String projectId;
+    /* FE will pass 1 for Page 1, Java will search 0 for Page 1*/
     private Integer page ;
     private Integer pageSize ;
     private List<String> remarks ;

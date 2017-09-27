@@ -13,7 +13,14 @@ public interface PCheckListService {
 
     Integer deleteCheckList(PCheckList pCheckList);
 
+    Integer deleteMultiCheckList(List<PCheckList> pCheckList);
+
     List<PCheckList> rtrvPCheckList(RtrvPCheckListRequest rtrvPCheckListRequest);
+
+    List<PCheckList> updateMultiCheckList(List<PCheckList> pCheckLists);
+
+    List<PCheckList> createMultiCheckList(List<PCheckList> pCheckList);
+
 
 
 }
