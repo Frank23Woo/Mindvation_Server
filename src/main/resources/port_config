@@ -1,0 +1,10 @@
+mdvn-tag-papi  10001
+mdvn-tag-sapi   10002
+mdvn-task-papi  10003
+mdvn-task-sapi  10004
+mdvn-project-sapi  10005
+mdvn-project-papi  10006
+mdvn-pchklst-papi 10007
+mdvn-pchklst-sapi 10008
+mdvn-model-sapi 10009
+mdvn-model-papi 10010

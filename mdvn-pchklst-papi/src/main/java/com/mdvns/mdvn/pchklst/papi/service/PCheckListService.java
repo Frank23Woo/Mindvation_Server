@@ -7,4 +7,6 @@ public interface PCheckListService {
     CreatePCheckListResponse createPCheckList(CreatePCheckListRequest  createPCheckListRequest);
 
     RtrvPCheckListResponse rtrvPCheckList(RtrvPCheckListRequest rtrvPCheckListRequest);
+
+    CreatePCheckListResponse createMultiPCheckList();
 }
