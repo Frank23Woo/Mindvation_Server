@@ -1,5 +1,7 @@
 package com.mdvns.mdvn.tag.papi.service.impl;
 
+import com.mdvns.mdvn.common.exception.RestDefautResponse;
+import com.mdvns.mdvn.common.exception.ReturnFormat;
 import com.mdvns.mdvn.tag.papi.config.WebConfig;
 import com.mdvns.mdvn.tag.papi.domain.*;
 import com.mdvns.mdvn.tag.papi.service.TagService;
@@ -8,7 +10,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -16,9 +21,6 @@ import java.util.List;
 
 @Service
 public class TagServiceImpl implements TagService {
-
-    private static final Logger LOG = LoggerFactory.getLogger(TagServiceImpl.class);
-
 
     /* 注入RestTamplate*/
     @Autowired
@@ -39,6 +41,12 @@ public class TagServiceImpl implements TagService {
     @Autowired
     private WebConfig webConfig;
 
+    /*注入RestDefaultResponse*/
+    @Autowired
+    private RestDefautResponse restDefautResponse;
+
+
+
     /**
      * 调用Sapi 保存Tag：
      * 1. 如果createTagRequest 为空, 抛出异常 NullPointException
@@ -49,34 +57,32 @@ public class TagServiceImpl implements TagService {
      * @return
      */
     @Override
-    public CreateTagResponse createTag(CreateTagRequest createTagRequest) {
-        LogUtil.sreviceStartLog("createTag");
-
-        if (createTagRequest == null) {
-            throw new NullPointerException("createTagRequest 不能为空");
-        }
+    public RestDefautResponse createTag(CreateTagRequest createTagRequest) throws HttpClientErrorException {
+        LogUtil.sreviceStartLog("createTag ");
 
         tag.setCreatorId(createTagRequest.getCreatorId());
-        if (!StringUtils.isEmpty(createTagRequest.getName())) {
-            tag.setName(createTagRequest.getName());
-        }
+        tag.setName(createTagRequest.getName());
+        tag.setColor(createTagRequest.getColor());
 
-        if (!StringUtils.isEmpty(createTagRequest.getColor())) {
-            tag.setColor(createTagRequest.getColor());
-        }
 
         /*调用sapi保存tag 的 url*/
-        String url = webConfig.getSaveTagUrl();
-        try {
+        String url = webConfig.getSaveTagUrl()+"/1";
+        LogUtil.logInfo("保存标签的URL：", url);
+        ResponseEntity<?> responseEntity = this.restTemplate.postForEntity(url, tag, RestDefautResponse.class);
+//        tag = this.restTemplate.postForObject(url, tag, Tag.class);
+        /*try {
             tag = this.restTemplate.postForObject(url, tag, Tag.class);
         } catch (Exception ex) {
             LogUtil.errorLog(ex);
             throw new RuntimeException("调用SAPI保存数据失败.");
+        }*/
+        if (responseEntity.getStatusCode().equals(HttpStatus.OK)) {
+            return ReturnFormat.retParam(HttpStatus.CREATED.toString(), "000",tag);
         }
-
-        createTagResponse.setTag(tag);
-        LogUtil.sreviceEndLog("createTag");
-        return createTagResponse;
+        LogUtil.logInfo("responseBody:{}", responseEntity.getBody());
+        LogUtil.logInfo("保存的标签对象为:", tag);
+//        throw new RuntimeException(responseEntity.getStatusCode(), );
+        throw new HttpClientErrorException(responseEntity.getStatusCode(), responseEntity.getBody().toString());
     }
 
 
@@ -98,12 +104,12 @@ public class TagServiceImpl implements TagService {
     public Tag updateQuoteCnt(UpdateQuoteCntRequest updateQuoteCntRequest) {
         String tagId = updateQuoteCntRequest.getTagId();
         if (StringUtils.isEmpty(tagId)) {
-            LogUtil.errorLog(new NullPointerException("标签编号不能为空"));
+            LogUtil.errorLog("标签编号不能为空");
             throw new NullPointerException("标签编号不能为空");
         }
 
         String url = webConfig.getUpdateQuoteCntUrl() + "/" + updateQuoteCntRequest.getTagId();
-        LOG.info("更新标签引用次数的URL:{}", url);
+
         tag = this.restTemplate.postForObject(url, updateQuoteCntRequest, Tag.class);
         return tag;
     }
