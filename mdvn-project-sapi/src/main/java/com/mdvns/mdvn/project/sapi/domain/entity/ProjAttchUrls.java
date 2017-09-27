@@ -3,6 +3,7 @@ package com.mdvns.mdvn.project.sapi.domain.entity;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Component
 @Entity
@@ -16,6 +17,12 @@ public class ProjAttchUrls {
     private String projId;
     //附件名
     private String attachmentName;
+    //有效标志
+    @Column(columnDefinition = "varchar(5) default 'Y'")
+    private String yxbz;
+    //更改时间
+    @Column(columnDefinition = "timestamp default current_timestamp", nullable = false)
+    private Timestamp updateTime;
 
     public Integer getAttachmentId() {
         return attachmentId;
@@ -39,5 +46,21 @@ public class ProjAttchUrls {
 
     public void setAttachmentName(String attachmentName) {
         this.attachmentName = attachmentName;
+    }
+
+    public String getYxbz() {
+        return yxbz;
+    }
+
+    public void setYxbz(String yxbz) {
+        this.yxbz = yxbz;
+    }
+
+    public Timestamp getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Timestamp updateTime) {
+        this.updateTime = updateTime;
     }
 }

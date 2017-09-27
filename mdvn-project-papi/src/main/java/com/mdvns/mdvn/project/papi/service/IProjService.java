@@ -17,4 +17,11 @@ public interface IProjService {
      * @return
      */
     CreateProjectResponse createProject(CreateProjectRequest createProjectRequest);
+
+    /**
+     * 更改project
+     * @param updateProjectRequest
+     * @return
+     */
+    UpdateProjectResponse updateProject(UpdateProjectRequest updateProjectRequest);
 }

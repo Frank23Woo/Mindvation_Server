@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 
 @RestController
 @RequestMapping(value= {"/project", "/v1.0/project"})
@@ -33,6 +32,16 @@ public class ProjController {
     @PostMapping(value="/createProject")
     public CreateProjectResponse createProject(@RequestBody CreateProjectRequest createProjectRequest){
         return projService.createProject(createProjectRequest);
+    }
+
+    /**
+     * 更改项目
+     * @param updateProjectRequest
+     * @return
+     */
+    @PostMapping(value="/updateProject")
+    public UpdateProjectResponse updateProject(@RequestBody UpdateProjectRequest updateProjectRequest){
+        return projService.updateProject(updateProjectRequest);
     }
 
 }

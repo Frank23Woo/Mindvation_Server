@@ -3,9 +3,7 @@ package com.mdvns.mdvn.project.sapi.web;
 import com.mdvns.mdvn.project.sapi.domain.CreateProjectRequest;
 import com.mdvns.mdvn.project.sapi.domain.CreateProjectResponse;
 import com.mdvns.mdvn.project.sapi.domain.RtrvProjectRequest;
-import com.mdvns.mdvn.project.sapi.domain.entity.ProjChecklists;
-import com.mdvns.mdvn.project.sapi.domain.entity.ProjLeaders;
-import com.mdvns.mdvn.project.sapi.domain.entity.Project;
+import com.mdvns.mdvn.project.sapi.domain.entity.*;
 import com.mdvns.mdvn.project.sapi.service.IProjService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,15 +52,82 @@ public class ProjController {
     }
 
     /**
-     * 保存project任务（checkLists）
-     * @param PChecklists
+     * 通过uuId获取项目的projId(触发器引发的问题)
+     * @param proj
      * @return
      */
-    @PostMapping(value="/saveCheckLists")
-    public List<ProjChecklists> saveCheckLists(List<ProjChecklists> PChecklists){
-        List<ProjChecklists> projChecklists = projService.saveCheckLists(PChecklists);
+    @PostMapping(value="/getProjIdByUuId")
+    public Project getProjIdByUuId(@RequestBody Project proj){
+        Project pro = projService.getProjIdByUuId(proj);
+        return pro;
+    }
+
+
+
+    /**
+     * 创建project时保存负责人信息
+     * @param leaders
+     * @return
+     */
+    @PostMapping(value="/savePLeaders")
+    public List<ProjLeaders> saveProjLeaders(@RequestBody List<ProjLeaders> leaders){
+        List<ProjLeaders> projLeaders = projService.saveProjLeaders(leaders);
+        return projLeaders;
+    }
+
+    /**
+     * 创建project时保存标签信息
+     * @param request
+     * @return
+     */
+    @PostMapping(value="/savePTags")
+    public List<ProjTags> savePTags(@RequestBody List<ProjTags>  request){
+        List<ProjTags> projTags = projService.savePTags(request);
+        return projTags;
+    }
+
+    /**
+     * 创建project时保存模型信息
+     * @param request
+     * @return
+     */
+    @PostMapping(value="/savePModels")
+    public List<ProjModels> savePModels(@RequestBody List<ProjModels> request){
+        List<ProjModels> projModels = projService.savePModels(request);
+        return projModels;
+    }
+    /**
+     * 创建project时保存project任务（checkLists）
+     * @param pChecklists
+     * @return
+     */
+    @PostMapping(value="/savePCheckLists")
+    public List<ProjChecklists> saveCheckLists(@RequestBody List<ProjChecklists> pChecklists){
+        List<ProjChecklists> projChecklists = projService.saveCheckLists(pChecklists);
         return projChecklists;
     }
+    /**
+     * 通过checklist的uuid查询它的checklistId
+     * @param pChecklists
+     * @return
+     */
+    @PostMapping(value="/getChecklistsListByUuId")
+    public List<ProjChecklists> getChecklistsListByUuId(@RequestBody List<ProjChecklists> pChecklists){
+        List<ProjChecklists> checklistsList = projService.getChecklistIdByUuId(pChecklists);
+        return checklistsList;
+    }
+
+    /**
+     * 创建project时保存附件信息
+     * @param request
+     * @return
+     */
+    @PostMapping(value="/savePAttchUrls")
+    public List<ProjAttchUrls> savePAttchUrls(@RequestBody List<ProjAttchUrls> request){
+        List<ProjAttchUrls> projAttchUrls = projService.savePAttchUrls(request);
+        return projAttchUrls;
+    }
+
 
 
 
@@ -76,17 +141,5 @@ public class ProjController {
         Project project = projService.getProject(request.getUuId());
         return project;
     }
-
-    /**
-     * 创建project时保存负责人信息
-     * @param leaders
-     * @return
-     */
-    @PostMapping(value="/saveProjLeaders")
-    public List<ProjLeaders> saveProjLeaders(@RequestBody List<ProjLeaders> leaders){
-        List<ProjLeaders> projLeaders = projService.saveProjLeaders(leaders);
-        return projLeaders;
-    }
-
 
 }

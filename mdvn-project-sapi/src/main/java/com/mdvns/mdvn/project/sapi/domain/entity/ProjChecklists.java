@@ -11,7 +11,6 @@ import java.sql.Timestamp;
 @Table(name = "checklist_proj")
 public class ProjChecklists {
 
-
     @Id
     @GeneratedValue
     private Integer uu_id;
@@ -40,6 +39,10 @@ public class ProjChecklists {
     private Timestamp endDate;
     //任务状态
     private String checklistStatus;
+    //有效标志
+    @Column(columnDefinition = "varchar(5) default 'Y'")
+    private String yxbz;
+
 
     public Integer getUu_id() {
         return uu_id;
@@ -127,5 +130,13 @@ public class ProjChecklists {
 
     public void setChecklistStatus(String checklistStatus) {
         this.checklistStatus = checklistStatus;
+    }
+
+    public String getYxbz() {
+        return yxbz;
+    }
+
+    public void setYxbz(String yxbz) {
+        this.yxbz = yxbz;
     }
 }

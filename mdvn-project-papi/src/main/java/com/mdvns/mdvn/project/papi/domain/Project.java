@@ -46,6 +46,16 @@ public class Project {
     private Double crRate;
     //备注
     private String remarks;
+    //有效标志
+    private String yxbz;
+
+    public String getYxbz() {
+        return yxbz;
+    }
+
+    public void setYxbz(String yxbz) {
+        this.yxbz = yxbz;
+    }
 
     public Integer getUuId() {
         return uuId;

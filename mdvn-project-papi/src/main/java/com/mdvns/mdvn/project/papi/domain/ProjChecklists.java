@@ -20,15 +20,27 @@ public class ProjChecklists {
     //设计者ID
     private String assignerId;
     //任务创建时间
-    private Timestamp createTime;
+    private Long createTime;
     //最后一次更改时间
-    private Timestamp lastUpdateTime;
+    private Long lastUpdateTime;
     //开始日期
-    private Timestamp startDate;
+    private Long startDate;
     //结束日期
-    private Timestamp endDate;
+    private Long endDate;
     //任务状态
     private String checklistStatus;
+    //有效标志
+    private String yxbz;
+    //更新时间
+    private Long updateTime;
+
+    public Long getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Long updateTime) {
+        this.updateTime = updateTime;
+    }
 
     public Integer getUu_id() {
         return uu_id;
@@ -78,35 +90,35 @@ public class ProjChecklists {
         this.assignerId = assignerId;
     }
 
-    public Timestamp getCreateTime() {
+    public Long getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Long createTime) {
         this.createTime = createTime;
     }
 
-    public Timestamp getLastUpdateTime() {
+    public Long getLastUpdateTime() {
         return lastUpdateTime;
     }
 
-    public void setLastUpdateTime(Timestamp lastUpdateTime) {
+    public void setLastUpdateTime(Long lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
     }
 
-    public Timestamp getStartDate() {
+    public Long getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Timestamp startDate) {
+    public void setStartDate(Long startDate) {
         this.startDate = startDate;
     }
 
-    public Timestamp getEndDate() {
+    public Long getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Timestamp endDate) {
+    public void setEndDate(Long endDate) {
         this.endDate = endDate;
     }
 
@@ -116,5 +128,13 @@ public class ProjChecklists {
 
     public void setChecklistStatus(String checklistStatus) {
         this.checklistStatus = checklistStatus;
+    }
+
+    public String getYxbz() {
+        return yxbz;
+    }
+
+    public void setYxbz(String yxbz) {
+        this.yxbz = yxbz;
     }
 }

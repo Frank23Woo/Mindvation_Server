@@ -152,6 +152,7 @@ public class ProjServiceImpl implements IProjService {
         proj.setName(createProjectRequest.getName());
         proj.setDescription(createProjectRequest.getDescription());
         proj.setCreatorId(createProjectRequest.getStaffId());
+        proj.setYxbz("Y");
 
         if (!StringUtils.isEmpty(createProjectRequest.getStartDate())) {
             proj.setStartDate(createProjectRequest.getStartDate());
@@ -170,15 +171,94 @@ public class ProjServiceImpl implements IProjService {
     }
 
     /**
+     * 通过uuId获取项目的projId(触发器引发的问题)
+     * @param proj
+     * @return
+     */
+    @Override
+    public Project getProjIdByUuId(Project proj) {
+        Integer uuId = proj.getUuId();
+        String projId = projectRepository.getProjId(uuId);
+        proj.setProjId(projId);
+        return proj;
+    }
+
+    /**
+     * 创建比赛时保存leaders信息
+     * @param leaders
+     * @return
+     */
+    @Override
+    public List<ProjLeaders> saveProjLeaders(List<ProjLeaders> leaders) {
+        List<ProjLeaders> pleaders = projLeadersRepository.save(leaders);
+        return pleaders;
+    }
+
+    /**
+     * 创建project时保存标签信息
+     * @param request
+     * @return
+     */
+    @Override
+    public List<ProjTags> savePTags(List<ProjTags> request) {
+        List<ProjTags> projTags = projTagsRepository.save(request);
+        return projTags;
+    }
+
+    /**
+     * 创建project时保存模型信息
+     * @param request
+     * @return
+     */
+    @Override
+    public List<ProjModels> savePModels(List<ProjModels> request) {
+        List<ProjModels> projModels = projModelsRepository.save(request);
+        return projModels;
+    }
+
+    /**
      * 保存project多条任务（checkLists）
      * @param projChecklists
      * @return
      */
     @Override
     public List<ProjChecklists> saveCheckLists(List<ProjChecklists> projChecklists) {
-        projChecklists = projChecklistsRepository.save(projChecklists);
-        return projChecklists;
+        for (int i = 0; i <projChecklists.size() ; i++) {
+            Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+            projChecklists.get(i).setCreateTime(currentTime);
+        }
+        List<ProjChecklists> pChecklists = projChecklistsRepository.save(projChecklists);
+        return pChecklists;
     }
+
+    /**
+     * 通过checklist的uuid查询它的checklistId(触发器的原因)
+     * @param pChecklists
+     * @return
+     */
+    @Override
+    public List<ProjChecklists> getChecklistIdByUuId(List<ProjChecklists> pChecklists) {
+        for (int i = 0; i <pChecklists.size() ; i++) {
+            Integer uuid = pChecklists.get(i).getUu_id();
+            String checklistId = projChecklistsRepository.getPChecklistId(uuid);
+            pChecklists.get(i).setChecklistId(checklistId);
+        }
+        return pChecklists;
+    }
+
+    /**
+     * 创建project时保存附件信息
+     * @param request
+     * @return
+     */
+    @Override
+    public List<ProjAttchUrls> savePAttchUrls(List<ProjAttchUrls> request) {
+        List<ProjAttchUrls> projAttchUrls = projAttchUrlsRepository.save(request);
+        return projAttchUrls;
+    }
+
+
+
 
 
     /**
@@ -197,17 +277,5 @@ public class ProjServiceImpl implements IProjService {
         return project;
 
     }
-
-    /**
-     * 创建比赛时保存leaders信息
-     * @param leaders
-     * @return
-     */
-    @Override
-    public List<ProjLeaders> saveProjLeaders(List<ProjLeaders> leaders) {
-        List<ProjLeaders> projLeaders = projLeadersRepository.save(leaders);
-        return projLeaders;
-    }
-
 
 }

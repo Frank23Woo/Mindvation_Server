@@ -11,6 +11,18 @@ public class ProjLeaders {
     private String staffId;
     //项目Id
     private String projId;
+    //有效标志
+    private String yxbz;
+    //更新时间
+    private Long updateTime;
+
+    public Long getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Long updateTime) {
+        this.updateTime = updateTime;
+    }
 
     public Integer getUuId() {
         return uuId;
@@ -34,5 +46,13 @@ public class ProjLeaders {
 
     public void setProjId(String projId) {
         this.projId = projId;
+    }
+
+    public String getYxbz() {
+        return yxbz;
+    }
+
+    public void setYxbz(String yxbz) {
+        this.yxbz = yxbz;
     }
 }

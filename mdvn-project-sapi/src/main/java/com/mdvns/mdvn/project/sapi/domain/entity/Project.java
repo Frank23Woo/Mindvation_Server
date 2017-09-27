@@ -69,6 +69,9 @@ public class Project {
     private Double crRate;
     //备注
     private String remarks;
+    //有效标志
+    @Column(columnDefinition = "varchar(5) default 'Y'")
+    private String yxbz;
 
     public Integer getUuId() {
         return uuId;
@@ -237,5 +240,13 @@ public class Project {
 
     public void setContingency(Double contingency) {
         this.contingency = contingency;
+    }
+
+    public String getYxbz() {
+        return yxbz;
+    }
+
+    public void setYxbz(String yxbz) {
+        this.yxbz = yxbz;
     }
 }

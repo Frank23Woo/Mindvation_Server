@@ -2,14 +2,13 @@ package com.mdvns.mdvn.project.papi.domain;
 
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 @Component
-public class CreateProjectRequest {
+public class UpdateProjectRequest {
 
-    //员工ID
-    private String staffId;
+    //项目ID
+    private String projId;
     //项目名称
     private String name;
     //项目描述
@@ -33,12 +32,12 @@ public class CreateProjectRequest {
     //项目附件（集合）
     private List<ProjAttchUrls> attchUrls;
 
-    public String getStaffId() {
-        return staffId;
+    public String getProjId() {
+        return projId;
     }
 
-    public void setStaffId(String staffId) {
-        this.staffId = staffId;
+    public void setProjId(String projId) {
+        this.projId = projId;
     }
 
     public String getName() {

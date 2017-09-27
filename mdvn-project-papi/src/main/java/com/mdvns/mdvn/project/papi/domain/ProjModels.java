@@ -11,6 +11,26 @@ public class ProjModels {
     private String modelId;
     //项目Id
     private String projId;
+    //有效标志
+    private String yxbz;
+    //更新时间
+    private Long updateTime;
+
+    public Long getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Long updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getYxbz() {
+        return yxbz;
+    }
+
+    public void setYxbz(String yxbz) {
+        this.yxbz = yxbz;
+    }
 
     public Integer getUuId() {
         return uuId;
