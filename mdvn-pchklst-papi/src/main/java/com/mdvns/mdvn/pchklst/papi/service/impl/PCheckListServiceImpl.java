@@ -104,4 +104,5 @@ public class PCheckListServiceImpl implements PCheckListService{
         LogUtil.serviceEndLog("rtrvPCheckList");
         return rtrvPCheckListResponse;
     }
+
 }

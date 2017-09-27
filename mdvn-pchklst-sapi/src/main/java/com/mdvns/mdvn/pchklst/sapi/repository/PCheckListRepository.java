@@ -2,10 +2,10 @@ package com.mdvns.mdvn.pchklst.sapi.repository;
 
 import com.mdvns.mdvn.pchklst.sapi.domian.entity.PCheckList;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.awt.print.Pageable;
+
 import java.util.List;
 
 public interface PCheckListRepository extends JpaRepository<PCheckList, Integer> {
@@ -19,7 +19,9 @@ public interface PCheckListRepository extends JpaRepository<PCheckList, Integer>
 
     List<PCheckList> findAllByProjectIdAndIsDeletedAndStatusGreaterThanEqualOrderByStatusAsc(String projectId, Integer isDeleted, Integer status);
 
-    Page<PCheckList> findAllByProjectIdAndIsDeletedAndStatusGreaterThanEqualOrderByStatusAsc(String projectId, Integer isDeleted, Integer status, PageRequest pageable);
+    Page<PCheckList> findAllByProjectIdAndIsDeletedAndStatusGreaterThanEqualOrderByStatusAsc(String projectId, Integer isDeleted, Integer status, Pageable pageable);
+
+
 
 
 
