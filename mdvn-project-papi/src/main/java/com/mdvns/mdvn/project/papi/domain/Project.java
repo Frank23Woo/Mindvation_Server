@@ -1,77 +1,61 @@
-package com.mdvns.mdvn.project.sapi.domain.entity;
+package com.mdvns.mdvn.project.papi.domain;
 
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import java.sql.Timestamp;
-
 @Component
-@Entity
 public class Project {
     //项目编号
     private String projId;
     //表自增长生成的Id
-    @Id
-    @GeneratedValue
     private Integer uuId;
     //项目名称
-    @Column(nullable = false)
     private String name;
     //项目创建者Id
     private String creatorId;
     //项目描述
-    @Column(columnDefinition = "text",nullable = false)
     private String description;
     //项目优先级
-    @Column(nullable = false)
     private Integer priority;
     //项目开始日期
-    @Column(name = "start_date", columnDefinition = "timestamp", nullable = false)
-    private Timestamp startDate;
+    private Long startDate;
     //项目结束时期
-    @Column(name = "end_date", columnDefinition = "timestamp", nullable = false)
-    private Timestamp endDate;
+    private Long endDate;
     //项目状态
-    private String status;
+    private Integer status;
     //效率值
-    @Column(name = "efficiency", columnDefinition = "Double default 0")
     private Double efficiency;
     //项目进度
-    @Column(name = "progress", columnDefinition = "Double default 0")
     private Double progress;
     //项目可调整系数
     private Double contingency;
     //项目成本
-    @Column(columnDefinition = "Double default 0")
     private Double cost;
     //项目需求变更成本
-    @Column(columnDefinition = "Double default 0")
     private Double crCost;
     //story总数
-    @Column(columnDefinition = "int default 0")
     private Integer storyQty;
     //storypoint总数
-    @Column(columnDefinition = "int default 0")
     private Integer storyPointQty;
     //crstory总数
-    @Column(columnDefinition = "int default 0")
     private Integer crStoryQty;
     //crstorypoint总数
-    @Column(columnDefinition = "int default 0")
     private Integer crStoryPointQty;
     //任务总数
     private Integer taskQty;
     //需求变更占比
-    @Column(columnDefinition = "Double default 0")
     private Double crRate;
     //备注
     private String remarks;
     //有效标志
-    @Column(columnDefinition = "varchar(5) default 'Y'")
     private String yxbz;
+
+    public String getYxbz() {
+        return yxbz;
+    }
+
+    public void setYxbz(String yxbz) {
+        this.yxbz = yxbz;
+    }
 
     public Integer getUuId() {
         return uuId;
@@ -122,27 +106,27 @@ public class Project {
         this.priority = priority;
     }
 
-    public Timestamp getStartDate() {
+    public Long getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Timestamp startDate) {
+    public void setStartDate(Long startDate) {
         this.startDate = startDate;
     }
 
-    public Timestamp getEndDate() {
+    public Long getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Timestamp endDate) {
+    public void setEndDate(Long endDate) {
         this.endDate = endDate;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -240,13 +224,5 @@ public class Project {
 
     public void setContingency(Double contingency) {
         this.contingency = contingency;
-    }
-
-    public String getYxbz() {
-        return yxbz;
-    }
-
-    public void setYxbz(String yxbz) {
-        this.yxbz = yxbz;
     }
 }

@@ -1,0 +1,11 @@
+config:
+  rtrvProjInfoListUrl: http://localhost:10005/mdvn-project-sapi/project/rtrvProjInfoList
+  createProjectUrl: http://localhost:10005/mdvn-project-sapi/project/createProject
+  saveProjectBaseUrl: http://localhost:10005/mdvn-project-sapi/project/saveProject
+  getProjIdByUuIdUrl: http://localhost:10005/mdvn-project-sapi/project/getProjIdByUuId
+  savePTagsUrl: http://localhost:10005/mdvn-project-sapi/project/savePTags
+  savePModelsUrl: http://localhost:10005/mdvn-project-sapi/project/savePModels
+  saveCheckListsUrl: http://localhost:10005/mdvn-project-sapi/project/savePCheckLists
+  getChecklistsListByUuIdUrl: http://localhost:10005/mdvn-project-sapi/project/getChecklistsListByUuId
+  savePAttchUrlsUrl: http://localhost:10005/mdvn-project-sapi/project/savePAttchUrls
+  savePLeadersUrl: http://localhost:10005/mdvn-project-sapi/project/savePLeaders
