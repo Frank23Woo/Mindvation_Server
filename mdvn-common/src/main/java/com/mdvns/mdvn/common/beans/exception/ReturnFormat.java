@@ -1,7 +1,9 @@
-package com.mdvns.mdvn.common.exception;
+package com.mdvns.mdvn.common.beans.exception;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import com.mdvns.mdvn.common.beans.RestDefaultResponse;
 
 public class ReturnFormat {
     private static Map<String,String> messageMap = new HashMap<String, String>();
@@ -55,9 +57,9 @@ public class ReturnFormat {
         messageMap.put("2022", "RSA解密失败,密文数据已损坏");
         messageMap.put("2023", "请重新登录");*/
     }
-    public static RestDefaultRespons retParam(String status,String responseCodde, Object data) {
-        RestDefaultRespons restDefautResponse = new RestDefaultRespons(status, responseCodde, messageMap.get(responseCodde), data);
-        return restDefautResponse;
+    public static RestDefaultResponse retParam(String status,String responseCodde, Object data) {
+    	RestDefaultResponse restDefaultResponse = new RestDefaultResponse(status, responseCodde, messageMap.get(responseCodde), data);
+        return restDefaultResponse;
     }
   
 }

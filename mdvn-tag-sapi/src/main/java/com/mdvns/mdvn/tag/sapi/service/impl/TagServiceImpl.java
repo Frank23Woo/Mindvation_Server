@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -60,7 +59,6 @@ public class TagServiceImpl implements TagService {
         tg = this.tagRepository.findByName(tag.getName());
         if (tg != null) {
             LOG.error("标签已存在:{}", tg.toString());
-//           throw new BusinessException();
         }
         tag.setCreateTime(new Timestamp(System.currentTimeMillis()));
         tag.setQuoteCnt(0);
@@ -114,7 +112,7 @@ public class TagServiceImpl implements TagService {
      * @return
      */
     @Override
-    public List<Tag> rtrvTagList(RetrieveTagListRequest retrieveTagListRequest) throws SQLException {
+    public List<Tag> rtrvTagList(RetrieveTagListRequest retrieveTagListRequest){
 
         Integer page = (retrieveTagListRequest.getPage()==null)?0:retrieveTagListRequest.getPage();
 

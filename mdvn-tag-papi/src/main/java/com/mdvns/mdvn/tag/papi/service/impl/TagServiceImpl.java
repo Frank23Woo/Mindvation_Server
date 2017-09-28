@@ -1,19 +1,16 @@
 package com.mdvns.mdvn.tag.papi.service.impl;
 
-import com.mdvns.mdvn.common.exception.RestDefautResponse;
+import com.mdvns.mdvn.common.beans.RestDefaultResponse;
 import com.mdvns.mdvn.common.exception.ReturnFormat;
 import com.mdvns.mdvn.tag.papi.config.WebConfig;
 import com.mdvns.mdvn.tag.papi.domain.*;
 import com.mdvns.mdvn.tag.papi.service.TagService;
 import com.mdvns.mdvn.tag.papi.utils.LogUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -43,7 +40,7 @@ public class TagServiceImpl implements TagService {
 
     /*注入RestDefaultResponse*/
     @Autowired
-    private RestDefautResponse restDefautResponse;
+    private RestDefaultResponse restDefaultResponse;
 
 
 
@@ -57,7 +54,7 @@ public class TagServiceImpl implements TagService {
      * @return
      */
     @Override
-    public RestDefautResponse createTag(CreateTagRequest createTagRequest) throws HttpClientErrorException {
+    public RestDefaultResponse createTag(CreateTagRequest createTagRequest){
         LogUtil.sreviceStartLog("createTag ");
 
         tag.setCreatorId(createTagRequest.getCreatorId());
@@ -68,21 +65,14 @@ public class TagServiceImpl implements TagService {
         /*调用sapi保存tag 的 url*/
         String url = webConfig.getSaveTagUrl()+"/1";
         LogUtil.logInfo("保存标签的URL：", url);
-        ResponseEntity<?> responseEntity = this.restTemplate.postForEntity(url, tag, RestDefautResponse.class);
-//        tag = this.restTemplate.postForObject(url, tag, Tag.class);
-        /*try {
-            tag = this.restTemplate.postForObject(url, tag, Tag.class);
-        } catch (Exception ex) {
-            LogUtil.errorLog(ex);
-            throw new RuntimeException("调用SAPI保存数据失败.");
-        }*/
-        if (responseEntity.getStatusCode().equals(HttpStatus.OK)) {
+        ResponseEntity<?> responseEntity = null;
+
+            responseEntity = this.restTemplate.postForEntity(url, tag, Tag.class);
+
+
             return ReturnFormat.retParam(HttpStatus.CREATED.toString(), "000",tag);
-        }
-        LogUtil.logInfo("responseBody:{}", responseEntity.getBody());
-        LogUtil.logInfo("保存的标签对象为:", tag);
-//        throw new RuntimeException(responseEntity.getStatusCode(), );
-        throw new HttpClientErrorException(responseEntity.getStatusCode(), responseEntity.getBody().toString());
+
+
     }
 
 
