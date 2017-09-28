@@ -182,7 +182,8 @@ public class PCheckList {
         if (createTime != null ? !createTime.equals(that.createTime) : that.createTime != null) return false;
         if (lastUpdatTime != null ? !lastUpdatTime.equals(that.lastUpdatTime) : that.lastUpdatTime != null)
             return false;
-        return closeTime != null ? closeTime.equals(that.closeTime) : that.closeTime == null;
+        if (closeTime != null ? !closeTime.equals(that.closeTime) : that.closeTime != null) return false;
+        return isDeleted != null ? isDeleted.equals(that.isDeleted) : that.isDeleted == null;
     }
 
     @Override
