@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.tag.papi.web;
 
+import com.mdvns.mdvn.common.exception.RestDefautResponse;
 import com.mdvns.mdvn.tag.papi.domain.*;
 import com.mdvns.mdvn.tag.papi.service.TagService;
 import org.slf4j.Logger;
@@ -30,6 +31,9 @@ public class TagController {
     @Autowired
     private CreateTagResponse createTagResponse;
 
+    @Autowired
+    private RestDefautResponse restDefautResponse;
+
     /**
      * 新建标签
      *
@@ -37,11 +41,11 @@ public class TagController {
      * @return
      */
     @PostMapping("/createTag")
-    public CreateTagResponse createTag(@RequestBody CreateTagRequest request) {
+    public RestDefautResponse createTag(@RequestBody CreateTagRequest request) {
         LOG.info("开始执行 createTag 方法.");
-        createTagResponse = this.tagService.createTag(request);
+        restDefautResponse = this.tagService.createTag(request);
         LOG.info("执行结束 createTag 方法.");
-        return createTagResponse;
+        return restDefautResponse;
     }
 
 
