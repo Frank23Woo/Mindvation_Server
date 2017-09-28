@@ -1,38 +1,38 @@
-package com.mdvns.mdvn.common.exception;
+package com.mdvns.mdvn.common.beans;
 
 import com.google.gson.Gson;
 
-public class RestDefautResponse {
+public class RestDefaultResponse {
 
-	/* http状态码 */
+	/* http状�?�码 */
 	private String statusCode;
-	/* 异常状态码 */
+	/* 异常状�?�码 */
 	private String responseCode;
 	/* 提示信息 */
-	private String message;
+	private String responseMsg;
 	/* 业务数据 */
 	private Object responseBody;
 
-	public RestDefautResponse() {
+	public RestDefaultResponse() {
 
 	}
 
-	public RestDefautResponse(String responseCode, Object responseBody) {
+	public RestDefaultResponse(String responseCode, Object responseBody) {
 		super();
 		this.responseCode = responseCode;
 		this.responseBody = responseBody;
 	}
 
-	public RestDefautResponse(String statusCode, String responseCode) {
+	public RestDefaultResponse(String statusCode, String responseCode) {
 		super();
 		this.statusCode = statusCode;
 		this.responseCode = responseCode;
 	}
 
-	public RestDefautResponse(String statusCode, String responseCode, String message, Object responseBody) {
+	public RestDefaultResponse(String statusCode, String responseCode, String responseMsg, Object responseBody) {
 		this.statusCode = statusCode;
 		this.responseCode = responseCode;
-		this.message = message;
+		this.responseMsg = responseMsg;
 		this.responseBody = responseBody;
 	}
 
@@ -52,12 +52,12 @@ public class RestDefautResponse {
 		this.responseCode = responseCode;
 	}
 
-	public String getMessage() {
-		return message;
+	public String getResponseMsg() {
+		return responseMsg;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public void setResponseMsg(String responseMsg) {
+		this.responseMsg = responseMsg;
 	}
 
 	public Object getResponseBody() {

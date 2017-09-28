@@ -13,7 +13,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * 标签控制层
+ * 标签SAPI控制层
+ *
  */
 
 @RestController
@@ -37,10 +38,15 @@ public class TagController {
      * @return
      */
     @PostMapping("/tags/tag")
-    public Tag saveTag(@RequestBody Tag tg) throws Exception {
+    public Tag saveTag(@RequestBody Tag tg) {
         LOG.info("开始执行 createTag 方法.");
 
-        tag = this.tagService.saveTag(tg);
+        try {
+            tag = this.tagService.saveTag(tg);
+        } catch (Exception e) {
+            LOG.error("SQL异常");
+
+        }
 
         LOG.info("执行结束 createTag 方法.");
         return tag;
@@ -49,10 +55,7 @@ public class TagController {
     /**
      * 获取Tag列表，分页/排序
      */
-   /* @PostMapping(value="/tags")
-    public Page<Tag> rtrvTagList(@RequestParam Integer page, @RequestParam Integer pageSize ){
-       return this.tagService.rtrvTagList(page, pageSize);
-    }*/
+
     @PostMapping(value = "/tags")
     public List<Tag> rtrvTagList(@RequestBody RetrieveTagListRequest retrieveTagListRequest) throws SQLException {
 

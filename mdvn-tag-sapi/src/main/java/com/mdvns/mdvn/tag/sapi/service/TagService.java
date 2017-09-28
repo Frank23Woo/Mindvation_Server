@@ -21,5 +21,5 @@ public interface TagService {
     /*更新标签引用次数*/
     Tag updateQupteCnt(String tagId);
 
-    List<Tag> rtrvTagList(RetrieveTagListRequest retrieveTagListRequest) throws SQLException;
+    List<Tag> rtrvTagList(RetrieveTagListRequest retrieveTagListRequest);
 }

@@ -1,16 +1,16 @@
-package com.mdvns.mdvn.common.exception;
+package com.mdvns.mdvn.common.beans.exception;
 
-public class TechnicalException extends Exception {
+public class BusinessException extends Exception {
 
 	private String errorCode;
 
 	private String errorMsg;
 
-	public TechnicalException(Object Obj) {
+	public BusinessException(Object Obj) {
 		super(Obj.toString());
 	}
 
-	public TechnicalException(String errorCode, String errorMsg) {
+	public BusinessException(String errorCode, String errorMsg) {
 		super();
 		this.errorCode = errorCode;
 		this.errorMsg = errorMsg;
@@ -34,7 +34,7 @@ public class TechnicalException extends Exception {
 
 	@Override
 	public String toString() {
-		return "TechnicalException [errorCode=" + errorCode + ", errorMsg=" + errorMsg + "]";
+		return "BusinessException [errorCode=" + errorCode + ", errorMsg=" + errorMsg + "]";
 	}
 
 }

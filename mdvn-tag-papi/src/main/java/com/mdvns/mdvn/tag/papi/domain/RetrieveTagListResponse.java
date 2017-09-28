@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.tag.papi.domain;
 
+import com.mdvns.mdvn.common.beans.RestDefaultResponse;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 

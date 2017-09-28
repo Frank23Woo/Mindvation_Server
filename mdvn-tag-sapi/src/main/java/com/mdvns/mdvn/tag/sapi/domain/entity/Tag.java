@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.tag.sapi.domain.entity;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -7,11 +8,12 @@ import java.sql.Timestamp;
 
 /**
  * 标签类，映射表tag
+ * 添加联合约束 uniqueConstraints: tagId,name
  * name不能重复
  */
 @Entity
 @Component
-@Table(name = "tag", uniqueConstraints = {@UniqueConstraint(columnNames = "name")})
+@Table(name = "tag", uniqueConstraints = {@UniqueConstraint(columnNames ={"tagId", "name"})})
 public class Tag {
 
     /* 标签编号 */
@@ -19,9 +21,11 @@ public class Tag {
     @GeneratedValue
     private Integer uuid;
 
+    @Column(nullable = false)
     private String tagId;
 
     /* 标签名称 */
+    @NotBlank(message = "标签名称不能为空")
     @Column(nullable = false)
     private String name;
 
@@ -30,6 +34,7 @@ public class Tag {
     private Integer quoteCnt;
 
     /* 創建標簽人的編號,即員工編號(staffId) */
+    @NotBlank(message = "创建者Id不能为空")
     @Column(name = "creator_id", columnDefinition = "Varchar (50)", nullable = false)
     private String creatorId;
 
