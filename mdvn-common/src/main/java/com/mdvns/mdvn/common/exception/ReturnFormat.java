@@ -55,8 +55,8 @@ public class ReturnFormat {
         messageMap.put("2022", "RSA解密失败,密文数据已损坏");
         messageMap.put("2023", "请重新登录");*/
     }
-    public static RestDefautResponse retParam(String status,String responseCodde, Object data) {
-        RestDefautResponse restDefautResponse = new RestDefautResponse(status, responseCodde, messageMap.get(responseCodde), data);
+    public static RestDefaultRespons retParam(String status,String responseCodde, Object data) {
+        RestDefaultRespons restDefautResponse = new RestDefaultRespons(status, responseCodde, messageMap.get(responseCodde), data);
         return restDefautResponse;
     }
   
