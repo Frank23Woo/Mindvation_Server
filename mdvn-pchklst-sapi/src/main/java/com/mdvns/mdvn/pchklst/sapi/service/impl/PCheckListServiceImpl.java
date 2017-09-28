@@ -103,9 +103,10 @@ public class PCheckListServiceImpl implements PCheckListService{
             if(!StringUtils.isEmpty(pCheckList.getStatus()) && (pCheckList.getStatus() == PCheckListStatusCode.CLOSED)){
                 record.setCloseTime(currentTime);
             }
+            record = this.pCheckListRepository.saveAndFlush(record);
         }
 
-        record = this.pCheckListRepository.saveAndFlush(record);
+
         LOG.info("finish executing updateCheckList()方法.", this.CLASS);
         return record;
     }
