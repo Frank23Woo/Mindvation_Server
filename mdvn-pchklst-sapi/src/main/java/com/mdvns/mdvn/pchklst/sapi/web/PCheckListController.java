@@ -49,7 +49,7 @@ public class PCheckListController {
     }
 
 
-    @PostMapping("/pCheckList")
+    @PostMapping("/rtrvPCheckList")
     public List<PCheckList> RtrvPCheckList(@RequestBody RtrvPCheckListRequest request){
         LOG.info("executing RtrvPCheckList() method......");
         return this.pCheckListService.rtrvPCheckList(request);

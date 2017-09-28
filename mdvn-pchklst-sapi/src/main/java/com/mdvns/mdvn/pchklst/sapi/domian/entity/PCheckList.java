@@ -155,6 +155,14 @@ public class PCheckList {
         this.closeTime = closeTime;
     }
 
+    public Integer getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Integer isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -166,11 +174,11 @@ public class PCheckList {
         if (pCheckListId != null ? !pCheckListId.equals(that.pCheckListId) : that.pCheckListId != null) return false;
         if (projectId != null ? !projectId.equals(that.projectId) : that.projectId != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
+        if (startDate != null ? !startDate.equals(that.startDate) : that.startDate != null) return false;
+        if (endDate != null ? !endDate.equals(that.endDate) : that.endDate != null) return false;
         if (assignerId != null ? !assignerId.equals(that.assignerId) : that.assignerId != null) return false;
         if (assigneeId != null ? !assigneeId.equals(that.assigneeId) : that.assigneeId != null) return false;
         if (status != null ? !status.equals(that.status) : that.status != null) return false;
-        if (startDate != null ? !startDate.equals(that.startDate) : that.startDate != null) return false;
-        if (endDate != null ? !endDate.equals(that.endDate) : that.endDate != null) return false;
         if (createTime != null ? !createTime.equals(that.createTime) : that.createTime != null) return false;
         if (lastUpdatTime != null ? !lastUpdatTime.equals(that.lastUpdatTime) : that.lastUpdatTime != null)
             return false;
@@ -183,14 +191,15 @@ public class PCheckList {
         result = 31 * result + (pCheckListId != null ? pCheckListId.hashCode() : 0);
         result = 31 * result + (projectId != null ? projectId.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
+        result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
         result = 31 * result + (assignerId != null ? assignerId.hashCode() : 0);
         result = 31 * result + (assigneeId != null ? assigneeId.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
-        result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
-        result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
         result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
         result = 31 * result + (lastUpdatTime != null ? lastUpdatTime.hashCode() : 0);
         result = 31 * result + (closeTime != null ? closeTime.hashCode() : 0);
+        result = 31 * result + (isDeleted != null ? isDeleted.hashCode() : 0);
         return result;
     }
 
@@ -201,14 +210,15 @@ public class PCheckList {
                 ", pCheckListId='" + pCheckListId + '\'' +
                 ", projectId='" + projectId + '\'' +
                 ", description='" + description + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
                 ", assignerId='" + assignerId + '\'' +
                 ", assigneeId='" + assigneeId + '\'' +
                 ", status=" + status +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
                 ", createTime=" + createTime +
                 ", lastUpdatTime=" + lastUpdatTime +
                 ", closeTime=" + closeTime +
+                ", isDeleted=" + isDeleted +
                 '}';
     }
 }

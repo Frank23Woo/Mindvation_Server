@@ -41,6 +41,7 @@ public class PCheckListServiceImpl implements PCheckListService{
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
         pCheckList.setCreateTime(currentTime);
         pCheckList.setLastUpdatTime(currentTime);
+        pCheckList.setIsDeleted(0);
         pCheckList = this.pCheckListRepository.saveAndFlush(pCheckList);
         LOG.info("finish executing createCheckList()方法.", this.CLASS);
         return pCheckList;
@@ -55,7 +56,8 @@ public class PCheckListServiceImpl implements PCheckListService{
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
             list.get(i).setCreateTime(currentTime);
             list.get(i).setLastUpdatTime(currentTime);
-            returnList.add(this.pCheckListRepository.saveAndFlush(pCheckList));
+            list.get(i).setIsDeleted(0);
+            returnList.add(this.pCheckListRepository.saveAndFlush(list.get(i)));
         }
         LOG.info("finish executing createCheckList()方法.", this.CLASS);
         return returnList;
@@ -98,7 +100,7 @@ public class PCheckListServiceImpl implements PCheckListService{
         if(flag){
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
             record.setLastUpdatTime(currentTime);
-            if(pCheckList.getStatus() == PCheckListStatusCode.CLOSED){
+            if(!StringUtils.isEmpty(pCheckList.getStatus()) && (pCheckList.getStatus() == PCheckListStatusCode.CLOSED)){
                 record.setCloseTime(currentTime);
             }
         }
@@ -153,7 +155,7 @@ public class PCheckListServiceImpl implements PCheckListService{
             if(flag){
                 Timestamp currentTime = new Timestamp(System.currentTimeMillis());
                 record.setLastUpdatTime(currentTime);
-                if(list.get(i).getStatus() == PCheckListStatusCode.CLOSED){
+                if(!StringUtils.isEmpty(list.get(i).getStatus()) && (list.get(i).getStatus() == PCheckListStatusCode.CLOSED)){
                     record.setCloseTime(currentTime);
                 }
                 record = this.pCheckListRepository.saveAndFlush(record);
@@ -174,13 +176,14 @@ public class PCheckListServiceImpl implements PCheckListService{
         if(record == null){
             throw new NullPointerException("Record cannot be found");
         }
-        if(pCheckList.getStatus()== PCheckListStatusCode.CLOSED && (record.getStatus()!= PCheckListStatusCode.CLOSED)){
-            record.setStatus(pCheckList.getStatus());
-            record.setCloseTime(new Timestamp(System.currentTimeMillis()));
+        if(record.getIsDeleted()!=null && record.getIsDeleted()!= 1){
+            record.setIsDeleted(1);
+            record.setLastUpdatTime(new Timestamp(System.currentTimeMillis()));
             record = this.pCheckListRepository.saveAndFlush(record);
+            return 1;
         }
         LOG.info("finish executing deleteCheckList()方法.", this.CLASS);
-        return 1;
+        return 0;
     }
 
     @Override
@@ -195,9 +198,9 @@ public class PCheckListServiceImpl implements PCheckListService{
             if(record == null){
                 throw new NullPointerException("Record cannot be found");
             }
-            if(list.get(i).getStatus()== PCheckListStatusCode.CLOSED && (record.getStatus()!= PCheckListStatusCode.CLOSED)){
-                record.setStatus(list.get(i).getStatus());
-                record.setCloseTime(new Timestamp(System.currentTimeMillis()));
+            if(record.getIsDeleted()!=null && record.getIsDeleted()!= 1){
+                record.setIsDeleted(1);
+                record.setLastUpdatTime(new Timestamp(System.currentTimeMillis()));
                 record = this.pCheckListRepository.saveAndFlush(record);
                 count+=1;
             }
@@ -213,6 +216,11 @@ public class PCheckListServiceImpl implements PCheckListService{
             throw new NullPointerException("RtrvPCheckListRequest cannot be found");
         }
 
+        if(rtrvPCheckListRequest.getPage()==null || rtrvPCheckListRequest.getPageSize()==null || StringUtils.isEmpty(rtrvPCheckListRequest.getProjectId())){
+            LOG.info("one or more params (page, pageSize, projectId) is empty", this.CLASS);
+            return null;
+        }
+
         if(rtrvPCheckListRequest.getPage()==0||rtrvPCheckListRequest.getPageSize()==0){
             LOG.info("finish executing rtrvPCheckList()方法.", this.CLASS);
             return  this.pCheckListRepository.findAllByProjectIdAndIsDeletedAndStatusGreaterThanEqualOrderByStatusAsc(rtrvPCheckListRequest.getProjectId(),0,0);
@@ -221,7 +229,7 @@ public class PCheckListServiceImpl implements PCheckListService{
             Integer page = (rtrvPCheckListRequest.getPage()==null)?0:rtrvPCheckListRequest.getPage();
             Integer pageSize = (null == rtrvPCheckListRequest.getPageSize()) ? 6 : rtrvPCheckListRequest.getPageSize();
             Page<PCheckList> pCheckListPage = null;
-            PageRequest pageable = new PageRequest(page, pageSize);
+            PageRequest pageable = new PageRequest(page-1, pageSize);
             pCheckListPage = this.pCheckListRepository.findAllByProjectIdAndIsDeletedAndStatusGreaterThanEqualOrderByStatusAsc(rtrvPCheckListRequest.getProjectId(),0,0,pageable);
             LOG.info("finish executing rtrvPCheckList()方法.", this.CLASS);
             return pCheckListPage.getContent();
