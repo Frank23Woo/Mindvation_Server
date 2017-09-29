@@ -7,59 +7,67 @@ import com.mdvns.mdvn.common.beans.RestDefaultResponse;
 
 public class ReturnFormat {
     private static Map<String,String> messageMap = new HashMap<String, String>();
-    //³õÊ¼»¯×´Ì¬ÂëÓëÎÄ×ÖËµÃ÷
+    //åˆå§‹åŒ–çŠ¶æ€ç ä¸æ–‡å­—è¯´æ˜
     static {
-        messageMap.put("000", "ÇëÇó³É¹¦");
+        messageMap.put("000", "è¯·æ±‚æˆåŠŸ");
 
         messageMap.put("400", "Bad Request!");
         messageMap.put("401", "NotAuthorization");
+        messageMap.put("404", "No Handler Found");
         messageMap.put("405", "Method Not Allowed");
         messageMap.put("406", "Not Acceptable");
         messageMap.put("500", "Internal Server Error");
 
-        messageMap.put("1000", "[·şÎñÆ÷]ÔËĞĞÊ±Òì³£");
-        messageMap.put("1001", "[·şÎñÆ÷]¿ÕÖµÒì³£");
-        messageMap.put("1002", "[·şÎñÆ÷]Êı¾İÀàĞÍ×ª»»Òì³£");
-        messageMap.put("1003", "[·şÎñÆ÷]IOÒì³£");
-        messageMap.put("1004", "[·şÎñÆ÷]Î´Öª·½·¨Òì³£");
-        messageMap.put("1005", "[·şÎñÆ÷]Êı×éÔ½½çÒì³£");
-        messageMap.put("1006", "[·şÎñÆ÷]ÍøÂçÒì³£");
+        messageMap.put("1000","[æœåŠ¡å™¨] è¿è¡Œæ—¶å¼‚å¸¸");
+        messageMap.put("1000","[æœåŠ¡å™¨] ç©ºæŒ‡é’ˆå¼‚å¸¸");
+        messageMap.put("1000","[æœåŠ¡å™¨] æ•°æ®ç±»å‹è½¬æ¢å¼‚å¸¸");
+        messageMap.put("1000","[æœåŠ¡å™¨] IOå¼‚å¸¸");
+        messageMap.put("1000","[æœåŠ¡å™¨] æœªçŸ¥æ–¹æ³•å¼‚å¸¸");
+        messageMap.put("1000","[æœåŠ¡å™¨] æ•°ç»„è¶Šç•Œjå¼‚å¸¸");
+        messageMap.put("1000","[æœåŠ¡å™¨] ç½‘ç»œå¼‚å¸¸");
+       /* messageMap.put("1000", "[æœåŠ¡å™¨]è¿è¡Œæ—¶å¼‚å¸¸");
+        messageMap.put("1001", "[æœåŠ¡å™¨]ç©ºå€¼å¼‚å¸¸");
+        messageMap.put("1002", "[æœåŠ¡å™¨]æ•°æ®ç±»å‹è½¬æ¢å¼‚å¸¸");
+        messageMap.put("1003", "[æœåŠ¡å™¨]IOå¼‚å¸¸");
+        messageMap.put("1004", "[æœåŠ¡å™¨]æœªçŸ¥æ–¹æ³•å¼‚å¸¸");
+        messageMap.put("1005", "[æœåŠ¡å™¨]æ•°ç»„è¶Šç•Œå¼‚å¸¸");
+        messageMap.put("1006", "[æœåŠ¡å™¨]ç½‘ç»œå¼‚å¸¸");*/
 /*
-        messageMap.put("1010", "ÓÃ»§Î´×¢²á");
-        messageMap.put("1011", "ÓÃ»§ÒÑ×¢²á");
-        messageMap.put("1012", "ÓÃ»§Ãû»òÃÜÂë´íÎó");
-        messageMap.put("1013", "ÓÃ»§ÕÊºÅ¶³½á");
-        messageMap.put("1014", "ÓÃ»§ĞÅÏ¢±à¼­Ê§°Ü");
-        messageMap.put("1015", "ÓÃ»§ĞÅÏ¢Ê§Ğ§£¬ÇëÖØĞÂ»ñÈ¡");
+        messageMap.put("1010", "ç”¨æˆ·æœªæ³¨å†Œ");
+        messageMap.put("1011", "ç”¨æˆ·å·²æ³¨å†Œ");
+        messageMap.put("1012", "ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯");
+        messageMap.put("1013", "ç”¨æˆ·å¸å·å†»ç»“");
+        messageMap.put("1014", "ç”¨æˆ·ä¿¡æ¯ç¼–è¾‘å¤±è´¥");
+        messageMap.put("1015", "ç”¨æˆ·ä¿¡æ¯å¤±æ•ˆï¼Œè¯·é‡æ–°è·å–");
 
-        messageMap.put("1020", "ÑéÖ¤Âë·¢ËÍÊ§°Ü");
-        messageMap.put("1021", "ÑéÖ¤ÂëÊ§Ğ§");
-        messageMap.put("1022", "ÑéÖ¤Âë´íÎó");
-        messageMap.put("1023", "ÑéÖ¤Âë²»¿ÉÓÃ");
-        messageMap.put("1029", "¶ÌĞÅÆ½Ì¨Òì³£");
+        messageMap.put("1020", "éªŒè¯ç å‘é€å¤±è´¥");
+        messageMap.put("1021", "éªŒè¯ç å¤±æ•ˆ");
+        messageMap.put("1022", "éªŒè¯ç é”™è¯¯");
+        messageMap.put("1023", "éªŒè¯ç ä¸å¯ç”¨");
+        messageMap.put("1029", "çŸ­ä¿¡å¹³å°å¼‚å¸¸");
 
-        messageMap.put("1030", "ÖÜ±ßÎŞµêÆÌ");
-        messageMap.put("1031", "µêÆÌÌí¼ÓÊ§°Ü");
-        messageMap.put("1032", "±à¼­µêÆÌĞÅÏ¢Ê§°Ü");
-        messageMap.put("1033", "Ã¿¸öÓÃ»§Ö»ÄÜÌí¼ÓÒ»¸öÉÌÆÌ");
-        messageMap.put("1034", "µêÆÌ²»´æÔÚ");
+        messageMap.put("1030", "å‘¨è¾¹æ— åº—é“º");
+        messageMap.put("1031", "åº—é“ºæ·»åŠ å¤±è´¥");
+        messageMap.put("1032", "ç¼–è¾‘åº—é“ºä¿¡æ¯å¤±è´¥");
+        messageMap.put("1033", "æ¯ä¸ªç”¨æˆ·åªèƒ½æ·»åŠ ä¸€ä¸ªå•†é“º");
+        messageMap.put("1034", "åº—é“ºä¸å­˜åœ¨");
 
-        messageMap.put("1040", "ÎŞä¯ÀÀÉÌÆ·");
-        messageMap.put("1041", "Ìí¼ÓÊ§°Ü,ÉÌÆ·ÖÖÀà³¬³öÉÏÏŞ");
-        messageMap.put("1042", "ÉÌÆ·²»´æÔÚ");
-        messageMap.put("1043", "ÉÌÆ·É¾³ıÊ§°Ü");
+        messageMap.put("1040", "æ— æµè§ˆå•†å“");
+        messageMap.put("1041", "æ·»åŠ å¤±è´¥,å•†å“ç§ç±»è¶…å‡ºä¸Šé™");
+        messageMap.put("1042", "å•†å“ä¸å­˜åœ¨");
+        messageMap.put("1043", "å•†å“åˆ é™¤å¤±è´¥");
 
-        messageMap.put("2010", "È±ÉÙ²ÎÊı»òÖµÎª¿Õ");
+        messageMap.put("2010", "ç¼ºå°‘å‚æ•°æˆ–å€¼ä¸ºç©º");
 
-        messageMap.put("2029", "²ÎÊı²»ºÏ·¨");
-        messageMap.put("2020", "ÎŞĞ§µÄToken");
-        messageMap.put("2021", "ÎŞ²Ù×÷È¨ÏŞ");
-        messageMap.put("2022", "RSA½âÃÜÊ§°Ü,ÃÜÎÄÊı¾İÒÑËğ»µ");
-        messageMap.put("2023", "ÇëÖØĞÂµÇÂ¼");*/
+        messageMap.put("2029", "å‚æ•°ä¸åˆæ³•");
+        messageMap.put("2020", "æ— æ•ˆçš„Token");
+        messageMap.put("2021", "æ— æ“ä½œæƒé™");
+        messageMap.put("2022", "RSAè§£å¯†å¤±è´¥,å¯†æ–‡æ•°æ®å·²æŸå");
+        messageMap.put("2023", "è¯·é‡æ–°ç™»å½•");*/
     }
     public static RestDefaultResponse retParam(String status,String responseCodde, Object data) {
-    	RestDefaultResponse restDefaultResponse = new RestDefaultResponse(status, responseCodde, messageMap.get(responseCodde), data);
+        RestDefaultResponse restDefaultResponse = new RestDefaultResponse(status, responseCodde, messageMap.get(responseCodde), data);
         return restDefaultResponse;
     }
-  
+
 }
