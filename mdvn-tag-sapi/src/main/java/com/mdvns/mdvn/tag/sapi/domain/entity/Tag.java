@@ -13,7 +13,7 @@ import java.sql.Timestamp;
  */
 @Entity
 @Component
-@Table(name = "tag", uniqueConstraints = {@UniqueConstraint(columnNames ={"tagId", "name"})})
+@Table(name = "tag", uniqueConstraints = {@UniqueConstraint(columnNames ={"name"})})
 public class Tag {
 
     /* 标签编号 */
@@ -21,8 +21,16 @@ public class Tag {
     @GeneratedValue
     private Integer uuid;
 
-    @Column(nullable = false)
+
     private String tagId;
+
+    public Integer getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(Integer uuid) {
+        this.uuid = uuid;
+    }
 
     /* 标签名称 */
     @NotBlank(message = "标签名称不能为空")

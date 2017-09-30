@@ -16,7 +16,7 @@ public class RestDefaultResponse {
 	private Object responseBody;
 
 	public RestDefaultResponse() {
-
+		
 	}
 
 	public RestDefaultResponse(String responseCode, Object responseBody) {

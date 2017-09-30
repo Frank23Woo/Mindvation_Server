@@ -1,7 +1,8 @@
 package com.mdvns.mdvn.tag.papi.service.impl;
 
 import com.mdvns.mdvn.common.beans.RestDefaultResponse;
-import com.mdvns.mdvn.common.exception.ReturnFormat;
+import com.mdvns.mdvn.common.beans.exception.BusinessException;
+import com.mdvns.mdvn.common.beans.exception.ReturnFormat;
 import com.mdvns.mdvn.tag.papi.config.WebConfig;
 import com.mdvns.mdvn.tag.papi.domain.*;
 import com.mdvns.mdvn.tag.papi.service.TagService;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -43,7 +45,6 @@ public class TagServiceImpl implements TagService {
     private RestDefaultResponse restDefaultResponse;
 
 
-
     /**
      * 调用Sapi 保存Tag：
      * 1. 如果createTagRequest 为空, 抛出异常 NullPointException
@@ -54,24 +55,25 @@ public class TagServiceImpl implements TagService {
      * @return
      */
     @Override
-    public RestDefaultResponse createTag(CreateTagRequest createTagRequest){
+    public RestDefaultResponse createTag(CreateTagRequest createTagRequest) {
         LogUtil.sreviceStartLog("createTag ");
 
         tag.setCreatorId(createTagRequest.getCreatorId());
         tag.setName(createTagRequest.getName());
         tag.setColor(createTagRequest.getColor());
 
-
         /*调用sapi保存tag 的 url*/
-        String url = webConfig.getSaveTagUrl()+"/1";
+        String url = webConfig.getSaveTagUrl();
         LogUtil.logInfo("保存标签的URL：", url);
         ResponseEntity<?> responseEntity = null;
 
-            responseEntity = this.restTemplate.postForEntity(url, tag, Tag.class);
+//        tag = this.restTemplate.postForEntity(url, tag, Tag.class);
+        restDefaultResponse = this.restTemplate.postForObject(url, tag, RestDefaultResponse.class);
+        if (restDefaultResponse.getStatusCode().equals(HttpStatus.OK.toString())) {
+            return restDefaultResponse;
+        }
 
-
-            return ReturnFormat.retParam(HttpStatus.CREATED.toString(), "000",tag);
-
+        throw new BusinessException(restDefaultResponse.getResponseCode(), restDefaultResponse.getResponseBody().toString());
 
     }
 
@@ -101,6 +103,7 @@ public class TagServiceImpl implements TagService {
         String url = webConfig.getUpdateQuoteCntUrl() + "/" + updateQuoteCntRequest.getTagId();
 
         tag = this.restTemplate.postForObject(url, updateQuoteCntRequest, Tag.class);
+
         return tag;
     }
 

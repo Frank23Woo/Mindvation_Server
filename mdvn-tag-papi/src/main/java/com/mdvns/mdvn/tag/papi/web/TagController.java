@@ -1,6 +1,7 @@
 package com.mdvns.mdvn.tag.papi.web;
 
 
+import com.mdvns.mdvn.common.beans.RestDefaultResponse;
 import com.mdvns.mdvn.tag.papi.domain.*;
 import com.mdvns.mdvn.tag.papi.service.TagService;
 import com.mdvns.mdvn.tag.papi.utils.LogUtil;
@@ -35,6 +36,8 @@ public class TagController {
     @Autowired
     private CreateTagResponse createTagResponse;
 
+    @Autowired
+    private RestDefaultResponse restDefaultResponse;
 
 
     /**

@@ -1,5 +1,8 @@
 package com.mdvns.mdvn.tag.sapi.exception;
 
+import com.mdvns.mdvn.common.beans.RestDefaultResponse;
+import com.mdvns.mdvn.common.beans.exception.ReturnFormat;
+import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.ConversionNotSupportedException;
@@ -39,18 +42,18 @@ public class RestExceptionHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(RestExceptionHandler.class);
 
-    @ExceptionHandler(Exception.class)
-    public RestDefaultResponse defautExceptinHandler(Exception ex) {
-        LOG.error("");
+    @ExceptionHandler(ConstraintViolationException.class)
+    public RestDefaultResponse defautExceptinHandler(ConstraintViolationException ex) {
+        LOG.error("违反唯一性约束: "+ex.getMessage());
         return ReturnFormat.retParam("500", "500",ex.getMessage());
     }
 
     //运行时异常
-    @ExceptionHandler(RuntimeException.class)
+   /* @ExceptionHandler(RuntimeException.class)
     public RestDefaultResponse runtimeExceptionHandler(RuntimeException ex) {
         LOG.error("运行时异常:{}", ex.getMessage());
         return ReturnFormat.retParam("500", "500", ex.getMessage());
-    }
+    }*/
 
     //空指针异常
     @ExceptionHandler(NullPointerException.class)

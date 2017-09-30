@@ -1,9 +1,9 @@
 package com.mdvns.mdvn.tag.sapi.service;
 
+import com.mdvns.mdvn.common.beans.RestDefaultResponse;
 import com.mdvns.mdvn.tag.sapi.domain.RetrieveTagListRequest;
 import com.mdvns.mdvn.tag.sapi.domain.entity.Tag;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -13,7 +13,7 @@ import java.util.List;
 public interface TagService {
 
     /*新建标签保存*/
-    Tag saveTag(Tag tag) throws Exception;
+    RestDefaultResponse saveTag(Tag tag);
 
     /*根据名称查询标签*/
     Tag findByName(String name);

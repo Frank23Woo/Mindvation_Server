@@ -1,6 +1,11 @@
 package com.mdvns.mdvn.common.beans.exception;
 
-public class BusinessException extends Exception {
+public class BusinessException extends RuntimeException {
+
+	/**
+	 * CheckedException:
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private String errorCode;
 
