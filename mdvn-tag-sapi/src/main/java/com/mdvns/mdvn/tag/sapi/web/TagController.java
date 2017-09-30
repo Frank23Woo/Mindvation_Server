@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.tag.sapi.web;
 
+import com.mdvns.mdvn.common.beans.RestDefaultResponse;
 import com.mdvns.mdvn.tag.sapi.domain.RetrieveTagListRequest;
 import com.mdvns.mdvn.tag.sapi.domain.entity.Tag;
 import com.mdvns.mdvn.tag.sapi.service.TagService;
@@ -7,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -14,7 +16,6 @@ import java.util.List;
 
 /**
  * 标签SAPI控制层
- *
  */
 
 @RestController
@@ -38,18 +39,15 @@ public class TagController {
      * @return
      */
     @PostMapping("/tags/tag")
-    public Tag saveTag(@RequestBody Tag tg) {
+    public RestDefaultResponse saveTag(@RequestBody Tag tg) {
         LOG.info("开始执行 createTag 方法.");
 
-        try {
-            tag = this.tagService.saveTag(tg);
-        } catch (Exception e) {
-            LOG.error("SQL异常");
+        RestDefaultResponse restDefaultResponse = null;
 
-        }
+        restDefaultResponse = this.tagService.saveTag(tg);
 
         LOG.info("执行结束 createTag 方法.");
-        return tag;
+        return restDefaultResponse;
     }
 
     /**

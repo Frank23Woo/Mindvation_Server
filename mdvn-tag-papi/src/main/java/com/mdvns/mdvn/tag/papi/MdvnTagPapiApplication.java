@@ -1,6 +1,7 @@
 package com.mdvns.mdvn.tag.papi;
 
 
+import com.mdvns.mdvn.common.beans.RestDefaultResponse;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;

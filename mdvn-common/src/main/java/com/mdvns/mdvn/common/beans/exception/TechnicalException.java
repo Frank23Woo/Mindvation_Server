@@ -1,6 +1,13 @@
 package com.mdvns.mdvn.common.beans.exception;
 
-public class TechnicalException extends Exception {
+/**
+ * UncheckedException: 
+ * @author Administrator
+ *
+ */
+public class TechnicalException extends RuntimeException {
+
+	private static final long serialVersionUID = 1L;
 
 	private String errorCode;
 

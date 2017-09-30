@@ -1,6 +1,9 @@
 package com.mdvns.mdvn.tag.papi.exception;
 
 
+import com.mdvns.mdvn.common.beans.RestDefaultResponse;
+import com.mdvns.mdvn.common.beans.exception.BusinessException;
+import com.mdvns.mdvn.common.beans.exception.ReturnFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.ConversionNotSupportedException;
@@ -11,6 +14,7 @@ import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 /**
@@ -36,13 +40,33 @@ public class RestExceptionHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(RestExceptionHandler.class);
 
+    //SAPI调用异常
+    @ExceptionHandler(BusinessException.class)
+    public RestDefaultResponse businessExceptionHandler(BusinessException ex) {
+        LOG.error("Internal Server Error:{}", ex.getMessage());
+        return ReturnFormat.retParam("500", ex.getErrorCode(), ex.getErrorMsg());
+    }
+
+    //调用SAPI异常
+    @ExceptionHandler(HttpClientErrorException.class)
+    public RestDefaultResponse httpClientErrorException(HttpClientErrorException ex) {
+        LOG.error("Internal Server Error:{}", ex.getMessage());
+        return ReturnFormat.retParam(ex.getStatusCode().toString(), ex.getStatusCode().toString(), ex.getMessage());
+    }
+
+   /* @ExceptionHandler(HttpServerErrorException.class)
+    public RestDefaultResponse httpServerErrorExceptionHandler(HttpServerErrorException ex) {
+        LOG.error("Internal Server Error:{}", ex.getMessage());
+        return ReturnFormat.retParam(ex.getStatusCode().toString(), ex.getStatusCode().toString(), ex.getMessage());
+    }*/
 
     //运行时异常
-   /* @ExceptionHandler(RuntimeException.class)
-    public RestDefautResponse runtimeExceptionHandler(RuntimeException ex) {
+    @ExceptionHandler(RuntimeException.class)
+    public RestDefaultResponse runtimeExceptionHandler(RuntimeException ex) {
         LOG.error("Internal Server Error:{}", ex.getMessage());
+
         return ReturnFormat.retParam("500", "500", ex.getMessage());
-    }*/
+    }
 
     //空指针异常
     @ExceptionHandler(NullPointerException.class)

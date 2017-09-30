@@ -19,12 +19,12 @@ public class ReturnFormat {
         messageMap.put("500", "Internal Server Error");
 
         messageMap.put("1000","[服务器] 运行时异常");
-        messageMap.put("1000","[服务器] 空指针异常");
-        messageMap.put("1000","[服务器] 数据类型转换异常");
-        messageMap.put("1000","[服务器] IO异常");
-        messageMap.put("1000","[服务器] 未知方法异常");
-        messageMap.put("1000","[服务器] 数组越界j异常");
-        messageMap.put("1000","[服务器] 网络异常");
+        messageMap.put("1001","[服务器] 空指针异常");
+        messageMap.put("1002","[服务器] 数据类型转换异常");
+        messageMap.put("1003","[服务器] IO异常");
+        messageMap.put("1004","[服务器] 未知方法异常");
+        messageMap.put("1005","[服务器] 数组越界j异常");
+        messageMap.put("1006","[服务器] 网络异常");
        /* messageMap.put("1000", "[服务器]运行时异常");
         messageMap.put("1001", "[服务器]空值异常");
         messageMap.put("1002", "[服务器]数据类型转换异常");
