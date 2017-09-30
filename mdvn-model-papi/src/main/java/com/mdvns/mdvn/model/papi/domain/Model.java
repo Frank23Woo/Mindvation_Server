@@ -1,34 +1,24 @@
-package com.mdvns.mdvn.model.sapi.entity;
+package com.mdvns.mdvn.model.papi.domain;
 
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import java.sql.Timestamp;
 
-@Entity
 @Component
 public class Model {
 
-    @Id
-    @GeneratedValue
     private Integer id;
 
-    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
     private Integer quoteCnt;
 
     // 创建人ID
-    @Column(nullable = false)
     private String creatorId;
 
     private Integer color;
 
-    private Timestamp createTime;
+    private Long createTime;
 
     public Integer getId() {
         return id;
@@ -70,11 +60,11 @@ public class Model {
         this.color = color;
     }
 
-    public Timestamp getCreateTime() {
+    public Long getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Long createTime) {
         this.createTime = createTime;
     }
 }

@@ -4,5 +4,7 @@ import com.mdvns.mdvn.task.papi.domain.*;
 
 public interface TaskService {
     CreateTaskResponse createTask(CreateTaskRequest request) throws Exception;
+    BaseResponse deleteTask(DeleteTaskRequest request) throws Exception;
     RetrieveTaskListResponse retrieveTaskList(RetrieveTaskListRequest request) throws Exception;
+    CreateTaskResponse updateTask(Task request) throws Exception;
 }

@@ -1,7 +1,9 @@
 package com.mdvns.mdvn.common.beans;
 
 import com.google.gson.Gson;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RestDefaultResponse {
 
 	/* http状�?�码 */

@@ -9,4 +9,6 @@ public interface TaskRepository extends JpaRepository<Task, Integer>{
 
     Page<Task> findAllByStoryId(String storyId, Pageable pageable);
 
+    Task findOneByStoryId(String storyId);
+
 }

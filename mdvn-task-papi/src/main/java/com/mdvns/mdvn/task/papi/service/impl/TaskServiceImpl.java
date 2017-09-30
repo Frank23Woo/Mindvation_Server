@@ -37,7 +37,9 @@ public class TaskServiceImpl implements TaskService {
         }
 
         if (request.getAsigneeId() == null || request.getAsignerId() == null || request.getStoryId() == null
-                || request.getDescription() == null || request.getPriority() == null || request.getStatus() == null) {
+                || request.getDescription() == null || request.getPriority() == null
+                || request.getStatus() == null || request.getStartTime() == null
+                || request.getEndTime() == null) {
             throw new IllegalArgumentException("缺少参数");
         }
 
@@ -49,6 +51,9 @@ public class TaskServiceImpl implements TaskService {
         task.setRemarks(request.getRemarks());
         task.setStoryId(request.getStoryId());
         task.setStatus(request.getStatus());
+        task.setStartTime(request.getStartTime());
+        task.setEndTime(request.getEndTime());
+        task.setAttachment(request.getAttachment());
 
         CreateTaskResponse response = new CreateTaskResponse();
         try {
@@ -59,6 +64,43 @@ public class TaskServiceImpl implements TaskService {
         } catch (RestClientException e) {
 //            e.printStackTrace();
             throw new RuntimeException("task sapi error");
+        }
+
+        return response;
+    }
+
+    @Override
+    public BaseResponse deleteTask(DeleteTaskRequest request) throws Exception {
+        BaseResponse response = new BaseResponse();
+        if (request == null) {
+            response.setErrorCode(10000);
+            response.setErrorMsg("need request body");
+            return response;
+        }
+
+        if (request.getUuid() == null && request.getTaskId() == null) {
+            response.setErrorCode(10000);
+            response.setErrorMsg("need uuid or taskId");
+            return response;
+        }
+
+        Task task = new Task();
+        task.setUuid(request.getUuid());
+        task.setTaskId(request.getTaskId());
+
+        try {
+            boolean success  = restTemplate.postForObject(SPI_BASE_URL + "deleteTask", task, Boolean.class);
+            if (success) {
+                response.setErrorCode(0);
+                response.setErrorMsg("");
+            } else {
+                response.setErrorCode(10003);
+                response.setErrorMsg("SAPI ERROR");
+            }
+        } catch (RestClientException e) {
+            e.printStackTrace();
+            response.setErrorCode(10003);
+            response.setErrorMsg("SAPI ERROR");
         }
 
         return response;
@@ -86,6 +128,33 @@ public class TaskServiceImpl implements TaskService {
             response.setResponseBody(taskList);
         } catch (RestClientException e) {
             throw new RuntimeException("sapi调用失败");
+        }
+
+        return response;
+    }
+
+    @Override
+    public CreateTaskResponse updateTask(Task request) throws Exception {
+        CreateTaskResponse response = new CreateTaskResponse();
+        if (request == null) {
+            response.setErrorCode(10000);
+            response.setErrorMsg("need request body");
+            return response;
+        }
+
+        if (request.getUuid() == null && request.getTaskId() == null) {
+            response.setErrorCode(10000);
+            response.setErrorMsg("need uuid or taskId");
+            return response;
+        }
+
+        try {
+            Task result = restTemplate.postForObject(SPI_BASE_URL + "updateTask", request, Task.class);
+            response.setErrorCode(0);
+            response.setErrorMsg("");
+            response.setResponseBody(result);
+        } catch (RestClientException e) {
+            throw e;
         }
 
         return response;

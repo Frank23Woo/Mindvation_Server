@@ -20,14 +20,23 @@ public class TaskController {
     @PostMapping("/rtrvTaskList")
     private List<Task> rtrvTaskList(@RequestParam("storyId") String storyId,
                                     @RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
-                                    @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize) {
+                                    @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize) throws Exception {
         return taskService.rtrvTaskList(storyId, page, pageSize);
     }
 
-
     @PostMapping("/createTask")
-    private Task createTask(@RequestBody Task task) throws SQLException {
+    private Task createTask(@RequestBody Task task) throws Exception {
         return taskService.createTask(task);
+    }
+
+    @PostMapping("/deleteTask")
+    private Boolean deleteTask(@RequestBody Task task) throws Exception {
+        return taskService.deleteTask(task);
+    }
+
+    @PostMapping("/updateTask")
+    private Task updateTask(@RequestBody Task task) throws Exception{
+        return taskService.updateTask(task);
     }
 
 }
