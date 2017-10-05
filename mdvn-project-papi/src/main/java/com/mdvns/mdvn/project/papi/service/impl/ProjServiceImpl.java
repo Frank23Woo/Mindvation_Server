@@ -1,16 +1,21 @@
 package com.mdvns.mdvn.project.papi.service.impl;
 
+import com.mdvns.mdvn.common.beans.RestDefaultResponse;
+import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.project.papi.config.ProjConfig;
 import com.mdvns.mdvn.project.papi.domain.*;
 import com.mdvns.mdvn.project.papi.service.IProjService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.spel.ast.NullLiteral;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -25,7 +30,12 @@ public class ProjServiceImpl implements IProjService {
     private Project proj;
 
     @Autowired
-    private RtrvProjectResponse rtrvProjectResponse;
+    private RestDefaultResponse restDefaultResponse;
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+
 
     /**
      * 获取project列表详细信息
@@ -33,12 +43,18 @@ public class ProjServiceImpl implements IProjService {
      * @param rtrvProjectRequest
      * @return
      */
-    public RtrvProjectResponse rtrvProjInfoList(RtrvProjectRequest rtrvProjectRequest) {
-        RestTemplate restTemplate = new RestTemplate();
+    public ResponseEntity<?> rtrvProjInfoList(RtrvProjectRequest rtrvProjectRequest) {
+        rtrvProjectRequest.setPage(rtrvProjectRequest.getPage()-1);
         String projInfoListUrl = config.getRtrvProjInfoListUrl();
-        List<Project> projects = restTemplate.postForObject(projInfoListUrl, rtrvProjectRequest, List.class);
-        rtrvProjectResponse.setProjects(projects);
-        return rtrvProjectResponse;
+        restDefaultResponse = this.restTemplate.postForObject(projInfoListUrl, rtrvProjectRequest, RestDefaultResponse.class);
+        ResponseEntity<RestDefaultResponse> responseEntity = null;
+        if (restDefaultResponse.getStatusCode().equals(HttpStatus.OK.toString())) {
+//            HttpHeaders httpHeaders = new HttpHeaders();
+//            httpHeaders.setAccessControlAllowOrigin("*");
+            responseEntity = new ResponseEntity<RestDefaultResponse>(restDefaultResponse,HttpStatus.OK);
+            return responseEntity;
+        }
+        throw new BusinessException(restDefaultResponse.getResponseCode(), restDefaultResponse.getResponseBody().toString());
     }
 
     /**
@@ -49,44 +65,35 @@ public class ProjServiceImpl implements IProjService {
      * @param createProjectRequest
      * @return
      */
-//    @Override
-//    public CreateProjectResponse createProject(CreateProjectRequest createProjectRequest) {
-//        //创建保存project信息
-//        RestTemplate restTemplate = new RestTemplate();
-//        CreateProjectResponse createProjectResponse = new CreateProjectResponse();
-//        String createProjectUrl = config.getCreateProjectUrl();
-//        try {
-//            proj = restTemplate.postForObject(createProjectUrl, createProjectRequest, Project.class);
-//        }catch (Exception ex){
-//            throw new RuntimeException("调用SAPI保存数据失败.");
-//        }
-//        createProjectResponse.setProject(proj);
-//
-//        return createProjectResponse;
-//    }
+
     @Override
-    public CreateProjectResponse createProject(CreateProjectRequest createProjectRequest) {
-        RestTemplate restTemplate = new RestTemplate();
+    public RestDefaultResponse createProject(CreateProjectRequest createProjectRequest) {
         CreateProjectResponse createProjectResponse = new CreateProjectResponse();
+
         //1.先保存项目基本信息（获取projId）
         if (createProjectRequest == null || createProjectRequest.getStaffId() == null ||
                 createProjectRequest.getName() == null || createProjectRequest.getDescription() == null) {
             throw new NullPointerException("createProjectRequest 或员工Id不能为空 或项目名称不能为空 或项目描述不能为空");
         }
         String saveProjectBaseUrl = config.getSaveProjectBaseUrl();
-
-        proj = restTemplate.postForObject(saveProjectBaseUrl, createProjectRequest, Project.class);
+//        proj = restTemplate.postForObject(saveProjectBaseUrl, createProjectRequest, Project.class);
+        ResponseEntity<Project> responseEntity = null;
+        responseEntity = restTemplate.postForEntity(saveProjectBaseUrl,createProjectRequest, Project.class);
+        restDefaultResponse.setResponseBody(responseEntity.getBody());
+        proj = responseEntity.getBody();
+        Integer uuId = proj.getUuId();
         //通过uuID查询projId返回整个基本信息
         String getProjIdByUuIdUrl = config.getGetProjIdByUuIdUrl();
         Project pro = restTemplate.postForObject(getProjIdByUuIdUrl, proj, Project.class);
         String projId = pro.getProjId();
-        createProjectResponse.setProject(pro);
+        proj.setProjId(projId);
+
+//        createProjectResponse.setProject(pro);
         //2.保存项目负责人信息
-        if (!StringUtils.isEmpty(createProjectRequest.getLeaders())) {
+        if (!createProjectRequest.getLeaders().isEmpty() && createProjectRequest.getLeaders()!=null) {
             List<ProjLeaders> projLeaders = createProjectRequest.getLeaders();
             for (int i = 0; i < projLeaders.size(); i++) {
                 projLeaders.get(i).setProjId(projId);
-                projLeaders.get(i).setYxbz("Y");
             }
             String savePLeadersUrl = config.getSavePLeadersUrl();
             try {
@@ -96,11 +103,10 @@ public class ProjServiceImpl implements IProjService {
             }
         }
         //3.保存项目标签信息
-        if (!StringUtils.isEmpty(createProjectRequest.getTags())) {
+        if (!createProjectRequest.getTags().isEmpty() && createProjectRequest.getTags()!=null) {
             List<ProjTags> projTags = createProjectRequest.getTags();
             for (int i = 0; i < projTags.size(); i++) {
                 projTags.get(i).setProjId(projId);
-                projTags.get(i).setYxbz("Y");
             }
             String savePTagsUrl = config.getSavePTagsUrl();
             try {
@@ -110,11 +116,10 @@ public class ProjServiceImpl implements IProjService {
             }
         }
         //4.保存项目模块信息
-        if (!StringUtils.isEmpty(createProjectRequest.getModels())) {
+        if (!createProjectRequest.getModels().isEmpty() && createProjectRequest.getModels()!=null) {
             List<ProjModels> projModels = createProjectRequest.getModels();
             for (int i = 0; i < projModels.size(); i++) {
                 projModels.get(i).setProjId(projId);
-                projModels.get(i).setYxbz("Y");
             }
             String savePModelsUrl = config.getSavePModelsUrl();
             try {
@@ -124,12 +129,11 @@ public class ProjServiceImpl implements IProjService {
             }
         }
         //5.保存项目checklist信息
-        if (!StringUtils.isEmpty(createProjectRequest.getCheckLists())) {
+        if (!createProjectRequest.getCheckLists().isEmpty() && createProjectRequest.getCheckLists()!=null) {
             List<ProjChecklists> projChecklists = createProjectRequest.getCheckLists();
             for (int i = 0; i < projChecklists.size(); i++) {
                 projChecklists.get(i).setProjId(projId);
                 projChecklists.get(i).setAssignerId(createProjectRequest.getStaffId());
-                projChecklists.get(i).setYxbz("Y");
             }
             String saveCheckListsUrl = config.getSaveCheckListsUrl();
             try {
@@ -146,11 +150,11 @@ public class ProjServiceImpl implements IProjService {
             }
         }
         //6.保存项目附件信息
-        if (!StringUtils.isEmpty(createProjectRequest.getAttchUrls())) {
+        if (!createProjectRequest.getAttchUrls().isEmpty() && createProjectRequest.getAttchUrls()!=null) {
             List<ProjAttchUrls> projAttchUrls = createProjectRequest.getAttchUrls();
             for (int i = 0; i < projAttchUrls.size(); i++) {
                 projAttchUrls.get(i).setProjId(projId);
-                projAttchUrls.get(i).setYxbz("Y");
+//                projAttchUrls.get(i).setYxbz("Y");
             }
             String savePAttchUrlsUrl = config.getSavePAttchUrlsUrl();
             try {
@@ -159,7 +163,11 @@ public class ProjServiceImpl implements IProjService {
                 throw new RuntimeException("调用SAPI获取项目附件信息保存数据失败.");
             }
         }
-        return createProjectResponse;
+        //response
+//        if (restDefaultResponse.getStatusCode().equals(HttpStatus.OK.toString())) {
+            return restDefaultResponse;
+//        }
+//        throw new BusinessException(restDefaultResponse.getResponseCode(), restDefaultResponse.getResponseBody().toString());
     }
 
     /**
@@ -171,40 +179,89 @@ public class ProjServiceImpl implements IProjService {
     @Override
     public UpdateProjectResponse updateProject(UpdateProjectRequest updateProjectRequest) {
         RestTemplate restTemplate = new RestTemplate();
-        String projId = updateProjectRequest.getProjId();
-        //1.先判断是否更改项目基本信息
+        UpdateProjectResponse updateProjectResponse = new UpdateProjectResponse();
+//        String projId = updateProjectRequest.getProjId();
         if (updateProjectRequest == null || updateProjectRequest.getProjId() == null) {
             throw new NullPointerException("updateProjectRequest 或项目Id不能为空");
+        }
+        //1.先判断是否更改项目基本信息
+        proj.setProjId(updateProjectRequest.getProjId());
+        if (!StringUtils.isEmpty(updateProjectRequest.getName()) ) {
+            proj.setName(updateProjectRequest.getName());
+        }
+        if (!StringUtils.isEmpty(updateProjectRequest.getDescription())) {
+            proj.setDescription(updateProjectRequest.getDescription());
+        }
+        if (!StringUtils.isEmpty(updateProjectRequest.getStartDate())) {
+            proj.setStartDate(updateProjectRequest.getStartDate());
 
         }
+        if (!StringUtils.isEmpty(updateProjectRequest.getEndDate())) {
+            proj.setEndDate(updateProjectRequest.getEndDate());
 
+        }
+        if (!StringUtils.isEmpty(updateProjectRequest.getPriority())) {
+            proj.setPriority(updateProjectRequest.getPriority());
+
+        }
+        if (!StringUtils.isEmpty(updateProjectRequest.getContingency())) {
+            proj.setContingency(updateProjectRequest.getContingency());
+        }
+        String updateProjBaseInfoUrl = config.getUpdateProjBaseInfoUrl();
+        Project pro = restTemplate.postForObject(updateProjBaseInfoUrl, proj, Project.class);
+        updateProjectResponse.setProjId(pro.getProjId());
+        updateProjectResponse.setName(pro.getName());
+        updateProjectResponse.setDescription(pro.getDescription());
+        updateProjectResponse.setStartDate(pro.getStartDate());
+        updateProjectResponse.setEndDate(pro.getEndDate());
+        updateProjectResponse.setPriority(pro.getPriority());
+        updateProjectResponse.setContingency(pro.getContingency());
         //2.判断是否更改项目负责人信息
-        if (!StringUtils.isEmpty(updateProjectRequest.getLeaders())) {
-
+        if (!updateProjectRequest.getLeaders().isEmpty() && updateProjectRequest.getLeaders()!=null) {
+            UpdatePLeadersRequest updatePLeadersRequest = new UpdatePLeadersRequest();
+            updatePLeadersRequest.setProjId(updateProjectRequest.getProjId());
+            updatePLeadersRequest.setLeaders(updateProjectRequest.getLeaders());
+            String updateProjLeadersUrl = config.getUpdateProjLeadersUrl();
+            try {
+                List<ProjLeaders> pLeaders = restTemplate.postForObject(updateProjLeadersUrl, updatePLeadersRequest, List.class);
+                updateProjectResponse.setLeaders(pLeaders);
+            } catch (Exception ex) {
+                throw new RuntimeException("调用SAPI更改项目负责人信息保存数据失败.");
+            }
         }
-
         //3.判断是否更改项目标签信息
-        if (!StringUtils.isEmpty(updateProjectRequest.getTags())) {
+        if (!updateProjectRequest.getTags().isEmpty() && updateProjectRequest.getTags()!=null) {
+            List<ProjTags> projTags = updateProjectRequest.getTags();
 
         }
 
         //4.判断是否更改项目模块信息
-        if (!StringUtils.isEmpty(updateProjectRequest.getModels())) {
+        if (!updateProjectRequest.getModels().isEmpty() && updateProjectRequest.getModels()!=null) {
+            List<ProjModels> projModels = updateProjectRequest.getModels();
 
         }
 
         //5.判断是否更改项目checklist信息
-        if (!StringUtils.isEmpty(updateProjectRequest.getCheckLists())) {
+        if (!updateProjectRequest.getCheckLists().isEmpty() && updateProjectRequest.getCheckLists()!=null) {
+            List<ProjChecklists> projChecklists = updateProjectRequest.getCheckLists();
+
 
         }
-
 
         //6.判断是否更改项目附件信息
-        if (!StringUtils.isEmpty(updateProjectRequest.getAttchUrls())) {
+        if (!updateProjectRequest.getAttchUrls().isEmpty() && updateProjectRequest.getAttchUrls()!=null) {
+            UpdatePAttchUrlsRequest updatePAttchUrlsRequest = new UpdatePAttchUrlsRequest();
+            updatePAttchUrlsRequest.setProjId(updateProjectRequest.getProjId());
+            updatePAttchUrlsRequest.setAttchUrls(updateProjectRequest.getAttchUrls());
+            String updateProjAttchUrlsUrl = config.getUpdateProjAttchUrlsUrl();
+            try {
+                List<ProjAttchUrls> pAttchUrls = restTemplate.postForObject(updateProjAttchUrlsUrl, updatePAttchUrlsRequest, List.class);
+                updateProjectResponse.setAttchUrls(pAttchUrls);
+            } catch (Exception ex) {
+                throw new RuntimeException("调用SAPI更改项目附件信息保存数据失败.");
+            }
 
         }
-
-
-        return null;
+        return updateProjectResponse;
     }
 }

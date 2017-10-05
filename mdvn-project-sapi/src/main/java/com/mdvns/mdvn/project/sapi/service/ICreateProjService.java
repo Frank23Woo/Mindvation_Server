@@ -1,22 +1,22 @@
 package com.mdvns.mdvn.project.sapi.service;
 
+import com.mdvns.mdvn.common.beans.RestDefaultResponse;
 import com.mdvns.mdvn.project.sapi.domain.CreateProjectRequest;
-import com.mdvns.mdvn.project.sapi.domain.CreateProjectResponse;
 import com.mdvns.mdvn.project.sapi.domain.RtrvProjectRequest;
 import com.mdvns.mdvn.project.sapi.domain.entity.*;
+import org.springframework.http.ResponseEntity;
 
 
 import java.sql.SQLException;
 import java.util.List;
 
-public interface IProjService {
+public interface ICreateProjService {
 
     //获取project整个列表
-    List<Project> rtrvProjInfoList(RtrvProjectRequest request) throws SQLException;
-    //创建project(整个信息)
-    Project createProject(CreateProjectRequest request);
+    RestDefaultResponse rtrvProjInfoList(RtrvProjectRequest request) throws SQLException;
     //创建project时保存project(基本信息)
-    Project saveProject(CreateProjectRequest request);
+    ResponseEntity<?> saveProject(CreateProjectRequest request);
+//    Project saveProject(CreateProjectRequest createProjectRequest);
     //通过uuId获取项目的projId(触发器引发的问题)
     Project getProjIdByUuId(Project proj);
     //创建project时保存leaders信息

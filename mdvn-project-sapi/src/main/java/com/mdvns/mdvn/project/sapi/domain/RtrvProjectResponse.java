@@ -1,5 +1,6 @@
-package com.mdvns.mdvn.project.papi.domain;
+package com.mdvns.mdvn.project.sapi.domain;
 
+import com.mdvns.mdvn.project.sapi.domain.entity.Project;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

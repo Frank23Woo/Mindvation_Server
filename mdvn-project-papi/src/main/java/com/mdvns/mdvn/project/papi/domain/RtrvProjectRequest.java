@@ -1,26 +1,32 @@
 package com.mdvns.mdvn.project.papi.domain;
 
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Null;
 import java.util.List;
 
 @Component
 public class RtrvProjectRequest {
-    private Integer userId;
+    @NotBlank(message = "staffId不能为空")
+    private String staffId;
+    @Min(value=1,message = "page不能小于1")
     private Integer page;
+    @Min(value=1,message = "pageSize不能小于1")
     private Integer pageSize;
     /*排序条件：字段名*/
     private String sortBy;
 
     private List<String> remarks;
 
-    public Integer getUserId() {
-        return userId;
+    public String getStaffId() {
+        return staffId;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setStaffId(String staffId) {
+        this.staffId = staffId;
     }
 
     public Integer getPage() {
@@ -55,38 +61,6 @@ public class RtrvProjectRequest {
         this.remarks = remarks;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        RtrvProjectRequest that = (RtrvProjectRequest) o;
 
-        if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
-        if (page != null ? !page.equals(that.page) : that.page != null) return false;
-        if (pageSize != null ? !pageSize.equals(that.pageSize) : that.pageSize != null) return false;
-        if (sortBy != null ? !sortBy.equals(that.sortBy) : that.sortBy != null) return false;
-        return remarks != null ? remarks.equals(that.remarks) : that.remarks == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = userId != null ? userId.hashCode() : 0;
-        result = 31 * result + (page != null ? page.hashCode() : 0);
-        result = 31 * result + (pageSize != null ? pageSize.hashCode() : 0);
-        result = 31 * result + (sortBy != null ? sortBy.hashCode() : 0);
-        result = 31 * result + (remarks != null ? remarks.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "RtrvProjectRequest{" +
-                "userId=" + userId +
-                ", page=" + page +
-                ", pageSize=" + pageSize +
-                ", sortBy='" + sortBy + '\'' +
-                ", remarks=" + remarks +
-                '}';
-    }
 }

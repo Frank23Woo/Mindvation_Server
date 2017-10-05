@@ -1,13 +1,15 @@
 package com.mdvns.mdvn.project.sapi.web;
 
+import com.mdvns.mdvn.common.beans.RestDefaultResponse;
 import com.mdvns.mdvn.project.sapi.domain.CreateProjectRequest;
-import com.mdvns.mdvn.project.sapi.domain.CreateProjectResponse;
 import com.mdvns.mdvn.project.sapi.domain.RtrvProjectRequest;
+import com.mdvns.mdvn.project.sapi.domain.RtrvProjectResponse;
 import com.mdvns.mdvn.project.sapi.domain.entity.*;
-import com.mdvns.mdvn.project.sapi.service.IProjService;
+import com.mdvns.mdvn.project.sapi.service.ICreateProjService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -15,11 +17,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value= {"/project", "/v1.0/project"})
-public class ProjController {
-    private Logger LOG = LoggerFactory.getLogger(ProjController.class);
+public class CreateProjController {
+    private Logger LOG = LoggerFactory.getLogger(CreateProjController.class);
 
     @Autowired
-    private IProjService projService;
+    private ICreateProjService projService;
 
 
     /**
@@ -27,28 +29,17 @@ public class ProjController {
      * @return
      */
     @PostMapping(value="/rtrvProjInfoList")
-    public List<Project> rtrvProjInfoList(@RequestBody RtrvProjectRequest request) throws SQLException{
+    public RestDefaultResponse rtrvProjInfoList(@RequestBody RtrvProjectRequest request) throws SQLException{
         return projService.rtrvProjInfoList(request);
     }
 
-    /**
-     * 创建project(详细信息)
-     * @param request
-     * @return
-     */
-    @PostMapping(value="/createProject")
-    public Project createProject(@RequestBody CreateProjectRequest request){
-        Project project = projService.createProject(request);
-        return project;
-    }
 
     /**
      *保存project（基本信息）
      */
     @PostMapping(value="/saveProject")
-    public Project saveProject(@RequestBody CreateProjectRequest request){
-        Project project = projService.saveProject(request);
-        return project;
+    public ResponseEntity<?> saveProject(@RequestBody CreateProjectRequest request){
+        return projService.saveProject(request);
     }
 
     /**
@@ -61,9 +52,6 @@ public class ProjController {
         Project pro = projService.getProjIdByUuId(proj);
         return pro;
     }
-
-
-
     /**
      * 创建project时保存负责人信息
      * @param leaders
@@ -127,7 +115,6 @@ public class ProjController {
         List<ProjAttchUrls> projAttchUrls = projService.savePAttchUrls(request);
         return projAttchUrls;
     }
-
 
 
 

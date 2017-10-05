@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProjConfig {
 
+    //-------------------------------------创建项目----------------------
     //获取project列表信息url
     private String rtrvProjInfoListUrl;
     //创建projecturl
@@ -28,6 +29,16 @@ public class ProjConfig {
     private String getChecklistsListByUuIdUrl;
     //创建project时保存AttchUrls信息
     private String savePAttchUrlsUrl;
+
+    //---------------------------------更改项目--------------------------
+
+    //更改项目基本信息
+    private String updateProjBaseInfoUrl;
+    //更改项目负责人信息
+    private String updateProjLeadersUrl;
+    //更该项目附件信息
+    private String updateProjAttchUrlsUrl;
+
 
     public String getRtrvProjInfoListUrl() {
         return rtrvProjInfoListUrl;
@@ -107,5 +118,29 @@ public class ProjConfig {
 
     public void setSavePLeadersUrl(String savePLeadersUrl) {
         this.savePLeadersUrl = savePLeadersUrl;
+    }
+
+    public String getUpdateProjBaseInfoUrl() {
+        return updateProjBaseInfoUrl;
+    }
+
+    public void setUpdateProjBaseInfoUrl(String updateProjBaseInfoUrl) {
+        this.updateProjBaseInfoUrl = updateProjBaseInfoUrl;
+    }
+
+    public String getUpdateProjLeadersUrl() {
+        return updateProjLeadersUrl;
+    }
+
+    public void setUpdateProjLeadersUrl(String updateProjLeadersUrl) {
+        this.updateProjLeadersUrl = updateProjLeadersUrl;
+    }
+
+    public String getUpdateProjAttchUrlsUrl() {
+        return updateProjAttchUrlsUrl;
+    }
+
+    public void setUpdateProjAttchUrlsUrl(String updateProjAttchUrlsUrl) {
+        this.updateProjAttchUrlsUrl = updateProjAttchUrlsUrl;
     }
 }

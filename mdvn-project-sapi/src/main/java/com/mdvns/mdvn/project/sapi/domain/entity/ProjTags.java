@@ -16,11 +16,11 @@ public class ProjTags {
     private String tagId;
     //项目Id
     private String projId;
-    //有效标志
-    @Column(columnDefinition = "varchar(5) default 'Y' ")
-    private String yxbz;
+    //是否被删除
+    @Column(name = "is_deleted", columnDefinition = "INT default 0")
+    private Integer isDeleted;
     //更改时间
-    @Column(columnDefinition = "timestamp default System.currentTimeMillis()", nullable = false)
+    @Column(columnDefinition = "timestamp NOT NULL default current_timestamp ON UPDATE CURRENT_TIMESTAMP", nullable = false)
     private Timestamp updateTime;
 
     public Integer getUuId() {
@@ -47,12 +47,12 @@ public class ProjTags {
         this.projId = projId;
     }
 
-    public String getYxbz() {
-        return yxbz;
+    public Integer getIsDeleted() {
+        return isDeleted;
     }
 
-    public void setYxbz(String yxbz) {
-        this.yxbz = yxbz;
+    public void setIsDeleted(Integer isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
     public Timestamp getUpdateTime() {

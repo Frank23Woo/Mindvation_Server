@@ -45,6 +45,19 @@
 			<artifactId> spring-boot-configuration-processor </artifactId>
 			<optional> true </optional>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.mdvns.mdvn</groupId>
+			<artifactId>mdvn-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.mdvns.mdvn</groupId>
+			<artifactId>mdvn-common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>

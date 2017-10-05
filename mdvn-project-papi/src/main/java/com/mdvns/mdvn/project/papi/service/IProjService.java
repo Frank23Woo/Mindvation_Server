@@ -1,6 +1,8 @@
 package com.mdvns.mdvn.project.papi.service;
 
+import com.mdvns.mdvn.common.beans.RestDefaultResponse;
 import com.mdvns.mdvn.project.papi.domain.*;
+import org.springframework.http.ResponseEntity;
 
 
 public interface IProjService {
@@ -9,14 +11,14 @@ public interface IProjService {
      * @param rtrvProjectRequest
      * @return
      */
-    RtrvProjectResponse rtrvProjInfoList(RtrvProjectRequest rtrvProjectRequest);
+    ResponseEntity<?> rtrvProjInfoList(RtrvProjectRequest rtrvProjectRequest);
 
     /**
      * 创建project
      * @param createProjectRequest
      * @return
      */
-    CreateProjectResponse createProject(CreateProjectRequest createProjectRequest);
+    RestDefaultResponse createProject(CreateProjectRequest createProjectRequest);
 
     /**
      * 更改project

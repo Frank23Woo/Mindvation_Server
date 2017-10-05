@@ -63,15 +63,15 @@ public class Project {
     @Column(columnDefinition = "int default 0")
     private Integer crStoryPointQty;
     //任务总数
-    private Integer taskQty;
+    private Integer checkListQty;
     //需求变更占比
     @Column(columnDefinition = "Double default 0")
     private Double crRate;
     //备注
     private String remarks;
-    //有效标志
-    @Column(columnDefinition = "varchar(5) default 'Y'")
-    private String yxbz;
+    //是否被删除
+    @Column(name = "is_deleted", columnDefinition = "INT default 0")
+    private Integer isDeleted;
 
     public Integer getUuId() {
         return uuId;
@@ -210,12 +210,12 @@ public class Project {
         this.crStoryPointQty = crStoryPointQty;
     }
 
-    public Integer getTaskQty() {
-        return taskQty;
+    public Integer getCheckListQty() {
+        return checkListQty;
     }
 
-    public void setTaskQty(Integer taskQty) {
-        this.taskQty = taskQty;
+    public void setCheckListQty(Integer checkListQty) {
+        this.checkListQty = checkListQty;
     }
 
     public Double getCrRate() {
@@ -242,11 +242,11 @@ public class Project {
         this.contingency = contingency;
     }
 
-    public String getYxbz() {
-        return yxbz;
+    public Integer getIsDeleted() {
+        return isDeleted;
     }
 
-    public void setYxbz(String yxbz) {
-        this.yxbz = yxbz;
+    public void setIsDeleted(Integer isDeleted) {
+        this.isDeleted = isDeleted;
     }
 }

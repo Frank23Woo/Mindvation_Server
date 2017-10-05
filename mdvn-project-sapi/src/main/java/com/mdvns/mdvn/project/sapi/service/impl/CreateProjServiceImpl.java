@@ -1,29 +1,29 @@
 package com.mdvns.mdvn.project.sapi.service.impl;
 
+import com.mdvns.mdvn.common.beans.RestDefaultResponse;
+import com.mdvns.mdvn.common.beans.exception.ReturnFormat;
 import com.mdvns.mdvn.project.sapi.domain.CreateProjectRequest;
-import com.mdvns.mdvn.project.sapi.domain.CreateProjectResponse;
 import com.mdvns.mdvn.project.sapi.domain.RtrvProjectRequest;
+import com.mdvns.mdvn.project.sapi.domain.RtrvProjectResponse;
 import com.mdvns.mdvn.project.sapi.domain.entity.*;
 import com.mdvns.mdvn.project.sapi.repository.*;
-import com.mdvns.mdvn.project.sapi.service.IProjService;
+import com.mdvns.mdvn.project.sapi.service.ICreateProjService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 @Service
-public class ProjServiceImpl implements IProjService {
+public class CreateProjServiceImpl implements ICreateProjService {
     /* 日志常量 */
-    private static final Logger LOG = LoggerFactory.getLogger(ProjServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CreateProjServiceImpl.class);
 
     private final String CLASS = this.getClass().getName();
 
@@ -47,102 +47,34 @@ public class ProjServiceImpl implements IProjService {
 
     /**
      * 获取project整个列表
+     *
      * @return
      */
-    public List<Project> rtrvProjInfoList(RtrvProjectRequest request) throws SQLException{
+    public RestDefaultResponse rtrvProjInfoList(RtrvProjectRequest request) throws SQLException {
+        RtrvProjectResponse rtrvProjectResponse = new RtrvProjectResponse();
+        //获取多张表数据联合查询然后分页
+        Integer page = request.getPage();
+        Integer pageSize = request.getPageSize();
+        Integer m = page * pageSize;
+        Integer n = pageSize;
+        List<Project> pageList = this.projectRepository.rtrvProjInfoList(request.getStaffId(), m, n);
+        Long totalElements = this.projectRepository.getProjBaseInfoCount(request.getStaffId());
+        rtrvProjectResponse.setProjects(pageList);
+        rtrvProjectResponse.setTotalElements(totalElements);
 
-        Integer page = (request.getPage()==null)?0:request.getPage();
-        Integer size = request.getPageSize();
-        Integer pageSize = (null == request.getPageSize()) ? 6 : request.getPageSize();
-        String sortBy = (request.getSortBy()==null)?"priority":request.getSortBy();
-        PageRequest pageable = new PageRequest(page, pageSize, Sort.Direction.DESC, sortBy);
-        Page<Project> projPage = null;
-        projPage = this.projectRepository.findAll(pageable);
+        LOG.info("查询结果为：{}", rtrvProjectResponse);
 
-        LOG.info("查询结果为：{}",projPage.getContent().toString());
-        return projPage.getContent();
-
+        return ReturnFormat.retParam(HttpStatus.OK.toString(), "000", rtrvProjectResponse);
     }
-
-    /**
-     * 创建project(整个信息)
-     * @param createProjectRequest
-     * @return
-     */
-    @Override
-    public Project createProject(CreateProjectRequest createProjectRequest) {
-        CreateProjectResponse createProject = new CreateProjectResponse();
-
-        //先查询之前创建的项目基本信息（主要是projId）
-        Project pro = this.saveProject(createProjectRequest);
-        Integer uuId = pro.getUuId();
-        String projId = projectRepository.getProjId(uuId);
-        pro.setProjId(projId);
-        //返回项目基本信息
-        createProject.setProjId(projId);
-        createProject.setName(pro.getName());
-        createProject.setDescription(pro.getDescription());
-        createProject.setPriority(pro.getPriority());
-        createProject.setStartDate(pro.getStartDate());
-        createProject.setEndDate(pro.getEndDate());
-        createProject.setContingency(pro.getContingency());
-        //保存project负责人信息
-        List<ProjLeaders> projLeaders = createProjectRequest.getLeaders();
-        for (int i = 0; i <projLeaders.size() ; i++) {
-            projLeaders.get(i).setProjId(projId);
-        }
-        projLeaders = projLeadersRepository.save(projLeaders);
-        createProject.setLeaders(projLeaders);
-        //保存project标签
-        ProjTags projTag = new ProjTags();
-        projTag.setProjId(projId);
-        List<ProjTags> projTags = createProjectRequest.getTags();
-        for (int i = 0; i <projTags.size() ; i++) {
-            projTags.get(i).setProjId(projId);
-        }
-        projTags = projTagsRepository.save(projTags);
-        createProject.setTags(projTags);
-        //保存project项目模型
-        List<ProjModels> projModels = createProjectRequest.getModels();
-        for (int i = 0; i <projModels.size() ; i++) {
-            projModels.get(i).setProjId(projId);
-        }
-        projModels = projModelsRepository.save(projModels);
-        createProject.setModels(projModels);
-        //保存project任务（checklist）
-        List<ProjChecklists> projChecklists = createProjectRequest.getCheckLists();
-        for (int i = 0; i <projChecklists.size() ; i++) {
-            projChecklists.get(i).setProjId(projId);
-            projChecklists.get(i).setAssignerId(createProjectRequest.getStaffId());
-            Date date = new Date();
-            projChecklists.get(i).setCreateTime(new Timestamp(date.getTime()));// new Date()为获取当前系统时间
-        }
-        List<ProjChecklists> PChecklists = this.saveCheckLists(projChecklists);
-        //(先保存checkList) 再循环查询并返回checkList的id
-        for (int i = 0; i <PChecklists.size() ; i++) {
-            Integer uuid = PChecklists.get(i).getUu_id();
-            String checklistId = projChecklistsRepository.getPChecklistId(uuid);
-            PChecklists.get(i).setChecklistId(checklistId);
-        }
-        createProject.setCheckLists(PChecklists);
-        //保存附件
-        List<ProjAttchUrls> projAttchUrls = createProjectRequest.getAttchUrls();
-        for (int i = 0; i <projAttchUrls.size() ; i++) {
-            projAttchUrls.get(i).setProjId(projId);
-        }
-        projAttchUrls = projAttchUrlsRepository.save(projAttchUrls);
-        createProject.setAttchUrls(projAttchUrls);
-        return pro;
-    }
-
 
     /**
      * 创建project（基本信息）
+     *
      * @param createProjectRequest
      * @return
      */
     @Override
-    public Project saveProject(CreateProjectRequest createProjectRequest) {
+    public ResponseEntity<?> saveProject(CreateProjectRequest createProjectRequest) {
         Project proj = new Project();
         //先保存项目基本信息
         if (createProjectRequest == null || createProjectRequest.getStaffId() == null ||
@@ -152,7 +84,7 @@ public class ProjServiceImpl implements IProjService {
         proj.setName(createProjectRequest.getName());
         proj.setDescription(createProjectRequest.getDescription());
         proj.setCreatorId(createProjectRequest.getStaffId());
-        proj.setYxbz("Y");
+        proj.setIsDeleted(0);
 
         if (!StringUtils.isEmpty(createProjectRequest.getStartDate())) {
             proj.setStartDate(createProjectRequest.getStartDate());
@@ -167,11 +99,47 @@ public class ProjServiceImpl implements IProjService {
             proj.setContingency(createProjectRequest.getContingency());
         }
         Project project = projectRepository.save(proj);
-        return project;
+        ResponseEntity<?> responseEntity = new ResponseEntity<Object>(project, HttpStatus.OK);
+//        return ReturnFormat.retParam(HttpStatus.OK.toString(), "000", project);
+        return responseEntity;
     }
+
+//    /**
+//     * 创建project（基本信息）
+//     * @param createProjectRequest
+//     * @return
+//     */
+//    @Override
+//    public Project saveProject(CreateProjectRequest createProjectRequest) {
+//        Project proj = new Project();
+//        //先保存项目基本信息
+//        if (createProjectRequest == null || createProjectRequest.getStaffId() == null ||
+//                createProjectRequest.getName() == null || createProjectRequest.getDescription() == null) {
+//            throw new NullPointerException("createProjectRequest 或员工Id不能为空 或项目名称不能为空 或项目描述不能为空");
+//        }
+//        proj.setName(createProjectRequest.getName());
+//        proj.setDescription(createProjectRequest.getDescription());
+//        proj.setCreatorId(createProjectRequest.getStaffId());
+//
+//        if (!StringUtils.isEmpty(createProjectRequest.getStartDate())) {
+//            proj.setStartDate(createProjectRequest.getStartDate());
+//        }
+//        if (!StringUtils.isEmpty(createProjectRequest.getEndDate())) {
+//            proj.setEndDate(createProjectRequest.getEndDate());
+//        }
+//        if (!StringUtils.isEmpty(createProjectRequest.getPriority())) {
+//            proj.setPriority(createProjectRequest.getPriority());
+//        }
+//        if (!StringUtils.isEmpty(createProjectRequest.getContingency())) {
+//            proj.setContingency(createProjectRequest.getContingency());
+//        }
+//        Project project = projectRepository.save(proj);
+//        return ReturnFormat.retParam(HttpStatus.OK.toString(), "000", project);
+//    }
 
     /**
      * 通过uuId获取项目的projId(触发器引发的问题)
+     *
      * @param proj
      * @return
      */
@@ -185,47 +153,61 @@ public class ProjServiceImpl implements IProjService {
 
     /**
      * 创建比赛时保存leaders信息
+     *
      * @param leaders
      * @return
      */
     @Override
     public List<ProjLeaders> saveProjLeaders(List<ProjLeaders> leaders) {
+        for (int i = 0; i < leaders.size(); i++) {
+            leaders.get(i).setIsDeleted(0);
+        }
         List<ProjLeaders> pleaders = projLeadersRepository.save(leaders);
         return pleaders;
     }
 
     /**
      * 创建project时保存标签信息
+     *
      * @param request
      * @return
      */
     @Override
     public List<ProjTags> savePTags(List<ProjTags> request) {
+        for (int i = 0; i < request.size(); i++) {
+            request.get(i).setIsDeleted(0);
+        }
         List<ProjTags> projTags = projTagsRepository.save(request);
         return projTags;
     }
 
     /**
      * 创建project时保存模型信息
+     *
      * @param request
      * @return
      */
     @Override
     public List<ProjModels> savePModels(List<ProjModels> request) {
+        for (int i = 0; i < request.size(); i++) {
+            request.get(i).setIsDeleted(0);
+        }
         List<ProjModels> projModels = projModelsRepository.save(request);
         return projModels;
     }
 
     /**
      * 保存project多条任务（checkLists）
+     *
      * @param projChecklists
      * @return
      */
     @Override
     public List<ProjChecklists> saveCheckLists(List<ProjChecklists> projChecklists) {
-        for (int i = 0; i <projChecklists.size() ; i++) {
+        for (int i = 0; i < projChecklists.size(); i++) {
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
             projChecklists.get(i).setCreateTime(currentTime);
+            projChecklists.get(i).setIsDeleted(0);
         }
         List<ProjChecklists> pChecklists = projChecklistsRepository.save(projChecklists);
         return pChecklists;
@@ -233,36 +215,40 @@ public class ProjServiceImpl implements IProjService {
 
     /**
      * 通过checklist的uuid查询它的checklistId(触发器的原因)
+     *
      * @param pChecklists
      * @return
      */
     @Override
     public List<ProjChecklists> getChecklistIdByUuId(List<ProjChecklists> pChecklists) {
-        for (int i = 0; i <pChecklists.size() ; i++) {
+        for (int i = 0; i < pChecklists.size(); i++) {
             Integer uuid = pChecklists.get(i).getUu_id();
             String checklistId = projChecklistsRepository.getPChecklistId(uuid);
-            pChecklists.get(i).setChecklistId(checklistId);
+            pChecklists.get(i).setCheckListId(checklistId);
+            pChecklists.get(i).setIsDeleted(0);
         }
         return pChecklists;
     }
 
     /**
      * 创建project时保存附件信息
+     *
      * @param request
      * @return
      */
     @Override
     public List<ProjAttchUrls> savePAttchUrls(List<ProjAttchUrls> request) {
+        for (int i = 0; i < request.size(); i++) {
+            request.get(i).setIsDeleted(0);
+        }
         List<ProjAttchUrls> projAttchUrls = projAttchUrlsRepository.save(request);
         return projAttchUrls;
     }
 
 
-
-
-
     /**
      * 通过主键查询单条project数据
+     *
      * @param uuId
      * @return
      */
