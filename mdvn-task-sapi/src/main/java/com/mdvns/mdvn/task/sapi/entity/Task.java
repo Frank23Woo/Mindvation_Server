@@ -27,7 +27,16 @@ public class Task {
     private Integer status;
     @Column(nullable = false)
     private String priority;
-
+    // 开始时间
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date startTime;
+    // 结束时间
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date endTime;
+    // 附件
+    private String attachment;
     @Column(columnDefinition="timestamp default CURRENT_TIMESTAMP", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
@@ -135,5 +144,30 @@ public class Task {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(String attachment) {
+        this.attachment = attachment;
     }
 }

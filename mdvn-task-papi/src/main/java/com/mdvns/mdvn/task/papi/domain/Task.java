@@ -23,6 +23,15 @@ public class Task {
 
     private String priority;
 
+    // 开始时间
+    private Date startTime;
+
+    // 结束时间
+    private Date endTime;
+
+    // 附件
+    private String attachment;
+
     private Long createTime;
 
     private Long updateTime;
@@ -30,6 +39,7 @@ public class Task {
     private Long closeTime;
 
     private String remarks;
+
 
     public Integer getUuid() {
         return uuid;
@@ -125,5 +135,29 @@ public class Task {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(String attachment) {
+        this.attachment = attachment;
     }
 }

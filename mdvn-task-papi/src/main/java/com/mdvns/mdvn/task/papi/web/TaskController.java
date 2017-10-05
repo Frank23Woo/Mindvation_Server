@@ -19,10 +19,19 @@ public class TaskController {
         return taskService.createTask(task);
     }
 
-
     @PostMapping("/retrieveTaskList")
     private RetrieveTaskListResponse getTaskList(@RequestBody RetrieveTaskListRequest request) throws Exception {
         return taskService.retrieveTaskList(request);
+    }
+
+    @PostMapping("/deleteTask")
+    private BaseResponse deleteTask(@RequestBody DeleteTaskRequest request) throws Exception {
+        return taskService.deleteTask(request);
+    }
+
+    @PostMapping("/updateTask")
+    private CreateTaskResponse updateTask(@RequestBody Task request) throws Exception{
+        return taskService.updateTask(request);
     }
 
 }
