@@ -26,7 +26,6 @@ public class Project {
     @Column(columnDefinition = "text",nullable = false)
     private String description;
     //项目优先级
-    @Column(nullable = false)
     private Integer priority;
     //项目开始日期
     @Column(name = "start_date", columnDefinition = "timestamp", nullable = false)
@@ -34,6 +33,9 @@ public class Project {
     //项目结束时期
     @Column(name = "end_date", columnDefinition = "timestamp", nullable = false)
     private Timestamp endDate;
+    //创建时间
+    @Column(name = "create_time", nullable = false)
+    private Timestamp createTime;
     //项目状态
     private String status;
     //效率值
@@ -248,5 +250,13 @@ public class Project {
 
     public void setIsDeleted(Integer isDeleted) {
         this.isDeleted = isDeleted;
+    }
+
+    public Timestamp getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
     }
 }

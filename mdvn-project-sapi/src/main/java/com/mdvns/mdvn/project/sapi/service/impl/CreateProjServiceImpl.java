@@ -78,13 +78,17 @@ public class CreateProjServiceImpl implements ICreateProjService {
         Project proj = new Project();
         //先保存项目基本信息
         if (createProjectRequest == null || createProjectRequest.getStaffId() == null ||
-                createProjectRequest.getName() == null || createProjectRequest.getDescription() == null) {
-            throw new NullPointerException("createProjectRequest 或员工Id不能为空 或项目名称不能为空 或项目描述不能为空");
+                createProjectRequest.getName() == null || createProjectRequest.getDescription() == null ||
+                createProjectRequest.getStartDate() ==null || createProjectRequest.getEndDate() ==null) {
+            throw new NullPointerException("createProjectRequest 或员工Id不能为空 或项目名称不能为空 或项目描述不能为空 或者项目开始结束时间不能为空");
         }
         proj.setName(createProjectRequest.getName());
         proj.setDescription(createProjectRequest.getDescription());
         proj.setCreatorId(createProjectRequest.getStaffId());
         proj.setIsDeleted(0);
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+        proj.setCreateTime(currentTime);
+        proj.setStatus("new");
 
         if (!StringUtils.isEmpty(createProjectRequest.getStartDate())) {
             proj.setStartDate(createProjectRequest.getStartDate());
@@ -104,38 +108,6 @@ public class CreateProjServiceImpl implements ICreateProjService {
         return responseEntity;
     }
 
-//    /**
-//     * 创建project（基本信息）
-//     * @param createProjectRequest
-//     * @return
-//     */
-//    @Override
-//    public Project saveProject(CreateProjectRequest createProjectRequest) {
-//        Project proj = new Project();
-//        //先保存项目基本信息
-//        if (createProjectRequest == null || createProjectRequest.getStaffId() == null ||
-//                createProjectRequest.getName() == null || createProjectRequest.getDescription() == null) {
-//            throw new NullPointerException("createProjectRequest 或员工Id不能为空 或项目名称不能为空 或项目描述不能为空");
-//        }
-//        proj.setName(createProjectRequest.getName());
-//        proj.setDescription(createProjectRequest.getDescription());
-//        proj.setCreatorId(createProjectRequest.getStaffId());
-//
-//        if (!StringUtils.isEmpty(createProjectRequest.getStartDate())) {
-//            proj.setStartDate(createProjectRequest.getStartDate());
-//        }
-//        if (!StringUtils.isEmpty(createProjectRequest.getEndDate())) {
-//            proj.setEndDate(createProjectRequest.getEndDate());
-//        }
-//        if (!StringUtils.isEmpty(createProjectRequest.getPriority())) {
-//            proj.setPriority(createProjectRequest.getPriority());
-//        }
-//        if (!StringUtils.isEmpty(createProjectRequest.getContingency())) {
-//            proj.setContingency(createProjectRequest.getContingency());
-//        }
-//        Project project = projectRepository.save(proj);
-//        return ReturnFormat.retParam(HttpStatus.OK.toString(), "000", project);
-//    }
 
     /**
      * 通过uuId获取项目的projId(触发器引发的问题)

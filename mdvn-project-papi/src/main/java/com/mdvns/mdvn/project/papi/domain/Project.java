@@ -20,8 +20,10 @@ public class Project {
     private Long startDate;
     //项目结束时期
     private Long endDate;
+    //创建时间
+    private Long createTime;
     //项目状态
-    private Integer status;
+    private String status;
     //效率值
     private Double efficiency;
     //项目进度
@@ -122,11 +124,11 @@ public class Project {
         this.endDate = endDate;
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -224,5 +226,13 @@ public class Project {
 
     public void setContingency(Double contingency) {
         this.contingency = contingency;
+    }
+
+    public Long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
     }
 }

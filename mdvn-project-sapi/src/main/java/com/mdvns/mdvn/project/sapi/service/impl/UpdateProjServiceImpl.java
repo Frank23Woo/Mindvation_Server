@@ -1,10 +1,7 @@
 package com.mdvns.mdvn.project.sapi.service.impl;
 
-import com.mdvns.mdvn.project.sapi.domain.UpdatePAttchUrlsRequest;
-import com.mdvns.mdvn.project.sapi.domain.UpdatePLeadersRequest;
-import com.mdvns.mdvn.project.sapi.domain.entity.ProjAttchUrls;
-import com.mdvns.mdvn.project.sapi.domain.entity.ProjLeaders;
-import com.mdvns.mdvn.project.sapi.domain.entity.Project;
+import com.mdvns.mdvn.project.sapi.domain.*;
+import com.mdvns.mdvn.project.sapi.domain.entity.*;
 import com.mdvns.mdvn.project.sapi.repository.*;
 import com.mdvns.mdvn.project.sapi.service.IUpdateProjService;
 import org.slf4j.Logger;
@@ -146,43 +143,59 @@ public class UpdateProjServiceImpl implements IUpdateProjService {
      */
     @Override
     public List<ProjAttchUrls> updateProjAttchUrls(UpdatePAttchUrlsRequest list) {
-//        LOG.info("start executing updateProjAttchUrls()方法.", this.CLASS);
-//        if (list == null || list.getAttchUrls().size() <= 0) {
-//            throw new NullPointerException("getAttchUrls List is empty");
-//        }
-//        String projId = list.getProjId();
-//        List<String> AttachmentNameList = new ArrayList();
-//        //将数据库中没有的插入
-//        for (int i = 0; i < list.getAttchUrls().size(); i++) {
-//            ProjAttchUrls projAttchUrls = new ProjAttchUrls();
-//            AttachmentNameList.add(list.getAttchUrls().get(i).getAttachmentName());
-//            projAttchUrls = this.projLeadersRepository.findByProjIdAndStaffId(projId, list.getLeaders().get(i).getStaffId());
-//            //不存在的加上
-//            if (projAttchUrls == null) {
-//                list.getLeaders().get(i).setProjId(projId);
-//                list.getLeaders().get(i).setIsDeleted(0);
-//                this.projLeadersRepository.saveAndFlush(list.getLeaders().get(i));
-//            } else {
-//                //之前是负责人后来改掉，数据库中存在记录，但是is_deleted为1，需要修改成0
-//                if (projLeader.getIsDeleted().equals(1)) {
-//                    String sql = "UPDATE staff_proj_map SET is_deleted= 0 WHERE proj_id=" + "\"" + projId + "\"" + "AND staff_id =" + "\"" + list.getLeaders().get(i).getStaffId() + "\"" + "";
-//                    this.jdbcTemplate.update(sql);
-//                }
-//            }
-//        }
-//        //将数据库中将要删除的负责人信息修改is_deleted状态
-//        //数组转化为字符串格式
-//        StringBuffer leaders = new StringBuffer();
-//        for (int i = 0; i < AttachmentIdList.size(); i++) {
-//            leaders.append("\"" + AttachmentIdList.get(i) + "\"");
-//            leaders.append(",");
-//        }
-//        String pLeaders = leaders.substring(0, leaders.length() - 1);
-//        String sql = "UPDATE staff_proj_map SET is_deleted= 1 WHERE proj_id= " + "\"" + projId + "\"" + " AND staff_id NOT IN (" + pLeaders + ")";
-//        this.jdbcTemplate.update(sql);
-//        //查询数据库中有效的负责人
-//        List<ProjLeaders> projLeaders = this.projLeadersRepository.findPLeders(projId);
-//        LOG.info("finish executing updateProjAttchUrls()方法.", this.CLASS);
+        LOG.info("start executing updateProjAttchUrls()方法.", this.CLASS);
+        if (list == null || list.getAttchUrls().size() <= 0) {
+            throw new NullPointerException("getAttchUrls List is empty");
+        }
+        String projId = list.getProjId();
+        List<String> AttachmentNameList = new ArrayList();
+        //将数据库中没有的插入
+        for (int i = 0; i < list.getAttchUrls().size(); i++) {
+            ProjAttchUrls projAttchUrls = new ProjAttchUrls();
+            AttachmentNameList.add(list.getAttchUrls().get(i).getAttachmentName());
+            projAttchUrls = this.projAttchUrlsRepository.findByProjIdAndAttachmentName(projId, list.getAttchUrls().get(i).getAttachmentName());
+            //不存在的加上
+            if (projAttchUrls == null) {
+                list.getAttchUrls().get(i).setProjId(projId);
+                list.getAttchUrls().get(i).setIsDeleted(0);
+                this.projAttchUrlsRepository.saveAndFlush(list.getAttchUrls().get(i));
+            } else {
+                //之前是附件后来改掉，数据库中存在记录，但是is_deleted为1，需要修改成0
+                if (projAttchUrls.getIsDeleted().equals(1)) {
+                    String sql = "UPDATE attachment_proj SET is_deleted= 0 WHERE proj_id=" + "\"" + projId + "\"" + "AND attachment_name =" + "\"" + list.getAttchUrls().get(i).getAttachmentName() + "\"" + "";
+                    this.jdbcTemplate.update(sql);
+                }
+            }
+        }
+        //将数据库中将要删除的附件信息修改is_deleted状态
+        //数组转化为字符串格式
+        StringBuffer attchUrls = new StringBuffer();
+        for (int i = 0; i < AttachmentNameList.size(); i++) {
+            attchUrls.append("\"" + AttachmentNameList.get(i) + "\"");
+            attchUrls.append(",");
+        }
+        String pAttchUrls = attchUrls.substring(0, attchUrls.length() - 1);
+        String sql = "UPDATE attachment_proj SET is_deleted= 1 WHERE proj_id= " + "\"" + projId + "\"" + " AND attachment_name NOT IN (" + pAttchUrls + ")";
+        this.jdbcTemplate.update(sql);
+        //查询数据库中有效的附件
+        List<ProjAttchUrls> projAttchUrls = this.projAttchUrlsRepository.findPAttchUrls(projId);
+        LOG.info("finish executing updateProjAttchUrls()方法.", this.CLASS);
+        return projAttchUrls;
+    }
+
+    @Override
+    public List<ProjTags> updateProjTags(UpdatePTagsRequest tags) {
         return null;
     }
+
+    @Override
+    public List<ProjModels> updateProjModels(UpdatePModelsRequest models) {
+        return null;
+    }
+
+    @Override
+    public List<ProjChecklists> updateProjChecklists(UpdatePCheckListsRequest checkLists) {
+        return null;
+    }
+
 }
