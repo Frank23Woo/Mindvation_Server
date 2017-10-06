@@ -54,8 +54,18 @@ public class ProjController {
      * @return
      */
     @PostMapping(value="/updateProject")
-    public UpdateProjectResponse updateProject(@RequestBody UpdateProjectRequest updateProjectRequest){
+    public RestDefaultResponse updateProject(@RequestBody UpdateProjectRequest updateProjectRequest){
         return projService.updateProject(updateProjectRequest);
+    }
+
+    /**
+     * 获取某个项目详细信息
+     * @param rtrvProjectDetailRequest
+     * @return
+     */
+    @PostMapping(value="/rtrvProjectInfo")
+    public RestDefaultResponse rtrvProjectInfo(@RequestBody RtrvProjectDetailRequest rtrvProjectDetailRequest){
+        return projService.rtrvProjectInfo(rtrvProjectDetailRequest);
     }
 
 }

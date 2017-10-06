@@ -11,8 +11,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-
-import javax.validation.constraints.Null;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -183,19 +181,160 @@ public class UpdateProjServiceImpl implements IUpdateProjService {
         return projAttchUrls;
     }
 
+    /**
+     * 更改项目标签信息
+     * @param list
+     * @return
+     */
     @Override
-    public List<ProjTags> updateProjTags(UpdatePTagsRequest tags) {
-        return null;
+    public List<ProjTags> updateProjTags(UpdatePTagsRequest list) {
+        LOG.info("start executing updateProjTags()方法.", this.CLASS);
+        if (list == null || list.getTags().size() <= 0) {
+            throw new NullPointerException("ProjTags List is empty");
+        }
+        String projId = list.getProjId();
+        List<String> tagIdList = new ArrayList();
+        //将数据库中没有的插入
+        for (int i = 0; i < list.getTags().size(); i++) {
+            ProjTags projTag = new ProjTags();
+            tagIdList.add(list.getTags().get(i).getTagId());
+            projTag = this.projTagsRepository.findAllByProjIdAndTagId(projId, list.getTags().get(i).getTagId());
+            //不存在的加上
+            if (projTag == null) {
+                list.getTags().get(i).setProjId(projId);
+                list.getTags().get(i).setIsDeleted(0);
+                this.projTagsRepository.saveAndFlush(list.getTags().get(i));
+            } else {
+                //之前是标签后来改掉，数据库中存在记录，但是is_deleted为1，需要修改成0
+                if (projTag.getIsDeleted().equals(1)) {
+                    String sql = "UPDATE tag_proj_map SET is_deleted= 0 WHERE proj_id=" + "\"" + projId + "\"" + "AND tag_id =" + "\"" + list.getTags().get(i).getTagId() + "\"" + "";
+                    this.jdbcTemplate.update(sql);
+                }
+            }
+        }
+        //将数据库中将要删除的标签信息修改is_deleted状态
+        //数组转化为字符串格式
+        StringBuffer tags = new StringBuffer();
+        for (int i = 0; i < tagIdList.size(); i++) {
+            tags.append("\"" + tagIdList.get(i) + "\"");
+            tags.append(",");
+        }
+        String pTags = tags.substring(0, tags.length() - 1);
+        String sql = "UPDATE tag_proj_map SET is_deleted= 1 WHERE proj_id= " + "\"" + projId + "\"" + " AND tag_id NOT IN (" + pTags + ")";
+        this.jdbcTemplate.update(sql);
+        //查询数据库中有效的标签信息
+        List<ProjTags> projTags = this.projTagsRepository.findPTags(projId);
+        LOG.info("finish executing updateProjTags()方法.", this.CLASS);
+        return projTags;
     }
 
+    /**
+     * 更改项目模型信息
+     * @param list
+     * @return
+     */
     @Override
-    public List<ProjModels> updateProjModels(UpdatePModelsRequest models) {
-        return null;
+    public List<ProjModels> updateProjModels(UpdatePModelsRequest list) {
+        LOG.info("start executing updateProjModels()方法.", this.CLASS);
+        if (list == null || list.getModels().size() <= 0) {
+            throw new NullPointerException("ProjModels List is empty");
+        }
+        String projId = list.getProjId();
+        List<String> modelList = new ArrayList();
+        //将数据库中没有的插入
+        for (int i = 0; i < list.getModels().size(); i++) {
+            ProjModels projModels = new ProjModels();
+            modelList.add(list.getModels().get(i).getModelId());
+            projModels = this.projModelsRepository.findByProjIdAndModelId(projId, list.getModels().get(i).getModelId());
+            //不存在的加上
+            if (projModels == null) {
+                list.getModels().get(i).setProjId(projId);
+                list.getModels().get(i).setIsDeleted(0);
+                this.projModelsRepository.saveAndFlush(list.getModels().get(i));
+            } else {
+                //之前是项目模型后来改掉，数据库中存在记录，但是is_deleted为1，需要修改成0
+                if (projModels.getIsDeleted().equals(1)) {
+                    String sql = "UPDATE model_proj_map SET is_deleted= 0 WHERE proj_id=" + "\"" + projId + "\"" + "AND model_id =" + "\"" + list.getModels().get(i).getModelId() + "\"" + "";
+                    this.jdbcTemplate.update(sql);
+                }
+            }
+        }
+        //将数据库中将要删除的模型信息修改is_deleted状态
+        //数组转化为字符串格式
+        StringBuffer models = new StringBuffer();
+        for (int i = 0; i < modelList.size(); i++) {
+            models.append("\"" + modelList.get(i) + "\"");
+            models.append(",");
+        }
+        String pModels = models.substring(0, models.length() - 1);
+        String sql = "UPDATE model_proj_map SET is_deleted= 1 WHERE proj_id= " + "\"" + projId + "\"" + " AND model_id NOT IN (" + pModels + ")";
+        this.jdbcTemplate.update(sql);
+        //查询数据库中有效的模型
+        List<ProjModels> projModels = this.projModelsRepository.findPModels(projId);
+        LOG.info("finish executing updateProjModels()方法.", this.CLASS);
+        return projModels;
     }
 
+    /**
+     * 更改项目checkList信息
+     * @param list
+     * @return
+     */
     @Override
-    public List<ProjChecklists> updateProjChecklists(UpdatePCheckListsRequest checkLists) {
-        return null;
+    public List<ProjChecklists> updateProjChecklists(UpdatePCheckListsRequest list) {
+        LOG.info("start executing updateProjChecklists()方法.", this.CLASS);
+        if(list == null || list.getCheckLists().size()<=0) {
+            throw new NullPointerException("ProjChecklists List is empty");
+        }
+        List<ProjChecklists> returnList = new ArrayList<>();
+        for (int i = 0; i < list.getCheckLists().size(); i++) {
+            ProjChecklists record = new ProjChecklists();
+            record = this.projChecklistsRepository.findByCheckListId(list.getCheckLists().get(i).getCheckListId());
+
+            /* indicate if this record has updated*/
+            Boolean flag = false;
+            if(record == null){
+                throw new NullPointerException("Record cannot be found");
+            }
+
+            /* Determine if the attributes of this record need to be updated*/
+            if(!StringUtils.isEmpty(list.getCheckLists().get(i).getCheckListDesc()) && (!list.getCheckLists().get(i).getCheckListDesc().equals(record.getCheckListDesc()))){
+                record.setCheckListDesc(list.getCheckLists().get(i).getCheckListDesc());
+                flag = true;
+            }
+            if(!StringUtils.isEmpty(list.getCheckLists().get(i).getStartDate()) && (!list.getCheckLists().get(i).getStartDate().equals(record.getStartDate())) ){
+                record.setStartDate(list.getCheckLists().get(i).getStartDate());
+                flag = true;
+            }
+            if(!StringUtils.isEmpty(list.getCheckLists().get(i).getEndDate()) && (!list.getCheckLists().get(i).getEndDate().equals(record.getEndDate())) ){
+                record.setEndDate(list.getCheckLists().get(i).getEndDate());
+                flag = true;
+            }
+            if(!StringUtils.isEmpty(list.getCheckLists().get(i).getAssignerId()) && (!list.getCheckLists().get(i).getAssignerId().equals(record.getAssignerId())) ){
+                record.setAssignerId(list.getCheckLists().get(i).getAssignerId());
+                flag = true;
+            }
+            if(!StringUtils.isEmpty(list.getCheckLists().get(i).getExecutorId()) && (!list.getCheckLists().get(i).getExecutorId().equals(record.getExecutorId())) ){
+                record.setExecutorId(list.getCheckLists().get(i).getExecutorId());
+                flag = true;
+            }
+            if(!StringUtils.isEmpty(list.getCheckLists().get(i).getStatus()) && (!list.getCheckLists().get(i).getStatus().equals(record.getStatus())) ){
+                record.setStatus(list.getCheckLists().get(i).getStatus());
+                flag = true;
+            }
+
+            if(flag){
+                Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+                record.setLastUpdateTime(currentTime);
+                if(!StringUtils.isEmpty(list.getCheckLists().get(i).getStatus()) && (list.getCheckLists().get(i).getStatus() == "close")){
+                    record.setCloseTime(currentTime);
+                }
+                record = this.projChecklistsRepository.saveAndFlush(record);
+                returnList.add(record);
+            }
+        }
+        LOG.info("finish executing updateProjChecklists()方法.", this.CLASS);
+        return returnList;
     }
 
 }

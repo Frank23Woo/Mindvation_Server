@@ -1,4 +1,4 @@
-package com.mdvns.mdvn.tag.papi.exception;
+package com.mdvns.mdvn.project.papi.exception;
 
 
 import com.mdvns.mdvn.common.beans.RestDefaultResponse;
@@ -52,6 +52,8 @@ public class RestExceptionHandler {
         LOG.error("空指针异常:{}", ex.getMessage());
         return ReturnFormat.retParam("500", "1001", ex.getMessage());
     }
+
+
 
     //类型转换异常
     @ExceptionHandler(ClassCastException.class)

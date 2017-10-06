@@ -21,7 +21,7 @@ public class ProjAttchUrls {
     @Column(name = "is_deleted", columnDefinition = "INT default 0")
     private Integer isDeleted;
     //更改时间
-    @Column(columnDefinition = "timestamp NOT NULL default current_timestamp ON UPDATE CURRENT_TIMESTAMP", nullable = false)
+    @Column(columnDefinition = "timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP", nullable = false)
     private Timestamp updateTime;
 
     public Integer getAttachmentId() {

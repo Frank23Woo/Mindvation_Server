@@ -37,7 +37,7 @@ import java.io.IOException;
  * MissingServletRequestParameterException 400 (Bad Request)
  */
 
-@RestControllerAdvice
+//@RestControllerAdvice
 public class RestExceptionHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(RestExceptionHandler.class);

@@ -21,6 +21,8 @@ public class ProjChecklists {
     //任务描述
     @Column(columnDefinition = "text",nullable = false)
     private String checkListDesc;
+    //创建者ID(更改checkList的staffId)
+    private String creatorId;
     //执行者ID
     private String executorId;
     //设计者ID
@@ -37,8 +39,11 @@ public class ProjChecklists {
     //结束日期
     @Column(name = "end_date")
     private Timestamp endDate;
+    //关闭时间
+    @Column(name = "close_time")
+    private Timestamp closeTime;
     //任务状态
-    private String checkListStatus;
+    private String status;
     //是否被删除
     @Column(name = "is_deleted", columnDefinition = "INT default 0")
     private Integer isDeleted;
@@ -52,8 +57,6 @@ public class ProjChecklists {
         this.uu_id = uu_id;
     }
 
-
-
     public String getProjId() {
         return projId;
     }
@@ -62,6 +65,13 @@ public class ProjChecklists {
         this.projId = projId;
     }
 
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
+    }
 
     public String getExecutorId() {
         return executorId;
@@ -136,11 +146,19 @@ public class ProjChecklists {
         this.checkListDesc = checkListDesc;
     }
 
-    public String getCheckListStatus() {
-        return checkListStatus;
+    public Timestamp getCloseTime() {
+        return closeTime;
     }
 
-    public void setCheckListStatus(String checkListStatus) {
-        this.checkListStatus = checkListStatus;
+    public void setCloseTime(Timestamp closeTime) {
+        this.closeTime = closeTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

@@ -25,5 +25,12 @@ public interface IProjService {
      * @param updateProjectRequest
      * @return
      */
-    UpdateProjectResponse updateProject(UpdateProjectRequest updateProjectRequest);
+    RestDefaultResponse updateProject(UpdateProjectRequest updateProjectRequest);
+
+    /**
+     * 获取某个项目详细信息
+     * @param rtrvProjectDetailRequest
+     * @return
+     */
+    RestDefaultResponse rtrvProjectInfo(RtrvProjectDetailRequest rtrvProjectDetailRequest);
 }

@@ -1,11 +1,8 @@
 package com.mdvns.mdvn.project.sapi.web;
 
 
-import com.mdvns.mdvn.project.sapi.domain.UpdatePAttchUrlsRequest;
-import com.mdvns.mdvn.project.sapi.domain.UpdatePLeadersRequest;
-import com.mdvns.mdvn.project.sapi.domain.entity.ProjAttchUrls;
-import com.mdvns.mdvn.project.sapi.domain.entity.ProjLeaders;
-import com.mdvns.mdvn.project.sapi.domain.entity.Project;
+import com.mdvns.mdvn.project.sapi.domain.*;
+import com.mdvns.mdvn.project.sapi.domain.entity.*;
 import com.mdvns.mdvn.project.sapi.service.IUpdateProjService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,15 +45,45 @@ public class UpdateProjController {
 
     /**
      * 更改项目附件信息
-     * @param AttchUrls
+     * @param attchUrls
      * @return
      */
     @PostMapping(value="/updateProjAttchUrls")
-    public List<ProjAttchUrls> updateProjAttchUrls(@RequestBody UpdatePAttchUrlsRequest AttchUrls){
-        List<ProjAttchUrls> projAttchUrls = this.updateProjService.updateProjAttchUrls(AttchUrls);
+    public List<ProjAttchUrls> updateProjAttchUrls(@RequestBody UpdatePAttchUrlsRequest attchUrls){
+        List<ProjAttchUrls> projAttchUrls = this.updateProjService.updateProjAttchUrls(attchUrls);
         return projAttchUrls;
     }
 
+    /**
+     * 更改项目模型信息
+     * @param models
+     * @return
+     */
+    @PostMapping(value="/updateProjModels")
+    public List<ProjModels> updateProjModels(@RequestBody UpdatePModelsRequest models){
+        List<ProjModels> projModels = this.updateProjService.updateProjModels(models);
+        return projModels;
+    }
 
+    /**
+     * 更改项目标签信息
+     * @param tags
+     * @return
+     */
+    @PostMapping(value="/updateProjTags")
+    public List<ProjTags> updateProjTags(@RequestBody UpdatePTagsRequest tags){
+        List<ProjTags> projTags = this.updateProjService.updateProjTags(tags);
+        return projTags;
+    }
+    /**
+     * 更改项目checklist信息
+     * @param checkLists
+     * @return
+     */
+    @PostMapping(value="/updateProjChecklists")
+    public List<ProjChecklists> updateProjChecklists(@RequestBody UpdatePCheckListsRequest checkLists){
+        List<ProjChecklists> projChecklists = this.updateProjService.updateProjChecklists(checkLists);
+        return projChecklists;
+    }
 
 }

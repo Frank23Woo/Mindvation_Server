@@ -23,4 +23,7 @@ public interface ProjectRepository extends JpaRepository<Project, Integer>{
     String getProjId(Integer uuId);
 
     Project findByProjId(String projId);
+
+    @Query(value="SELECT * from project WHERE proj_id=?1", nativeQuery = true)
+    Project rtrvProjBaseInfo(String projId);
 }

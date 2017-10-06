@@ -4,6 +4,7 @@ import com.mdvns.mdvn.common.beans.RestDefaultResponse;
 import com.mdvns.mdvn.project.sapi.domain.CreateProjectRequest;
 import com.mdvns.mdvn.project.sapi.domain.RtrvProjectRequest;
 import com.mdvns.mdvn.project.sapi.domain.RtrvProjectResponse;
+import com.mdvns.mdvn.project.sapi.domain.SavePCheckListsRequest;
 import com.mdvns.mdvn.project.sapi.domain.entity.*;
 import com.mdvns.mdvn.project.sapi.service.ICreateProjService;
 import org.slf4j.Logger;
@@ -85,13 +86,13 @@ public class CreateProjController {
         return projModels;
     }
     /**
-     * 创建project时保存project任务（checkLists）
-     * @param pChecklists
+     * 创建project时保存project任务（checkLists）(多了一个保存创建者信息的动作)
+     * @param request
      * @return
      */
     @PostMapping(value="/savePCheckLists")
-    public List<ProjChecklists> saveCheckLists(@RequestBody List<ProjChecklists> pChecklists){
-        List<ProjChecklists> projChecklists = projService.saveCheckLists(pChecklists);
+    public List<ProjChecklists> saveCheckLists(@RequestBody SavePCheckListsRequest request){
+        List<ProjChecklists> projChecklists = projService.saveCheckLists(request);
         return projChecklists;
     }
     /**
@@ -115,8 +116,6 @@ public class CreateProjController {
         List<ProjAttchUrls> projAttchUrls = projService.savePAttchUrls(request);
         return projAttchUrls;
     }
-
-
 
     /**
      * 通过主键查询单条project数据

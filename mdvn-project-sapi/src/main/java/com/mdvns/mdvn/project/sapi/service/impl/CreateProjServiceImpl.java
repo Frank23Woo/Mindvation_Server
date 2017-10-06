@@ -5,6 +5,7 @@ import com.mdvns.mdvn.common.beans.exception.ReturnFormat;
 import com.mdvns.mdvn.project.sapi.domain.CreateProjectRequest;
 import com.mdvns.mdvn.project.sapi.domain.RtrvProjectRequest;
 import com.mdvns.mdvn.project.sapi.domain.RtrvProjectResponse;
+import com.mdvns.mdvn.project.sapi.domain.SavePCheckListsRequest;
 import com.mdvns.mdvn.project.sapi.domain.entity.*;
 import com.mdvns.mdvn.project.sapi.repository.*;
 import com.mdvns.mdvn.project.sapi.service.ICreateProjService;
@@ -171,17 +172,19 @@ public class CreateProjServiceImpl implements ICreateProjService {
     /**
      * 保存project多条任务（checkLists）
      *
-     * @param projChecklists
+     * @param request
      * @return
      */
     @Override
-    public List<ProjChecklists> saveCheckLists(List<ProjChecklists> projChecklists) {
-        for (int i = 0; i < projChecklists.size(); i++) {
+    public List<ProjChecklists> saveCheckLists(SavePCheckListsRequest request) {
+        for (int i = 0; i < request.getCheckLists().size(); i++) {
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-            projChecklists.get(i).setCreateTime(currentTime);
-            projChecklists.get(i).setIsDeleted(0);
+            request.getCheckLists().get(i).setCreateTime(currentTime);
+            request.getCheckLists().get(i).setIsDeleted(0);
+            request.getCheckLists().get(i).setStatus("new");
+            request.getCheckLists().get(i).setCreatorId(request.getStaffId());
         }
-        List<ProjChecklists> pChecklists = projChecklistsRepository.save(projChecklists);
+        List<ProjChecklists> pChecklists = projChecklistsRepository.save(request.getCheckLists());
         return pChecklists;
     }
 
