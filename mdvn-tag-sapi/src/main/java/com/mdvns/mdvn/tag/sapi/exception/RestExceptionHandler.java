@@ -1,6 +1,5 @@
 package com.mdvns.mdvn.tag.sapi.exception;
 
-import com.mdvns.mdvn.common.beans.RestDefaultResponse;
 import com.mdvns.mdvn.common.beans.exception.ReturnFormat;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
@@ -38,7 +37,8 @@ import java.io.IOException;
  * MissingServletRequestParameterException 400 (Bad Request)
  */
 
-//@RestControllerAdvice
+/*
+@RestControllerAdvice
 public class RestExceptionHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(RestExceptionHandler.class);
@@ -50,11 +50,13 @@ public class RestExceptionHandler {
     }
 
     //运行时异常
-   /* @ExceptionHandler(RuntimeException.class)
+   */
+/* @ExceptionHandler(RuntimeException.class)
     public RestDefaultResponse runtimeExceptionHandler(RuntimeException ex) {
         LOG.error("运行时异常:{}", ex.getMessage());
         return ReturnFormat.retParam("500", "500", ex.getMessage());
-    }*/
+    }*//*
+
 
     //空指针异常
     @ExceptionHandler(NullPointerException.class)
@@ -142,4 +144,4 @@ public class RestExceptionHandler {
     }
 
 
-}
+}*/

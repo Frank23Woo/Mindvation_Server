@@ -19,11 +19,7 @@ public class Tag {
     /* 标签编号 */
     @Id
     @GeneratedValue
-<<<<<<< HEAD
     private Integer uuid;
-=======
-    private Integer uuId;
->>>>>>> 29a5f170fe0b2f4b8c1402144187839255cad32b
 
     private String tagId;
 
@@ -52,32 +48,13 @@ public class Tag {
     /*是否已删除*/
     private Integer isDeleted;
 
-    public Integer getIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(Integer isDeleted) {
-        this.isDeleted = isDeleted;
-    }
-
     public Integer getUuid() {
         return uuid;
     }
 
-<<<<<<< HEAD
     public void setUuid(Integer uuid) {
         this.uuid = uuid;
     }
-=======
-    public Integer getUuId() {
-        return uuId;
-    }
-
-    public void setUuId(Integer uuId) {
-        this.uuId = uuId;
-    }
-
->>>>>>> 29a5f170fe0b2f4b8c1402144187839255cad32b
     public String getTagId() {
         return tagId;
     }
