@@ -227,8 +227,8 @@ public class PCheckListServiceImpl implements PCheckListService{
             return  this.pCheckListRepository.findAllByProjectIdAndIsDeletedAndStatusGreaterThanEqualOrderByStatusAsc(rtrvPCheckListRequest.getProjectId(),0,0);
         }else{
 
-            Integer page = rtrvPCheckListRequest.getPage();
-            Integer pageSize = rtrvPCheckListRequest.getPageSize();
+            Integer page = (rtrvPCheckListRequest.getPage()==null)?0:rtrvPCheckListRequest.getPage();
+            Integer pageSize = (null == rtrvPCheckListRequest.getPageSize()) ? 6 : rtrvPCheckListRequest.getPageSize();
             Page<PCheckList> pCheckListPage = null;
             PageRequest pageable = new PageRequest(page-1, pageSize);
             pCheckListPage = this.pCheckListRepository.findAllByProjectIdAndIsDeletedAndStatusGreaterThanEqualOrderByStatusAsc(rtrvPCheckListRequest.getProjectId(),0,0,pageable);
