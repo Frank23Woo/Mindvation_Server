@@ -1,22 +1,18 @@
 package com.mdvns.mdvn.tag.papi.service.impl;
 
-import com.mdvns.mdvn.common.beans.RestDefaultResponse;
+import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
-import com.mdvns.mdvn.common.beans.exception.ReturnFormat;
+import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
+import com.mdvns.mdvn.common.utils.RestResponseUtil;
 import com.mdvns.mdvn.tag.papi.config.WebConfig;
 import com.mdvns.mdvn.tag.papi.domain.*;
 import com.mdvns.mdvn.tag.papi.service.TagService;
 import com.mdvns.mdvn.tag.papi.utils.LogUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @Service
 public class TagServiceImpl implements TagService {
@@ -42,7 +38,7 @@ public class TagServiceImpl implements TagService {
 
     /*注入RestDefaultResponse*/
     @Autowired
-    private RestDefaultResponse restDefaultResponse;
+    private RestResponse restResponse;
 
 
     /**
@@ -50,61 +46,84 @@ public class TagServiceImpl implements TagService {
      * 1. 如果createTagRequest 为空, 抛出异常 NullPointException
      * 2. 依次对createTagRequest的字段做非空校验并赋值给Tag对象
      * 3. 调用SAPI保存tag数据
-     *
      * @param createTagRequest
      * @return
      */
+
     @Override
-    public RestDefaultResponse createTag(CreateTagRequest createTagRequest) {
-        LogUtil.sreviceStartLog("createTag ");
-
-        tag.setCreatorId(createTagRequest.getCreatorId());
-        tag.setName(createTagRequest.getName());
-        tag.setColor(createTagRequest.getColor());
-
-        /*调用sapi保存tag 的 url*/
-        String url = webConfig.getSaveTagUrl();
-        LogUtil.logInfo("保存标签的URL：", url);
-        ResponseEntity<?> responseEntity = null;
-
-//        tag = this.restTemplate.postForEntity(url, tag, Tag.class);
-        restDefaultResponse = this.restTemplate.postForObject(url, tag, RestDefaultResponse.class);
-        if (restDefaultResponse.getStatusCode().equals(HttpStatus.OK.toString())) {
-            return restDefaultResponse;
+    public ResponseEntity<?> createTag(CreateTagRequest createTagRequest) {
+        LogUtil.sreviceStartLog("createTag");
+        String tagName = createTagRequest.getName();
+        //根据name查询tag是否存在
+        String findByNameUrl = webConfig.getFindByNameUrl()+"/"+tagName;
+        ResponseEntity<Tag> responseEntity;
+        responseEntity = this.restTemplate.postForEntity(findByNameUrl, tagName, Tag.class);
+        if (!responseEntity.getStatusCode().equals(HttpStatus.OK)) {
+            throw new BusinessException(ExceptionEnum.SAPI_EXCEPTION);
         }
-
-        throw new BusinessException(restDefaultResponse.getResponseCode(), restDefaultResponse.getResponseBody().toString());
-
+        tag = responseEntity.getBody();
+        if (null != tag) {
+            throw new BusinessException(ExceptionEnum.TAG_IS_CREATED);
+        }
+        LogUtil.errorLog("新建Tag的名称为："+tagName);
+        tag = new Tag();
+        tag.setName(tagName);
+        tag.setColor(createTagRequest.getColor());
+        tag.setCreatorId(createTagRequest.getCreatorId());
+        String url = webConfig.getSaveTagUrl();
+        //调用Sapi保存标签
+        responseEntity = this.restTemplate.postForEntity(url, tag, Tag.class);
+        RestResponse restResponse = null;
+        if (responseEntity.getStatusCode().equals(HttpStatus.OK)) {
+            restResponse = RestResponseUtil.success(responseEntity.getBody());
+            return ResponseEntity.ok(restResponse);
+        }
+        throw new BusinessException(ExceptionEnum.UNKNOW_EXCEPTION);
     }
 
+    /*根据指定名称获取Tag*/
+    public ResponseEntity<?> findByName(String name) {
+        String findByNameUrl = webConfig.getFindByNameUrl()+"/"+name;
+        ResponseEntity<Tag> responseEntity  = this.restTemplate.postForEntity(findByNameUrl, name, Tag.class);
+        if (!responseEntity.getStatusCode().equals(HttpStatus.OK)) {
+            throw new BusinessException(ExceptionEnum.SAPI_EXCEPTION);
+        }
+        tag = responseEntity.getBody();
+        if (tag == null) {
+            throw new BusinessException(ExceptionEnum.TAG_NOT_FOUND);
+        }
+        restResponse = RestResponseUtil.success(tag);
+        return ResponseEntity.ok(restResponse);
+    }
 
     /**
      * 调用SAPI获取Tag列表
-     *
      * @param retrieveTagListRequest
      * @return
      */
-    public RetrieveTagListResponse rtrvTagList(RetrieveTagListRequest retrieveTagListRequest) {
+    public ResponseEntity<?> rtrvTagList(RetrieveTagListRequest retrieveTagListRequest) {
 
         String url = webConfig.getRtrvTagListUrl();
-        List<Tag> tags = (ArrayList<Tag>) this.restTemplate.postForEntity(url, retrieveTagListRequest, List.class).getBody();
-        retrieveTagListResponse.setTags(tags);
-        return retrieveTagListResponse;
+        ResponseEntity<Object> responseEntity;
+        responseEntity = this.restTemplate.postForEntity(url, retrieveTagListRequest, Object.class);
+        restResponse = RestResponseUtil.success(responseEntity.getBody());
+        return ResponseEntity.ok(restResponse);
     }
 
+    /**
+     *跟新标签引用次数: 根据tagId给quoteCnt值 +1
+     * @param tagId
+     * @return
+     */
+    public ResponseEntity<?> updateQuoteCnt(String tagId) {
 
-    public Tag updateQuoteCnt(UpdateQuoteCntRequest updateQuoteCntRequest) {
-        String tagId = updateQuoteCntRequest.getTagId();
-        if (StringUtils.isEmpty(tagId)) {
-            LogUtil.errorLog("标签编号不能为空");
-            throw new NullPointerException("标签编号不能为空");
+        String url = webConfig.getUpdateQuoteCntUrl() + "/" + tagId;
+
+        tag = this.restTemplate.postForObject(url, tagId, Tag.class);
+        if (tag == null) {
+            throw new BusinessException(ExceptionEnum.TAG_NOT_FOUND);
         }
-
-        String url = webConfig.getUpdateQuoteCntUrl() + "/" + updateQuoteCntRequest.getTagId();
-
-        tag = this.restTemplate.postForObject(url, updateQuoteCntRequest, Tag.class);
-
-        return tag;
+        return ResponseEntity.ok(tag);
     }
 
 }

@@ -1,7 +1,7 @@
 package com.mdvns.mdvn.tag.papi;
 
 
-import com.mdvns.mdvn.common.beans.RestDefaultResponse;
+import com.mdvns.mdvn.common.beans.RestResponse;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -18,8 +18,8 @@ public class MdvnTagPapiApplication {
 	}
 
 	@Bean
-	public RestDefaultResponse restDefaultResponse() {
-		return new RestDefaultResponse();
+	public RestResponse restDefaultResponse() {
+		return new RestResponse();
 	}
 
 

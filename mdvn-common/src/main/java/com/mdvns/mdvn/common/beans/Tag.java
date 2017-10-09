@@ -1,68 +1,33 @@
-package com.mdvns.mdvn.tag.sapi.domain.entity;
+package com.mdvns.mdvn.common.beans;
 
-import org.hibernate.validator.constraints.NotBlank;
+
 import org.springframework.stereotype.Component;
 
-import javax.persistence.*;
-import java.sql.Timestamp;
 
-/**
- * 标签类，映射表tag
- * 添加联合约束 uniqueConstraints: tagId,name
- * name不能重复
- */
-@Entity
-@Component
-@Table(name = "tag", uniqueConstraints = {@UniqueConstraint(columnNames ={"name"})})
 public class Tag {
 
     /* 标签编号 */
-    @Id
-    @GeneratedValue
-    private Integer uuid;
-
     private String tagId;
 
     /* 标签名称 */
-    @NotBlank(message = "标签名称不能为空")
-    @Column(nullable = false)
     private String name;
 
     /* 标签被引用的次数*/
-    @Column(name = "quote_cnt", columnDefinition = "INT default 0")
-    private Integer quoteCnt;
+    private  Integer quoteCnt;
 
-    /* 創建標簽人的編號,即員工編號(staffId) */
-    @NotBlank(message = "创建者Id不能为空")
-    @Column(name = "creator_id", columnDefinition = "Varchar (50)", nullable = false)
+    /*创建标签人的编号(staffId) */
     private String creatorId;
 
     /* 標簽色值*/
-    @Column(name = "color", nullable = false)
     private String color;
 
-    /* 標簽創建時間*/
-    @Column(name = "create_time", columnDefinition = "timestamp default current_timestamp", nullable = false)
-    private Timestamp createTime;
+    /*标签创建时间*/
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Long createTime;
 
-    /*是否已删除*/
-    private Integer isDeleted;
 
-    public Integer getIsDeleted() {
-        return isDeleted;
-    }
 
-    public void setIsDeleted(Integer isDeleted) {
-        this.isDeleted = isDeleted;
-    }
 
-    public Integer getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(Integer uuid) {
-        this.uuid = uuid;
-    }
     public String getTagId() {
         return tagId;
     }
@@ -103,11 +68,11 @@ public class Tag {
         this.color = color;
     }
 
-    public Timestamp getCreateTime() {
+    public Long getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Long createTime) {
         this.createTime = createTime;
     }
 
@@ -144,7 +109,7 @@ public class Tag {
                 "tagId=" + tagId +
                 ", name='" + name + '\'' +
                 ", quoteCnt=" + quoteCnt +
-                ", creatorId=" + creatorId +
+                ", creatorId='" + creatorId + '\'' +
                 ", color='" + color + '\'' +
                 ", createTime=" + createTime +
                 '}';

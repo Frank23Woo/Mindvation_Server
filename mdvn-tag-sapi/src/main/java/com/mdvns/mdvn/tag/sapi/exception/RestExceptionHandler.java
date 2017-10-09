@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
@@ -37,7 +38,7 @@ import java.io.IOException;
  * MissingServletRequestParameterException 400 (Bad Request)
  */
 
-@RestControllerAdvice
+//@RestControllerAdvice
 public class RestExceptionHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(RestExceptionHandler.class);

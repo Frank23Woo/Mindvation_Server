@@ -1,15 +1,17 @@
 package com.mdvns.mdvn.tag.papi.service;
 
 
-import com.mdvns.mdvn.common.beans.RestDefaultResponse;
 import com.mdvns.mdvn.tag.papi.domain.*;
+import org.springframework.http.ResponseEntity;
 
 public interface TagService {
 
 
-    RestDefaultResponse createTag(CreateTagRequest request);
+    ResponseEntity<?> createTag(CreateTagRequest request);
 
-    RetrieveTagListResponse rtrvTagList(RetrieveTagListRequest request);
+    ResponseEntity<?> rtrvTagList(RetrieveTagListRequest request);
 
-    Tag updateQuoteCnt(UpdateQuoteCntRequest updateQuoteCntRequest);
+    ResponseEntity<?> updateQuoteCnt(String tagId);
+
+    ResponseEntity<?> findByName(String name);
 }

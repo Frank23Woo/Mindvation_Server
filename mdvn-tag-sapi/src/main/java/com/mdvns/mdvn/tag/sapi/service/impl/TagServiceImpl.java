@@ -1,9 +1,8 @@
 package com.mdvns.mdvn.tag.sapi.service.impl;
 
 
-import com.mdvns.mdvn.common.beans.RestDefaultResponse;
-import com.mdvns.mdvn.common.beans.exception.ReturnFormat;
 import com.mdvns.mdvn.tag.sapi.domain.RetrieveTagListRequest;
+import com.mdvns.mdvn.tag.sapi.domain.RetrieveTagListResponse;
 import com.mdvns.mdvn.tag.sapi.domain.entity.Tag;
 import com.mdvns.mdvn.tag.sapi.repository.TagRepository;
 import com.mdvns.mdvn.tag.sapi.service.TagService;
@@ -13,11 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.List;
 
 /**
  * @Author: Migan Wang
@@ -48,17 +47,10 @@ public class TagServiceImpl implements TagService {
      * 2.校验name对应的Tag是否已存在
      */
     @Override
-    public RestDefaultResponse saveTag(Tag tg) {
+    public ResponseEntity<?> saveTag(Tag tg) throws SQLException {
         LOG.info("开始执行{} createTag()方法.", this.CLASS);
 
-       /* if (tag.getTagId() != null) {
-            LOG.error("此ID的标签已存在.");
-            throw new Exception("此ID的标签已存在.");
-        }
-        tg = this.tagRepository.findByName(tag.getName());
-        if (tg != null) {
-            LOG.error("标签已存在:{}", tg.toString());
-        }*/
+
         Timestamp createTime = new Timestamp(System.currentTimeMillis());
         tg.setCreateTime(createTime);
         tg.setQuoteCnt(0);
@@ -66,40 +58,38 @@ public class TagServiceImpl implements TagService {
         tag = this.tagRepository.save(tg);
         tag = this.tagRepository.findOne(tag.getUuid());
         LOG.info("执行结束{} createTag()方法.", this.CLASS);
-        return ReturnFormat.retParam(HttpStatus.OK.toString(), "000", tag);
+
+        return ResponseEntity.ok(tag);
     }
 
     /**
      * 获取指定名称的标签
+     *
      * @param name
      * @return
      */
     @Override
-    public Tag findByName(String name) {
-
+    public ResponseEntity<Tag> findByName(String name) {
         tag = this.tagRepository.findByName(name);
-        if (null == tag) {
-            LOG.error("名称为{}的标签不存在.", name);
-            throw new NullPointerException(name + "标签不存在.");
-        }
-        return tag;
+        return ResponseEntity.ok(tag);
     }
 
     /**
      * 更新标签引用次数
+     *
      * @param tagId
      * @return 跟新后的标签
      */
     @Override
-    public Tag updateQupteCnt(String tagId) {
+    public ResponseEntity<Tag> updateQupteCnt(String tagId) {
 
         tag = this.tagRepository.findByTagId(tagId);
-        if (null == tag) {
-            throw new NullPointerException("标签不存在.");
+        if (tag == null) {
+            return ResponseEntity.ok(tag);
         }
-        LOG.info("标签:{}", tag.toString());
         tag.setQuoteCnt(tag.getQuoteCnt() + 1);
-        return this.tagRepository.save(tag);
+        tag = this.tagRepository.save(tag);
+        return ResponseEntity.ok(tag);
     }
 
 
@@ -110,7 +100,7 @@ public class TagServiceImpl implements TagService {
      * @return
      */
     @Override
-    public List<Tag> rtrvTagList(RetrieveTagListRequest retrieveTagListRequest) {
+    public ResponseEntity<Page<Tag>> rtrvTagList(RetrieveTagListRequest retrieveTagListRequest) throws SQLException{
 
         Integer page = (retrieveTagListRequest.getPage() == null) ? 0 : retrieveTagListRequest.getPage();
 
@@ -120,9 +110,11 @@ public class TagServiceImpl implements TagService {
         PageRequest pageable = new PageRequest(page, pageSize, Sort.Direction.DESC, sortBy);
         Page<Tag> tagPage = null;
         tagPage = this.tagRepository.findAll(pageable);
+        RetrieveTagListResponse retrieveTagListResponse = new RetrieveTagListResponse();
+        retrieveTagListResponse.setTags(tagPage.getContent());
+        retrieveTagListResponse.setTotalNumber((int) tagPage.getTotalElements());
 
-        LOG.info("查询结果为：{}", tagPage.getContent().toString());
-        return tagPage.getContent();
+        return ResponseEntity.ok(tagPage);
     }
 
 }
