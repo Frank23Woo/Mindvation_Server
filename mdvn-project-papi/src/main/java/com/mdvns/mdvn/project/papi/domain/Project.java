@@ -24,6 +24,7 @@ public class Project {
     private Long createTime;
     //项目状态
     private String status;
+    private String ragStatus;
     //效率值
     private Double efficiency;
     //项目进度
@@ -50,6 +51,14 @@ public class Project {
     private String remarks;
     //是否被删除
     private Integer isDeleted;
+
+    public String getRagStatus() {
+        return ragStatus;
+    }
+
+    public void setRagStatus(String ragStatus) {
+        this.ragStatus = ragStatus;
+    }
 
     public Integer getIsDeleted() {
         return isDeleted;

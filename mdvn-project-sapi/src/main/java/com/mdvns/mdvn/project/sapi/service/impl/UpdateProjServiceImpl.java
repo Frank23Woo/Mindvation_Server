@@ -90,6 +90,14 @@ public class UpdateProjServiceImpl implements IUpdateProjService {
             proj.setContingency(pro.getContingency());
 
         }
+        if (!StringUtils.isEmpty(pro.getStatus()) && (!pro.getStatus().equals(proj.getStatus()))) {
+            proj.setStatus(pro.getStatus());
+
+        }
+        //之后ragStatus需要后台计算以后传给前台
+        if (!StringUtils.isEmpty(pro.getRagStatus()) && (!pro.getRagStatus().equals(proj.getRagStatus()))) {
+            proj.setRagStatus(pro.getRagStatus());
+        }
         Project project = projectRepository.save(proj);
         LOG.info("finish executing updateProjBaseInfo()方法.", this.CLASS);
         return project;

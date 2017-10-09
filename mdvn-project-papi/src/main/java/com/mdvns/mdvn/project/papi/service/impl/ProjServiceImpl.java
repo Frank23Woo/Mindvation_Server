@@ -213,6 +213,14 @@ public class ProjServiceImpl implements IProjService {
         if (!StringUtils.isEmpty(updateProjectDetailRequest.getContingency())) {
             proj.setContingency(updateProjectDetailRequest.getContingency());
         }
+        if (!StringUtils.isEmpty(updateProjectDetailRequest.getStatus())) {
+            proj.setStatus(updateProjectDetailRequest.getStatus());
+
+        }
+        //之后ragStatus需要后台计算以后传给前台
+//        if (!StringUtils.isEmpty(updateProjectDetailRequest.getRagStatus())) {
+//            proj.setRagStatus(updateProjectDetailRequest.getRagStatus());
+//        }
         String updateProjBaseInfoUrl = config.getUpdateProjBaseInfoUrl();
         Project pro = restTemplate.postForObject(updateProjBaseInfoUrl, proj, Project.class);
         projectDetail.setProject(pro);

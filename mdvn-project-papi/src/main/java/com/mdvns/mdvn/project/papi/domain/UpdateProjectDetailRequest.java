@@ -23,6 +23,9 @@ public class UpdateProjectDetailRequest {
     private Long endDate;
     //项目可调整系数
     private Double contingency;
+    //状态
+    private String status;
+    private String ragStatus;
     //项目负责人（集合）
     private List<ProjLeaders> leaders;
     //项目标签（集合）
@@ -136,5 +139,21 @@ public class UpdateProjectDetailRequest {
 
     public void setStaffId(String staffId) {
         this.staffId = staffId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getRagStatus() {
+        return ragStatus;
+    }
+
+    public void setRagStatus(String ragStatus) {
+        this.ragStatus = ragStatus;
     }
 }
