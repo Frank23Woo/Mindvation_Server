@@ -1,6 +1,5 @@
 package com.mdvns.mdvn.tag.sapi.exception;
 
-import com.mdvns.mdvn.common.beans.RestDefaultResponse;
 import com.mdvns.mdvn.common.beans.exception.ReturnFormat;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
@@ -8,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
@@ -37,6 +37,7 @@ import java.io.IOException;
  * MissingServletRequestParameterException 400 (Bad Request)
  */
 
+/*
 @RestControllerAdvice
 public class RestExceptionHandler {
 
@@ -49,11 +50,13 @@ public class RestExceptionHandler {
     }
 
     //运行时异常
-   /* @ExceptionHandler(RuntimeException.class)
+   */
+/* @ExceptionHandler(RuntimeException.class)
     public RestDefaultResponse runtimeExceptionHandler(RuntimeException ex) {
         LOG.error("运行时异常:{}", ex.getMessage());
         return ReturnFormat.retParam("500", "500", ex.getMessage());
-    }*/
+    }*//*
+
 
     //空指针异常
     @ExceptionHandler(NullPointerException.class)
@@ -141,4 +144,4 @@ public class RestExceptionHandler {
     }
 
 
-}
+}*/

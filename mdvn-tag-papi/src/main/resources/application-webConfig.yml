@@ -2,4 +2,8 @@ url:
   saveTagUrl: http://localhost:10002/mdvn-tag-s/tags/tag
   rtrvTagListUrl: http://localhost:10002/mdvn-tag-s/tags
   updateQuoteCntUrl: http://localhost:10002/mdvn-tag-s/tags
+  rtrvTagsUrl: http://localhost:10002/mdvn-tag-s/tagList
+  findByNameUrl : http://localhost:10002/mdvn-tag-s/tags/tag
+
   getTagIdByUuIdUrl: http://localhost:10002/mdvn-tag-s/getTagIdByUuId
+

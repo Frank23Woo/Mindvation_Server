@@ -1,79 +1,87 @@
 package com.mdvns.mdvn.tag.papi.web;
 
-
-import com.mdvns.mdvn.common.beans.RestDefaultResponse;
+import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.tag.papi.domain.*;
 import com.mdvns.mdvn.tag.papi.service.TagService;
 import com.mdvns.mdvn.tag.papi.utils.LogUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
-/**
- * @Author: Migan Wang
- * @Description: 标签模块Controller
- * @Date:
- */
+@CrossOrigin
 @RestController
-@RequestMapping(value = {"", "/v0.1"})
+@RequestMapping(value= {"/tag", "/v1.0/tag"})
 public class TagController {
 
-    private Logger LOG = LoggerFactory.getLogger(TagController.class);
-
-    /*注入TagService*/
     @Autowired
     private TagService tagService;
 
-    /*注入CreateTagResponse*/
     @Autowired
-    private CreateTagResponse createTagResponse;
-
-    @Autowired
-    private RestDefaultResponse restDefaultResponse;
-
+    private Tag tag;
 
     /**
      * 新建标签
      *
-     * @param request
+     * @param createTagRequest
+     * @param bindingResult
      * @return
+     * @throws BindException
      */
-    @PostMapping("/createTag")
-    public RestDefaultResponse createTag(@RequestBody @Validated CreateTagRequest request, BindingResult bindingResult) throws BindException {
-        LOG.info("开始执行 createTag 方法.");
+    @PostMapping(value = "/createTag")
+    public ResponseEntity<?> createTag(@RequestBody @Validated CreateTagRequest createTagRequest, BindingResult bindingResult) throws BindException {
         if (bindingResult.hasErrors()) {
             LogUtil.errorLog("请求参数不正确");
             throw new BindException(bindingResult);
         }
-        restDefaultResponse = this.tagService.createTag(request);
-        LOG.info("执行结束 createTag 方法.");
-        return restDefaultResponse;
+        return this.tagService.createTag(createTagRequest);
+    }
+
+    /**
+     * 更新Tag引用次数
+     *
+     * @param updateQuoteCntRequest
+     * @return
+     */
+    @PostMapping(value = "/updateQupteCnt")
+    public ResponseEntity<?> updateQuoteCnt(@RequestBody UpdateQuoteCntRequest updateQuoteCntRequest) {
+        String tagId = updateQuoteCntRequest.getTagId();
+        if (StringUtils.isEmpty(tagId)) {
+            LogUtil.errorLog("tagId is empty.");
+            throw new NullPointerException("tagId 不能为空.");
+        }
+
+        return this.tagService.updateQuoteCnt(tagId);
+    }
+
+
+    @PostMapping(value = "/findByName")
+    public ResponseEntity<?> findByName(@RequestBody RetrieveTagRequest retrieveTagRequest) {
+
+        return this.tagService.findByName(retrieveTagRequest.getName());
+    }
+
+
+    @PostMapping(value = "/rtrvTagList")
+    public RestResponse rtrvTagList(@RequestBody RetrieveTagListRequest retrieveTagListRequest) {
+        return this.tagService.rtrvTagList(retrieveTagListRequest);
     }
 
 
     /**
-     * 获取标签列表
+     * 根据Id删除Tag
      *
-     * @param retrieveTagListRequest
+     * @param tagId
      * @return
      */
-    @PostMapping(value = "/rtrvTagList")
-    public RetrieveTagListResponse rtrvTagList(@RequestBody RetrieveTagListRequest retrieveTagListRequest) {
+    @PostMapping(value = "/deleteTag")
+    public Integer deleteTag(String tagId) {
 
-        return this.tagService.rtrvTagList(retrieveTagListRequest);
-    }
-
-    @PostMapping(value = "/updateQuoteCnt")
-    public Tag updateQuoteCnt(@RequestBody UpdateQuoteCntRequest updateQuoteCntRequest) {
-        return this.tagService.updateQuoteCnt(updateQuoteCntRequest);
+        return null;
     }
 
 }

@@ -45,6 +45,8 @@ public class Tag {
     @Column(name = "create_time", columnDefinition = "timestamp default current_timestamp", nullable = false)
     private Timestamp createTime;
 
+    /*是否已删除*/
+    private Integer isDeleted;
 
     public Integer getUuId() {
         return uuId;
@@ -52,6 +54,14 @@ public class Tag {
 
     public void setUuId(Integer uuId) {
         this.uuId = uuId;
+    }
+
+    public Integer getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Integer isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
     public String getTagId() {
