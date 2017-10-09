@@ -5,7 +5,10 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class RtrvProjectResponse {
+public class RtrvProjectListResponse {
+    //总记录数
+    private Long totalElements;
+
     private List<Project> projects;
 
     private List<String> remarks;
@@ -24,5 +27,13 @@ public class RtrvProjectResponse {
 
     public void setRemarks(List<String> remarks) {
         this.remarks = remarks;
+    }
+
+    public Long getTotalElements() {
+        return totalElements;
+    }
+
+    public void setTotalElements(Long totalElements) {
+        this.totalElements = totalElements;
     }
 }

@@ -1,8 +1,8 @@
 package com.mdvns.mdvn.tag.sapi.service;
 
-import com.mdvns.mdvn.common.beans.RestDefaultResponse;
 import com.mdvns.mdvn.tag.sapi.domain.RetrieveTagListRequest;
 import com.mdvns.mdvn.tag.sapi.domain.entity.Tag;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -13,7 +13,10 @@ import java.util.List;
 public interface TagService {
 
     /*新建标签保存*/
-    RestDefaultResponse saveTag(Tag tag);
+    ResponseEntity<?> saveTag(Tag tag);
+
+    /*由UUID获取tagId*/
+    Tag getTagIdByUuId(Tag tag);
 
     /*根据名称查询标签*/
     Tag findByName(String name);
@@ -22,4 +25,6 @@ public interface TagService {
     Tag updateQupteCnt(String tagId);
 
     List<Tag> rtrvTagList(RetrieveTagListRequest retrieveTagListRequest);
+
+
 }

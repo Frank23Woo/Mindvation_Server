@@ -1,7 +1,6 @@
 package com.mdvns.mdvn.tag.sapi.service.impl;
 
 
-import com.mdvns.mdvn.common.beans.RestDefaultResponse;
 import com.mdvns.mdvn.common.beans.exception.ReturnFormat;
 import com.mdvns.mdvn.tag.sapi.domain.RetrieveTagListRequest;
 import com.mdvns.mdvn.tag.sapi.domain.entity.Tag;
@@ -14,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -48,7 +48,7 @@ public class TagServiceImpl implements TagService {
      * 2.校验name对应的Tag是否已存在
      */
     @Override
-    public RestDefaultResponse saveTag(Tag tg) {
+    public ResponseEntity<?> saveTag(Tag tg) {
         LOG.info("开始执行{} createTag()方法.", this.CLASS);
 
        /* if (tag.getTagId() != null) {
@@ -64,9 +64,31 @@ public class TagServiceImpl implements TagService {
         tg.setQuoteCnt(0);
         //数据保存后tagId没有生成
         tag = this.tagRepository.save(tg);
-        tag = this.tagRepository.findOne(tag.getUuid());
+        tag = this.tagRepository.findOne(tag.getUuId());
+        ResponseEntity<?> responseEntity = new ResponseEntity<Object>(tag,HttpStatus.OK);
         LOG.info("执行结束{} createTag()方法.", this.CLASS);
-        return ReturnFormat.retParam(HttpStatus.OK.toString(), "000", tag);
+        return responseEntity;
+//        return ReturnFormat.retParam(HttpStatus.OK.toString(), "000", tag);
+    }
+
+    /**
+     * 通过uuId获取tagId(触发器的原因)
+     * @param tag
+     * @return
+     */
+    @Override
+    public Tag getTagIdByUuId(Tag tag) {
+        if (tag.getUuId().equals(null)) {
+            LOG.error("UUid为空，创建标签失败.");
+            try {
+                throw new Exception("UUid为空，创建标签失败.");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        Integer uuId = tag.getUuId();
+        tag = this.tagRepository.findOne(uuId);
+        return tag;
     }
 
     /**
@@ -112,12 +134,12 @@ public class TagServiceImpl implements TagService {
     @Override
     public List<Tag> rtrvTagList(RetrieveTagListRequest retrieveTagListRequest) {
 
-        Integer page = (retrieveTagListRequest.getPage() == null) ? 0 : retrieveTagListRequest.getPage();
+        Integer page = (retrieveTagListRequest.getPage() == null) ? 1 : retrieveTagListRequest.getPage();
 
         Integer size = retrieveTagListRequest.getPageSize();
         Integer pageSize = (null == retrieveTagListRequest.getPageSize()) ? 6 : retrieveTagListRequest.getPageSize();
         String sortBy = (retrieveTagListRequest.getSortBy() == null) ? "quoteCnt" : retrieveTagListRequest.getSortBy();
-        PageRequest pageable = new PageRequest(page, pageSize, Sort.Direction.DESC, sortBy);
+        PageRequest pageable = new PageRequest(page-1, pageSize, Sort.Direction.DESC, sortBy);
         Page<Tag> tagPage = null;
         tagPage = this.tagRepository.findAll(pageable);
 

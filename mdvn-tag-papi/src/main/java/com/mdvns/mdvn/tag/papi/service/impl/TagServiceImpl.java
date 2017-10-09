@@ -65,15 +65,24 @@ public class TagServiceImpl implements TagService {
         /*调用sapi保存tag 的 url*/
         String url = webConfig.getSaveTagUrl();
         LogUtil.logInfo("保存标签的URL：", url);
-        ResponseEntity<?> responseEntity = null;
+        ResponseEntity<Tag> responseEntity = null;
 
 //        tag = this.restTemplate.postForEntity(url, tag, Tag.class);
-        restDefaultResponse = this.restTemplate.postForObject(url, tag, RestDefaultResponse.class);
-        if (restDefaultResponse.getStatusCode().equals(HttpStatus.OK.toString())) {
-            return restDefaultResponse;
-        }
+        responseEntity = this.restTemplate.postForEntity(url, tag, Tag.class);
 
-        throw new BusinessException(restDefaultResponse.getResponseCode(), restDefaultResponse.getResponseBody().toString());
+
+
+
+        restDefaultResponse.setResponseBody(responseEntity.getBody());
+        restDefaultResponse.setResponseCode("000");
+        restDefaultResponse.setResponseMsg("请求成功");
+        restDefaultResponse.setStatusCode("200");
+
+
+//        if (restDefaultResponse.getStatusCode().equals(HttpStatus.OK.toString())) {
+            return restDefaultResponse;
+//        }
+//        throw new BusinessException(restDefaultResponse.getResponseCode(), restDefaultResponse.getResponseBody().toString());
 
     }
 

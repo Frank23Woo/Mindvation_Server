@@ -7,7 +7,6 @@ import com.mdvns.mdvn.tag.sapi.service.TagService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,15 +38,26 @@ public class TagController {
      * @return
      */
     @PostMapping("/tags/tag")
-    public RestDefaultResponse saveTag(@RequestBody Tag tg) {
+    public ResponseEntity<?> saveTag(@RequestBody Tag tg) {
         LOG.info("开始执行 createTag 方法.");
 
         RestDefaultResponse restDefaultResponse = null;
 
-        restDefaultResponse = this.tagService.saveTag(tg);
+        return this.tagService.saveTag(tg);
 
-        LOG.info("执行结束 createTag 方法.");
-        return restDefaultResponse;
+//        LOG.info("执行结束 createTag 方法.");
+//        return restDefaultResponse;
+    }
+
+    /**
+     * 通过uuId获取项目的TagId(触发器引发的问题)
+     * @param tag
+     * @return
+     */
+    @PostMapping(value="/getTagIdByUuId")
+    public Tag getTagIdByUuId(@RequestBody Tag tag){
+        Tag pro = tagService.getTagIdByUuId(tag);
+        return pro;
     }
 
     /**
