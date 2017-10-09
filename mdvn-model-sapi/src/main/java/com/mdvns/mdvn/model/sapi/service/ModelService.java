@@ -1,9 +1,9 @@
 package com.mdvns.mdvn.model.sapi.service;
 
-import com.mdvns.mdvn.common.beans.RestDefaultResponse;
+import com.mdvns.mdvn.common.beans.RestResponse;
 
 public interface ModelService {
 
-    RestDefaultResponse getModelList() throws Exception;
+    RestResponse getModelList() throws Exception;
 
 }

@@ -10,11 +10,13 @@ public class ProjChecklists {
 
     private Integer uu_id;
     //任务ID
-    private String checklistId;
+    private String checkListId;
     //projectID
     private String projId;
     //任务描述
-    private String checklistDesc;
+    private String checkListDesc;
+    //创建者ID(更改checkList的staffId)
+    private String creatorId;
     //执行者ID
     private String executorId;
     //设计者ID
@@ -28,9 +30,9 @@ public class ProjChecklists {
     //结束日期
     private Long endDate;
     //任务状态
-    private String checklistStatus;
-    //有效标志
-    private String yxbz;
+    private String checkListStatus;
+    //是否被删除
+    private Integer isDeleted;
     //更新时间
     private Long updateTime;
 
@@ -50,13 +52,6 @@ public class ProjChecklists {
         this.uu_id = uu_id;
     }
 
-    public String getChecklistId() {
-        return checklistId;
-    }
-
-    public void setChecklistId(String checklistId) {
-        this.checklistId = checklistId;
-    }
 
     public String getProjId() {
         return projId;
@@ -66,13 +61,6 @@ public class ProjChecklists {
         this.projId = projId;
     }
 
-    public String getChecklistDesc() {
-        return checklistDesc;
-    }
-
-    public void setChecklistDesc(String checklistDesc) {
-        this.checklistDesc = checklistDesc;
-    }
 
     public String getExecutorId() {
         return executorId;
@@ -122,19 +110,43 @@ public class ProjChecklists {
         this.endDate = endDate;
     }
 
-    public String getChecklistStatus() {
-        return checklistStatus;
+    public Integer getIsDeleted() {
+        return isDeleted;
     }
 
-    public void setChecklistStatus(String checklistStatus) {
-        this.checklistStatus = checklistStatus;
+    public void setIsDeleted(Integer isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
-    public String getYxbz() {
-        return yxbz;
+    public String getCheckListId() {
+        return checkListId;
     }
 
-    public void setYxbz(String yxbz) {
-        this.yxbz = yxbz;
+    public void setCheckListId(String checkListId) {
+        this.checkListId = checkListId;
+    }
+
+    public String getCheckListDesc() {
+        return checkListDesc;
+    }
+
+    public void setCheckListDesc(String checkListDesc) {
+        this.checkListDesc = checkListDesc;
+    }
+
+    public String getCheckListStatus() {
+        return checkListStatus;
+    }
+
+    public void setCheckListStatus(String checkListStatus) {
+        this.checkListStatus = checkListStatus;
+    }
+
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
     }
 }

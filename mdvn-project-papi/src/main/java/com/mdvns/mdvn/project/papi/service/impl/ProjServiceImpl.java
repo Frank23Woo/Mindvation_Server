@@ -1,6 +1,6 @@
 package com.mdvns.mdvn.project.papi.service.impl;
 
-import com.mdvns.mdvn.common.beans.RestDefaultResponse;
+import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.project.papi.config.ProjConfig;
 import com.mdvns.mdvn.project.papi.domain.*;
@@ -28,7 +28,7 @@ public class ProjServiceImpl implements IProjService {
     private Project proj;
 
     @Autowired
-    private RestDefaultResponse restDefaultResponse;
+    private RestResponse restResponse;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -44,15 +44,15 @@ public class ProjServiceImpl implements IProjService {
     public ResponseEntity<?> rtrvProjInfoList(RtrvProjectListRequest rtrvProjectListRequest) {
         rtrvProjectListRequest.setPage(rtrvProjectListRequest.getPage()-1);
         String projInfoListUrl = config.getRtrvProjInfoListUrl();
-        restDefaultResponse = this.restTemplate.postForObject(projInfoListUrl, rtrvProjectListRequest, RestDefaultResponse.class);
-        ResponseEntity<RestDefaultResponse> responseEntity = null;
-        if (restDefaultResponse.getStatusCode().equals(HttpStatus.OK.toString())) {
+        restResponse = this.restTemplate.postForObject(projInfoListUrl, rtrvProjectListRequest, RestResponse.class);
+        ResponseEntity<RestResponse> responseEntity = null;
+        if (restResponse.getStatusCode().equals(HttpStatus.OK.toString())) {
 //            HttpHeaders httpHeaders = new HttpHeaders();
 //            httpHeaders.setAccessControlAllowOrigin("*");
-            responseEntity = new ResponseEntity<RestDefaultResponse>(restDefaultResponse,HttpStatus.OK);
+            responseEntity = new ResponseEntity<RestResponse>(restResponse,HttpStatus.OK);
             return responseEntity;
         }
-        throw new BusinessException(restDefaultResponse.getResponseCode(), restDefaultResponse.getResponseBody().toString());
+        throw new BusinessException(restResponse.getResponseCode(), restResponse.getResponseBody().toString());
     }
 
     /**
@@ -65,7 +65,7 @@ public class ProjServiceImpl implements IProjService {
      */
 
     @Override
-    public RestDefaultResponse createProject(CreateProjectRequest createProjectRequest) {
+    public RestResponse createProject(CreateProjectRequest createProjectRequest) {
         CreateProjectResponse createProjectResponse = new CreateProjectResponse();
 
         //1.先保存项目基本信息（获取projId）
@@ -78,10 +78,10 @@ public class ProjServiceImpl implements IProjService {
 //        proj = restTemplate.postForObject(saveProjectBaseUrl, createProjectRequest, Project.class);
         ResponseEntity<Project> responseEntity = null;
         responseEntity = restTemplate.postForEntity(saveProjectBaseUrl,createProjectRequest, Project.class);
-        restDefaultResponse.setResponseBody(responseEntity.getBody());
-        restDefaultResponse.setStatusCode("200");
-        restDefaultResponse.setResponseMsg("请求成功");
-        restDefaultResponse.setResponseCode("000");
+        restResponse.setResponseBody(responseEntity.getBody());
+        restResponse.setStatusCode("200");
+        restResponse.setResponseMsg("请求成功");
+        restResponse.setResponseCode("000");
         proj = responseEntity.getBody();
         Integer uuId = proj.getUuId();
         //通过uuID查询projId返回整个基本信息
@@ -169,10 +169,10 @@ public class ProjServiceImpl implements IProjService {
             }
         }
         //response
-//        if (restDefaultResponse.getStatusCode().equals(HttpStatus.OK.toString())) {
-            return restDefaultResponse;
+//        if (restResponse.getStatusCode().equals(HttpStatus.OK.toString())) {
+            return restResponse;
 //        }
-//        throw new BusinessException(restDefaultResponse.getResponseCode(), restDefaultResponse.getResponseBody().toString());
+//        throw new BusinessException(restResponse.getResponseCode(), restResponse.getResponseBody().toString());
     }
 
     /**
@@ -182,7 +182,7 @@ public class ProjServiceImpl implements IProjService {
      * @return
      */
     @Override
-    public RestDefaultResponse updateProject(UpdateProjectDetailRequest updateProjectDetailRequest) {
+    public RestResponse updateProject(UpdateProjectDetailRequest updateProjectDetailRequest) {
         UpdateProjectDetailResponse updateProjectDetailResponse = new UpdateProjectDetailResponse();
         ProjectDetail projectDetail = new ProjectDetail();
         RestTemplate restTemplate = new RestTemplate();
@@ -306,12 +306,12 @@ public class ProjServiceImpl implements IProjService {
         }
 
         updateProjectDetailResponse.setProjectDetail(projectDetail);
-        restDefaultResponse.setResponseBody(updateProjectDetailResponse);
-        restDefaultResponse.setStatusCode("200");
-        restDefaultResponse.setResponseMsg("请求成功");
-        restDefaultResponse.setResponseCode("000");
+        restResponse.setResponseBody(updateProjectDetailResponse);
+        restResponse.setStatusCode("200");
+        restResponse.setResponseMsg("请求成功");
+        restResponse.setResponseCode("000");
 
-        return restDefaultResponse;
+        return restResponse;
     }
 
     /**
@@ -320,7 +320,7 @@ public class ProjServiceImpl implements IProjService {
      * @return
      */
     @Override
-    public RestDefaultResponse rtrvProjectInfo(RtrvProjectDetailRequest rtrvProjectDetailRequest) {
+    public RestResponse rtrvProjectInfo(RtrvProjectDetailRequest rtrvProjectDetailRequest) {
         RtrvProjectDetailResponse rtrvProjectDetailResponse = new RtrvProjectDetailResponse();
         ProjectDetail projectDetail = new ProjectDetail();
         if (rtrvProjectDetailRequest == null || rtrvProjectDetailRequest.getProjId() == null) {
@@ -356,11 +356,11 @@ public class ProjServiceImpl implements IProjService {
         projectDetail.setAttchUrls(projAttchUrls);
 
         rtrvProjectDetailResponse.setProjectDetail(projectDetail);
-        restDefaultResponse.setResponseBody(rtrvProjectDetailResponse);
-        restDefaultResponse.setStatusCode("200");
-        restDefaultResponse.setResponseMsg("请求成功");
-        restDefaultResponse.setResponseCode("000");
+        restResponse.setResponseBody(rtrvProjectDetailResponse);
+        restResponse.setStatusCode("200");
+        restResponse.setResponseMsg("请求成功");
+        restResponse.setResponseCode("000");
 
-        return restDefaultResponse;
+        return restResponse;
     }
 }

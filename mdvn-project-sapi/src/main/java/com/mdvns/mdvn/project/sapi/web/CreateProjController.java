@@ -1,6 +1,6 @@
 package com.mdvns.mdvn.project.sapi.web;
 
-import com.mdvns.mdvn.common.beans.RestDefaultResponse;
+import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.project.sapi.domain.*;
 import com.mdvns.mdvn.project.sapi.domain.entity.*;
 import com.mdvns.mdvn.project.sapi.service.ICreateProjService;
@@ -27,7 +27,7 @@ public class CreateProjController {
      * @return
      */
     @PostMapping(value="/rtrvProjInfoList")
-    public RestDefaultResponse rtrvProjInfoList(@RequestBody RtrvProjectListRequest request) throws SQLException{
+    public RestResponse rtrvProjInfoList(@RequestBody RtrvProjectListRequest request) throws SQLException{
         return projService.rtrvProjInfoList(request);
     }
 

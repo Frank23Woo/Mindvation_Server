@@ -1,27 +1,36 @@
 package com.mdvns.mdvn.project.papi.service;
 
+import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.project.papi.domain.*;
+import org.springframework.http.ResponseEntity;
 
 
 public interface IProjService {
     /**
      * 获取project整个列表
-     * @param rtrvProjectRequest
+     * @param rtrvProjectListRequest
      * @return
      */
-    RtrvProjectResponse rtrvProjInfoList(RtrvProjectRequest rtrvProjectRequest);
+    ResponseEntity<?> rtrvProjInfoList(RtrvProjectListRequest rtrvProjectListRequest);
 
     /**
      * 创建project
      * @param createProjectRequest
      * @return
      */
-    CreateProjectResponse createProject(CreateProjectRequest createProjectRequest);
+    RestResponse createProject(CreateProjectRequest createProjectRequest);
 
     /**
      * 更改project
-     * @param updateProjectRequest
+     * @param updateProjectDetailRequest
      * @return
      */
-    UpdateProjectResponse updateProject(UpdateProjectRequest updateProjectRequest);
+    RestResponse updateProject(UpdateProjectDetailRequest updateProjectDetailRequest);
+
+    /**
+     * 获取某个项目详细信息
+     * @param rtrvProjectDetailRequest
+     * @return
+     */
+    RestResponse rtrvProjectInfo(RtrvProjectDetailRequest rtrvProjectDetailRequest);
 }

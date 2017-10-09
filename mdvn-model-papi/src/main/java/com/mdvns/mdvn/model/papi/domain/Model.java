@@ -2,31 +2,28 @@ package com.mdvns.mdvn.model.papi.domain;
 
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
 
 @Component
 public class Model {
-
-    private Integer id;
+    
+    private Integer uuId;
 
     private String name;
 
     private Integer quoteCnt;
 
+    private String modelId;
+    //模型类型
+    private String modelType;
+    //父模型Id
+    private String parentId;
+
     // 创建人ID
     private String creatorId;
 
-    private Integer color;
+    private String color;
 
     private Long createTime;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -52,11 +49,11 @@ public class Model {
         this.creatorId = creatorId;
     }
 
-    public Integer getColor() {
+    public String getColor() {
         return color;
     }
 
-    public void setColor(Integer color) {
+    public void setColor(String color) {
         this.color = color;
     }
 
@@ -66,5 +63,37 @@ public class Model {
 
     public void setCreateTime(Long createTime) {
         this.createTime = createTime;
+    }
+
+    public Integer getUuId() {
+        return uuId;
+    }
+
+    public void setUuId(Integer uuId) {
+        this.uuId = uuId;
+    }
+
+    public String getModelId() {
+        return modelId;
+    }
+
+    public void setModelId(String modelId) {
+        this.modelId = modelId;
+    }
+
+    public String getModelType() {
+        return modelType;
+    }
+
+    public void setModelType(String modelType) {
+        this.modelType = modelType;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 }

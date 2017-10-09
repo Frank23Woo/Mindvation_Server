@@ -1,6 +1,6 @@
 package com.mdvns.mdvn.model.sapi.service.impl;
 
-import com.mdvns.mdvn.common.beans.RestDefaultResponse;
+import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.model.sapi.entity.Model;
 import com.mdvns.mdvn.model.sapi.repository.ModelRepository;
 import com.mdvns.mdvn.model.sapi.service.ModelService;
@@ -16,12 +16,12 @@ public class ModelServiceImpl implements ModelService {
     private ModelRepository modelRepository;
 
     @Override
-    public RestDefaultResponse getModelList() throws Exception {
+    public RestResponse getModelList() throws Exception {
         List<Model> models = modelRepository.findAll();
-        RestDefaultResponse restDefaultResponse = new RestDefaultResponse();
-        restDefaultResponse.setResponseMsg("");
-        restDefaultResponse.setResponseCode("0");
-        restDefaultResponse.setResponseBody(models);
-        return restDefaultResponse;
+        RestResponse restResponse = new RestResponse();
+        restResponse.setResponseMsg("");
+        restResponse.setResponseCode("0");
+        restResponse.setResponseBody(models);
+        return restResponse;
     }
 }

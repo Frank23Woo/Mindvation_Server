@@ -1,6 +1,6 @@
 package com.mdvns.mdvn.project.sapi.service;
 
-import com.mdvns.mdvn.common.beans.RestDefaultResponse;
+import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.project.sapi.domain.*;
 import com.mdvns.mdvn.project.sapi.domain.entity.*;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,7 @@ import java.util.List;
 public interface ICreateProjService {
 
     //获取project整个列表
-    RestDefaultResponse rtrvProjInfoList(RtrvProjectListRequest request) throws SQLException;
+    RestResponse rtrvProjInfoList(RtrvProjectListRequest request) throws SQLException;
     //创建project时保存project(基本信息)
     ResponseEntity<?> saveProject(CreateProjectRequest request);
 //    Project saveProject(CreateProjectRequest createProjectRequest);

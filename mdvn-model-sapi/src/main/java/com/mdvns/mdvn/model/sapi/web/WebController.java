@@ -1,6 +1,6 @@
 package com.mdvns.mdvn.model.sapi.web;
 
-import com.mdvns.mdvn.common.beans.RestDefaultResponse;
+import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.model.sapi.service.ModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +14,7 @@ public class WebController {
 
 
     @PostMapping("/retrieveModelList")
-    private RestDefaultResponse retrieveModelList() throws Exception {
+    private RestResponse retrieveModelList() throws Exception {
         return modelService.getModelList();
     }
 
