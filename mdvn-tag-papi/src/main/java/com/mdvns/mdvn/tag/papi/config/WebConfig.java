@@ -10,6 +10,9 @@ public class WebConfig {
     /*保存或修改标签Url*/
     private String saveTagUrl;
 
+    //保存完tag通过触发器获取其tagId
+    private String getTagIdByUuIdUrl;
+
     /*获取标签列表Url*/
     private String rtrvTagListUrl;
 
@@ -49,5 +52,13 @@ public class WebConfig {
 
     public void setRtrvTagListUrl(String rtrvTagListUrl) {
         this.rtrvTagListUrl = rtrvTagListUrl;
+    }
+
+    public String getGetTagIdByUuIdUrl() {
+        return getTagIdByUuIdUrl;
+    }
+
+    public void setGetTagIdByUuIdUrl(String getTagIdByUuIdUrl) {
+        this.getTagIdByUuIdUrl = getTagIdByUuIdUrl;
     }
 }

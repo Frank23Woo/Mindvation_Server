@@ -71,6 +71,7 @@ public class TagServiceImpl implements TagService {
         tag.setColor(createTagRequest.getColor());
         tag.setCreatorId(createTagRequest.getCreatorId());
         String url = webConfig.getSaveTagUrl();
+<<<<<<< HEAD
         //调用Sapi保存标签
         responseEntity = this.restTemplate.postForEntity(url, tag, Tag.class);
         RestResponse restResponse = null;
@@ -79,6 +80,28 @@ public class TagServiceImpl implements TagService {
             return ResponseEntity.ok(restResponse);
         }
         throw new BusinessException(ExceptionEnum.UNKNOW_EXCEPTION);
+=======
+        LogUtil.logInfo("保存标签的URL：", url);
+        ResponseEntity<Tag> responseEntity = null;
+
+//        tag = this.restTemplate.postForEntity(url, tag, Tag.class);
+        responseEntity = this.restTemplate.postForEntity(url, tag, Tag.class);
+
+
+
+
+        restDefaultResponse.setResponseBody(responseEntity.getBody());
+        restDefaultResponse.setResponseCode("000");
+        restDefaultResponse.setResponseMsg("请求成功");
+        restDefaultResponse.setStatusCode("200");
+
+
+//        if (restDefaultResponse.getStatusCode().equals(HttpStatus.OK.toString())) {
+            return restDefaultResponse;
+//        }
+//        throw new BusinessException(restDefaultResponse.getResponseCode(), restDefaultResponse.getResponseBody().toString());
+
+>>>>>>> 29a5f170fe0b2f4b8c1402144187839255cad32b
     }
 
     /*根据指定名称获取Tag*/
