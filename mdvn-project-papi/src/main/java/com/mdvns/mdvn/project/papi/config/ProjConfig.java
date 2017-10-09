@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProjConfig {
 
-    //-------------------------------------创建项目----------------------
     //获取project列表信息url
     private String rtrvProjInfoListUrl;
     //创建projecturl
@@ -27,34 +26,8 @@ public class ProjConfig {
     private String saveCheckListsUrl;
     //通过checklist的uuid查询它的checklistId
     private String getChecklistsListByUuIdUrl;
-    //通过checklist的uuid查询它的checklistId(详细Staff)
-    private String checklistsListByUuIdUrl;
     //创建project时保存AttchUrls信息
     private String savePAttchUrlsUrl;
-
-    //---------------------------------更改项目--------------------------
-
-    //更改项目基本信息
-    private String updateProjBaseInfoUrl;
-    //更改项目负责人信息
-    private String updateProjLeadersUrl;
-    //更该项目附件信息
-    private String updateProjAttchUrlsUrl;
-    //更改项目标签信息
-    private String updateProjTagsUrl;
-    //更改项目checkList信息
-    private String updateProjChecklistsUrl;
-    //更改项目模型信息
-    private String updateProjModelsUrl;
-    //---------------------------------获取项目详细信息--------------------------
-    private String rtrvProjBaseInfoUrl;
-    private String rtrvProjLedersUrl;
-    private String rtrvProjTagsUrl;
-    private String rtrvProjModelsUrl;
-    private String rtrvProjCheckListsUrl;
-    private String rtrvProjAttUrlsUrl;
-
-
 
     public String getRtrvProjInfoListUrl() {
         return rtrvProjInfoListUrl;
@@ -134,109 +107,5 @@ public class ProjConfig {
 
     public void setSavePLeadersUrl(String savePLeadersUrl) {
         this.savePLeadersUrl = savePLeadersUrl;
-    }
-
-    public String getUpdateProjBaseInfoUrl() {
-        return updateProjBaseInfoUrl;
-    }
-
-    public void setUpdateProjBaseInfoUrl(String updateProjBaseInfoUrl) {
-        this.updateProjBaseInfoUrl = updateProjBaseInfoUrl;
-    }
-
-    public String getUpdateProjLeadersUrl() {
-        return updateProjLeadersUrl;
-    }
-
-    public void setUpdateProjLeadersUrl(String updateProjLeadersUrl) {
-        this.updateProjLeadersUrl = updateProjLeadersUrl;
-    }
-
-    public String getUpdateProjAttchUrlsUrl() {
-        return updateProjAttchUrlsUrl;
-    }
-
-    public void setUpdateProjAttchUrlsUrl(String updateProjAttchUrlsUrl) {
-        this.updateProjAttchUrlsUrl = updateProjAttchUrlsUrl;
-    }
-
-    public String getUpdateProjTagsUrl() {
-        return updateProjTagsUrl;
-    }
-
-    public void setUpdateProjTagsUrl(String updateProjTagsUrl) {
-        this.updateProjTagsUrl = updateProjTagsUrl;
-    }
-
-    public String getUpdateProjChecklistsUrl() {
-        return updateProjChecklistsUrl;
-    }
-
-    public void setUpdateProjChecklistsUrl(String updateProjChecklistsUrl) {
-        this.updateProjChecklistsUrl = updateProjChecklistsUrl;
-    }
-
-    public String getUpdateProjModelsUrl() {
-        return updateProjModelsUrl;
-    }
-
-    public void setUpdateProjModelsUrl(String updateProjModelsUrl) {
-        this.updateProjModelsUrl = updateProjModelsUrl;
-    }
-
-    public String getRtrvProjBaseInfoUrl() {
-        return rtrvProjBaseInfoUrl;
-    }
-
-    public void setRtrvProjBaseInfoUrl(String rtrvProjBaseInfoUrl) {
-        this.rtrvProjBaseInfoUrl = rtrvProjBaseInfoUrl;
-    }
-
-    public String getRtrvProjLedersUrl() {
-        return rtrvProjLedersUrl;
-    }
-
-    public void setRtrvProjLedersUrl(String rtrvProjLedersUrl) {
-        this.rtrvProjLedersUrl = rtrvProjLedersUrl;
-    }
-
-    public String getRtrvProjTagsUrl() {
-        return rtrvProjTagsUrl;
-    }
-
-    public void setRtrvProjTagsUrl(String rtrvProjTagsUrl) {
-        this.rtrvProjTagsUrl = rtrvProjTagsUrl;
-    }
-
-    public String getRtrvProjModelsUrl() {
-        return rtrvProjModelsUrl;
-    }
-
-    public void setRtrvProjModelsUrl(String rtrvProjModelsUrl) {
-        this.rtrvProjModelsUrl = rtrvProjModelsUrl;
-    }
-
-    public String getRtrvProjCheckListsUrl() {
-        return rtrvProjCheckListsUrl;
-    }
-
-    public void setRtrvProjCheckListsUrl(String rtrvProjCheckListsUrl) {
-        this.rtrvProjCheckListsUrl = rtrvProjCheckListsUrl;
-    }
-
-    public String getRtrvProjAttUrlsUrl() {
-        return rtrvProjAttUrlsUrl;
-    }
-
-    public void setRtrvProjAttUrlsUrl(String rtrvProjAttUrlsUrl) {
-        this.rtrvProjAttUrlsUrl = rtrvProjAttUrlsUrl;
-    }
-
-    public String getChecklistsListByUuIdUrl() {
-        return checklistsListByUuIdUrl;
-    }
-
-    public void setChecklistsListByUuIdUrl(String checklistsListByUuIdUrl) {
-        this.checklistsListByUuIdUrl = checklistsListByUuIdUrl;
     }
 }

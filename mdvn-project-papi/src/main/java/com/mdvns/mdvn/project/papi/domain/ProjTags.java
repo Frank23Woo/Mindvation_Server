@@ -10,8 +10,8 @@ public class ProjTags {
     private String tagId;
     //项目Id
     private String projId;
-    //是否被删除
-    private Integer isDeleted;
+    //有效标志
+    private String yxbz;
     //更新时间
     private Long updateTime;
 
@@ -23,12 +23,12 @@ public class ProjTags {
         this.updateTime = updateTime;
     }
 
-    public Integer getIsDeleted() {
-        return isDeleted;
+    public String getYxbz() {
+        return yxbz;
     }
 
-    public void setIsDeleted(Integer isDeleted) {
-        this.isDeleted = isDeleted;
+    public void setYxbz(String yxbz) {
+        this.yxbz = yxbz;
     }
 
     public Integer getUuId() {

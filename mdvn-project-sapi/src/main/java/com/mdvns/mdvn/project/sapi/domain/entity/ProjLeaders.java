@@ -19,9 +19,9 @@ public class ProjLeaders {
     //项目Id
     private String projId;
 
-    //是否被删除
-    @Column(name = "is_deleted", columnDefinition = "INT default 0")
-    private Integer isDeleted;
+    //有效标志
+    @Column(columnDefinition = "varchar(5) default 'Y'")
+    private String yxbz;
 
     //更改时间
     @Column(columnDefinition = "timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP", nullable = false)
@@ -51,12 +51,12 @@ public class ProjLeaders {
         this.projId = projId;
     }
 
-    public Integer getIsDeleted() {
-        return isDeleted;
+    public String getYxbz() {
+        return yxbz;
     }
 
-    public void setIsDeleted(Integer isDeleted) {
-        this.isDeleted = isDeleted;
+    public void setYxbz(String yxbz) {
+        this.yxbz = yxbz;
     }
 
     public Timestamp getUpdateTime() {

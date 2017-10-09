@@ -15,38 +15,33 @@ public class ProjChecklists {
     @GeneratedValue
     private Integer uu_id;
     //任务ID
-    private String checkListId;
+    private String checklistId;
     //projectID
     private String projId;
     //任务描述
     @Column(columnDefinition = "text",nullable = false)
-    private String checkListDesc;
-    //创建者ID(更改checkList的staffId)
-    private String creatorId;
+    private String checklistDesc;
     //执行者ID
     private String executorId;
     //设计者ID
     private String assignerId;
     //任务创建时间
-    @Column(name = "create_time")
+    @Column(name = "create_time", columnDefinition = "timestamp default current_timestamp", nullable = false)
     private Timestamp createTime;
     //最后一次更改时间
-    @Column(name = "last_update_time", columnDefinition = "timestamp NOT NULL default current_timestamp ON UPDATE CURRENT_TIMESTAMP")
+    @Column(name = "last_update_time", columnDefinition = "timestamp")
     private Timestamp lastUpdateTime;
     //开始日期
-    @Column(name = "start_date")
+    @Column(name = "start_date", columnDefinition = "timestamp")
     private Timestamp startDate;
     //结束日期
-    @Column(name = "end_date")
+    @Column(name = "end_date", columnDefinition = "timestamp")
     private Timestamp endDate;
-    //关闭时间
-    @Column(name = "close_time")
-    private Timestamp closeTime;
     //任务状态
-    private String status;
-    //是否被删除
-    @Column(name = "is_deleted", columnDefinition = "INT default 0")
-    private Integer isDeleted;
+    private String checklistStatus;
+    //有效标志
+    @Column(columnDefinition = "varchar(5) default 'Y'")
+    private String yxbz;
 
 
     public Integer getUu_id() {
@@ -57,6 +52,14 @@ public class ProjChecklists {
         this.uu_id = uu_id;
     }
 
+    public String getChecklistId() {
+        return checklistId;
+    }
+
+    public void setChecklistId(String checklistId) {
+        this.checklistId = checklistId;
+    }
+
     public String getProjId() {
         return projId;
     }
@@ -65,12 +68,12 @@ public class ProjChecklists {
         this.projId = projId;
     }
 
-    public String getCreatorId() {
-        return creatorId;
+    public String getChecklistDesc() {
+        return checklistDesc;
     }
 
-    public void setCreatorId(String creatorId) {
-        this.creatorId = creatorId;
+    public void setChecklistDesc(String checklistDesc) {
+        this.checklistDesc = checklistDesc;
     }
 
     public String getExecutorId() {
@@ -121,44 +124,19 @@ public class ProjChecklists {
         this.endDate = endDate;
     }
 
-
-    public Integer getIsDeleted() {
-        return isDeleted;
+    public String getChecklistStatus() {
+        return checklistStatus;
     }
 
-    public void setIsDeleted(Integer isDeleted) {
-        this.isDeleted = isDeleted;
+    public void setChecklistStatus(String checklistStatus) {
+        this.checklistStatus = checklistStatus;
     }
 
-    public String getCheckListId() {
-        return checkListId;
+    public String getYxbz() {
+        return yxbz;
     }
 
-    public void setCheckListId(String checkListId) {
-        this.checkListId = checkListId;
-    }
-
-    public String getCheckListDesc() {
-        return checkListDesc;
-    }
-
-    public void setCheckListDesc(String checkListDesc) {
-        this.checkListDesc = checkListDesc;
-    }
-
-    public Timestamp getCloseTime() {
-        return closeTime;
-    }
-
-    public void setCloseTime(Timestamp closeTime) {
-        this.closeTime = closeTime;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public void setYxbz(String yxbz) {
+        this.yxbz = yxbz;
     }
 }

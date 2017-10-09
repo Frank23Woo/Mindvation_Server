@@ -26,6 +26,7 @@ public class Project {
     @Column(columnDefinition = "text",nullable = false)
     private String description;
     //项目优先级
+    @Column(nullable = false)
     private Integer priority;
     //项目开始日期
     @Column(name = "start_date", columnDefinition = "timestamp", nullable = false)
@@ -33,13 +34,8 @@ public class Project {
     //项目结束时期
     @Column(name = "end_date", columnDefinition = "timestamp", nullable = false)
     private Timestamp endDate;
-    //创建时间
-    @Column(name = "create_time", nullable = false)
-    private Timestamp createTime;
     //项目状态
     private String status;
-    //rag状态（R/A/G）
-    private String ragStatus;
     //效率值
     @Column(name = "efficiency", columnDefinition = "Double default 0")
     private Double efficiency;
@@ -67,15 +63,15 @@ public class Project {
     @Column(columnDefinition = "int default 0")
     private Integer crStoryPointQty;
     //任务总数
-    private Integer checkListQty;
+    private Integer taskQty;
     //需求变更占比
     @Column(columnDefinition = "Double default 0")
     private Double crRate;
     //备注
     private String remarks;
-    //是否被删除
-    @Column(name = "is_deleted", columnDefinition = "INT default 0")
-    private Integer isDeleted;
+    //有效标志
+    @Column(columnDefinition = "varchar(5) default 'Y'")
+    private String yxbz;
 
     public Integer getUuId() {
         return uuId;
@@ -214,12 +210,12 @@ public class Project {
         this.crStoryPointQty = crStoryPointQty;
     }
 
-    public Integer getCheckListQty() {
-        return checkListQty;
+    public Integer getTaskQty() {
+        return taskQty;
     }
 
-    public void setCheckListQty(Integer checkListQty) {
-        this.checkListQty = checkListQty;
+    public void setTaskQty(Integer taskQty) {
+        this.taskQty = taskQty;
     }
 
     public Double getCrRate() {
@@ -246,27 +242,11 @@ public class Project {
         this.contingency = contingency;
     }
 
-    public Integer getIsDeleted() {
-        return isDeleted;
+    public String getYxbz() {
+        return yxbz;
     }
 
-    public void setIsDeleted(Integer isDeleted) {
-        this.isDeleted = isDeleted;
-    }
-
-    public Timestamp getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Timestamp createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getRagStatus() {
-        return ragStatus;
-    }
-
-    public void setRagStatus(String ragStatus) {
-        this.ragStatus = ragStatus;
+    public void setYxbz(String yxbz) {
+        this.yxbz = yxbz;
     }
 }

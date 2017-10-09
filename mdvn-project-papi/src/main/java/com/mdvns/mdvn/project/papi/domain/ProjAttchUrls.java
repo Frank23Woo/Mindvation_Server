@@ -11,8 +11,8 @@ public class ProjAttchUrls {
     private String projId;
     //附件名
     private String attachmentName;
-    //是否被删除
-    private Integer isDeleted;
+    //有效标志
+    private String yxbz;
     //更新时间
     private Long updateTime;
 
@@ -48,12 +48,11 @@ public class ProjAttchUrls {
         this.attachmentName = attachmentName;
     }
 
-    public Integer getIsDeleted() {
-        return isDeleted;
+    public String getYxbz() {
+        return yxbz;
     }
 
-    public void setIsDeleted(Integer isDeleted) {
-        this.isDeleted = isDeleted;
+    public void setYxbz(String yxbz) {
+        this.yxbz = yxbz;
     }
-
 }
