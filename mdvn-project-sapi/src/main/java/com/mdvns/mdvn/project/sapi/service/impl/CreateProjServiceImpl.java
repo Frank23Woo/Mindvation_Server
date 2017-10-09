@@ -1,11 +1,9 @@
 package com.mdvns.mdvn.project.sapi.service.impl;
 
 import com.mdvns.mdvn.common.beans.RestDefaultResponse;
+import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.common.beans.exception.ReturnFormat;
-import com.mdvns.mdvn.project.sapi.domain.CreateProjectRequest;
-import com.mdvns.mdvn.project.sapi.domain.RtrvProjectRequest;
-import com.mdvns.mdvn.project.sapi.domain.RtrvProjectResponse;
-import com.mdvns.mdvn.project.sapi.domain.SavePCheckListsRequest;
+import com.mdvns.mdvn.project.sapi.domain.*;
 import com.mdvns.mdvn.project.sapi.domain.entity.*;
 import com.mdvns.mdvn.project.sapi.repository.*;
 import com.mdvns.mdvn.project.sapi.service.ICreateProjService;
@@ -19,6 +17,7 @@ import org.springframework.util.StringUtils;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -46,13 +45,16 @@ public class CreateProjServiceImpl implements ICreateProjService {
     @Autowired
     private ProjAttchUrlsRepository projAttchUrlsRepository;
 
+    @Autowired
+    private StaffRepository staffRepository;
+
     /**
      * 获取project整个列表
      *
      * @return
      */
-    public RestDefaultResponse rtrvProjInfoList(RtrvProjectRequest request) throws SQLException {
-        RtrvProjectResponse rtrvProjectResponse = new RtrvProjectResponse();
+    public RestDefaultResponse rtrvProjInfoList(RtrvProjectListRequest request) throws SQLException {
+        RtrvProjectListResponse rtrvProjectListResponse = new RtrvProjectListResponse();
         //获取多张表数据联合查询然后分页
         Integer page = request.getPage();
         Integer pageSize = request.getPageSize();
@@ -60,12 +62,12 @@ public class CreateProjServiceImpl implements ICreateProjService {
         Integer n = pageSize;
         List<Project> pageList = this.projectRepository.rtrvProjInfoList(request.getStaffId(), m, n);
         Long totalElements = this.projectRepository.getProjBaseInfoCount(request.getStaffId());
-        rtrvProjectResponse.setProjects(pageList);
-        rtrvProjectResponse.setTotalElements(totalElements);
+        rtrvProjectListResponse.setProjects(pageList);
+        rtrvProjectListResponse.setTotalElements(totalElements);
 
-        LOG.info("查询结果为：{}", rtrvProjectResponse);
+        LOG.info("查询结果为：{}", rtrvProjectListResponse);
 
-        return ReturnFormat.retParam(HttpStatus.OK.toString(), "000", rtrvProjectResponse);
+        return ReturnFormat.retParam(HttpStatus.OK.toString(), "000", rtrvProjectListResponse);
     }
 
     /**
@@ -200,9 +202,57 @@ public class CreateProjServiceImpl implements ICreateProjService {
             Integer uuid = pChecklists.get(i).getUu_id();
             String checklistId = projChecklistsRepository.getPChecklistId(uuid);
             pChecklists.get(i).setCheckListId(checklistId);
-            pChecklists.get(i).setIsDeleted(0);
+//            pChecklists.get(i).setIsDeleted(0);
         }
         return pChecklists;
+    }
+
+    /**
+     * 通过checklist的uuid查询它的checklistId(触发器的原因)(详细staff)
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public List<ProjChecklistsDetail> getChecklistIdByUuId(UpdatePCheckListsRequest request) {
+        for (int i = 0; i < request.getCheckLists().size(); i++) {
+            Integer uuid = request.getCheckLists().get(i).getUu_id();
+            String checklistId = projChecklistsRepository.getPChecklistId(uuid);
+            request.getCheckLists().get(i).setCheckListId(checklistId);
+//            pChecklists.get(i).setIsDeleted(0);
+        }
+        List<ProjChecklists> projChecklists = this.projChecklistsRepository.findPChecklists(request.getProjId());
+        List<ProjChecklistsDetail> projChecklistsDetails = new ArrayList<>();
+        for (int i = 0; i < projChecklists.size(); i++) {
+            ProjChecklistsDetail projChecklistsDetail = new ProjChecklistsDetail();
+            String creatorId = projChecklists.get(i).getCreatorId();
+            String assignerId = projChecklists.get(i).getAssignerId();
+            String executorId = projChecklists.get(i).getExecutorId();
+            Staff creator = this.staffRepository.findByStaffId(creatorId);
+            Staff assigner = this.staffRepository.findByStaffId(assignerId);
+            Staff executor = this.staffRepository.findByStaffId(executorId);
+            if (null == creator) {
+                LOG.error("创建者在员工库中不存在.", creator);
+                throw new BusinessException(creator + "创建者在员工库中不存在.");
+            }else{
+                projChecklistsDetail.setCreatorInfo(creator);
+            }
+            if (null == assigner) {
+                LOG.error("设计者在员工库中不存在.", assigner);
+                throw new BusinessException(assigner + "设计者在员工库中不存在.");
+            }else{
+                projChecklistsDetail.setAssignerInfo(assigner);
+            }
+            if (null == executor) {
+                LOG.error("创建者在员工库中不存在.", executor);
+                throw new BusinessException(executor + "创建者在员工库中不存在.");
+            }else{
+                projChecklistsDetail.setExecutorInfo(executor);
+            }
+            projChecklistsDetail.setProjChecklists(projChecklists.get(i));
+            projChecklistsDetails.add(projChecklistsDetail);
+        }
+        return projChecklistsDetails;
     }
 
     /**

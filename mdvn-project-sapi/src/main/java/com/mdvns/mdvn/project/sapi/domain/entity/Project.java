@@ -38,6 +38,8 @@ public class Project {
     private Timestamp createTime;
     //项目状态
     private String status;
+    //rag状态（R/A/G）
+    private String ragStatus;
     //效率值
     @Column(name = "efficiency", columnDefinition = "Double default 0")
     private Double efficiency;
@@ -258,5 +260,13 @@ public class Project {
 
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
+    }
+
+    public String getRagStatus() {
+        return ragStatus;
+    }
+
+    public void setRagStatus(String ragStatus) {
+        this.ragStatus = ragStatus;
     }
 }

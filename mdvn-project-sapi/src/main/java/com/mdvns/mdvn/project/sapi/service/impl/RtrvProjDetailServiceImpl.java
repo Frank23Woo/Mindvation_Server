@@ -1,6 +1,7 @@
 package com.mdvns.mdvn.project.sapi.service.impl;
 
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
+import com.mdvns.mdvn.project.sapi.domain.ProjChecklistsDetail;
 import com.mdvns.mdvn.project.sapi.domain.RtrvProjectDetailRequest;
 import com.mdvns.mdvn.project.sapi.domain.entity.*;
 import com.mdvns.mdvn.project.sapi.repository.*;
@@ -148,11 +149,41 @@ public class RtrvProjDetailServiceImpl implements IRtrvProjDetailService {
      * @return
      */
     @Override
-    public List<ProjChecklists> rtrvProjCheckLists(RtrvProjectDetailRequest request) {
+    public List<ProjChecklistsDetail> rtrvProjCheckLists(RtrvProjectDetailRequest request) {
         LOG.info("start executing rtrvProjCheckLists()方法.", this.CLASS);
         List<ProjChecklists> projChecklists = this.projChecklistsRepository.findPChecklists(request.getProjId());
+        List<ProjChecklistsDetail> projChecklistsDetails = new ArrayList<>();
+        for (int i = 0; i < projChecklists.size(); i++) {
+            ProjChecklistsDetail projChecklistsDetail = new ProjChecklistsDetail();
+            String creatorId = projChecklists.get(i).getCreatorId();
+            String assignerId = projChecklists.get(i).getAssignerId();
+            String executorId = projChecklists.get(i).getExecutorId();
+            Staff creator = this.staffRepository.findByStaffId(creatorId);
+            Staff assigner = this.staffRepository.findByStaffId(assignerId);
+            Staff executor = this.staffRepository.findByStaffId(executorId);
+            if (null == creator) {
+                LOG.error("创建者在员工库中不存在.", creator);
+                throw new BusinessException(creator + "创建者在员工库中不存在.");
+            }else{
+                projChecklistsDetail.setCreatorInfo(creator);
+            }
+            if (null == assigner) {
+                LOG.error("设计者在员工库中不存在.", assigner);
+                throw new BusinessException(assigner + "设计者在员工库中不存在.");
+            }else{
+                projChecklistsDetail.setAssignerInfo(assigner);
+            }
+            if (null == executor) {
+                LOG.error("创建者在员工库中不存在.", executor);
+                throw new BusinessException(executor + "创建者在员工库中不存在.");
+            }else{
+                projChecklistsDetail.setExecutorInfo(executor);
+            }
+            projChecklistsDetail.setProjChecklists(projChecklists.get(i));
+            projChecklistsDetails.add(projChecklistsDetail);
+        }
         LOG.info("finish executing rtrvProjCheckLists()方法.", this.CLASS);
-        return projChecklists;
+        return projChecklistsDetails;
     }
 
     /**

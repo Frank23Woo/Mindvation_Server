@@ -9,6 +9,8 @@ import java.util.List;
 public class UpdatePCheckListsRequest {
     //项目ID
     private String projId;
+    //staffId
+    private String staffId;
     //项目checkList（集合）
     private List<ProjChecklists> checkLists;
 
@@ -26,5 +28,13 @@ public class UpdatePCheckListsRequest {
 
     public void setCheckLists(List<ProjChecklists> checkLists) {
         this.checkLists = checkLists;
+    }
+
+    public String getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(String staffId) {
+        this.staffId = staffId;
     }
 }

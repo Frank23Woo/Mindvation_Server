@@ -5,10 +5,12 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class UpdateProjectRequest {
+public class UpdateProjectDetailRequest {
 
     //项目ID
     private String projId;
+    //staffID
+    private String staffId;
     //项目名称
     private String name;
     //项目描述
@@ -126,5 +128,13 @@ public class UpdateProjectRequest {
 
     public void setAttchUrls(List<ProjAttchUrls> attchUrls) {
         this.attchUrls = attchUrls;
+    }
+
+    public String getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(String staffId) {
+        this.staffId = staffId;
     }
 }

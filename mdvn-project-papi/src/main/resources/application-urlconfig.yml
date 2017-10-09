@@ -7,6 +7,7 @@ config:
   savePModelsUrl: http://localhost:10005/mdvn-project-sapi/project/savePModels
   saveCheckListsUrl: http://localhost:10005/mdvn-project-sapi/project/savePCheckLists
   getChecklistsListByUuIdUrl: http://localhost:10005/mdvn-project-sapi/project/getChecklistsListByUuId
+  checklistsListByUuIdUrl: http://localhost:10005/mdvn-project-sapi/project/checklistsListByUuId
   savePAttchUrlsUrl: http://localhost:10005/mdvn-project-sapi/project/savePAttchUrls
   savePLeadersUrl: http://localhost:10005/mdvn-project-sapi/project/savePLeaders
   updateProjBaseInfoUrl: http://localhost:10005/mdvn-project-sapi/updateProject/updateProjBaseInfo

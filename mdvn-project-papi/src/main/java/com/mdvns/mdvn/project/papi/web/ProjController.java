@@ -28,14 +28,14 @@ public class ProjController {
      * @return
      */
     @PostMapping(value="/rtrvProjInfoList")
-    public ResponseEntity<?> rtrvProjInfoList(@RequestBody @Validated RtrvProjectRequest rtrvProjectRequest, BindingResult bindingResult) throws BindException{
+    public ResponseEntity<?> rtrvProjInfoList(@RequestBody @Validated RtrvProjectListRequest rtrvProjectListRequest, BindingResult bindingResult) throws BindException{
         LOG.info("开始执行 rtrvProjInfoList 方法.");
         if (bindingResult.hasErrors()) {
             LogUtil.errorLog("请求参数不正确");
             throw new BindException(bindingResult);
         }
         LOG.info("执行结束 rtrvProjInfoList 方法.");
-        return this.projService.rtrvProjInfoList(rtrvProjectRequest);
+        return this.projService.rtrvProjInfoList(rtrvProjectListRequest);
     }
 
     /**
@@ -50,12 +50,12 @@ public class ProjController {
 
     /**
      * 更改项目
-     * @param updateProjectRequest
+     * @param updateProjectDetailRequest
      * @return
      */
     @PostMapping(value="/updateProject")
-    public RestDefaultResponse updateProject(@RequestBody UpdateProjectRequest updateProjectRequest){
-        return projService.updateProject(updateProjectRequest);
+    public RestDefaultResponse updateProject(@RequestBody UpdateProjectDetailRequest updateProjectDetailRequest){
+        return projService.updateProject(updateProjectDetailRequest);
     }
 
     /**

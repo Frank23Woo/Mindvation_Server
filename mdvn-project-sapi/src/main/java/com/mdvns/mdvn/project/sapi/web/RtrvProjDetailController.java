@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.project.sapi.web;
 
+import com.mdvns.mdvn.project.sapi.domain.ProjChecklistsDetail;
 import com.mdvns.mdvn.project.sapi.domain.RtrvProjectDetailRequest;
 import com.mdvns.mdvn.project.sapi.domain.entity.*;
 import com.mdvns.mdvn.project.sapi.service.IRtrvProjDetailService;
@@ -71,7 +72,7 @@ public class RtrvProjDetailController {
      * @throws SQLException
      */
     @PostMapping(value="/rtrvProjCheckLists")
-    public List<ProjChecklists> rtrvProjCheckLists(@RequestBody RtrvProjectDetailRequest request) throws SQLException {
+    public List<ProjChecklistsDetail> rtrvProjCheckLists(@RequestBody RtrvProjectDetailRequest request) throws SQLException {
         return rtrvProjDetailService.rtrvProjCheckLists(request);
     }
 

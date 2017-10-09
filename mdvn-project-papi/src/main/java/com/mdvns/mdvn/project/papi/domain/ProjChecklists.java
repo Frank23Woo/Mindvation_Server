@@ -15,6 +15,8 @@ public class ProjChecklists {
     private String projId;
     //任务描述
     private String checkListDesc;
+    //创建者ID(更改checkList的staffId)
+    private String creatorId;
     //执行者ID
     private String executorId;
     //设计者ID
@@ -138,5 +140,13 @@ public class ProjChecklists {
 
     public void setCheckListStatus(String checkListStatus) {
         this.checkListStatus = checkListStatus;
+    }
+
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
     }
 }

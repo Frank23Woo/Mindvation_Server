@@ -27,6 +27,8 @@ public class ProjConfig {
     private String saveCheckListsUrl;
     //通过checklist的uuid查询它的checklistId
     private String getChecklistsListByUuIdUrl;
+    //通过checklist的uuid查询它的checklistId(详细Staff)
+    private String checklistsListByUuIdUrl;
     //创建project时保存AttchUrls信息
     private String savePAttchUrlsUrl;
 
@@ -228,5 +230,13 @@ public class ProjConfig {
 
     public void setRtrvProjAttUrlsUrl(String rtrvProjAttUrlsUrl) {
         this.rtrvProjAttUrlsUrl = rtrvProjAttUrlsUrl;
+    }
+
+    public String getChecklistsListByUuIdUrl() {
+        return checklistsListByUuIdUrl;
+    }
+
+    public void setChecklistsListByUuIdUrl(String checklistsListByUuIdUrl) {
+        this.checklistsListByUuIdUrl = checklistsListByUuIdUrl;
     }
 }

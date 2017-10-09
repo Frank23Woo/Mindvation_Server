@@ -1,9 +1,7 @@
 package com.mdvns.mdvn.project.sapi.service;
 
 import com.mdvns.mdvn.common.beans.RestDefaultResponse;
-import com.mdvns.mdvn.project.sapi.domain.CreateProjectRequest;
-import com.mdvns.mdvn.project.sapi.domain.RtrvProjectRequest;
-import com.mdvns.mdvn.project.sapi.domain.SavePCheckListsRequest;
+import com.mdvns.mdvn.project.sapi.domain.*;
 import com.mdvns.mdvn.project.sapi.domain.entity.*;
 import org.springframework.http.ResponseEntity;
 
@@ -14,7 +12,7 @@ import java.util.List;
 public interface ICreateProjService {
 
     //获取project整个列表
-    RestDefaultResponse rtrvProjInfoList(RtrvProjectRequest request) throws SQLException;
+    RestDefaultResponse rtrvProjInfoList(RtrvProjectListRequest request) throws SQLException;
     //创建project时保存project(基本信息)
     ResponseEntity<?> saveProject(CreateProjectRequest request);
 //    Project saveProject(CreateProjectRequest createProjectRequest);
@@ -28,6 +26,8 @@ public interface ICreateProjService {
     List<ProjModels> savePModels(List<ProjModels> request);
     //创建project时保存project任务（checkLists）
     List<ProjChecklists> saveCheckLists(SavePCheckListsRequest request);
+
+    List<ProjChecklistsDetail> getChecklistIdByUuId(UpdatePCheckListsRequest request);
     //通过checklist的uuid查询它的checklistId
     List<ProjChecklists> getChecklistIdByUuId(List<ProjChecklists> pChecklists);
     //创建project时保存附件信息

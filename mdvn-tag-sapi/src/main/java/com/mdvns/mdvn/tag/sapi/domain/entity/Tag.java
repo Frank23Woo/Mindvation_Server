@@ -19,18 +19,9 @@ public class Tag {
     /* 标签编号 */
     @Id
     @GeneratedValue
-    private Integer uuid;
-
+    private Integer uuId;
 
     private String tagId;
-
-    public Integer getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(Integer uuid) {
-        this.uuid = uuid;
-    }
 
     /* 标签名称 */
     @NotBlank(message = "标签名称不能为空")
@@ -54,6 +45,14 @@ public class Tag {
     @Column(name = "create_time", columnDefinition = "timestamp default current_timestamp", nullable = false)
     private Timestamp createTime;
 
+
+    public Integer getUuId() {
+        return uuId;
+    }
+
+    public void setUuId(Integer uuId) {
+        this.uuId = uuId;
+    }
 
     public String getTagId() {
         return tagId;

@@ -1,10 +1,7 @@
 package com.mdvns.mdvn.project.sapi.web;
 
 import com.mdvns.mdvn.common.beans.RestDefaultResponse;
-import com.mdvns.mdvn.project.sapi.domain.CreateProjectRequest;
-import com.mdvns.mdvn.project.sapi.domain.RtrvProjectRequest;
-import com.mdvns.mdvn.project.sapi.domain.RtrvProjectResponse;
-import com.mdvns.mdvn.project.sapi.domain.SavePCheckListsRequest;
+import com.mdvns.mdvn.project.sapi.domain.*;
 import com.mdvns.mdvn.project.sapi.domain.entity.*;
 import com.mdvns.mdvn.project.sapi.service.ICreateProjService;
 import org.slf4j.Logger;
@@ -30,7 +27,7 @@ public class CreateProjController {
      * @return
      */
     @PostMapping(value="/rtrvProjInfoList")
-    public RestDefaultResponse rtrvProjInfoList(@RequestBody RtrvProjectRequest request) throws SQLException{
+    public RestDefaultResponse rtrvProjInfoList(@RequestBody RtrvProjectListRequest request) throws SQLException{
         return projService.rtrvProjInfoList(request);
     }
 
@@ -104,6 +101,17 @@ public class CreateProjController {
     public List<ProjChecklists> getChecklistsListByUuId(@RequestBody List<ProjChecklists> pChecklists){
         List<ProjChecklists> checklistsList = projService.getChecklistIdByUuId(pChecklists);
         return checklistsList;
+    }
+
+    /**
+     * 通过checklist的uuid查询它的checklistId(详细staff)
+     * @param request
+     * @return
+     */
+    @PostMapping(value="/checklistsListByUuId")
+    public List<ProjChecklistsDetail> getChecklistsListByUuId(@RequestBody UpdatePCheckListsRequest request){
+        return this.projService.getChecklistIdByUuId(request);
+
     }
 
     /**

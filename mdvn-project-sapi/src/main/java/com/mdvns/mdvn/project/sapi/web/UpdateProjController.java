@@ -38,9 +38,8 @@ public class UpdateProjController {
      * @return
      */
     @PostMapping(value="/updateProjLeaders")
-    public List<ProjLeaders> updateProjLeaders(@RequestBody UpdatePLeadersRequest leders){
-        List<ProjLeaders> projLeaders = this.updateProjService.updateProjLeaders(leders);
-        return projLeaders;
+    public List<Staff> updateProjLeaders(@RequestBody UpdatePLeadersRequest leders){
+        return this.updateProjService.updateProjLeaders(leders);
     }
 
     /**
@@ -60,9 +59,8 @@ public class UpdateProjController {
      * @return
      */
     @PostMapping(value="/updateProjModels")
-    public List<ProjModels> updateProjModels(@RequestBody UpdatePModelsRequest models){
-        List<ProjModels> projModels = this.updateProjService.updateProjModels(models);
-        return projModels;
+    public List<Model> updateProjModels(@RequestBody UpdatePModelsRequest models){
+        return this.updateProjService.updateProjModels(models);
     }
 
     /**
@@ -71,9 +69,8 @@ public class UpdateProjController {
      * @return
      */
     @PostMapping(value="/updateProjTags")
-    public List<ProjTags> updateProjTags(@RequestBody UpdatePTagsRequest tags){
-        List<ProjTags> projTags = this.updateProjService.updateProjTags(tags);
-        return projTags;
+    public List<Tag> updateProjTags(@RequestBody UpdatePTagsRequest tags){
+        return this.updateProjService.updateProjTags(tags);
     }
     /**
      * 更改项目checklist信息
@@ -82,8 +79,7 @@ public class UpdateProjController {
      */
     @PostMapping(value="/updateProjChecklists")
     public List<ProjChecklists> updateProjChecklists(@RequestBody UpdatePCheckListsRequest checkLists){
-        List<ProjChecklists> projChecklists = this.updateProjService.updateProjChecklists(checkLists);
-        return projChecklists;
+        return this.updateProjService.updateProjChecklists(checkLists);
     }
 
 }

@@ -8,10 +8,10 @@ import org.springframework.http.ResponseEntity;
 public interface IProjService {
     /**
      * 获取project整个列表
-     * @param rtrvProjectRequest
+     * @param rtrvProjectListRequest
      * @return
      */
-    ResponseEntity<?> rtrvProjInfoList(RtrvProjectRequest rtrvProjectRequest);
+    ResponseEntity<?> rtrvProjInfoList(RtrvProjectListRequest rtrvProjectListRequest);
 
     /**
      * 创建project
@@ -22,10 +22,10 @@ public interface IProjService {
 
     /**
      * 更改project
-     * @param updateProjectRequest
+     * @param updateProjectDetailRequest
      * @return
      */
-    RestDefaultResponse updateProject(UpdateProjectRequest updateProjectRequest);
+    RestDefaultResponse updateProject(UpdateProjectDetailRequest updateProjectDetailRequest);
 
     /**
      * 获取某个项目详细信息
