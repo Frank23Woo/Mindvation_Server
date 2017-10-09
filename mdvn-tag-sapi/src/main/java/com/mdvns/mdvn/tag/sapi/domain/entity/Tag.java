@@ -19,6 +19,7 @@ public class Tag {
     /* 标签编号 */
     @Id
     @GeneratedValue
+    @Column(name="uu_id")
     private Integer uuid;
 
     private String tagId;

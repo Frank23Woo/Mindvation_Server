@@ -50,8 +50,6 @@ public class TagServiceImpl implements TagService {
     @Override
     public ResponseEntity<?> saveTag(Tag tg) throws SQLException {
         LOG.info("开始执行{} createTag()方法.", this.CLASS);
-
-
         Timestamp createTime = new Timestamp(System.currentTimeMillis());
         tg.setCreateTime(createTime);
         tg.setQuoteCnt(0);
