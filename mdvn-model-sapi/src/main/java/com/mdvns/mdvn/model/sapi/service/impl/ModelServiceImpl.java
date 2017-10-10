@@ -60,7 +60,7 @@ public class ModelServiceImpl implements ModelService {
         //数据保存后modelId没有生成
         model = this.modelRepository.save(tg);
 //        model = this.modelRepository.findOne(model.getUuid());
-        model.setModelId("T"+ model.getUuId());
+        model.setModelId("M"+ model.getUuId());
         model = this.modelRepository.save(model);
         LOG.info("执行结束{} createModel()方法.", this.CLASS);
 

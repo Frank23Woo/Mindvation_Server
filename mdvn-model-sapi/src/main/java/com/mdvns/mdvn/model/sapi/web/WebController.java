@@ -23,7 +23,7 @@ public class WebController {
     private ModelService modelService;
 
     /**
-     * 新建标签
+     * 新建模型
      *
      * @param md
      * @return
@@ -53,7 +53,7 @@ public class WebController {
 
 
     /**
-     * 获取全部标签
+     * 获取全部模型
      * @return
      */
     @PostMapping(value = "/modelList")
@@ -61,4 +61,25 @@ public class WebController {
         return this.modelService.rtrvModelList();
     }
 
+    /**
+     * 根据名称查询模型
+     *
+     * @param name 模型名称
+     * @return Model
+     */
+    @PostMapping(value = "/models/model/{name}")
+    public ResponseEntity<Model> findByName(@PathVariable String name) {
+        return this.modelService.findByName(name);
+    }
+
+    /**
+     * 根据指定的ID给quoteCnt值+1
+     *
+     * @param modelId
+     * @return
+     */
+    @PostMapping(value = "/models/{modelId}")
+    public ResponseEntity<Model> updateQuoteCnt(@PathVariable String modelId) {
+        return this.modelService.updateQupteCnt(modelId);
+    }
 }

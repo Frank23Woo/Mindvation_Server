@@ -106,6 +106,7 @@ public class ModelServiceImpl implements ModelService{
         LogUtil.errorLog("新建Model的名称为：" + modelName);
         model = new Model();
         model.setName(modelName);
+        model.setModelType(createModelRequest.getModelType());
         model.setColor(createModelRequest.getColor());
         model.setCreatorId(createModelRequest.getCreatorId());
         String url = webConfig.getSaveModelUrl();
