@@ -1,7 +1,7 @@
 package com.mdvns.mdvn.tag.sapi.web;
 
+import com.mdvns.mdvn.common.beans.RestDefaultResponse;
 import com.mdvns.mdvn.tag.sapi.domain.RetrieveTagListRequest;
-import com.mdvns.mdvn.tag.sapi.domain.RetrieveTagListResponse;
 import com.mdvns.mdvn.tag.sapi.domain.entity.Tag;
 import com.mdvns.mdvn.tag.sapi.service.TagService;
 import org.slf4j.Logger;
@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * 标签SAPI控制层
@@ -26,6 +27,11 @@ public class TagController {
     @Autowired
     private TagService tagService;
 
+
+    /*注入Tag*/
+    private Tag tag;
+
+
     /**
      * 新建标签
      *
@@ -33,9 +39,26 @@ public class TagController {
      * @return
      */
     @PostMapping("/tags/tag")
-    public ResponseEntity<?> saveTag(@RequestBody Tag tg) throws SQLException {
+    public ResponseEntity<?> saveTag(@RequestBody Tag tg) {
         LOG.info("开始执行 createTag 方法.");
+
+        RestDefaultResponse restDefaultResponse = null;
+
         return this.tagService.saveTag(tg);
+
+//        LOG.info("执行结束 createTag 方法.");
+//        return restDefaultResponse;
+    }
+
+    /**
+     * 通过uuId获取项目的TagId(触发器引发的问题)
+     * @param tag
+     * @return
+     */
+    @PostMapping(value="/getTagIdByUuId")
+    public Tag getTagIdByUuId(@RequestBody Tag tag){
+        Tag pro = tagService.getTagIdByUuId(tag);
+        return pro;
     }
 
     /**
@@ -43,9 +66,10 @@ public class TagController {
      */
 
     @PostMapping(value = "/tags")
-    public ResponseEntity<?> rtrvTagList(@RequestBody RetrieveTagListRequest retrieveTagListRequest) throws SQLException {
+    public List<Tag> rtrvTagList(@RequestBody RetrieveTagListRequest retrieveTagListRequest) throws SQLException {
 
         return this.tagService.rtrvTagList(retrieveTagListRequest);
+
     }
 
     /**
@@ -54,8 +78,8 @@ public class TagController {
      * @param name 标签名称
      * @return Tag
      */
-    @PostMapping(value = "/tags/tag/{name}")
-    public ResponseEntity<Tag> findByName(@PathVariable String name) {
+    @GetMapping(value = "/tags/{name}")
+    public Tag findByName(@PathVariable String name) {
         return this.tagService.findByName(name);
     }
 
@@ -66,8 +90,10 @@ public class TagController {
      * @return
      */
     @PostMapping(value = "/tags/{tagId}")
-    public ResponseEntity<Tag> updateQuoteCnt(@PathVariable String tagId) {
-        return this.tagService.updateQupteCnt(tagId);
+    public Tag updateQuoteCnt(@PathVariable String tagId) {
+        tag = this.tagService.updateQupteCnt(tagId);
+
+        return tag;
     }
 
 

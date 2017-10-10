@@ -3,10 +3,7 @@ package com.mdvns.mdvn.common.beans.exception;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
-import com.mdvns.mdvn.common.beans.RestResponse;
+import com.mdvns.mdvn.common.beans.RestDefaultResponse;
 
 public class ReturnFormat {
     private static Map<String,String> messageMap = new HashMap<String, String>();
@@ -28,9 +25,6 @@ public class ReturnFormat {
         messageMap.put("1004","[服务器] 未知方法异常");
         messageMap.put("1005","[服务器] 数组越界j异常");
         messageMap.put("1006","[服务器] 网络异常");
-        
-        messageMap.put("1020", "SAPI异常");
-        messageMap.put("1062","SQL Erro: 违反唯一性约束");
        /* messageMap.put("1000", "[服务器]运行时异常");
         messageMap.put("1001", "[服务器]空值异常");
         messageMap.put("1002", "[服务器]数据类型转换异常");
@@ -71,24 +65,9 @@ public class ReturnFormat {
         messageMap.put("2022", "RSA解密失败,密文数据已损坏");
         messageMap.put("2023", "请重新登录");*/
     }
-    
-   public static Map<String, String> getMessageMap() {
-		return messageMap;
-	}
-	public static void setMessageMap(Map<String, String> messageMap) {
-		ReturnFormat.messageMap = messageMap;
-	}
-	
-
-  /*  public static ResponseEntity<?> retParam(HttpStatus status,String responseCode, Object data) {
-        RestDefaultResponse restDefaultResponse = new RestDefaultResponse(status.toString(), responseCode, messageMap.get(responseCode), data);
-        
-
-        return new ResponseEntity<RestDefaultResponse>(restDefaultResponse, status);
-    }*/
-
-	/*public static RestResponse retParam(String status,String responseCodde, Object data) {
-        RestResponse restDefaultResponse = new RestResponse(status, responseCodde, messageMap.get(responseCodde), data);
+    public static RestDefaultResponse retParam(String status,String responseCodde, Object data) {
+        RestDefaultResponse restDefaultResponse = new RestDefaultResponse(status, responseCodde, messageMap.get(responseCodde), data);
         return restDefaultResponse;
-    }*/
+    }
+
 }

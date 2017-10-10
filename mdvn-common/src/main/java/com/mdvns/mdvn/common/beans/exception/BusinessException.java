@@ -11,12 +11,6 @@ public class BusinessException extends RuntimeException {
 
 	private String errorMsg;
 
-	
-	public BusinessException(ExceptionEnum exEnum) {
-		this.errorMsg = exEnum.getErrorMsg();
-		this.errorCode = exEnum.getErroCode();
-	}
-	
 	public BusinessException(Object Obj) {
 		super(Obj.toString());
 	}

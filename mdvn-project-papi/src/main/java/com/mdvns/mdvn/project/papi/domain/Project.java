@@ -20,8 +20,11 @@ public class Project {
     private Long startDate;
     //项目结束时期
     private Long endDate;
+    //创建时间
+    private Long createTime;
     //项目状态
-    private Integer status;
+    private String status;
+    private String ragStatus;
     //效率值
     private Double efficiency;
     //项目进度
@@ -41,20 +44,28 @@ public class Project {
     //crstorypoint总数
     private Integer crStoryPointQty;
     //任务总数
-    private Integer taskQty;
+    private Integer checkListQty;
     //需求变更占比
     private Double crRate;
     //备注
     private String remarks;
-    //有效标志
-    private String yxbz;
+    //是否被删除
+    private Integer isDeleted;
 
-    public String getYxbz() {
-        return yxbz;
+    public String getRagStatus() {
+        return ragStatus;
     }
 
-    public void setYxbz(String yxbz) {
-        this.yxbz = yxbz;
+    public void setRagStatus(String ragStatus) {
+        this.ragStatus = ragStatus;
+    }
+
+    public Integer getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Integer isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
     public Integer getUuId() {
@@ -122,11 +133,11 @@ public class Project {
         this.endDate = endDate;
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -194,12 +205,12 @@ public class Project {
         this.crStoryPointQty = crStoryPointQty;
     }
 
-    public Integer getTaskQty() {
-        return taskQty;
+    public Integer getCheckListQty() {
+        return checkListQty;
     }
 
-    public void setTaskQty(Integer taskQty) {
-        this.taskQty = taskQty;
+    public void setCheckListQty(Integer checkListQty) {
+        this.checkListQty = checkListQty;
     }
 
     public Double getCrRate() {
@@ -224,5 +235,13 @@ public class Project {
 
     public void setContingency(Double contingency) {
         this.contingency = contingency;
+    }
+
+    public Long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
     }
 }

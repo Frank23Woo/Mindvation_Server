@@ -1,5 +1,7 @@
 package com.mdvns.mdvn.tag.papi.domain;
 
+import com.mdvns.mdvn.common.beans.RestDefaultResponse;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -9,17 +11,8 @@ public class RetrieveTagListResponse {
 
     private List<Tag> tags;
 
-    private Integer totalNumber;
-
     private List<String> remarks;
 
-    public Integer getTotalNumber() {
-        return totalNumber;
-    }
-
-    public void setTotalNumber(Integer totalNumber) {
-        this.totalNumber = totalNumber;
-    }
 
     public List<Tag> getTags() {
         return tags;

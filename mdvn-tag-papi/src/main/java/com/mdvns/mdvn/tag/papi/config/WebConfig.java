@@ -19,17 +19,6 @@ public class WebConfig {
     /*更新标签引用次数Url*/
     private String updateQuoteCntUrl;
 
-    /*根据指定名称获取标签Url*/
-    private String findByNameUrl;
-
-    public String getFindByNameUrl() {
-        return findByNameUrl;
-    }
-
-    public void setFindByNameUrl(String findByNameUrl) {
-        this.findByNameUrl = findByNameUrl;
-    }
-
     public String getUpdateQuoteCntUrl() {
         return updateQuoteCntUrl;
     }

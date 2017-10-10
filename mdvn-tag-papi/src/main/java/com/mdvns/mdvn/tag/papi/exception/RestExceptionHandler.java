@@ -1,11 +1,9 @@
 package com.mdvns.mdvn.tag.papi.exception;
 
 
-import com.mdvns.mdvn.common.beans.RestResponse;
+import com.mdvns.mdvn.common.beans.RestDefaultResponse;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
-import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
 import com.mdvns.mdvn.common.beans.exception.ReturnFormat;
-import com.mdvns.mdvn.common.utils.RestResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.ConversionNotSupportedException;
@@ -44,16 +42,16 @@ public class RestExceptionHandler {
 
     //SAPI调用异常
     @ExceptionHandler(BusinessException.class)
-    public RestResponse businessExceptionHandler(BusinessException ex) {
+    public RestDefaultResponse businessExceptionHandler(BusinessException ex) {
         LOG.error("Internal Server Error:{}", ex.getMessage());
-        return RestResponseUtil.error(HttpStatus.INTERNAL_SERVER_ERROR, ex.getErrorCode(), ex.getErrorMsg());
+        return ReturnFormat.retParam("500", ex.getErrorCode(), ex.getErrorMsg());
     }
 
     //调用SAPI异常
     @ExceptionHandler(HttpClientErrorException.class)
-    public RestResponse httpClientErrorException(HttpClientErrorException ex) {
+    public RestDefaultResponse httpClientErrorException(HttpClientErrorException ex) {
         LOG.error("Internal Server Error:{}", ex.getMessage());
-        return RestResponseUtil.error(HttpStatus.INTERNAL_SERVER_ERROR, ExceptionEnum.SAPI_EXCEPTION.getErroCode(), ex.getMessage());
+        return ReturnFormat.retParam(ex.getStatusCode().toString(), ex.getStatusCode().toString(), ex.getMessage());
     }
 
    /* @ExceptionHandler(HttpServerErrorException.class)
@@ -62,7 +60,7 @@ public class RestExceptionHandler {
         return ReturnFormat.retParam(ex.getStatusCode().toString(), ex.getStatusCode().toString(), ex.getMessage());
     }*/
 
-  /*  //运行时异常
+    //运行时异常
     @ExceptionHandler(RuntimeException.class)
     public RestDefaultResponse runtimeExceptionHandler(RuntimeException ex) {
         LOG.error("Internal Server Error:{}", ex.getMessage());
@@ -85,11 +83,11 @@ public class RestExceptionHandler {
     }
 
     //IO异常
-   *//* @ExceptionHandler(IOException.class)
+   /* @ExceptionHandler(IOException.class)
     public RestDefautResponse iOExceptionHandler(IOException ex) {
         LOG.error("IO异常:{}", ex.getMessage());
         return ReturnFormat.retParam("500", "1003", ex.getLocalizedMessage());
-    }*//*
+    }*/
 
     //未知方法异常
     @ExceptionHandler(NoSuchMethodException.class)
@@ -120,25 +118,25 @@ public class RestExceptionHandler {
     }
 
     //400错误
-   *//* @ExceptionHandler({TypeMismatchException.class})
+   /* @ExceptionHandler({TypeMismatchException.class})
     public RestDefaultResponse requestTypeMismatch(TypeMismatchException ex) {
         LOG.error("400错误:{}", ex.getMessage());
         return ReturnFormat.retParam(HttpStatus.BAD_REQUEST.toString(), "400", ex.getMessage());
-    }*//*
+    }*/
 
-  *//*  //400错误
+  /*  //400错误
     @ExceptionHandler({BindException.class})
     public RestDefaultResponse requestMissingServletRequest(BindException ex) {
         LOG.error("400错误:{}", ex.getMessage());
         return ReturnFormat.retParam(HttpStatus.BAD_REQUEST.toString(), "400", ex.getFieldError().getDefaultMessage());
-    }*//*
+    }*/
 
- *//*   //400错误
+ /*   //400错误
     @ExceptionHandler({MissingServletRequestParameterException.class})
     public RestDefaultResponse requestMissingServletRequest(MissingServletRequestParameterException ex) {
         LOG.error("400错误:{}", ex.getMessage());
         return ReturnFormat.retParam(HttpStatus.BAD_REQUEST.toString(), "400", ex.getMessage());
-    }*//*
+    }*/
 
     @ExceptionHandler(value = {NoHandlerFoundException.class})
     public RestDefaultResponse noHandlerFoundException(NoHandlerFoundException ex) {
@@ -158,7 +156,7 @@ public class RestExceptionHandler {
     public RestDefaultResponse request406(HttpMediaTypeNotAcceptableException ex) {
         LOG.error("406错误:{}", ex.getMessage());
         return ReturnFormat.retParam(HttpStatus.NOT_ACCEPTABLE.toString(), "406", ex.getMessage());
-    }*/
+    }
 
 
 }
