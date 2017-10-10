@@ -6,7 +6,6 @@ import com.mdvns.mdvn.tag.sapi.domain.RetrieveTagListResponse;
 import com.mdvns.mdvn.tag.sapi.domain.entity.Tag;
 import com.mdvns.mdvn.tag.sapi.repository.TagRepository;
 import com.mdvns.mdvn.tag.sapi.service.TagService;
-import com.mysql.jdbc.log.LogUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +34,8 @@ public class TagServiceImpl implements TagService {
     @Autowired
     private TagRepository tagRepository;
 
-
     @Autowired
     private Tag tag;
-
 
     /**
      * @param tg
@@ -68,7 +65,7 @@ public class TagServiceImpl implements TagService {
      * @return
      */
     @Override
-    public ResponseEntity<Tag> findByName(String name) {
+    public ResponseEntity<?> findByName(String name) {
         tag = this.tagRepository.findByName(name);
         return ResponseEntity.ok(tag);
     }
@@ -80,7 +77,7 @@ public class TagServiceImpl implements TagService {
      * @return 跟新后的标签
      */
     @Override
-    public ResponseEntity<Tag> updateQupteCnt(String tagId) {
+    public ResponseEntity<?> updateQupteCnt(String tagId) {
 
         tag = this.tagRepository.findByTagId(tagId);
         if (tag == null) {
@@ -99,7 +96,7 @@ public class TagServiceImpl implements TagService {
      * @return
      */
     @Override
-    public ResponseEntity<Page<Tag>> rtrvTagList(RetrieveTagListRequest retrieveTagListRequest) throws SQLException{
+    public ResponseEntity<?> rtrvTagList(RetrieveTagListRequest retrieveTagListRequest) throws SQLException{
 
         Integer page = (retrieveTagListRequest.getPage() == null) ? 0 : retrieveTagListRequest.getPage();
 
@@ -111,7 +108,7 @@ public class TagServiceImpl implements TagService {
         tagPage = this.tagRepository.findAll(pageable);
         RetrieveTagListResponse retrieveTagListResponse = new RetrieveTagListResponse();
         retrieveTagListResponse.setTags(tagPage.getContent());
-        retrieveTagListResponse.setTotalNumber((int) tagPage.getTotalElements());
+        retrieveTagListResponse.setTotalNumber(tagPage.getTotalElements());
 
         return ResponseEntity.ok(tagPage);
     }

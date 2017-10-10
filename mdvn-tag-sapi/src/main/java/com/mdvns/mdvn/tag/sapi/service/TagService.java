@@ -4,7 +4,7 @@ import com.mdvns.mdvn.tag.sapi.domain.RetrieveTagListRequest;
 import com.mdvns.mdvn.tag.sapi.domain.entity.Tag;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
+import java.sql.SQLException;
 
 /**
  * 標簽模塊接口
@@ -13,18 +13,15 @@ import java.util.List;
 public interface TagService {
 
     /*新建标签保存*/
-    ResponseEntity<?> saveTag(Tag tag);
-
-    /*由UUID获取tagId*/
-    Tag getTagIdByUuId(Tag tag);
+    ResponseEntity<?> saveTag(Tag tag) throws SQLException;
 
     /*根据名称查询标签*/
-    Tag findByName(String name);
+    ResponseEntity<?> findByName(String name);
 
     /*更新标签引用次数*/
-    Tag updateQupteCnt(String tagId);
+    ResponseEntity<?> updateQupteCnt(String tagId);
 
-    List<Tag> rtrvTagList(RetrieveTagListRequest retrieveTagListRequest);
+    ResponseEntity<?> rtrvTagList(RetrieveTagListRequest retrieveTagListRequest) throws SQLException;
 
 
 }

@@ -1,13 +1,14 @@
 package com.mdvns.mdvn.tag.sapi.exception;
 
-import com.mdvns.mdvn.common.beans.RestDefaultResponse;
-import com.mdvns.mdvn.common.beans.exception.ReturnFormat;
+import com.mdvns.mdvn.common.beans.RestResponse;
+import com.mdvns.mdvn.common.utils.RestResponseUtil;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
@@ -43,9 +44,11 @@ public class RestExceptionHandler {
     private static final Logger LOG = LoggerFactory.getLogger(RestExceptionHandler.class);
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public RestDefaultResponse defautExceptinHandler(ConstraintViolationException ex) {
-        LOG.error("违反唯一性约束: "+ex.getMessage());
-        return ReturnFormat.retParam("500", "500",ex.getMessage());
+    public ResponseEntity<?> defautExceptinHandler(ConstraintViolationException ex) {
+        LOG.error("违反唯一性约束: " + ex.getMessage());
+
+        RestResponse restResponse = RestResponseUtil.error(HttpStatus.INTERNAL_SERVER_ERROR, ex.getErrorCode() + "", ex.getMessage());
+        return ResponseEntity.ok(restResponse);
     }
 
     //运行时异常
@@ -57,12 +60,13 @@ public class RestExceptionHandler {
 
     //空指针异常
     @ExceptionHandler(NullPointerException.class)
-    public RestDefaultResponse nullPointerExceptionHandler(NullPointerException ex) {
+    public ResponseEntity<?> nullPointerExceptionHandler(NullPointerException ex) {
         LOG.error("空指针异常:{}", ex.getMessage());
-        return ReturnFormat.retParam("500", "1001", ex.getMessage());
+        RestResponse restResponse = RestResponseUtil.error(HttpStatus.INTERNAL_SERVER_ERROR, "1101", ex.getMessage());
+        return ResponseEntity.ok(restResponse);
     }
 
-    //类型转换异常
+    /*//类型转换异常
     @ExceptionHandler(ClassCastException.class)
     public RestDefaultResponse classCastExceptionHandler(ClassCastException ex) {
         LOG.error("类型转换异常:{}", ex.getMessage());
@@ -121,7 +125,7 @@ public class RestExceptionHandler {
     @ExceptionHandler(value = {NoHandlerFoundException.class})
     public RestDefaultResponse noHandlerFoundException(NoHandlerFoundException ex) {
         LOG.error("404错误:{}", ex.getMessage());
-        RestDefaultResponse restDefautResponse = ReturnFormat.retParam(HttpStatus.NOT_FOUND.toString(),"404", ex.getMessage());
+        RestDefaultResponse restDefautResponse = ReturnFormat.retParam(HttpStatus.NOT_FOUND.toString(), "404", ex.getMessage());
 
         return restDefautResponse;
     }
@@ -139,6 +143,6 @@ public class RestExceptionHandler {
         LOG.error("406错误:{}", ex.getMessage());
         return ReturnFormat.retParam(HttpStatus.NOT_ACCEPTABLE.toString(), "406", ex.getMessage());
     }
-
+*/
 
 }
