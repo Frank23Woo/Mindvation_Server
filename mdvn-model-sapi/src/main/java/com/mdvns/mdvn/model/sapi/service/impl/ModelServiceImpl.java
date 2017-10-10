@@ -51,8 +51,6 @@ public class ModelServiceImpl implements ModelService {
     @Override
     public ResponseEntity<?> saveModel(Model tg) throws SQLException {
         LOG.info("开始执行{} createModel()方法.", this.CLASS);
-
-
         Timestamp createTime = new Timestamp(System.currentTimeMillis());
         tg.setCreateTime(createTime);
         tg.setIsDeleted(0);

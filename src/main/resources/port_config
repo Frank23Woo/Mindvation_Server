@@ -8,3 +8,5 @@ mdvn-pchklst-papi 10007
 mdvn-pchklst-sapi 10008
 mdvn-model-sapi 10009
 mdvn-model-papi 10010
+mdvn-reqmnt-papi 10011
+mdvn-reqmnt-sapi 10012
