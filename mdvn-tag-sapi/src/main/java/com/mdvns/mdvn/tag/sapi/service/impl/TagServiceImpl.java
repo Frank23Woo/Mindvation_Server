@@ -1,8 +1,6 @@
 package com.mdvns.mdvn.tag.sapi.service.impl;
 
 
-import com.mdvns.mdvn.tag.sapi.domain.RetrieveTagListRequest;
-import com.mdvns.mdvn.tag.sapi.domain.RetrieveTagListResponse;
 import com.mdvns.mdvn.tag.sapi.domain.entity.Tag;
 import com.mdvns.mdvn.tag.sapi.repository.TagRepository;
 import com.mdvns.mdvn.tag.sapi.service.TagService;
@@ -34,8 +32,10 @@ public class TagServiceImpl implements TagService {
     @Autowired
     private TagRepository tagRepository;
 
+
     @Autowired
     private Tag tag;
+
 
     /**
      * @param tg
@@ -65,7 +65,7 @@ public class TagServiceImpl implements TagService {
      * @return
      */
     @Override
-    public ResponseEntity<?> findByName(String name) {
+    public ResponseEntity<Tag> findByName(String name) {
         tag = this.tagRepository.findByName(name);
         return ResponseEntity.ok(tag);
     }
@@ -77,7 +77,7 @@ public class TagServiceImpl implements TagService {
      * @return 跟新后的标签
      */
     @Override
-    public ResponseEntity<?> updateQupteCnt(String tagId) {
+    public ResponseEntity<Tag> updateQupteCnt(String tagId) {
 
         tag = this.tagRepository.findByTagId(tagId);
         if (tag == null) {
@@ -90,27 +90,27 @@ public class TagServiceImpl implements TagService {
 
 
     /**
-     * 获取标签列表 按应用次数降序排列 支持分页
-     *
-     * @param retrieveTagListRequest
+     * 获取标签：分页，排序
+     * @param page
+     * @param pageSize
+     * @param sortBy
      * @return
+     * @throws SQLException
      */
     @Override
-    public ResponseEntity<?> rtrvTagList(RetrieveTagListRequest retrieveTagListRequest) throws SQLException{
+    public ResponseEntity<Page<Tag>> rtrvTagList(Integer page, Integer pageSize, String sortBy) throws SQLException{
 
-        Integer page = (retrieveTagListRequest.getPage() == null) ? 0 : retrieveTagListRequest.getPage();
-
-        Integer size = retrieveTagListRequest.getPageSize();
-        Integer pageSize = (null == retrieveTagListRequest.getPageSize()) ? 6 : retrieveTagListRequest.getPageSize();
-        String sortBy = (retrieveTagListRequest.getSortBy() == null) ? "quoteCnt" : retrieveTagListRequest.getSortBy();
+        sortBy = (sortBy== null) ? "quoteCnt" : sortBy;
         PageRequest pageable = new PageRequest(page, pageSize, Sort.Direction.DESC, sortBy);
         Page<Tag> tagPage = null;
         tagPage = this.tagRepository.findAll(pageable);
-        RetrieveTagListResponse retrieveTagListResponse = new RetrieveTagListResponse();
-        retrieveTagListResponse.setTags(tagPage.getContent());
-        retrieveTagListResponse.setTotalNumber(tagPage.getTotalElements());
-
         return ResponseEntity.ok(tagPage);
+    }
+
+    @Override
+    public ResponseEntity<?> rtrvTagList() {
+
+        return ResponseEntity.ok(this.tagRepository.findAll());
     }
 
 }

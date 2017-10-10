@@ -17,7 +17,6 @@ import java.sql.SQLException;
  */
 
 @RestController
-@RequestMapping(value={"/tags", "/V1.0"})
 public class TagController {
 
     private Logger LOG = LoggerFactory.getLogger(TagController.class);
@@ -26,37 +25,32 @@ public class TagController {
     @Autowired
     private TagService tagService;
 
-
-    /*注入Tag*/
-    private ResponseEntity<Tag> tag;
-
-
     /**
      * 新建标签
      *
      * @param tg
      * @return
      */
-    @PostMapping("/tag")
-    public ResponseEntity<?> saveTag(@RequestBody Tag tg){
-
+    @PostMapping("/tags/tag")
+    public ResponseEntity<?> saveTag(@RequestBody Tag tg) throws SQLException {
         LOG.info("开始执行 createTag 方法.");
-        try {
-            return this.tagService.saveTag(tg);
-        } catch (SQLException e) {
-            throw new BusinessException(""+e.getErrorCode(), e.getMessage());
-        }
+        return this.tagService.saveTag(tg);
     }
-
 
     /**
      * 获取Tag列表，分页/排序
      */
 
     @PostMapping(value = "/tags")
-    public ResponseEntity<?> rtrvTagList(@RequestBody RetrieveTagListRequest retrieveTagListRequest) throws SQLException {
+    public ResponseEntity<?> rtrvTagList(@RequestBody RetrieveTagListRequest retrieveTagListRequest) throws SQLException, BusinessException {
 
-        return this.tagService.rtrvTagList(retrieveTagListRequest);
+        Integer page = retrieveTagListRequest.getPage();
+        Integer pageSize = retrieveTagListRequest.getPageSize();
+        if (null==page||pageSize==null) {
+            return this.tagService.rtrvTagList();
+        }
+
+        return this.tagService.rtrvTagList(page, pageSize, retrieveTagListRequest.getSortBy());
     }
 
     /**
@@ -65,8 +59,8 @@ public class TagController {
      * @param name 标签名称
      * @return Tag
      */
-    @PostMapping(value = "/tag/{name}")
-    public ResponseEntity<?> findByName(@PathVariable String name) {
+    @PostMapping(value = "/tags/tag/{name}")
+    public ResponseEntity<Tag> findByName(@PathVariable String name) {
         return this.tagService.findByName(name);
     }
 
@@ -76,9 +70,8 @@ public class TagController {
      * @param tagId
      * @return
      */
-    @PostMapping(value = "/{tagId}")
-    public ResponseEntity<?> updateQuoteCnt(@PathVariable String tagId) {
-
+    @PostMapping(value = "/tags/{tagId}")
+    public ResponseEntity<Tag> updateQuoteCnt(@PathVariable String tagId) {
         return this.tagService.updateQupteCnt(tagId);
     }
 

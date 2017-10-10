@@ -2,6 +2,7 @@ package com.mdvns.mdvn.tag.sapi.service;
 
 import com.mdvns.mdvn.tag.sapi.domain.RetrieveTagListRequest;
 import com.mdvns.mdvn.tag.sapi.domain.entity.Tag;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 
 import java.sql.SQLException;
@@ -16,12 +17,12 @@ public interface TagService {
     ResponseEntity<?> saveTag(Tag tag) throws SQLException;
 
     /*根据名称查询标签*/
-    ResponseEntity<?> findByName(String name);
+    ResponseEntity<Tag> findByName(String name);
 
     /*更新标签引用次数*/
-    ResponseEntity<?> updateQupteCnt(String tagId);
+    ResponseEntity<Tag> updateQupteCnt(String tagId);
 
-    ResponseEntity<?> rtrvTagList(RetrieveTagListRequest retrieveTagListRequest) throws SQLException;
+    ResponseEntity<Page<Tag>> rtrvTagList(Integer page, Integer pageSize, String sortBy) throws SQLException;
 
-
+    ResponseEntity<?> rtrvTagList();
 }
