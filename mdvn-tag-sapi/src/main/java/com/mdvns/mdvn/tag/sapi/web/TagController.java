@@ -16,6 +16,7 @@ import java.sql.SQLException;
  * 标签SAPI控制层
  */
 
+@RequestMapping(value={"/tags", "/tags/V0.1"})
 @RestController
 public class TagController {
 
@@ -31,7 +32,7 @@ public class TagController {
      * @param tg
      * @return
      */
-    @PostMapping("/tags/tag")
+    @PostMapping("/tag")
     public ResponseEntity<?> saveTag(@RequestBody Tag tg) throws SQLException {
         LOG.info("开始执行 createTag 方法.");
         return this.tagService.saveTag(tg);
@@ -41,7 +42,7 @@ public class TagController {
      * 获取Tag列表，分页/排序
      */
 
-    @PostMapping(value = "/tags")
+    @PostMapping
     public ResponseEntity<?> rtrvTagList(@RequestBody RetrieveTagListRequest retrieveTagListRequest) throws SQLException, BusinessException {
 
         Integer page = retrieveTagListRequest.getPage();
@@ -59,7 +60,7 @@ public class TagController {
      * @param name 标签名称
      * @return Tag
      */
-    @PostMapping(value = "/tags/tag/{name}")
+    @PostMapping(value = "/tag/{name}")
     public ResponseEntity<Tag> findByName(@PathVariable String name) {
         return this.tagService.findByName(name);
     }
@@ -70,7 +71,7 @@ public class TagController {
      * @param tagId
      * @return
      */
-    @PostMapping(value = "/tags/{tagId}")
+    @PostMapping(value = "/{tagId}")
     public ResponseEntity<Tag> updateQuoteCnt(@PathVariable String tagId) {
         return this.tagService.updateQupteCnt(tagId);
     }
