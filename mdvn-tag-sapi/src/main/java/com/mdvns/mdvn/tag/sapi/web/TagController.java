@@ -50,7 +50,6 @@ public class TagController {
         if (null==page||pageSize==null) {
             return this.tagService.rtrvTagList();
         }
-
         return this.tagService.rtrvTagList(page, pageSize, retrieveTagListRequest.getSortBy());
     }
 

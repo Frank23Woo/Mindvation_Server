@@ -49,6 +49,14 @@ public class Tag {
     /*是否已删除*/
     private Integer isDeleted;
 
+    public Integer getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Integer isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
     public Integer getUuid() {
         return uuid;
     }

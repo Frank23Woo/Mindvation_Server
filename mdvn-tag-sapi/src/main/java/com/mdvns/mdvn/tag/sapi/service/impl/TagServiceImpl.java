@@ -50,11 +50,12 @@ public class TagServiceImpl implements TagService {
         Timestamp createTime = new Timestamp(System.currentTimeMillis());
         tg.setCreateTime(createTime);
         tg.setQuoteCnt(0);
+        tg.setIsDeleted(0);
         //数据保存后tagId没有生成
         tag = this.tagRepository.save(tg);
-        tag = this.tagRepository.findOne(tag.getUuid());
+        tag.setTagId("T"+tag.getUuid());
+        tag = this.tagRepository.saveAndFlush(tag);
         LOG.info("执行结束{} createTag()方法.", this.CLASS);
-
         return ResponseEntity.ok(tag);
     }
 
@@ -98,7 +99,7 @@ public class TagServiceImpl implements TagService {
      * @throws SQLException
      */
     @Override
-    public ResponseEntity<Page<Tag>> rtrvTagList(Integer page, Integer pageSize, String sortBy) throws SQLException{
+    public ResponseEntity<?> rtrvTagList(Integer page, Integer pageSize, String sortBy) throws SQLException{
 
         sortBy = (sortBy== null) ? "quoteCnt" : sortBy;
         PageRequest pageable = new PageRequest(page, pageSize, Sort.Direction.DESC, sortBy);
