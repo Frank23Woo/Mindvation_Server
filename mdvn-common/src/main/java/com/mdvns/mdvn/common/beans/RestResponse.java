@@ -1,7 +1,6 @@
 package com.mdvns.mdvn.common.beans;
 
 import com.google.gson.Gson;
-import com.mdvns.mdvn.common.beans.exception.ReturnFormat;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
