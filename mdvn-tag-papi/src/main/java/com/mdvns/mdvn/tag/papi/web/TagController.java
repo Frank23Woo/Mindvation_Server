@@ -1,13 +1,14 @@
 package com.mdvns.mdvn.tag.papi.web;
 
 
-import com.mdvns.mdvn.common.beans.RestDefaultResponse;
+import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.tag.papi.domain.*;
 import com.mdvns.mdvn.tag.papi.service.TagService;
 import com.mdvns.mdvn.tag.papi.utils.LogUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -36,9 +37,6 @@ public class TagController {
     @Autowired
     private CreateTagResponse createTagResponse;
 
-    @Autowired
-    private RestDefaultResponse restDefaultResponse;
-
 
     /**
      * 新建标签
@@ -47,15 +45,13 @@ public class TagController {
      * @return
      */
     @PostMapping("/createTag")
-    public RestDefaultResponse createTag(@RequestBody @Validated CreateTagRequest request, BindingResult bindingResult) throws BindException {
+    public ResponseEntity<?> createTag(@RequestBody @Validated CreateTagRequest request, BindingResult bindingResult) throws BindException {
         LOG.info("开始执行 createTag 方法.");
         if (bindingResult.hasErrors()) {
             LogUtil.errorLog("请求参数不正确");
             throw new BindException(bindingResult);
         }
-        restDefaultResponse = this.tagService.createTag(request);
-        LOG.info("执行结束 createTag 方法.");
-        return restDefaultResponse;
+        return this.tagService.createTag(request);
     }
 
 
@@ -66,13 +62,13 @@ public class TagController {
      * @return
      */
     @PostMapping(value = "/rtrvTagList")
-    public RetrieveTagListResponse rtrvTagList(@RequestBody RetrieveTagListRequest retrieveTagListRequest) {
+    public RestResponse rtrvTagList(@RequestBody RetrieveTagListRequest retrieveTagListRequest) {
 
         return this.tagService.rtrvTagList(retrieveTagListRequest);
     }
 
     @PostMapping(value = "/updateQuoteCnt")
-    public Tag updateQuoteCnt(@RequestBody UpdateQuoteCntRequest updateQuoteCntRequest) {
+    public ResponseEntity<?> updateQuoteCnt(@RequestBody UpdateQuoteCntRequest updateQuoteCntRequest) {
         return this.tagService.updateQuoteCnt(updateQuoteCntRequest);
     }
 

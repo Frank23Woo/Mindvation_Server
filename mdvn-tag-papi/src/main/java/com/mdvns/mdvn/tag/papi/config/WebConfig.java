@@ -11,13 +11,24 @@ public class WebConfig {
     private String saveTagUrl;
 
     //保存完tag通过触发器获取其tagId
-    private String getTagIdByUuIdUrl;
+    private String findTagIdByUuIdUrl;
 
     /*获取标签列表Url*/
     private String rtrvTagListUrl;
 
     /*更新标签引用次数Url*/
     private String updateQuoteCntUrl;
+
+    /*获取指定名称的标签Url*/
+    private String findByNameUrl;
+
+    public String getFindByNameUrl() {
+        return findByNameUrl;
+    }
+
+    public void setFindByNameUrl(String findByNameUrl) {
+        this.findByNameUrl = findByNameUrl;
+    }
 
     public String getUpdateQuoteCntUrl() {
         return updateQuoteCntUrl;
@@ -43,11 +54,11 @@ public class WebConfig {
         this.rtrvTagListUrl = rtrvTagListUrl;
     }
 
-    public String getGetTagIdByUuIdUrl() {
-        return getTagIdByUuIdUrl;
+    public String getFindTagIdByUuIdUrl() {
+        return findTagIdByUuIdUrl;
     }
 
-    public void setGetTagIdByUuIdUrl(String getTagIdByUuIdUrl) {
-        this.getTagIdByUuIdUrl = getTagIdByUuIdUrl;
+    public void setFindTagIdByUuIdUrl(String findTagIdByUuIdUrl) {
+        this.findTagIdByUuIdUrl = findTagIdByUuIdUrl;
     }
 }

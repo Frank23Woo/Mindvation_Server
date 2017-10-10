@@ -1,16 +1,16 @@
-package com.mdvns.mdvn.tag.papi.domain;
+package com.mdvns.mdvn.tag.sapi.domain;
 
-import org.springframework.stereotype.Component;
+import com.mdvns.mdvn.tag.sapi.domain.entity.Tag;
 
 import java.util.List;
 
-@Component
 public class RetrieveTagListResponse {
 
     private List<Tag> tags;
 
-    private List<String> remarks;
+    private Long totalNumber;
 
+    private List<String> remarks;
 
     public List<Tag> getTags() {
         return tags;
@@ -18,6 +18,14 @@ public class RetrieveTagListResponse {
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
+    }
+
+    public Long getTotalNumber() {
+        return totalNumber;
+    }
+
+    public void setTotalNumber(Long totalNumber) {
+        this.totalNumber = totalNumber;
     }
 
     public List<String> getRemarks() {
