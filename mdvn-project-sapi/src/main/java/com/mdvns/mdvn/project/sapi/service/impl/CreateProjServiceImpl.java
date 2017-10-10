@@ -81,9 +81,9 @@ public class CreateProjServiceImpl implements ICreateProjService {
     public ResponseEntity<?> saveProject(CreateProjectRequest createProjectRequest) {
         Project proj = new Project();
         //先保存项目基本信息
-        if (createProjectRequest == null || createProjectRequest.getStaffId() == null ||
-                createProjectRequest.getName() == null || createProjectRequest.getDescription() == null ||
-                createProjectRequest.getStartDate() ==null || createProjectRequest.getEndDate() ==null) {
+        if (StringUtils.isEmpty(createProjectRequest) || StringUtils.isEmpty(createProjectRequest.getStaffId())||
+                StringUtils.isEmpty(createProjectRequest.getName())|| StringUtils.isEmpty(createProjectRequest.getDescription()) ||
+                StringUtils.isEmpty(createProjectRequest.getStartDate()) || StringUtils.isEmpty(createProjectRequest.getEndDate())) {
             throw new NullPointerException("createProjectRequest 或员工Id不能为空 或项目名称不能为空 或项目描述不能为空 或者项目开始结束时间不能为空");
         }
         proj.setName(createProjectRequest.getName());

@@ -52,10 +52,6 @@
 		<dependency>
 			<groupId>com.mdvns.mdvn</groupId>
 			<artifactId>mdvn-common</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.mdvns.mdvn</groupId>
-			<artifactId>mdvn-common</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

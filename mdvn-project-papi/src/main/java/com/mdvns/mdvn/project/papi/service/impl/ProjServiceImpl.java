@@ -69,9 +69,9 @@ public class ProjServiceImpl implements IProjService {
         CreateProjectResponse createProjectResponse = new CreateProjectResponse();
 
         //1.先保存项目基本信息（获取projId）
-        if (createProjectRequest == null || createProjectRequest.getStaffId() == null ||
-                createProjectRequest.getName() == null || createProjectRequest.getDescription() == null ||
-                createProjectRequest.getStartDate() ==null || createProjectRequest.getEndDate() ==null) {
+        if (StringUtils.isEmpty(createProjectRequest) || StringUtils.isEmpty(createProjectRequest.getStaffId()) ||
+                StringUtils.isEmpty(createProjectRequest.getName())|| StringUtils.isEmpty(createProjectRequest.getDescription()) ||
+                StringUtils.isEmpty(createProjectRequest.getStartDate()) || StringUtils.isEmpty(createProjectRequest.getEndDate())) {
             throw new NullPointerException("createProjectRequest 或员工Id不能为空 或项目名称不能为空 或项目描述不能为空 或者项目开始结束时间不能为空");
         }
         String saveProjectBaseUrl = config.getSaveProjectBaseUrl();
