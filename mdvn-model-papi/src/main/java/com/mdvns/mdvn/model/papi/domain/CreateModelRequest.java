@@ -13,8 +13,8 @@ import java.util.List;
 public class CreateModelRequest {
 
     /*新建模型名稱*/
-    @NotBlank(message = "标签名称不能为空")
-    @Size(max=100, message = "标签名称过长")
+    @NotBlank(message = "模块名称不能为空")
+    @Size(max=100, message = "模块名称过长")
     private String name;
 
     /*新建模型人的编号*/
@@ -23,8 +23,8 @@ public class CreateModelRequest {
     private String creatorId;
 
     /*標簽色值*/
-    @NotBlank(message = "标签色值不能为空")
-    @Size(max = 10, message = "色值编码不正确")
+//    @NotBlank(message = "模块色值不能为空")
+//    @Size(max = 10, message = "色值编码不正确")
     private String color;
     //模型类型
     private String modelType;

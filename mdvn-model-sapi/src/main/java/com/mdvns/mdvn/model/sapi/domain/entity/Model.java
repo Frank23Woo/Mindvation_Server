@@ -1,4 +1,4 @@
-package com.mdvns.mdvn.model.sapi.entity;
+package com.mdvns.mdvn.model.sapi.domain.entity;
 
 import org.springframework.stereotype.Component;
 
@@ -35,6 +35,9 @@ public class Model {
     private String color;
 
     private Timestamp createTime;
+
+    /*是否已删除*/
+    private Integer isDeleted;
 
     public String getName() {
         return name;
@@ -106,5 +109,13 @@ public class Model {
 
     public void setParentId(String parentId) {
         this.parentId = parentId;
+    }
+
+    public Integer getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Integer isDeleted) {
+        this.isDeleted = isDeleted;
     }
 }

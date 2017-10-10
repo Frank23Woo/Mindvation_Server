@@ -17,13 +17,15 @@ public class Model {
     private String modelType;
     //父模型Id
     private String parentId;
-
     // 创建人ID
     private String creatorId;
 
     private String color;
 
     private Long createTime;
+
+    /*是否已删除*/
+    private Integer isDeleted;
 
     public String getName() {
         return name;
@@ -95,5 +97,13 @@ public class Model {
 
     public void setParentId(String parentId) {
         this.parentId = parentId;
+    }
+
+    public Integer getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Integer isDeleted) {
+        this.isDeleted = isDeleted;
     }
 }

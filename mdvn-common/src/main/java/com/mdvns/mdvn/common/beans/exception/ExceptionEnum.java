@@ -12,13 +12,22 @@ public enum ExceptionEnum {
 	 * 1300~1400 Project
 	 */
 	UNKNOW_EXCEPTION("555","未知错误"),
-	
+
+	//标签
 	TAG_NOT_FOUND("1000", "Tag不存在!"),
 	TAG_IS_CREATED("1001", "Tag已存在!"),
-	
+
+	//模块
+	Model_NOT_FOUND("1200", "模块不存在!"),
+	Model_IS_CREATED("1201", "模块已存在!"),
+
+	//用户
 	USER_NOT_FOUND("101", "用户不存在!"),
 	
 	SAPI_EXCEPTION("10001", "SAPI异常");
+
+
+
 	
 	
 
