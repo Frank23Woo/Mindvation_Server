@@ -15,8 +15,6 @@ public class ProjConfig {
     private String createProjectUrl;
     //创建project时保存project基础信息
     private String saveProjectBaseUrl;
-    //通过uuId获取项目的projId(触发器引发的问题)
-    private String getProjIdByUuIdUrl;
     //创建project时保存leaders基础信息
     private String savePLeadersUrl;
     //创建project时保存tags信息
@@ -25,8 +23,6 @@ public class ProjConfig {
     private String savePModelsUrl;
     //创建project时保存checklists信息
     private String saveCheckListsUrl;
-    //通过checklist的uuid查询它的checklistId
-    private String getChecklistsListByUuIdUrl;
     //通过checklist的uuid查询它的checklistId(详细Staff)
     private String checklistsListByUuIdUrl;
     //创建project时保存AttchUrls信息
@@ -80,14 +76,6 @@ public class ProjConfig {
         this.saveProjectBaseUrl = saveProjectBaseUrl;
     }
 
-    public String getGetProjIdByUuIdUrl() {
-        return getProjIdByUuIdUrl;
-    }
-
-    public void setGetProjIdByUuIdUrl(String getProjIdByUuIdUrl) {
-        this.getProjIdByUuIdUrl = getProjIdByUuIdUrl;
-    }
-
     public String getSavePTagsUrl() {
         return savePTagsUrl;
     }
@@ -110,14 +98,6 @@ public class ProjConfig {
 
     public void setSaveCheckListsUrl(String saveCheckListsUrl) {
         this.saveCheckListsUrl = saveCheckListsUrl;
-    }
-
-    public String getGetChecklistsListByUuIdUrl() {
-        return getChecklistsListByUuIdUrl;
-    }
-
-    public void setGetChecklistsListByUuIdUrl(String getChecklistsListByUuIdUrl) {
-        this.getChecklistsListByUuIdUrl = getChecklistsListByUuIdUrl;
     }
 
     public String getSavePAttchUrlsUrl() {

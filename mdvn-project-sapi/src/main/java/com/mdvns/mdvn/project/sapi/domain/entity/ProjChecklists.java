@@ -13,7 +13,7 @@ public class ProjChecklists {
 
     @Id
     @GeneratedValue
-    private Integer uu_id;
+    private Integer uuId;
     //任务ID
     private String checkListId;
     //projectID
@@ -49,12 +49,12 @@ public class ProjChecklists {
     private Integer isDeleted;
 
 
-    public Integer getUu_id() {
-        return uu_id;
+    public Integer getUuId() {
+        return uuId;
     }
 
-    public void setUu_id(Integer uu_id) {
-        this.uu_id = uu_id;
+    public void setUuId(Integer uuId) {
+        this.uuId = uuId;
     }
 
     public String getProjId() {

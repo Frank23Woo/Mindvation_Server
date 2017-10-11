@@ -352,8 +352,10 @@ public class UpdateProjServiceImpl implements IUpdateProjService {
                 list.getCheckLists().get(i).setCreateTime(currentTime);
 //                    list.getCheckLists().get(i).setLastUpdateTime(currentTime);
                 list.getCheckLists().get(i).setIsDeleted(0);
-                ProjChecklists pChecklists = projChecklistsRepository.save(list.getCheckLists().get(i));
-                uuIds.add(pChecklists.getUu_id());
+                ProjChecklists pChecklist = projChecklistsRepository.saveAndFlush(list.getCheckLists().get(i));
+                pChecklist.setCheckListId("T"+pChecklist.getUuId());
+                ProjChecklists pChecklists = projChecklistsRepository.saveAndFlush(pChecklist);
+                uuIds.add(pChecklists.getUuId());
 //                returnList.add(pChecklists);
             } else {
                 //修改checkList
@@ -364,7 +366,7 @@ public class UpdateProjServiceImpl implements IUpdateProjService {
                 if (record == null) {
                     throw new NullPointerException("Record cannot be found");
                 }
-                uuIds.add(record.getUu_id());
+                uuIds.add(record.getUuId());
 
             /* Determine if the attributes of this record need to be updated*/
                 if (!StringUtils.isEmpty(list.getCheckLists().get(i).getCheckListDesc()) && (!list.getCheckLists().get(i).getCheckListDesc().equals(record.getCheckListDesc()))) {
@@ -418,7 +420,6 @@ public class UpdateProjServiceImpl implements IUpdateProjService {
         this.jdbcTemplate.update(sql);
         //查询数据库中有效的项目checkList
         List<ProjChecklists> projChecklists = this.projChecklistsRepository.findPChecklists(list.getProjId());
-
         returnList.addAll(projChecklists);
         LOG.info("finish executing updateProjChecklists()方法.", this.CLASS);
         return returnList;

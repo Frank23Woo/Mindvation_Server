@@ -16,8 +16,6 @@ public interface ICreateProjService {
     //创建project时保存project(基本信息)
     ResponseEntity<?> saveProject(CreateProjectRequest request);
 //    Project saveProject(CreateProjectRequest createProjectRequest);
-    //通过uuId获取项目的projId(触发器引发的问题)
-    Project getProjIdByUuId(Project proj);
     //创建project时保存leaders信息
     List<ProjLeaders> saveProjLeaders(List<ProjLeaders> leaders);
     //创建project时保存标签信息
@@ -28,8 +26,6 @@ public interface ICreateProjService {
     List<ProjChecklists> saveCheckLists(SavePCheckListsRequest request);
 
     List<ProjChecklistsDetail> getChecklistIdByUuId(UpdatePCheckListsRequest request);
-    //通过checklist的uuid查询它的checklistId
-    List<ProjChecklists> getChecklistIdByUuId(List<ProjChecklists> pChecklists);
     //创建project时保存附件信息
     List<ProjAttchUrls> savePAttchUrls(List<ProjAttchUrls>  request);
 

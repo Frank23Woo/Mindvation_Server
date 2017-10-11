@@ -41,16 +41,6 @@ public class CreateProjController {
     }
 
     /**
-     * 通过uuId获取项目的projId(触发器引发的问题)
-     * @param proj
-     * @return
-     */
-    @PostMapping(value="/getProjIdByUuId")
-    public Project getProjIdByUuId(@RequestBody Project proj){
-        Project pro = projService.getProjIdByUuId(proj);
-        return pro;
-    }
-    /**
      * 创建project时保存负责人信息
      * @param leaders
      * @return
@@ -91,16 +81,6 @@ public class CreateProjController {
     public List<ProjChecklists> saveCheckLists(@RequestBody SavePCheckListsRequest request){
         List<ProjChecklists> projChecklists = projService.saveCheckLists(request);
         return projChecklists;
-    }
-    /**
-     * 通过checklist的uuid查询它的checklistId
-     * @param pChecklists
-     * @return
-     */
-    @PostMapping(value="/getChecklistsListByUuId")
-    public List<ProjChecklists> getChecklistsListByUuId(@RequestBody List<ProjChecklists> pChecklists){
-        List<ProjChecklists> checklistsList = projService.getChecklistIdByUuId(pChecklists);
-        return checklistsList;
     }
 
     /**

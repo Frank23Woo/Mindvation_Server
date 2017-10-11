@@ -108,25 +108,12 @@ public class CreateProjServiceImpl implements ICreateProjService {
         if (!StringUtils.isEmpty(createProjectRequest.getContingency())) {
             proj.setContingency(createProjectRequest.getContingency());
         }
-        Project project = projectRepository.save(proj);
-        ResponseEntity<?> responseEntity = new ResponseEntity<Object>(project, HttpStatus.OK);
+        Project project = projectRepository.saveAndFlush(proj);
+        project.setProjId("P"+project.getUuId());
+        Project pro = projectRepository.saveAndFlush(project);
+        ResponseEntity<?> responseEntity = new ResponseEntity<Object>(pro, HttpStatus.OK);
 //        return ReturnFormat.retParam(HttpStatus.OK.toString(), "000", project);
         return responseEntity;
-    }
-
-
-    /**
-     * 通过uuId获取项目的projId(触发器引发的问题)
-     *
-     * @param proj
-     * @return
-     */
-    @Override
-    public Project getProjIdByUuId(Project proj) {
-        Integer uuId = proj.getUuId();
-        String projId = projectRepository.getProjId(uuId);
-        proj.setProjId(projId);
-        return proj;
     }
 
     /**
@@ -190,40 +177,21 @@ public class CreateProjServiceImpl implements ICreateProjService {
             request.getCheckLists().get(i).setCreatorId(request.getStaffId());
         }
         List<ProjChecklists> pChecklists = projChecklistsRepository.save(request.getCheckLists());
-        return pChecklists;
-    }
-
-    /**
-     * 通过checklist的uuid查询它的checklistId(触发器的原因)
-     *
-     * @param pChecklists
-     * @return
-     */
-    @Override
-    public List<ProjChecklists> getChecklistIdByUuId(List<ProjChecklists> pChecklists) {
-        for (int i = 0; i < pChecklists.size(); i++) {
-            Integer uuid = pChecklists.get(i).getUu_id();
-            String checklistId = projChecklistsRepository.getPChecklistId(uuid);
-            pChecklists.get(i).setCheckListId(checklistId);
-//            pChecklists.get(i).setIsDeleted(0);
+        for (int j = 0; j <pChecklists.size(); j++) {
+            pChecklists.get(j).setCheckListId("T"+pChecklists.get(j).getUuId());
         }
-        return pChecklists;
+        List<ProjChecklists> projChecklists = projChecklistsRepository.save(pChecklists);
+        return projChecklists;
     }
 
     /**
-     * 通过checklist的uuid查询它的checklistId(触发器的原因)(详细staff)
+     * 通过checklist的uuid查询它的checklistId(详细staff)（可与save方法合并）
      *
      * @param request
      * @return
      */
     @Override
     public List<ProjChecklistsDetail> getChecklistIdByUuId(UpdatePCheckListsRequest request) {
-        for (int i = 0; i < request.getCheckLists().size(); i++) {
-            Integer uuid = request.getCheckLists().get(i).getUu_id();
-            String checklistId = projChecklistsRepository.getPChecklistId(uuid);
-            request.getCheckLists().get(i).setCheckListId(checklistId);
-//            pChecklists.get(i).setIsDeleted(0);
-        }
         List<ProjChecklists> projChecklists = this.projChecklistsRepository.findPChecklists(request.getProjId());
         List<ProjChecklistsDetail> projChecklistsDetails = new ArrayList<>();
         for (int i = 0; i < projChecklists.size(); i++) {

@@ -75,7 +75,6 @@ public class ProjServiceImpl implements IProjService {
             throw new NullPointerException("createProjectRequest 或员工Id不能为空 或项目名称不能为空 或项目描述不能为空 或者项目开始结束时间不能为空");
         }
         String saveProjectBaseUrl = config.getSaveProjectBaseUrl();
-//        proj = restTemplate.postForObject(saveProjectBaseUrl, createProjectRequest, Project.class);
         ResponseEntity<Project> responseEntity = null;
         responseEntity = restTemplate.postForEntity(saveProjectBaseUrl,createProjectRequest, Project.class);
         restResponse.setResponseBody(responseEntity.getBody());
@@ -83,14 +82,7 @@ public class ProjServiceImpl implements IProjService {
         restResponse.setResponseMsg("请求成功");
         restResponse.setResponseCode("000");
         proj = responseEntity.getBody();
-        Integer uuId = proj.getUuId();
-        //通过uuID查询projId返回整个基本信息
-        String getProjIdByUuIdUrl = config.getGetProjIdByUuIdUrl();
-        Project pro = restTemplate.postForObject(getProjIdByUuIdUrl, proj, Project.class);
-        String projId = pro.getProjId();
-        proj.setProjId(projId);
-
-//        createProjectResponse.setProject(pro);
+        String projId = proj.getProjId();
         //2.保存项目负责人信息
         if (createProjectRequest.getLeaders()!=null && !createProjectRequest.getLeaders().isEmpty()) {
             List<ProjLeaders> projLeaders = createProjectRequest.getLeaders();
@@ -143,13 +135,6 @@ public class ProjServiceImpl implements IProjService {
             String saveCheckListsUrl = config.getSaveCheckListsUrl();
             try {
                 List<ProjChecklists> checklistsList = restTemplate.postForObject(saveCheckListsUrl, savePCheckListsRequest, List.class);
-                //通过UUid遍历保存checklistId
-                String getChecklistsListByUuIdUrl = config.getGetChecklistsListByUuIdUrl();
-                try {
-                    List<ProjChecklists> checklists = restTemplate.postForObject(getChecklistsListByUuIdUrl, checklistsList, List.class);
-                } catch (Exception ex) {
-                    throw new RuntimeException("调用SAPI获取项目checklistId信息保存数据失败.");
-                }
             } catch (Exception ex) {
                 throw new RuntimeException("调用SAPI获取项目checklist信息保存数据失败.");
             }
@@ -168,11 +153,7 @@ public class ProjServiceImpl implements IProjService {
                 throw new RuntimeException("调用SAPI获取项目附件信息保存数据失败.");
             }
         }
-        //response
-//        if (restResponse.getStatusCode().equals(HttpStatus.OK.toString())) {
             return restResponse;
-//        }
-//        throw new BusinessException(restResponse.getResponseCode(), restResponse.getResponseBody().toString());
     }
 
     /**
@@ -263,9 +244,7 @@ public class ProjServiceImpl implements IProjService {
             } catch (Exception ex) {
                 throw new RuntimeException("调用SAPI更改项目模块信息保存数据失败.");
             }
-
         }
-
         //5.判断是否更改项目checklist信息
         if (updateProjectDetailRequest.getCheckLists()!=null && !updateProjectDetailRequest.getCheckLists().isEmpty()) {
             UpdatePCheckListsRequest updatePCheckListsRequest = new UpdatePCheckListsRequest();
