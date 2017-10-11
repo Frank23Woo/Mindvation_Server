@@ -2,10 +2,8 @@ package com.mdvns.mdvn.reqmnt.papi.domain;
 
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
-public class ReqirementInfo {
+public class RequirementInfo {
     /* requirement ID */
     private String rqmntId;
     /* unique id in db */
@@ -18,6 +16,7 @@ public class ReqirementInfo {
     private String description;
     /* requirement priority*/
     private Integer priority;
+    private String functionLabelId;
     /* start date of this requirement*/
     private Long startDate;
     /* end date of this requirement*/
@@ -158,13 +157,42 @@ public class ReqirementInfo {
         this.isDeleted = isDeleted;
     }
 
+    public String getFunctionLabelId() {
+        return functionLabelId;
+    }
+
+    public void setFunctionLabelId(String functionLabelId) {
+        this.functionLabelId = functionLabelId;
+    }
+
+    @Override
+    public String toString() {
+        return "RequirementInfo{" +
+                "rqmntId='" + rqmntId + '\'' +
+                ", uuId=" + uuId +
+                ", summary='" + summary + '\'' +
+                ", creatorId='" + creatorId + '\'' +
+                ", description='" + description + '\'' +
+                ", priority=" + priority +
+                ", functionLabelId='" + functionLabelId + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", createTime=" + createTime +
+                ", status='" + status + '\'' +
+                ", ragStatus='" + ragStatus + '\'' +
+                ", progress=" + progress +
+                ", totalStoryPoint=" + totalStoryPoint +
+                ", remarks='" + remarks + '\'' +
+                ", isDeleted=" + isDeleted +
+                '}';
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ReqirementInfo that = (ReqirementInfo) o;
+        RequirementInfo that = (RequirementInfo) o;
 
         if (rqmntId != null ? !rqmntId.equals(that.rqmntId) : that.rqmntId != null) return false;
         if (uuId != null ? !uuId.equals(that.uuId) : that.uuId != null) return false;
@@ -172,6 +200,8 @@ public class ReqirementInfo {
         if (creatorId != null ? !creatorId.equals(that.creatorId) : that.creatorId != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
         if (priority != null ? !priority.equals(that.priority) : that.priority != null) return false;
+        if (functionLabelId != null ? !functionLabelId.equals(that.functionLabelId) : that.functionLabelId != null)
+            return false;
         if (startDate != null ? !startDate.equals(that.startDate) : that.startDate != null) return false;
         if (endDate != null ? !endDate.equals(that.endDate) : that.endDate != null) return false;
         if (createTime != null ? !createTime.equals(that.createTime) : that.createTime != null) return false;
@@ -192,6 +222,7 @@ public class ReqirementInfo {
         result = 31 * result + (creatorId != null ? creatorId.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (priority != null ? priority.hashCode() : 0);
+        result = 31 * result + (functionLabelId != null ? functionLabelId.hashCode() : 0);
         result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
         result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
         result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
@@ -202,26 +233,5 @@ public class ReqirementInfo {
         result = 31 * result + (remarks != null ? remarks.hashCode() : 0);
         result = 31 * result + (isDeleted != null ? isDeleted.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "ReqirementInfo{" +
-                "rqmntId='" + rqmntId + '\'' +
-                ", uuId=" + uuId +
-                ", summary='" + summary + '\'' +
-                ", creatorId='" + creatorId + '\'' +
-                ", description='" + description + '\'' +
-                ", priority=" + priority +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", createTime=" + createTime +
-                ", status='" + status + '\'' +
-                ", ragStatus='" + ragStatus + '\'' +
-                ", progress=" + progress +
-                ", totalStoryPoint=" + totalStoryPoint +
-                ", remarks='" + remarks + '\'' +
-                ", isDeleted=" + isDeleted +
-                '}';
     }
 }

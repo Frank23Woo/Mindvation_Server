@@ -1,7 +1,6 @@
 package com.mdvns.mdvn.reqmnt.papi.service.impl;
 
 import com.mdvns.mdvn.common.beans.RestResponse;
-import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.reqmnt.papi.config.ReqmntConfig;
 import com.mdvns.mdvn.reqmnt.papi.domain.*;
 import com.mdvns.mdvn.reqmnt.papi.service.IReqmntService;
@@ -25,7 +24,7 @@ public class ReqmntServiceImpl implements IReqmntService {
     private ReqmntConfig config;
 
     @Autowired
-    private ReqirementInfo reqirementInfo;
+    private RequirementInfo requirementInfo;
 
     @Autowired
     private RestResponse restResponse;
@@ -78,22 +77,20 @@ public class ReqmntServiceImpl implements IReqmntService {
 
 
         String saveReqmntUrl = config.getSaveReqmntUrl();
-        ResponseEntity<ReqirementInfo> responseEntity = null;
-        responseEntity = restTemplate.postForEntity(saveReqmntUrl, createReqmntRequest, ReqirementInfo.class);
+        ResponseEntity<RequirementInfo> responseEntity = null;
+        responseEntity = restTemplate.postForEntity(saveReqmntUrl, createReqmntRequest, RequirementInfo.class);
         restResponse.setResponseBody(responseEntity.getBody());
         restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
         restResponse.setResponseMsg("请求成功");
         restResponse.setResponseCode("000");
-        reqirementInfo = responseEntity.getBody();
+        requirementInfo = responseEntity.getBody();
 
 
         //2.保存requirement member信息
-
-
         if (createReqmntRequest.getMembers()!=null && !createReqmntRequest.getMembers().isEmpty()) {
             List<ReqmntMember> reqmntMembers = createReqmntRequest.getMembers();
             for (int i = 0; i < reqmntMembers.size(); i++) {
-                reqmntMembers.get(i).setReqmntId(reqirementInfo.getRqmntId());
+                reqmntMembers.get(i).setReqmntId(requirementInfo.getRqmntId());
             }
             String saveRMembersUrl = config.getSaveRMembersUrl();
             try {
@@ -103,15 +100,11 @@ public class ReqmntServiceImpl implements IReqmntService {
             }
         }
 
-
-
-
-
         //3.保存requirement标签信息
         if (createReqmntRequest.getTags()!=null && !createReqmntRequest.getTags().isEmpty()) {
             List<ReqmntTag> reqmntTags = createReqmntRequest.getTags();
             for (int i = 0; i < reqmntTags.size(); i++) {
-                reqmntTags.get(i).setReqmntId(reqirementInfo.getRqmntId());
+                reqmntTags.get(i).setReqmntId(requirementInfo.getRqmntId());
             }
             String saveRTagsUrl = config.getSaveRTagsUrl();
             try {
@@ -124,18 +117,17 @@ public class ReqmntServiceImpl implements IReqmntService {
 
         //5.保存项目checklist信息
         if (createReqmntRequest.getrCheckLists()!=null && !createReqmntRequest.getrCheckLists().isEmpty()) {
-            SaveRCheckListsRequest saveRCheckListsRequest = new SaveRCheckListsRequest();
-            List<ReqmntChecklist> reqmntChecklists = createReqmntRequest.getrCheckLists();
-            for (int i = 0; i < reqmntChecklists.size(); i++) {
-                reqmntChecklists.get(i).setReqmntId(reqirementInfo.getRqmntId());
-                reqmntChecklists.get(i).setAssignerId(createReqmntRequest.getCreatorId());
+            SaveRCheckListRequest saveRCheckListRequest = new SaveRCheckListRequest();
+            List<ReqmntCheckList> reqmntCheckLists = createReqmntRequest.getrCheckLists();
+            for (int i = 0; i < reqmntCheckLists.size(); i++) {
+                reqmntCheckLists.get(i).setReqmntId(requirementInfo.getRqmntId());
+                reqmntCheckLists.get(i).setAssignerId(createReqmntRequest.getCreatorId());
             }
-            saveRCheckListsRequest.setStaffId(createReqmntRequest.getCreatorId());
-            saveRCheckListsRequest.setCheckLists(reqmntChecklists);
+            saveRCheckListRequest.setStaffId(createReqmntRequest.getCreatorId());
+            saveRCheckListRequest.setCheckLists(reqmntCheckLists);
             String saveCheckListsUrl = config.getSaveRCheckListUrl();
             try {
-                 reqmntChecklists = restTemplate.postForObject(saveCheckListsUrl, saveRCheckListsRequest, List.class);
-
+                 reqmntCheckLists = restTemplate.postForObject(saveCheckListsUrl, saveRCheckListRequest, List.class);
             } catch (Exception ex) {
                 throw new RuntimeException("调用SAPI获取项目checklist信息保存数据失败.");
             }
@@ -144,7 +136,7 @@ public class ReqmntServiceImpl implements IReqmntService {
         if (createReqmntRequest.getAttchUrls()!=null && !createReqmntRequest.getAttchUrls().isEmpty()) {
             List<ReqmntAttchUrl> reqmntAttchUrls = createReqmntRequest.getAttchUrls();
             for (int i = 0; i < reqmntAttchUrls.size(); i++) {
-                reqmntAttchUrls.get(i).setReqmntId(reqirementInfo.getRqmntId());
+                reqmntAttchUrls.get(i).setReqmntId(requirementInfo.getRqmntId());
             }
             String saveRAttchUrl = config.getSaveRAttchUrl();
             try {

@@ -3,10 +3,8 @@ package com.mdvns.mdvn.reqmnt.papi.domain;
 
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
-
 @Component
-public class ReqmntChecklist {
+public class ReqmntCheckList {
 
     private Integer uuId;
     //任务ID
@@ -14,7 +12,7 @@ public class ReqmntChecklist {
     //projectID
     private String reqmntId;
     //任务描述
-    private String checklistDesc;
+    private String description;
     //执行者ID
     private String assigneeId;
     //设计者ID
@@ -33,6 +31,8 @@ public class ReqmntChecklist {
     private Integer isDeleted;
     //更新时间
     private Long updateTime;
+    //任务状态
+    private String status;
 
     public Integer getUuId() {
         return uuId;
@@ -58,12 +58,12 @@ public class ReqmntChecklist {
         this.reqmntId = reqmntId;
     }
 
-    public String getChecklistDesc() {
-        return checklistDesc;
+    public String getdescription() {
+        return description;
     }
 
-    public void setChecklistDesc(String checklistDesc) {
-        this.checklistDesc = checklistDesc;
+    public void setdescription(String description) {
+        this.description = description;
     }
 
     public String getAssigneeId() {
@@ -138,17 +138,46 @@ public class ReqmntChecklist {
         this.updateTime = updateTime;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "ReqmntCheckList{" +
+                "uuId=" + uuId +
+                ", checklistId='" + checklistId + '\'' +
+                ", reqmntId='" + reqmntId + '\'' +
+                ", description='" + description + '\'' +
+                ", assigneeId='" + assigneeId + '\'' +
+                ", assignerId='" + assignerId + '\'' +
+                ", createTime=" + createTime +
+                ", lastUpdateTime=" + lastUpdateTime +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", checklistStatus='" + checklistStatus + '\'' +
+                ", isDeleted=" + isDeleted +
+                ", updateTime=" + updateTime +
+                ", status='" + status + '\'' +
+                '}';
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ReqmntChecklist that = (ReqmntChecklist) o;
+        ReqmntCheckList that = (ReqmntCheckList) o;
 
         if (uuId != null ? !uuId.equals(that.uuId) : that.uuId != null) return false;
         if (checklistId != null ? !checklistId.equals(that.checklistId) : that.checklistId != null) return false;
         if (reqmntId != null ? !reqmntId.equals(that.reqmntId) : that.reqmntId != null) return false;
-        if (checklistDesc != null ? !checklistDesc.equals(that.checklistDesc) : that.checklistDesc != null)
+        if (description != null ? !description.equals(that.description) : that.description != null)
             return false;
         if (assigneeId != null ? !assigneeId.equals(that.assigneeId) : that.assigneeId != null) return false;
         if (assignerId != null ? !assignerId.equals(that.assignerId) : that.assignerId != null) return false;
@@ -160,7 +189,8 @@ public class ReqmntChecklist {
         if (checklistStatus != null ? !checklistStatus.equals(that.checklistStatus) : that.checklistStatus != null)
             return false;
         if (isDeleted != null ? !isDeleted.equals(that.isDeleted) : that.isDeleted != null) return false;
-        return updateTime != null ? updateTime.equals(that.updateTime) : that.updateTime == null;
+        if (updateTime != null ? !updateTime.equals(that.updateTime) : that.updateTime != null) return false;
+        return status != null ? status.equals(that.status) : that.status == null;
     }
 
     @Override
@@ -168,7 +198,7 @@ public class ReqmntChecklist {
         int result = uuId != null ? uuId.hashCode() : 0;
         result = 31 * result + (checklistId != null ? checklistId.hashCode() : 0);
         result = 31 * result + (reqmntId != null ? reqmntId.hashCode() : 0);
-        result = 31 * result + (checklistDesc != null ? checklistDesc.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (assigneeId != null ? assigneeId.hashCode() : 0);
         result = 31 * result + (assignerId != null ? assignerId.hashCode() : 0);
         result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
@@ -178,25 +208,7 @@ public class ReqmntChecklist {
         result = 31 * result + (checklistStatus != null ? checklistStatus.hashCode() : 0);
         result = 31 * result + (isDeleted != null ? isDeleted.hashCode() : 0);
         result = 31 * result + (updateTime != null ? updateTime.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "ReqmntChecklist{" +
-                "uuId=" + uuId +
-                ", checklistId='" + checklistId + '\'' +
-                ", reqmntId='" + reqmntId + '\'' +
-                ", checklistDesc='" + checklistDesc + '\'' +
-                ", assigneeId='" + assigneeId + '\'' +
-                ", assignerId='" + assignerId + '\'' +
-                ", createTime=" + createTime +
-                ", lastUpdateTime=" + lastUpdateTime +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", checklistStatus='" + checklistStatus + '\'' +
-                ", isDeleted=" + isDeleted +
-                ", updateTime=" + updateTime +
-                '}';
     }
 }

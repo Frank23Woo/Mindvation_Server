@@ -1,20 +1,20 @@
 config:
-  rtrvProjInfoListUrl: http://localhost:10005/mdvn-project-sapi/project/rtrvProjInfoList
-  createProjectUrl: http://localhost:10005/mdvn-project-sapi/project/createProject
-  saveProjectBaseUrl: http://localhost:10005/mdvn-project-sapi/project/saveProject
-  getProjIdByUuIdUrl: http://localhost:10005/mdvn-project-sapi/project/getProjIdByUuId
-  savePTagsUrl: http://localhost:10005/mdvn-project-sapi/project/savePTags
-  savePModelsUrl: http://localhost:10005/mdvn-project-sapi/project/savePModels
-  saveCheckListsUrl: http://localhost:10005/mdvn-project-sapi/project/savePCheckLists
-  getChecklistsListByUuIdUrl: http://localhost:10005/mdvn-project-sapi/project/getChecklistsListByUuId
-  savePAttchUrlsUrl: http://localhost:10005/mdvn-project-sapi/project/savePAttchUrls
-  savePLeadersUrl: http://localhost:10005/mdvn-project-sapi/project/savePLeaders
+#  rtrvProjInfoListUrl: http://localhost:10005/mdvn-project-sapi/project/rtrvProjInfoList
+#  createProjectUrl: http://localhost:10005/mdvn-project-sapi/project/createProject
+#  saveProjectBaseUrl: http://localhost:10005/mdvn-project-sapi/project/saveProject
+#  getProjIdByUuIdUrl: http://localhost:10005/mdvn-project-sapi/project/getProjIdByUuId
+#  savePTagsUrl: http://localhost:10005/mdvn-project-sapi/project/savePTags
+#  savePModelsUrl: http://localhost:10005/mdvn-project-sapi/project/savePModels
+#  saveCheckListsUrl: http://localhost:10005/mdvn-project-sapi/project/savePCheckLists
+#  getChecklistsListByUuIdUrl: http://localhost:10005/mdvn-project-sapi/project/getChecklistsListByUuId
+#  savePAttchUrlsUrl: http://localhost:10005/mdvn-project-sapi/project/savePAttchUrls
+#  savePLeadersUrl: http://localhost:10005/mdvn-project-sapi/project/savePLeaders
 
-  saveReqmntUrl:
-  saveRMembersUrl:
-  saveRTagsUrl:
-  saveRCheckListUrl:
-  saveRAttchUrl:
+  saveReqmntUrl: http://localhost:10012/mdvn-reqmnt-sapi/saveReqmnt
+  saveRMembersUrl: http://localhost:10012/mdvn-reqmnt-sapi/saveRMembers
+  saveRTagsUrl: http://localhost:10012/mdvn-reqmnt-sapi/saveRTags
+  saveRCheckListUrl: http://localhost:10012/mdvn-reqmnt-sapi/saveRCheckLists
+  saveRAttchUrl: http://localhost:10012/mdvn-reqmnt-sapi/saveRAttchUrls
 
 
 
