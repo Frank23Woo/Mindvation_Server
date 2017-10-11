@@ -1,6 +1,8 @@
 package com.mdvns.mdvn.project.papi.web;
 
 import com.mdvns.mdvn.common.beans.RestResponse;
+import com.mdvns.mdvn.common.beans.exception.BusinessException;
+import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
 import com.mdvns.mdvn.project.papi.domain.*;
 import com.mdvns.mdvn.project.papi.service.IProjService;
 import com.mdvns.mdvn.project.papi.utils.LogUtil;
@@ -10,8 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @CrossOrigin
@@ -23,6 +29,9 @@ public class ProjController {
 
     @Autowired
     private IProjService projService;
+
+    @Autowired
+    private RestResponse restResponse;
     /**
      * 获取project整个列表
      * @return
@@ -31,8 +40,11 @@ public class ProjController {
     public ResponseEntity<?> rtrvProjInfoList(@RequestBody @Validated RtrvProjectListRequest rtrvProjectListRequest, BindingResult bindingResult) throws BindException{
         LOG.info("开始执行 rtrvProjInfoList 方法.");
         if (bindingResult.hasErrors()) {
+            //获取对象给出的message信息
+            FieldError fieldError= bindingResult.getFieldError();
             LogUtil.errorLog("请求参数不正确");
-            throw new BindException(bindingResult);
+            ExceptionEnum.REQUEST_NOT_VALID.setErrorMsg(fieldError.getDefaultMessage());
+            throw new BusinessException(ExceptionEnum.REQUEST_NOT_VALID);
         }
         LOG.info("执行结束 rtrvProjInfoList 方法.");
         return this.projService.rtrvProjInfoList(rtrvProjectListRequest);
@@ -44,7 +56,16 @@ public class ProjController {
      * @return
      */
     @PostMapping(value="/createProject")
-    public RestResponse createProject(@RequestBody CreateProjectRequest createProjectRequest){
+    public RestResponse createProject(@RequestBody @Validated CreateProjectRequest createProjectRequest, BindingResult bindingResult) throws BindException{
+        LOG.info("开始执行 createProject 方法.");
+        if (bindingResult.hasErrors()) {
+            //获取对象给出的message信息
+            FieldError fieldError= bindingResult.getFieldError();
+            LogUtil.errorLog("请求参数不正确");
+            ExceptionEnum.REQUEST_NOT_VALID.setErrorMsg(fieldError.getDefaultMessage());
+            throw new BusinessException(ExceptionEnum.REQUEST_NOT_VALID);
+        }
+        LOG.info("执行结束 createProject 方法.");
         return projService.createProject(createProjectRequest);
     }
 
@@ -54,7 +75,16 @@ public class ProjController {
      * @return
      */
     @PostMapping(value="/updateProject")
-    public RestResponse updateProject(@RequestBody UpdateProjectDetailRequest updateProjectDetailRequest){
+    public RestResponse updateProject(@RequestBody @Validated UpdateProjectDetailRequest updateProjectDetailRequest,BindingResult bindingResult){
+        LOG.info("开始执行 updateProject 方法.");
+        if (bindingResult.hasErrors()) {
+            //获取对象给出的message信息
+            FieldError fieldError= bindingResult.getFieldError();
+            LogUtil.errorLog("请求参数不正确");
+            ExceptionEnum.REQUEST_NOT_VALID.setErrorMsg(fieldError.getDefaultMessage());
+            throw new BusinessException(ExceptionEnum.REQUEST_NOT_VALID);
+        }
+        LOG.info("执行结束 updateProject 方法.");
         return projService.updateProject(updateProjectDetailRequest);
     }
 
@@ -64,7 +94,16 @@ public class ProjController {
      * @return
      */
     @PostMapping(value="/rtrvProjectInfo")
-    public RestResponse rtrvProjectInfo(@RequestBody RtrvProjectDetailRequest rtrvProjectDetailRequest){
+    public RestResponse rtrvProjectInfo(@RequestBody @Validated RtrvProjectDetailRequest rtrvProjectDetailRequest,BindingResult bindingResult){
+        LOG.info("开始执行 rtrvProjectInfo 方法.");
+        if (bindingResult.hasErrors()) {
+            //获取对象给出的message信息
+            FieldError fieldError= bindingResult.getFieldError();
+            LogUtil.errorLog("请求参数不正确");
+            ExceptionEnum.REQUEST_NOT_VALID.setErrorMsg(fieldError.getDefaultMessage());
+            throw new BusinessException(ExceptionEnum.REQUEST_NOT_VALID);
+        }
+        LOG.info("执行结束 rtrvProjectInfo 方法.");
         return projService.rtrvProjectInfo(rtrvProjectDetailRequest);
     }
 
