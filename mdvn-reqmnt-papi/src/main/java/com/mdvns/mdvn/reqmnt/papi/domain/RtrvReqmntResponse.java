@@ -6,16 +6,16 @@ import java.util.List;
 
 @Component
 public class RtrvReqmntResponse {
-    private List<ReqirementInfo> reqirementInfos;
+    private List<RequirementInfo> requirementInfos;
 
     private List<String> remarks;
 
-    public List<ReqirementInfo> getReqirementInfos() {
-        return reqirementInfos;
+    public List<RequirementInfo> getRequirementInfos() {
+        return requirementInfos;
     }
 
-    public void setReqirementInfos(List<ReqirementInfo> reqirementInfos) {
-        this.reqirementInfos = reqirementInfos;
+    public void setRequirementInfos(List<RequirementInfo> requirementInfos) {
+        this.requirementInfos = requirementInfos;
     }
 
     public List<String> getRemarks() {
@@ -33,14 +33,14 @@ public class RtrvReqmntResponse {
 
         RtrvReqmntResponse that = (RtrvReqmntResponse) o;
 
-        if (reqirementInfos != null ? !reqirementInfos.equals(that.reqirementInfos) : that.reqirementInfos != null)
+        if (requirementInfos != null ? !requirementInfos.equals(that.requirementInfos) : that.requirementInfos != null)
             return false;
         return remarks != null ? remarks.equals(that.remarks) : that.remarks == null;
     }
 
     @Override
     public int hashCode() {
-        int result = reqirementInfos != null ? reqirementInfos.hashCode() : 0;
+        int result = requirementInfos != null ? requirementInfos.hashCode() : 0;
         result = 31 * result + (remarks != null ? remarks.hashCode() : 0);
         return result;
     }
@@ -48,7 +48,7 @@ public class RtrvReqmntResponse {
     @Override
     public String toString() {
         return "RtrvReqmntResponse{" +
-                "reqirementInfos=" + reqirementInfos +
+                "reqirementInfos=" + requirementInfos +
                 ", remarks=" + remarks +
                 '}';
     }

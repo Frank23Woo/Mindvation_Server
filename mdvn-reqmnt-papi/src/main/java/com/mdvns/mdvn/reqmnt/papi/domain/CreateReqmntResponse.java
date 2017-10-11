@@ -7,16 +7,16 @@ import java.util.List;
 
 @Component
 public class CreateReqmntResponse {
-    private ReqirementInfo reqirementInfo;
+    private RequirementInfo requirementInfo;
 
     private List<String> remarks;
 
-    public ReqirementInfo getReqirementInfo() {
-        return reqirementInfo;
+    public RequirementInfo getRequirementInfo() {
+        return requirementInfo;
     }
 
-    public void setReqirementInfo(ReqirementInfo reqirementInfo) {
-        this.reqirementInfo = reqirementInfo;
+    public void setRequirementInfo(RequirementInfo requirementInfo) {
+        this.requirementInfo = requirementInfo;
     }
 
     public List<String> getRemarks() {
@@ -34,14 +34,14 @@ public class CreateReqmntResponse {
 
         CreateReqmntResponse that = (CreateReqmntResponse) o;
 
-        if (reqirementInfo != null ? !reqirementInfo.equals(that.reqirementInfo) : that.reqirementInfo != null)
+        if (requirementInfo != null ? !requirementInfo.equals(that.requirementInfo) : that.requirementInfo != null)
             return false;
         return remarks != null ? remarks.equals(that.remarks) : that.remarks == null;
     }
 
     @Override
     public int hashCode() {
-        int result = reqirementInfo != null ? reqirementInfo.hashCode() : 0;
+        int result = requirementInfo != null ? requirementInfo.hashCode() : 0;
         result = 31 * result + (remarks != null ? remarks.hashCode() : 0);
         return result;
     }
@@ -49,7 +49,7 @@ public class CreateReqmntResponse {
     @Override
     public String toString() {
         return "CreateReqmntResponse{" +
-                "reqirementInfo=" + reqirementInfo +
+                "reqirementInfo=" + requirementInfo +
                 ", remarks=" + remarks +
                 '}';
     }
