@@ -254,7 +254,7 @@ public class ProjServiceImpl implements IProjService {
             String updateProjChecklistsUrl = config.getUpdateProjChecklistsUrl();
             try {
                 List<ProjChecklists> pChecklists = restTemplate.postForObject(updateProjChecklistsUrl, updatePCheckListsRequest, List.class);
-                //通过UUid遍历保存checklistId
+                //获取checklist里面成员的对象信息
                 UpdatePCheckListsRequest pCheckListsRequest = new UpdatePCheckListsRequest();
                 pCheckListsRequest.setProjId(updateProjectDetailRequest.getProjId());
                 pCheckListsRequest.setCheckLists(pChecklists);
