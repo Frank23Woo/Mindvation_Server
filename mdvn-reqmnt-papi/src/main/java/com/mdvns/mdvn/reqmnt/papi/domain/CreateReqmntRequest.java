@@ -6,7 +6,8 @@ import java.util.List;
 
 @Component
 public class CreateReqmntRequest {
-
+    /* project ID */
+    private String projId;
 
     /* staff id of creator*/
     private String creatorId;
@@ -139,6 +140,14 @@ public class CreateReqmntRequest {
         this.remarks = remarks;
     }
 
+    public String getProjId() {
+        return projId;
+    }
+
+    public void setProjId(String projId) {
+        this.projId = projId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -146,6 +155,7 @@ public class CreateReqmntRequest {
 
         CreateReqmntRequest that = (CreateReqmntRequest) o;
 
+        if (projId != null ? !projId.equals(that.projId) : that.projId != null) return false;
         if (creatorId != null ? !creatorId.equals(that.creatorId) : that.creatorId != null) return false;
         if (summary != null ? !summary.equals(that.summary) : that.summary != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
@@ -164,7 +174,8 @@ public class CreateReqmntRequest {
 
     @Override
     public int hashCode() {
-        int result = creatorId != null ? creatorId.hashCode() : 0;
+        int result = projId != null ? projId.hashCode() : 0;
+        result = 31 * result + (creatorId != null ? creatorId.hashCode() : 0);
         result = 31 * result + (summary != null ? summary.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (priority != null ? priority.hashCode() : 0);
@@ -183,7 +194,8 @@ public class CreateReqmntRequest {
     @Override
     public String toString() {
         return "CreateReqmntRequest{" +
-                "creatorId='" + creatorId + '\'' +
+                "projId='" + projId + '\'' +
+                ", creatorId='" + creatorId + '\'' +
                 ", summary='" + summary + '\'' +
                 ", description='" + description + '\'' +
                 ", priority=" + priority +

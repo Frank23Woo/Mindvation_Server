@@ -16,6 +16,7 @@ public class CreateReqmntRequestTest {
 
 
         CreateReqmntRequest createReqmntRequest = new CreateReqmntRequest();
+        createReqmntRequest.setProjId("P1");
         createReqmntRequest.setCreatorId("staff123");
         createReqmntRequest.setSummary("Summary123");
         createReqmntRequest.setDescription("Desc123");

@@ -12,7 +12,7 @@ import java.util.List;
 public interface ICreateReqmntService {
 
     //获取project整个列表
-    RestResponse rtrvProjInfoList(RtrvProjectListRequest request) throws SQLException;
+    ResponseEntity<?> rtrvReqmntList(RtrvReqmntListRequest request) throws SQLException;
     //创建project时保存project(基本信息)
     ResponseEntity<?> saveReqmnt(CreateReqmntRequest request);
     //创建requirement保存成员信息
