@@ -2,6 +2,8 @@ package com.mdvns.mdvn.staff.papi.web;
 
 import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.staff.papi.domain.RetrieveStaffListRequest;
+import com.mdvns.mdvn.staff.papi.domain.RtrvStaffInfoRequest;
+import com.mdvns.mdvn.staff.papi.domain.RtrvStaffListByStaffIbListRequest;
 import com.mdvns.mdvn.staff.papi.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +16,34 @@ public class StaffController {
     @Autowired
     private StaffService staffService;
 
+    /**
+     * 获取staff列表信息
+     * @param retrieveStaffListRequest
+     * @return
+     */
     @PostMapping(value = "/rtrvStaffList")
     public RestResponse rtrvStaffList(@RequestBody RetrieveStaffListRequest retrieveStaffListRequest) {
         return this.staffService.rtrvStaffList(retrieveStaffListRequest);
+    }
+
+    /**
+     * 通过staffID的list获取staff对象列表信息
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/rtrvStaffListByStaffIdList")
+    public RestResponse rtrvStaffListByStaffIdList(@RequestBody RtrvStaffListByStaffIbListRequest request) {
+        return this.staffService.rtrvStaffListByStaffIdList(request);
+    }
+
+    /**
+     * 通过staffID获取staff对象信息
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/rtrvStaffInfo")
+    public RestResponse rtrvStaffInfo(@RequestBody RtrvStaffInfoRequest request) {
+        return this.staffService.rtrvStaffInfo(request);
     }
 
 }
