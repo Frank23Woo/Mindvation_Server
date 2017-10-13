@@ -4,6 +4,6 @@ url:
   updateQuoteCntUrl: http://localhost:10002/mdvn-tag-s/tags
   rtrvTagsUrl: http://localhost:10002/mdvn-tag-s/tagList
   findByNameUrl : http://localhost:10002/mdvn-tag-s/tags/tag
+  findByIdUrl : http://localhost:10002/mdvn-tag-s/tags/{tagId}/tag
 
-  getTagIdByUuIdUrl: http://localhost:10002/mdvn-tag-s/getTagIdByUuId
 

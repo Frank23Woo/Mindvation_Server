@@ -4,7 +4,6 @@ package com.mdvns.mdvn.tag.papi.exception;
 import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
-import com.mdvns.mdvn.common.beans.exception.ReturnFormat;
 import com.mdvns.mdvn.common.utils.RestResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +11,7 @@ import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
+import org.springframework.validation.BindException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -49,12 +49,21 @@ public class RestExceptionHandler {
         return RestResponseUtil.error(HttpStatus.INTERNAL_SERVER_ERROR, ex.getErrorCode(), ex.getErrorMsg());
     }
 
+    @ExceptionHandler(BindException.class)
+    public RestResponse bindExceptionHandler(BindException ex) {
+        LOG.error("Internal Server Error:{}", ex.getMessage());
+        return RestResponseUtil.error(HttpStatus.BAD_REQUEST, "", ex.getLocalizedMessage());
+    }
+
     //调用SAPI异常
     @ExceptionHandler(HttpClientErrorException.class)
     public RestResponse httpClientErrorException(HttpClientErrorException ex) {
         LOG.error("Internal Server Error:{}", ex.getMessage());
         return RestResponseUtil.error(HttpStatus.INTERNAL_SERVER_ERROR, ExceptionEnum.SAPI_EXCEPTION.getErroCode(), ex.getMessage());
     }
+
+
+
 
    /* @ExceptionHandler(HttpServerErrorException.class)
     public RestDefaultResponse httpServerErrorExceptionHandler(HttpServerErrorException ex) {
