@@ -1,41 +1,30 @@
-package com.mdvns.mdvn.model.sapi.domain.entity;
+package com.mdvns.mdvn.model.papi.domain;
 
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import java.sql.Timestamp;
+import java.util.List;
 
-@Entity
+
 @Component
-public class FunctionModel {
+public class FunctionLabel {
 
-    @Id
-    @GeneratedValue
-    private Integer uuId;
-
-    @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false)
-    private Integer quoteCnt;
-
     private String modelId;
     //父模型Id
     private String parentId;
 
     // 创建人ID
-    @Column(nullable = false)
     private String creatorId;
-
-    private String color;
 
     private Timestamp createTime;
 
     /*是否已删除*/
     private Integer isDeleted;
+
+    private List<FunctionModel> subFunctionLabels;
+
+    private List<String> remarks;
 
     public String getName() {
         return name;
@@ -43,14 +32,6 @@ public class FunctionModel {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Integer getQuoteCnt() {
-        return quoteCnt;
-    }
-
-    public void setQuoteCnt(Integer quoteCnt) {
-        this.quoteCnt = quoteCnt;
     }
 
     public String getCreatorId() {
@@ -61,28 +42,12 @@ public class FunctionModel {
         this.creatorId = creatorId;
     }
 
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
     public Timestamp getCreateTime() {
         return createTime;
     }
 
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
-    }
-
-    public Integer getUuId() {
-        return uuId;
-    }
-
-    public void setUuId(Integer uuId) {
-        this.uuId = uuId;
     }
 
     public String getModelId() {
@@ -107,5 +72,21 @@ public class FunctionModel {
 
     public void setIsDeleted(Integer isDeleted) {
         this.isDeleted = isDeleted;
+    }
+
+    public List<FunctionModel> getSubFunctionLabels() {
+        return subFunctionLabels;
+    }
+
+    public void setSubFunctionLabels(List<FunctionModel> subFunctionLabels) {
+        this.subFunctionLabels = subFunctionLabels;
+    }
+
+    public List<String> getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(List<String> remarks) {
+        this.remarks = remarks;
     }
 }

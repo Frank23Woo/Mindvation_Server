@@ -153,7 +153,7 @@ public class ProjServiceImpl implements IProjService {
 
     /**
      * 调用sapi更改project
-     *
+     *(更新那一块儿，就把这一块儿所有信息传过来，没更新就不传)
      * @param updateProjectDetailRequest
      * @return
      */

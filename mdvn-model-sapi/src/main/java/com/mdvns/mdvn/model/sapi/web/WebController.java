@@ -1,9 +1,8 @@
 package com.mdvns.mdvn.model.sapi.web;
 
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
-import com.mdvns.mdvn.model.sapi.domain.CreateModelRequest;
-import com.mdvns.mdvn.model.sapi.domain.RetrieveModelListRequest;
-import com.mdvns.mdvn.model.sapi.domain.RetrieveModelListResponse;
+import com.mdvns.mdvn.model.sapi.domain.*;
+import com.mdvns.mdvn.model.sapi.domain.entity.FunctionModel;
 import com.mdvns.mdvn.model.sapi.domain.entity.Model;
 import com.mdvns.mdvn.model.sapi.service.ModelService;
 import org.slf4j.Logger;
@@ -13,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 
 @RestController
@@ -46,16 +46,6 @@ public class WebController {
         return this.modelService.rtrvModelList((page-1), pageSize, retrieveModelListRequest.getSortBy());
     }
 
-
-//    /**
-//     * 获取全部模型
-//     * @return
-//     */
-//    @PostMapping(value = "/modelList")
-//    public RetrieveModelListResponse  rtrvModelList() {
-//        return this.modelService.rtrvModelList();
-//    }
-
     /**
      * 根据名称查询模型
      *
@@ -76,5 +66,16 @@ public class WebController {
     @PostMapping(value = "/models/{modelId}")
     public ResponseEntity<Model> updateQuoteCnt(@PathVariable String modelId) {
         return this.modelService.updateQupteCnt(modelId);
+    }
+
+    /**
+     * 根据id查询模块
+     *
+     * @param request 模块Id
+     * @return Model
+     */
+    @PostMapping(value = "/models/findById")
+    public RtrvModelByIdResponse findById(@RequestBody RtrvModelByIdRequest request) {
+        return this.modelService.findById(request);
     }
 }

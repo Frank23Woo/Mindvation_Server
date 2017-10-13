@@ -20,6 +20,7 @@ public enum ExceptionEnum {
 	//模块
 	Model_NOT_FOUND("1200", "模块不存在!"),
 	Model_IS_CREATED("1201", "模块已存在!"),
+	functionModel_NOT_FOUND("1202", "过程方法模块不存在!"),
 
 	//用户
 	USER_NOT_FOUND("101", "用户不存在!"),

@@ -20,6 +20,8 @@ public class WebConfig {
     /*根据指定名称获取标签Url*/
     private String findByNameUrl;
 
+    private String findByIdUrl;
+
     public String getFindByNameUrl() {
         return findByNameUrl;
     }
@@ -50,5 +52,13 @@ public class WebConfig {
 
     public void setRtrvModelListUrl(String rtrvModelListUrl) {
         this.rtrvModelListUrl = rtrvModelListUrl;
+    }
+
+    public String getFindByIdUrl() {
+        return findByIdUrl;
+    }
+
+    public void setFindByIdUrl(String findByIdUrl) {
+        this.findByIdUrl = findByIdUrl;
     }
 }

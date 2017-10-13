@@ -1,10 +1,7 @@
 package com.mdvns.mdvn.model.papi.web;
 
 import com.mdvns.mdvn.common.beans.RestResponse;
-import com.mdvns.mdvn.model.papi.domain.CreateModelRequest;
-import com.mdvns.mdvn.model.papi.domain.RetrieveModelListRequest;
-import com.mdvns.mdvn.model.papi.domain.RetrieveModelRequest;
-import com.mdvns.mdvn.model.papi.domain.UpdateQuoteCntRequest;
+import com.mdvns.mdvn.model.papi.domain.*;
 import com.mdvns.mdvn.model.papi.service.ModelService;
 import com.mdvns.mdvn.model.papi.utils.LogUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +21,7 @@ public class ModelController {
     private ModelService modelService;
 
     /**
-     * 新建模型
+     * 新建模型(未完成)
      *
      * @param createModelRequest
      * @param bindingResult
@@ -53,8 +50,17 @@ public class ModelController {
             LogUtil.errorLog("modelId is empty.");
             throw new NullPointerException("modelId 不能为空.");
         }
-
         return this.modelService.updateQuoteCnt(modelId);
+    }
+
+    /**
+     * 通过Id查询model信息
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/findById")
+    public RestResponse findById(@RequestBody RtrvModelByIdRequest request) {
+        return this.modelService.findById(request);
     }
 
 

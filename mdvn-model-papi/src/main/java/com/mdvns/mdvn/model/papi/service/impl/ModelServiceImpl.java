@@ -5,10 +5,7 @@ import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
 import com.mdvns.mdvn.common.utils.RestResponseUtil;
 import com.mdvns.mdvn.model.papi.config.WebConfig;
-import com.mdvns.mdvn.model.papi.domain.CreateModelRequest;
-import com.mdvns.mdvn.model.papi.domain.Model;
-import com.mdvns.mdvn.model.papi.domain.RetrieveModelListRequest;
-import com.mdvns.mdvn.model.papi.domain.RetrieveModelListResponse;
+import com.mdvns.mdvn.model.papi.domain.*;
 import com.mdvns.mdvn.model.papi.service.ModelService;
 import com.mdvns.mdvn.model.papi.utils.LogUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +14,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
-public class ModelServiceImpl implements ModelService{
+public class ModelServiceImpl implements ModelService {
 
     @Autowired
     private RestTemplate restTemplate;
@@ -28,6 +28,9 @@ public class ModelServiceImpl implements ModelService{
 
     @Autowired
     private Model model;
+
+    @Autowired
+    private FunctionModel functionModel;
 
     @Autowired
     private RestResponse restResponse;
@@ -67,6 +70,32 @@ public class ModelServiceImpl implements ModelService{
         return ResponseEntity.ok(restResponse);
     }
 
+    /**
+     * 由modelId查询model对象
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public RestResponse findById(RtrvModelByIdRequest request) {
+        String findByIdUrl = webConfig.getFindByIdUrl();
+        RtrvModelByIdResponse rtrvModelByIdResponse = new RtrvModelByIdResponse();
+        List<FunctionModel> functionModels = new ArrayList<>();
+        try {
+            rtrvModelByIdResponse = this.restTemplate.postForObject(findByIdUrl, request, RtrvModelByIdResponse.class);
+        } catch (Exception ex) {
+            throw new BusinessException(ExceptionEnum.SAPI_EXCEPTION);
+        }
+        if (rtrvModelByIdResponse.getFunctionModels().size() <= 0) {
+            throw new BusinessException(ExceptionEnum.functionModel_NOT_FOUND);
+        }
+        restResponse.setResponseBody(rtrvModelByIdResponse);
+        restResponse.setResponseCode("000");
+        restResponse.setResponseMsg("请求成功");
+        restResponse.setStatusCode("200");
+        return restResponse;
+    }
+
     @Override
     public ResponseEntity<?> createModel(CreateModelRequest createModelRequest) {
 
@@ -84,14 +113,11 @@ public class ModelServiceImpl implements ModelService{
             throw new BusinessException(ExceptionEnum.Model_IS_CREATED);
         }
         LogUtil.errorLog("新建Model的名称为：" + modelName);
-        model = new Model();
-        model.setName(modelName);
-        model.setModelType(createModelRequest.getModelType());
-        model.setColor(createModelRequest.getColor());
-        model.setCreatorId(createModelRequest.getCreatorId());
+        //开始新建model
+        CreateModelResponse createModelResponse = new CreateModelResponse();
         String url = webConfig.getSaveModelUrl();
-        //调用Sapi保存标签
-        responseEntity = this.restTemplate.postForEntity(url, model, Model.class);
+        //调用Sapi保存模块
+        responseEntity = this.restTemplate.postForEntity(url, createModelRequest, Model.class);
         RestResponse restResponse = null;
         if (responseEntity.getStatusCode().equals(HttpStatus.OK)) {
             restResponse = RestResponseUtil.success(responseEntity.getBody());
