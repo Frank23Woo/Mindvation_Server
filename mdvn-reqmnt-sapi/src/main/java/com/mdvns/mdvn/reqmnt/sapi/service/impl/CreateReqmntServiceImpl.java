@@ -1,8 +1,6 @@
 package com.mdvns.mdvn.reqmnt.sapi.service.impl;
 
 import com.mdvns.mdvn.common.beans.RestResponse;
-import com.mdvns.mdvn.common.beans.Staff;
-import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.common.utils.RestResponseUtil;
 import com.mdvns.mdvn.reqmnt.sapi.domain.*;
 import com.mdvns.mdvn.reqmnt.sapi.domain.entity.*;
@@ -11,6 +9,9 @@ import com.mdvns.mdvn.reqmnt.sapi.service.ICreateReqmntService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -48,20 +49,48 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
      *
      * @return
      */
-    public RestResponse rtrvProjInfoList(RtrvProjectListRequest request) throws SQLException {
-        RtrvProjectListResponse rtrvProjectListResponse = new RtrvProjectListResponse();
-        //获取多张表数据联合查询然后分页
-        Integer page = request.getPage();
-        Integer pageSize = request.getPageSize();
-        Integer m = page * pageSize;
-        Integer n = pageSize;
-        List<RequirementInfo> pageList = this.reqmntRepository.rtrvProjInfoList(request.getStaffId(), m, n);
-        Long totalElements = this.reqmntRepository.getProjBaseInfoCount(request.getStaffId());
-        rtrvProjectListResponse.setRequirementInfos(pageList);
-        rtrvProjectListResponse.setTotalElements(totalElements);
+    public ResponseEntity<?> rtrvReqmntList(RtrvReqmntListRequest request) throws SQLException {
+        RtrvReqmntListResponse rtrvReqmntListResponse = new RtrvReqmntListResponse();
 
-        LOG.info("查询结果为：{}", rtrvProjectListResponse);
-        return RestResponseUtil.success(rtrvProjectListResponse);
+        if(request.getPage()!=null && request.getPageSize() !=null ){
+            if(request.getPage() < 1 ||request.getPageSize() < 1){
+                throw new IllegalArgumentException("Illegal Arguments for Pagination");
+            }
+
+        }
+
+        if(request.getPage()==null || request.getPageSize() ==null){
+            List<RequirementInfo> list = this.reqmntRepository.findAllByProjIdAndIsDeletedOrderByUuIdAsc(request.getProjId(),0);
+            rtrvReqmntListResponse.setRequirementInfos(list);
+            rtrvReqmntListResponse.setTotalElements(Long.valueOf(list.size()));
+            return ResponseEntity.ok(rtrvReqmntListResponse);
+        }else{
+            Integer page = request.getPage();
+            Integer pageSize = request.getPageSize();
+            List<String> sortBy = request.getSortBy();
+            Page<RequirementInfo> requirementInfos = null;
+            PageRequest pageable = null;
+
+            if(sortBy==null){
+                 pageable = new PageRequest(page-1, pageSize);
+            }else{
+                Sort.Order order = null;
+                for (int i = 0; i < sortBy.size(); i++) {
+                    order = new Sort.Order(Sort.Direction.ASC,sortBy.get(i));
+                }
+                Sort sort = new Sort(order);
+                 pageable = new PageRequest(page-1, pageSize,sort);
+            }
+
+            requirementInfos = this.reqmntRepository.findAllByProjIdAndIsDeleted(request.getProjId(),0,pageable);
+            rtrvReqmntListResponse.setRequirementInfos(requirementInfos.getContent());
+            rtrvReqmntListResponse.setTotalElements(requirementInfos.getTotalElements());
+
+            LOG.info("查询结果为：{}", rtrvReqmntListResponse);
+            return ResponseEntity.ok(rtrvReqmntListResponse);
+        }
+
+
 //        return ReturnFormat.retParam(HttpStatus.OK.toString(), "000", rtrvProjectListResponse);
     }
 
@@ -77,9 +106,10 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
         //先保存项目基本信息
         if (StringUtils.isEmpty(createReqmntRequest) || StringUtils.isEmpty(createReqmntRequest.getCreatorId()) ||
                 StringUtils.isEmpty(createReqmntRequest.getSummary()) || StringUtils.isEmpty(createReqmntRequest.getDescription()) ||
-                StringUtils.isEmpty(createReqmntRequest.getStartDate()) || StringUtils.isEmpty(createReqmntRequest.getEndDate())) {
+                StringUtils.isEmpty(createReqmntRequest.getStartDate()) || StringUtils.isEmpty(createReqmntRequest.getEndDate()) || StringUtils.isEmpty(createReqmntRequest.getProjId())) {
             throw new NullPointerException("Mandatory fields should not be empty for createReqmntRequest");
         }
+        requirementInfo.setProjId(createReqmntRequest.getProjId());
         requirementInfo.setSummary(createReqmntRequest.getSummary());
         requirementInfo.setDescription(createReqmntRequest.getDescription());
         requirementInfo.setCreatorId(createReqmntRequest.getCreatorId());
@@ -153,7 +183,11 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
             request.getCheckLists().get(i).setCreatorId(request.getStaffId());
         }
         List<ReqmntCheckList> pChecklists = reqmntCheckListRepository.save(request.getCheckLists());
-        return pChecklists;
+
+        for (int i = 0; i < pChecklists.size(); i++) {
+            pChecklists.get(i).setCheckListId("RC"+pChecklists.get(i).getUuId());
+        }
+        return reqmntCheckListRepository.save(request.getCheckLists());
     }
 
     /**

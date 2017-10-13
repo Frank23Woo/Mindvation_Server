@@ -15,6 +15,25 @@ public class ReqmntConfig {
     private String saveRTagsUrl;
     private String saveRCheckListUrl;
     private String saveRAttchUrl;
+    private String rtrvReqmntInfoUrl;
+
+    public String getRtrvReqmntListUrl() {
+        return rtrvReqmntListUrl;
+    }
+
+    public void setRtrvReqmntListUrl(String rtrvReqmntListUrl) {
+        this.rtrvReqmntListUrl = rtrvReqmntListUrl;
+    }
+
+    private String rtrvReqmntListUrl;
+
+    public String getRtrvReqmntInfoUrl() {
+        return rtrvReqmntInfoUrl;
+    }
+
+    public void setRtrvReqmntInfoUrl(String rtrvReqmntInfoUrl) {
+        this.rtrvReqmntInfoUrl = rtrvReqmntInfoUrl;
+    }
 
     public String getSaveRAttchUrl() {
         return saveRAttchUrl;

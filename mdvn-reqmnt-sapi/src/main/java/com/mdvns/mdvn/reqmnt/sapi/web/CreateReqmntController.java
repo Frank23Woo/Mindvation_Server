@@ -24,9 +24,9 @@ public class CreateReqmntController {
      * 获取project整个列表
      * @return
      */
-    @PostMapping(value="/rtrvReqmntInfoList")
-    public RestResponse rtrvProjInfoList(@RequestBody RtrvProjectListRequest request) throws SQLException{
-        return reqmntService.rtrvProjInfoList(request);
+    @PostMapping(value="/rtrvReqmntList")
+    public ResponseEntity<?> rtrvReqmntList(@RequestBody RtrvReqmntListRequest request) throws SQLException{
+        return reqmntService.rtrvReqmntList(request);
     }
 
     /**

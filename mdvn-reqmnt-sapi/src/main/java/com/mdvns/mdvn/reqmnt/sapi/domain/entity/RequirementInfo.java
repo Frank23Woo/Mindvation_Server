@@ -11,6 +11,9 @@ import java.sql.Timestamp;
 @Component
 @Entity
 public class RequirementInfo {
+    /* project ID */
+    private String projId;
+
     /* requirement ID */
     private String rqmntId;
     /* unique id in db */
@@ -47,6 +50,14 @@ public class RequirementInfo {
 
     public String getRqmntId() {
         return rqmntId;
+    }
+
+    public String getProjId() {
+        return projId;
+    }
+
+    public void setProjId(String projId) {
+        this.projId = projId;
     }
 
     public void setRqmntId(String rqmntId) {
@@ -176,34 +187,13 @@ public class RequirementInfo {
     }
 
     @Override
-    public String toString() {
-        return "RequirementInfo{" +
-                "rqmntId='" + rqmntId + '\'' +
-                ", uuId=" + uuId +
-                ", summary='" + summary + '\'' +
-                ", creatorId='" + creatorId + '\'' +
-                ", description='" + description + '\'' +
-                ", priority=" + priority +
-                ", functionLabelId='" + functionLabelId + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", createTime=" + createTime +
-                ", status='" + status + '\'' +
-                ", ragStatus='" + ragStatus + '\'' +
-                ", progress=" + progress +
-                ", totalStoryPoint=" + totalStoryPoint +
-                ", remarks='" + remarks + '\'' +
-                ", isDeleted=" + isDeleted +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         RequirementInfo that = (RequirementInfo) o;
 
+        if (projId != null ? !projId.equals(that.projId) : that.projId != null) return false;
         if (rqmntId != null ? !rqmntId.equals(that.rqmntId) : that.rqmntId != null) return false;
         if (uuId != null ? !uuId.equals(that.uuId) : that.uuId != null) return false;
         if (summary != null ? !summary.equals(that.summary) : that.summary != null) return false;
@@ -226,7 +216,8 @@ public class RequirementInfo {
 
     @Override
     public int hashCode() {
-        int result = rqmntId != null ? rqmntId.hashCode() : 0;
+        int result = projId != null ? projId.hashCode() : 0;
+        result = 31 * result + (rqmntId != null ? rqmntId.hashCode() : 0);
         result = 31 * result + (uuId != null ? uuId.hashCode() : 0);
         result = 31 * result + (summary != null ? summary.hashCode() : 0);
         result = 31 * result + (creatorId != null ? creatorId.hashCode() : 0);
@@ -244,4 +235,5 @@ public class RequirementInfo {
         result = 31 * result + (isDeleted != null ? isDeleted.hashCode() : 0);
         return result;
     }
+
 }
