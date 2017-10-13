@@ -6,7 +6,6 @@ import com.mdvns.mdvn.model.papi.domain.RetrieveModelListRequest;
 import org.springframework.http.ResponseEntity;
 
 public interface ModelService {
-    RestResponse retrieveModelList() throws Exception;
 
     ResponseEntity<?> createModel(CreateModelRequest createModelRequest);
 

@@ -1,35 +1,24 @@
-package com.mdvns.mdvn.model.sapi.domain.entity;
+package com.mdvns.mdvn.model.papi.domain;
 
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import java.sql.Timestamp;
 
-@Entity
+
 @Component
-public class Model {
+public class FunctionModel {
 
-    @Id
-    @GeneratedValue
     private Integer uuId;
-
-    @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false)
     private Integer quoteCnt;
 
     private String modelId;
     //模型类型
     private String modelType;
-//    //父模型Id
-//    private String parentId;
+    //父模型Id
+    private String parentId;
 
     // 创建人ID
-    @Column(nullable = false)
     private String creatorId;
 
     private String color;
@@ -101,6 +90,14 @@ public class Model {
 
     public void setModelType(String modelType) {
         this.modelType = modelType;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 
     public Integer getIsDeleted() {

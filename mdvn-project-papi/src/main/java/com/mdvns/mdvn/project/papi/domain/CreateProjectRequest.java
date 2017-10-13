@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.project.papi.domain;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
@@ -11,8 +12,10 @@ public class CreateProjectRequest {
     //员工ID
     private String staffId;
     //项目名称
+    @NotBlank(message = "请求参数错误，项目name不能为空")
     private String name;
     //项目描述
+    @NotBlank(message = "请求参数错误，项目描述不能为空")
     private String description;
     //项目优先级
     private Integer priority;

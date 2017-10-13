@@ -34,6 +34,8 @@ public class ReqmntServiceImpl implements IReqmntService {
 
 
 
+
+
 //    /**
 //     * 获取project列表详细信息
 //     *
@@ -54,6 +56,17 @@ public class ReqmntServiceImpl implements IReqmntService {
 //        throw new BusinessException(restResponse.getResponseCode(), restResponse.getResponseBody().toString());
 //    }
 
+    @Override
+    public RestResponse rtrvReqmntList(RtrvReqmntListRequest rtrvReqmntListRequest) {
+        String reqmntListUrl = config.getRtrvReqmntListUrl();
+        RtrvReqmntListResponse rtrvReqmntListResponse = new RtrvReqmntListResponse();
+        ResponseEntity<RtrvReqmntListResponse> respEntity = this.restTemplate.postForEntity(reqmntListUrl, rtrvReqmntListRequest, RtrvReqmntListResponse.class);
+        restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
+        restResponse.setResponseCode("000");
+        restResponse.setResponseBody(respEntity.getBody());
+        return restResponse;
+    }
+
     /**
      * 调用sapi创建project
      * 1.创建保存project信息
@@ -71,7 +84,7 @@ public class ReqmntServiceImpl implements IReqmntService {
 
         if (createReqmntRequest == null || StringUtils.isEmpty(createReqmntRequest.getCreatorId()) ||
                 StringUtils.isEmpty(createReqmntRequest.getSummary()) || StringUtils.isEmpty(createReqmntRequest.getDescription()) || StringUtils.isEmpty(createReqmntRequest.getFunctionLabelId())
-                ) {
+                || StringUtils.isEmpty(createReqmntRequest.getProjId())) {
             throw new NullPointerException("Mandatory fields should not be empty for createReqmntRequest");
         }
 
@@ -150,6 +163,31 @@ public class ReqmntServiceImpl implements IReqmntService {
             return restResponse;
 //        }
 //        throw new BusinessException(restResponse.getResponseCode(), restResponse.getResponseBody().toString());
+    }
+
+    @Override
+    public RestResponse rtrvReqmntInfo(String reqmntId) {
+//        rtrvProjectListRequest.setPage(rtrvProjectListRequest.getPage()-1);
+//        String projInfoListUrl = config.getRtrvProjInfoListUrl();
+//        restResponse = this.restTemplate.postForObject(projInfoListUrl, rtrvProjectListRequest, restResponse.class);
+//        ResponseEntity<restResponse> responseEntity = null;
+//        if (restResponse.getStatusCode().equals(HttpStatus.OK.toString())) {
+//            HttpHeaders httpHeaders = new HttpHeaders();
+//            httpHeaders.setAccessControlAllowOrigin("*");
+//            responseEntity = new ResponseEntity<restResponse>(restResponse,HttpStatus.OK);
+//            return responseEntity;
+//        }
+        if(StringUtils.isEmpty(reqmntId)){
+            restResponse.setStatusCode(String.valueOf(HttpStatus.BAD_REQUEST));
+            restResponse.setResponseMsg("Requirement ID should not be empty");
+            return restResponse;
+        }
+        String reqmntInfoUrl = config.getRtrvReqmntInfoUrl();
+//        requirementInfo = this.restTemplate.postForObject(reqmntInfoUrl, reqmntId , RequirementInfo.class);
+//        restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
+//        restResponse.setResponseBody(requirementInfo);
+
+        return null;
     }
 
 //    /**

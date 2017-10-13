@@ -1,12 +1,11 @@
-package com.mdvns.mdvn.reqmnt.sapi.domain;
+package com.mdvns.mdvn.reqmnt.papi.domain;
 
-import com.mdvns.mdvn.reqmnt.sapi.domain.entity.RequirementInfo;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class RtrvProjectListResponse {
+public class RtrvReqmntListResponse {
     //总记录数
     private Long totalElements;
 
@@ -37,4 +36,6 @@ public class RtrvProjectListResponse {
     public void setTotalElements(Long totalElements) {
         this.totalElements = totalElements;
     }
+
+
 }

@@ -15,22 +15,22 @@ public class Staff {
     @GeneratedValue
     private Integer uuId;
     private String staffId;
-    private String Name;
+    private String name;
     //员工头像
     @Column(columnDefinition = "text")
-    private String Avatar;
-    private String DeptId;
-    private String PositionId;
+    private String avatar;
+    private String deptId;
+    private String positionId;
     //员工入职时间
-    private Timestamp Hiredate;
+    private Timestamp hiredate;
     //员工效率值
-    private Double Effective;
+    private Double effective;
     //员工贡献值
-    private Double Contribution;
+    private Double contribution;
     //员工推荐度
-    private Double Recommendation;
+    private Double recommendation;
     //工作饱和度
-    private Double Worksaturation;
+    private Double worksaturation;
 
     public Integer getUuId() {
         return uuId;
@@ -49,74 +49,74 @@ public class Staff {
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public String getAvatar() {
-        return Avatar;
+        return avatar;
     }
 
     public void setAvatar(String avatar) {
-        Avatar = avatar;
+        this.avatar = avatar;
     }
 
     public String getDeptId() {
-        return DeptId;
+        return deptId;
     }
 
     public void setDeptId(String deptId) {
-        DeptId = deptId;
+        this.deptId = deptId;
     }
 
     public String getPositionId() {
-        return PositionId;
+        return positionId;
     }
 
     public void setPositionId(String positionId) {
-        PositionId = positionId;
+        this.positionId = positionId;
     }
 
     public Timestamp getHiredate() {
-        return Hiredate;
+        return hiredate;
     }
 
     public void setHiredate(Timestamp hiredate) {
-        Hiredate = hiredate;
+        this.hiredate = hiredate;
     }
 
     public Double getEffective() {
-        return Effective;
+        return effective;
     }
 
     public void setEffective(Double effective) {
-        Effective = effective;
+        this.effective = effective;
     }
 
     public Double getContribution() {
-        return Contribution;
+        return contribution;
     }
 
     public void setContribution(Double contribution) {
-        Contribution = contribution;
+        this.contribution = contribution;
     }
 
     public Double getRecommendation() {
-        return Recommendation;
+        return recommendation;
     }
 
     public void setRecommendation(Double recommendation) {
-        Recommendation = recommendation;
+        this.recommendation = recommendation;
     }
 
     public Double getWorksaturation() {
-        return Worksaturation;
+        return worksaturation;
     }
 
     public void setWorksaturation(Double worksaturation) {
-        Worksaturation = worksaturation;
+        this.worksaturation = worksaturation;
     }
 }

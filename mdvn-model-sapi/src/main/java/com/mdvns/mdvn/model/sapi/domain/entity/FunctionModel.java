@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Component
-public class Model {
+public class FunctionModel {
 
     @Id
     @GeneratedValue
@@ -25,8 +25,8 @@ public class Model {
     private String modelId;
     //模型类型
     private String modelType;
-//    //父模型Id
-//    private String parentId;
+    //父模型Id
+    private String parentId;
 
     // 创建人ID
     @Column(nullable = false)
@@ -101,6 +101,14 @@ public class Model {
 
     public void setModelType(String modelType) {
         this.modelType = modelType;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 
     public Integer getIsDeleted() {

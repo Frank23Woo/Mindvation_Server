@@ -16,6 +16,9 @@ config:
   saveRCheckListUrl: http://localhost:10012/mdvn-reqmnt-sapi/saveRCheckLists
   saveRAttchUrl: http://localhost:10012/mdvn-reqmnt-sapi/saveRAttchUrls
 
+  rtrvReqmntInfoUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntInfo
+  rtrvReqmntListUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntList
+
 
 
 

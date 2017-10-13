@@ -40,11 +40,6 @@ public class ModelController {
         return this.modelService.createModel(createModelRequest);
     }
 
-    @PostMapping("/retrieveModelList")
-    private RestResponse retrieveModelList() throws Exception {
-        return modelService.retrieveModelList();
-    }
-
     /**
      * 更新Model引用次数
      *

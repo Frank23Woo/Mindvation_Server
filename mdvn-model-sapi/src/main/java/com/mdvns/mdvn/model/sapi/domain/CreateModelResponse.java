@@ -1,5 +1,8 @@
-package com.mdvns.mdvn.model.papi.domain;
+package com.mdvns.mdvn.model.sapi.domain;
 
+import com.mdvns.mdvn.model.sapi.domain.entity.FunctionModel;
+import com.mdvns.mdvn.model.sapi.domain.entity.Model;
+import com.mdvns.mdvn.model.sapi.domain.entity.ModelRole;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

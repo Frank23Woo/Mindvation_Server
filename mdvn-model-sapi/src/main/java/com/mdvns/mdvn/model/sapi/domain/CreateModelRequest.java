@@ -1,26 +1,46 @@
-package com.mdvns.mdvn.model.papi.domain;
+package com.mdvns.mdvn.model.sapi.domain;
 
+import com.mdvns.mdvn.model.sapi.domain.entity.FunctionModel;
+import com.mdvns.mdvn.model.sapi.domain.entity.ModelRole;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class CreateModelResponse {
+public class CreateModelRequest {
 
-    //模块
-    private Model model;
+    private String name;
+    private String creatorId;
+    //行业
+    private String industry;
     //过程方法模块
     private List<FunctionModel> functionLabel;
     //模块下对应的角色
     private List<ModelRole> roles;
     private List<String> remarks;
 
-    public Model getModel() {
-        return model;
+    public String getName() {
+        return name;
     }
 
-    public void setModel(Model model) {
-        this.model = model;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public String getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(String industry) {
+        this.industry = industry;
     }
 
     public List<FunctionModel> getFunctionLabel() {

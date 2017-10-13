@@ -10,6 +10,8 @@ public interface StaffRepository extends JpaRepository<Staff, Integer> {
 
     Page<Staff> findAll(Pageable pageable);
 
+    Staff findByStaffId(String staffId);
+
     @Query(value="  SELECT DISTINCT COUNT(*) FROM staff ", nativeQuery = true)
     Long getStaffCount();
 }

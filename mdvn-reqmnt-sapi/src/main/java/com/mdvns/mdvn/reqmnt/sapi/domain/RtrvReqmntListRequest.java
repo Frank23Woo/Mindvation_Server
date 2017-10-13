@@ -1,4 +1,4 @@
-package com.mdvns.mdvn.reqmnt.papi.domain;
+package com.mdvns.mdvn.reqmnt.sapi.domain;
 
 
 import org.springframework.stereotype.Component;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class RtrvReqmntRequest {
+public class RtrvReqmntListRequest {
     /* project ID*/
     private String projId;
 
@@ -61,7 +61,7 @@ public class RtrvReqmntRequest {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        RtrvReqmntRequest that = (RtrvReqmntRequest) o;
+        RtrvReqmntListRequest that = (RtrvReqmntListRequest) o;
 
         if (projId != null ? !projId.equals(that.projId) : that.projId != null) return false;
         if (page != null ? !page.equals(that.page) : that.page != null) return false;
@@ -90,4 +90,5 @@ public class RtrvReqmntRequest {
                 ", remarks=" + remarks +
                 '}';
     }
+
 }

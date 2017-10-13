@@ -13,22 +13,12 @@ public class WebConfig {
     /*获取标签列表Url*/
     private String rtrvModelListUrl;
 
-    /*获取标签列表Url(不分页)*/
-    private String rtrvModelsUrl;
 
     /*更新标签引用次数Url*/
     private String updateQuoteCntUrl;
 
     /*根据指定名称获取标签Url*/
     private String findByNameUrl;
-
-    public String getRtrvModelsUrl() {
-        return rtrvModelsUrl;
-    }
-
-    public void setRtrvModelsUrl(String rtrvModelsUrl) {
-        this.rtrvModelsUrl = rtrvModelsUrl;
-    }
 
     public String getFindByNameUrl() {
         return findByNameUrl;

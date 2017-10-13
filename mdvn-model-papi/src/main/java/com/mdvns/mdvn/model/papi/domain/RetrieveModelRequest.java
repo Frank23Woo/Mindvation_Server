@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.model.papi.domain;
 
+//findByName
 public class RetrieveModelRequest {
 
     private String name;
