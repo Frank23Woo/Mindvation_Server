@@ -1,6 +1,5 @@
 package com.mdvns.mdvn.tag.papi.web;
 
-import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.tag.papi.domain.*;
 import com.mdvns.mdvn.tag.papi.service.TagService;
 import com.mdvns.mdvn.tag.papi.utils.LogUtil;
@@ -66,7 +65,18 @@ public class TagController {
     @PostMapping(value = "/findByName")
     public ResponseEntity<?> findByName(@RequestBody RetrieveTagRequest retrieveTagRequest) {
 
-        return this.tagService.findByName(retrieveTagRequest.getName());
+        return this.tagService.findByName(retrieveTagRequest.getParam());
+    }
+
+
+    /**
+     * 根据Id查询标签
+     * @param tagId
+     * @return
+     */
+    @PostMapping(value = "/findById")
+    public ResponseEntity<?> findById(@RequestBody RetrieveTagRequest retrieveTagRequest) {
+        return this.tagService.findById(retrieveTagRequest.getParam());
     }
 
     /**
@@ -75,7 +85,7 @@ public class TagController {
      * @return
      */
     @PostMapping(value = "/rtrvTagList")
-    public RestResponse rtrvTagList(@RequestBody RetrieveTagListRequest retrieveTagListRequest) {
+    public ResponseEntity<?> rtrvTagList(@RequestBody RetrieveTagListRequest retrieveTagListRequest) {
         return this.tagService.rtrvTagList(retrieveTagListRequest);
     }
 

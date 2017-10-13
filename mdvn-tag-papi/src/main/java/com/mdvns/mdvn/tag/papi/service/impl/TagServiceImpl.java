@@ -8,17 +8,17 @@ import com.mdvns.mdvn.tag.papi.config.WebConfig;
 import com.mdvns.mdvn.tag.papi.domain.*;
 import com.mdvns.mdvn.tag.papi.service.TagService;
 import com.mdvns.mdvn.tag.papi.utils.LogUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 @Service
 public class TagServiceImpl implements TagService {
 
-    /* 注入RestTamplate*/
+    /* 注入RestTemplate*/
     @Autowired
     private RestTemplate restTemplate;
 
@@ -26,18 +26,12 @@ public class TagServiceImpl implements TagService {
     @Autowired
     private Tag tag;
 
-    /*注入response*/
-    @Autowired
-    private CreateTagResponse createTagResponse;
-
-    @Autowired
-    private RetrieveTagListResponse retrieveTagListResponse;
 
     /*注入WebConfig*/
     @Autowired
     private WebConfig webConfig;
 
-    /*注入RestDefaultResponse*/
+    /*注入RestResponse*/
     @Autowired
     private RestResponse restResponse;
 
@@ -51,7 +45,6 @@ public class TagServiceImpl implements TagService {
      * @param createTagRequest
      * @return
      */
-
     @Override
     public ResponseEntity<?> createTag(CreateTagRequest createTagRequest) {
         LogUtil.sreviceStartLog("createTag");
@@ -99,22 +92,31 @@ public class TagServiceImpl implements TagService {
     }
 
     /**
+     * 根据Id查询标签
+     * @param tagId
+     * @return
+     */
+    public ResponseEntity<?> findById(String tagId) {
+        String findByIdUrl = webConfig.getFindByIdUrl();
+        findByIdUrl = StringUtils.replace(findByIdUrl, "{tagId}", tagId);
+        tag = this.restTemplate.postForObject(findByIdUrl, tagId, Tag.class);
+        restResponse = RestResponseUtil.success(tag);
+        return ResponseEntity.ok(restResponse);
+    }
+
+    /**
      * 调用SAPI获取Tag列表
      *
      * @param retrieveTagListRequest
      * @return
      */
-    public RestResponse rtrvTagList(RetrieveTagListRequest retrieveTagListRequest) {
-        RetrieveTagListResponse retrieveTagListResponse = new RetrieveTagListResponse();
-        ResponseEntity<Object> responseEntity;
+    public ResponseEntity<?> rtrvTagList(RetrieveTagListRequest retrieveTagListRequest) {
+
         String url = webConfig.getRtrvTagListUrl();
-        retrieveTagListResponse = this.restTemplate.postForObject(url, retrieveTagListRequest, RetrieveTagListResponse.class);
-//        restResponse = RestResponseUtil.success(responseEntity.getBody());
-        restResponse.setResponseBody(retrieveTagListResponse);
-        restResponse.setResponseCode("000");
-        restResponse.setResponseMsg("请求成功");
-        restResponse.setStatusCode("200");
-        return restResponse;
+        RetrieveTagListResponse retrieveTagListResponse = this.restTemplate.postForObject(url, retrieveTagListRequest, RetrieveTagListResponse.class);
+        restResponse = RestResponseUtil.success(retrieveTagListResponse);
+
+        return ResponseEntity.ok(restResponse);
     }
 
 
@@ -132,7 +134,8 @@ public class TagServiceImpl implements TagService {
         if (tag == null) {
             throw new BusinessException(ExceptionEnum.TAG_NOT_FOUND);
         }
-        return ResponseEntity.ok(tag);
+        restResponse = RestResponseUtil.success(tag);
+        return ResponseEntity.ok(restResponse);
     }
 
 }
