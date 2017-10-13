@@ -129,5 +129,14 @@ public class TagServiceImpl implements TagService {
         return ResponseEntity.ok(retrieveTagListResponse);
     }
 
+    /**
+     * 获取制定Id的标签
+     * @param tagId
+     * @return
+     */
+    public ResponseEntity<?> findById(String tagId) {
+        tag = this.tagRepository.findByTagId(tagId);
+        return ResponseEntity.ok(tag);
+    }
 
 }

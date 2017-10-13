@@ -58,18 +58,28 @@ public class TagController {
         return this.tagService.updateQuoteCnt(tagId);
     }
 
-
+    /**
+     * 根据名称查询标签
+     * @param retrieveTagRequest
+     * @return
+     */
     @PostMapping(value = "/findByName")
     public ResponseEntity<?> findByName(@RequestBody RetrieveTagRequest retrieveTagRequest) {
 
         return this.tagService.findByName(retrieveTagRequest.getName());
     }
 
-
+    /**
+     * 获取标签列表
+     * @param retrieveTagListRequest
+     * @return
+     */
     @PostMapping(value = "/rtrvTagList")
     public RestResponse rtrvTagList(@RequestBody RetrieveTagListRequest retrieveTagListRequest) {
         return this.tagService.rtrvTagList(retrieveTagListRequest);
     }
+
+
 
 
     /**

@@ -76,6 +76,10 @@ public class TagController {
         return this.tagService.findByName(name);
     }
 
+    @PostMapping(value = "/{tagId}/tag")
+    public ResponseEntity<?> findById(@PathVariable String tagId) {
+        return this.tagService.findById(tagId);
+    }
     /**
      * 根据指定的ID给quoteCnt值+1
      *
