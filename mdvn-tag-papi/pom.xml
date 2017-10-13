@@ -63,7 +63,12 @@
 		</dependency>
 
 	</dependencies>
-
+	<!--<repositories>
+		<repository>
+			<id>local_repo</id>
+			<url>D:\Repositories\Maven</url>
+		</repository>
+	</repositories>-->
 	<build>
 		<plugins>
 			<plugin>
