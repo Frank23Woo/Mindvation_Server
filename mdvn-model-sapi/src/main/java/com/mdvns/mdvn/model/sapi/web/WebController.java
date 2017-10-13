@@ -1,7 +1,7 @@
 package com.mdvns.mdvn.model.sapi.web;
 
-import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
+import com.mdvns.mdvn.model.sapi.domain.CreateModelRequest;
 import com.mdvns.mdvn.model.sapi.domain.RetrieveModelListRequest;
 import com.mdvns.mdvn.model.sapi.domain.RetrieveModelListResponse;
 import com.mdvns.mdvn.model.sapi.domain.entity.Model;
@@ -25,18 +25,13 @@ public class WebController {
     /**
      * 新建模型
      *
-     * @param md
+     * @param request
      * @return
      */
     @PostMapping("/models/model")
-    public ResponseEntity<?> saveModel(@RequestBody Model md) throws SQLException {
+    public ResponseEntity<?> saveModel(@RequestBody CreateModelRequest request) throws SQLException {
         LOG.info("开始执行 createModel 方法.");
-        return this.modelService.saveModel(md);
-    }
-
-    @PostMapping("/retrieveModelList")
-    private RestResponse retrieveModelList() throws Exception {
-        return modelService.getModelList();
+        return this.modelService.saveModel(request);
     }
     /**
      * 获取Model列表，分页/排序
@@ -52,14 +47,14 @@ public class WebController {
     }
 
 
-    /**
-     * 获取全部模型
-     * @return
-     */
-    @PostMapping(value = "/modelList")
-    public RetrieveModelListResponse  rtrvModelList() {
-        return this.modelService.rtrvModelList();
-    }
+//    /**
+//     * 获取全部模型
+//     * @return
+//     */
+//    @PostMapping(value = "/modelList")
+//    public RetrieveModelListResponse  rtrvModelList() {
+//        return this.modelService.rtrvModelList();
+//    }
 
     /**
      * 根据名称查询模型

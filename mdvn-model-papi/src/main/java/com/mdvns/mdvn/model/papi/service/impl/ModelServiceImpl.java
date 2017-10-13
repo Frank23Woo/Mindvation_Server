@@ -15,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.List;
 
 @Service
 public class ModelServiceImpl implements ModelService{
@@ -35,23 +32,6 @@ public class ModelServiceImpl implements ModelService{
     @Autowired
     private RestResponse restResponse;
 
-    @Override
-    public RestResponse retrieveModelList() throws Exception {
-        RestResponse restResponse = new RestResponse();
-        final String url = "http://localhost:10009/retrieveModelList";
-        try {
-            List<Model> models = restTemplate.postForObject(url, null, List.class);
-            restResponse.setResponseCode("0");
-            restResponse.setResponseMsg("");
-            restResponse.setResponseBody(models);
-        } catch (RestClientException e) {
-            e.printStackTrace();
-            restResponse.setResponseCode("0");
-            restResponse.setResponseMsg("[服务器] IO异常");
-        }
-
-        return restResponse;
-    }
 
     /**
      * 调用SAPI获取Model列表

@@ -6,9 +6,6 @@ import org.springframework.stereotype.Component;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-/**
- * 創建模型
- */
 @Component
 public class CreateModelRequest {
 
@@ -16,19 +13,16 @@ public class CreateModelRequest {
     @NotBlank(message = "模块名称不能为空")
     @Size(max=100, message = "模块名称过长")
     private String name;
-
-    /*新建模型人的编号*/
     @NotBlank(message = "创建人编号不能为空")
     @Size(max=50, message = "创建人编号过长")
     private String creatorId;
-
-    /*標簽色值*/
-//    @NotBlank(message = "模块色值不能为空")
-//    @Size(max = 10, message = "色值编码不正确")
-    private String color;
-    //模型类型
-    private String modelType;
-
+    //行业
+    @NotBlank(message = "模块行业不能为空")
+    private String industry;
+    //过程方法模块
+    private List<FunctionModel> functionLabel;
+    //模块下对应的角色
+    private List<ModelRole> roles;
     private List<String> remarks;
 
     public String getName() {
@@ -47,20 +41,28 @@ public class CreateModelRequest {
         this.creatorId = creatorId;
     }
 
-    public String getColor() {
-        return color;
+    public String getIndustry() {
+        return industry;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setIndustry(String industry) {
+        this.industry = industry;
     }
 
-    public String getModelType() {
-        return modelType;
+    public List<FunctionModel> getFunctionLabel() {
+        return functionLabel;
     }
 
-    public void setModelType(String modelType) {
-        this.modelType = modelType;
+    public void setFunctionLabel(List<FunctionModel> functionLabel) {
+        this.functionLabel = functionLabel;
+    }
+
+    public List<ModelRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<ModelRole> roles) {
+        this.roles = roles;
     }
 
     public List<String> getRemarks() {
@@ -70,5 +72,4 @@ public class CreateModelRequest {
     public void setRemarks(List<String> remarks) {
         this.remarks = remarks;
     }
-
 }

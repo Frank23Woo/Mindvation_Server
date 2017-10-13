@@ -2,7 +2,6 @@ url:
   saveModelUrl: http://localhost:10009/mdvn-model-s/models/model
   rtrvModelListUrl: http://localhost:10009/mdvn-model-s/models
   updateQuoteCntUrl: http://localhost:10009/mdvn-model-s/models
-  rtrvModelsUrl: http://localhost:10009/mdvn-model-s/modelList
   findByNameUrl : http://localhost:10009/mdvn-model-s/models/model
 
 
