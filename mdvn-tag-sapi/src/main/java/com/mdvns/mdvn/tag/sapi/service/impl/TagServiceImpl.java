@@ -2,6 +2,7 @@ package com.mdvns.mdvn.tag.sapi.service.impl;
 
 
 import com.mdvns.mdvn.tag.sapi.domain.RetrieveTagListResponse;
+import com.mdvns.mdvn.tag.sapi.domain.RtrvTagsRequest;
 import com.mdvns.mdvn.tag.sapi.domain.entity.Tag;
 import com.mdvns.mdvn.tag.sapi.repository.TagRepository;
 import com.mdvns.mdvn.tag.sapi.service.TagService;
@@ -126,11 +127,17 @@ public class TagServiceImpl implements TagService {
         Long count = this.tagRepository.getTagCount();
         retrieveTagListResponse.setTags(tagList);
         retrieveTagListResponse.setTotalNumber(count);
-        return ResponseEntity.ok(retrieveTagListResponse);
+        return ResponseEntity.ok(tagList);
+    }
+
+    public ResponseEntity<?> rtrvTagsById(RtrvTagsRequest rtrvTagsRequest) {
+        List<Tag> tags = this.tagRepository.findByTagIdIn(rtrvTagsRequest.getTagIds());
+        return ResponseEntity.ok(tags);
     }
 
     /**
      * 获取制定Id的标签
+     *
      * @param tagId
      * @return
      */

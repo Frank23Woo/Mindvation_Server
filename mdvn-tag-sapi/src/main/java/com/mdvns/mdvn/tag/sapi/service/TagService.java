@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.tag.sapi.service;
 
+import com.mdvns.mdvn.tag.sapi.domain.RtrvTagsRequest;
 import com.mdvns.mdvn.tag.sapi.domain.entity.Tag;
 import org.springframework.http.ResponseEntity;
 
@@ -26,4 +27,6 @@ public interface TagService {
 
     /*根据tagId获取标签数据*/
     ResponseEntity<?> findById(String tagId);
+
+    ResponseEntity<?> rtrvTagsById(RtrvTagsRequest rtrvTagsRequest);
 }
