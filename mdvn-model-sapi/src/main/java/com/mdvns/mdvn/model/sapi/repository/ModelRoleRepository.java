@@ -6,13 +6,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface ModelRoleRepository extends JpaRepository<ModelRole,Integer>{
 
     ModelRole findByName(String name);
 
     Page<ModelRole> findAll(Pageable pageable);
 
-    ModelRole findByModelId(String modelId);
+    List<ModelRole> findByModelId(String modelId);
 
     @Query(value="  SELECT DISTINCT COUNT(*) FROM model_role", nativeQuery = true)
     Long getModelCount();

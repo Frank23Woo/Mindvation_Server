@@ -1,6 +1,5 @@
 package com.mdvns.mdvn.reqmnt.sapi.web;
 
-import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.reqmnt.sapi.domain.*;
 import com.mdvns.mdvn.reqmnt.sapi.domain.entity.*;
 import com.mdvns.mdvn.reqmnt.sapi.service.ICreateReqmntService;
@@ -44,7 +43,7 @@ public class CreateReqmntController {
      */
     @PostMapping(value="/saveRMembers")
     public List<ReqmntMember> saveReqmntMembers(@RequestBody List<ReqmntMember> members){
-        return reqmntService.saveReqmntMembers(members);
+        return reqmntService.saveReqmntMembers(members) ;
     }
 
     /**

@@ -15,6 +15,12 @@ public class CreateReqmntRequestTest {
 //        private List<String> remarks;
 
 
+
+
+
+
+
+
         CreateReqmntRequest createReqmntRequest = new CreateReqmntRequest();
         createReqmntRequest.setProjId("P1");
         createReqmntRequest.setCreatorId("staff123");
@@ -54,7 +60,7 @@ public class CreateReqmntRequestTest {
             checkList.setAssignerId("staff" + i);
             checkList.setChecklistStatus("new");
             checkList.setCreateTime(System.currentTimeMillis());
-            checkList.setdescription("dddfsdfadesfadsfadsf");
+            checkList.setDescription("dddfsdfadesfadsfadsf");
             checkList.setStartDate(System.currentTimeMillis());
             checkList.setEndDate(System.currentTimeMillis() + 1000000);
             rCheckLists.add(checkList);

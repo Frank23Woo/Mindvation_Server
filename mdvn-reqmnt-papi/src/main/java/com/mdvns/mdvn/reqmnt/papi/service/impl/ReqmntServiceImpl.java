@@ -1,19 +1,25 @@
 package com.mdvns.mdvn.reqmnt.papi.service.impl;
 
 import com.mdvns.mdvn.common.beans.RestResponse;
+import com.mdvns.mdvn.common.beans.Staff;
+import com.mdvns.mdvn.common.beans.exception.BusinessException;
+import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
+import com.mdvns.mdvn.common.utils.FetchListUtil;
+import com.mdvns.mdvn.common.utils.HttpJsonRequestUtil;
 import com.mdvns.mdvn.reqmnt.papi.config.ReqmntConfig;
 import com.mdvns.mdvn.reqmnt.papi.domain.*;
 import com.mdvns.mdvn.reqmnt.papi.service.IReqmntService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ReqmntServiceImpl implements IReqmntService {
@@ -32,9 +38,8 @@ public class ReqmntServiceImpl implements IReqmntService {
     @Autowired
     private RestTemplate restTemplate;
 
-
-
-
+    @Autowired
+    private RtrvReqmntInfoResponse rtrvReqmntInfoResponse;
 
 //    /**
 //     * 获取project列表详细信息
@@ -100,7 +105,7 @@ public class ReqmntServiceImpl implements IReqmntService {
 
 
         //2.保存requirement member信息
-        if (createReqmntRequest.getMembers()!=null && !createReqmntRequest.getMembers().isEmpty()) {
+        if (createReqmntRequest.getMembers() != null && !createReqmntRequest.getMembers().isEmpty()) {
             List<ReqmntMember> reqmntMembers = createReqmntRequest.getMembers();
             for (int i = 0; i < reqmntMembers.size(); i++) {
                 reqmntMembers.get(i).setReqmntId(requirementInfo.getRqmntId());
@@ -114,7 +119,7 @@ public class ReqmntServiceImpl implements IReqmntService {
         }
 
         //3.保存requirement标签信息
-        if (createReqmntRequest.getTags()!=null && !createReqmntRequest.getTags().isEmpty()) {
+        if (createReqmntRequest.getTags() != null && !createReqmntRequest.getTags().isEmpty()) {
             List<ReqmntTag> reqmntTags = createReqmntRequest.getTags();
             for (int i = 0; i < reqmntTags.size(); i++) {
                 reqmntTags.get(i).setReqmntId(requirementInfo.getRqmntId());
@@ -129,7 +134,7 @@ public class ReqmntServiceImpl implements IReqmntService {
         //4.保存项目模块信息
 
         //5.保存项目checklist信息
-        if (createReqmntRequest.getrCheckLists()!=null && !createReqmntRequest.getrCheckLists().isEmpty()) {
+        if (createReqmntRequest.getrCheckLists() != null && !createReqmntRequest.getrCheckLists().isEmpty()) {
             SaveRCheckListRequest saveRCheckListRequest = new SaveRCheckListRequest();
             List<ReqmntCheckList> reqmntCheckLists = createReqmntRequest.getrCheckLists();
             for (int i = 0; i < reqmntCheckLists.size(); i++) {
@@ -140,13 +145,13 @@ public class ReqmntServiceImpl implements IReqmntService {
             saveRCheckListRequest.setCheckLists(reqmntCheckLists);
             String saveCheckListsUrl = config.getSaveRCheckListUrl();
             try {
-                 reqmntCheckLists = restTemplate.postForObject(saveCheckListsUrl, saveRCheckListRequest, List.class);
+                reqmntCheckLists = restTemplate.postForObject(saveCheckListsUrl, saveRCheckListRequest, List.class);
             } catch (Exception ex) {
                 throw new RuntimeException("调用SAPI获取项目checklist信息保存数据失败.");
             }
         }
         //6.保存requirement附件信息
-        if (createReqmntRequest.getAttchUrls()!=null && !createReqmntRequest.getAttchUrls().isEmpty()) {
+        if (createReqmntRequest.getAttchUrls() != null && !createReqmntRequest.getAttchUrls().isEmpty()) {
             List<ReqmntAttchUrl> reqmntAttchUrls = createReqmntRequest.getAttchUrls();
             for (int i = 0; i < reqmntAttchUrls.size(); i++) {
                 reqmntAttchUrls.get(i).setReqmntId(requirementInfo.getRqmntId());
@@ -160,35 +165,140 @@ public class ReqmntServiceImpl implements IReqmntService {
         }
         //response
 //        if (restResponse.getStatusCode().equals(HttpStatus.OK.toString())) {
-            return restResponse;
+        return restResponse;
 //        }
 //        throw new BusinessException(restResponse.getResponseCode(), restResponse.getResponseBody().toString());
     }
 
     @Override
-    public RestResponse rtrvReqmntInfo(String reqmntId) {
-//        rtrvProjectListRequest.setPage(rtrvProjectListRequest.getPage()-1);
-//        String projInfoListUrl = config.getRtrvProjInfoListUrl();
-//        restResponse = this.restTemplate.postForObject(projInfoListUrl, rtrvProjectListRequest, restResponse.class);
-//        ResponseEntity<restResponse> responseEntity = null;
-//        if (restResponse.getStatusCode().equals(HttpStatus.OK.toString())) {
-//            HttpHeaders httpHeaders = new HttpHeaders();
-//            httpHeaders.setAccessControlAllowOrigin("*");
-//            responseEntity = new ResponseEntity<restResponse>(restResponse,HttpStatus.OK);
-//            return responseEntity;
-//        }
-        if(StringUtils.isEmpty(reqmntId)){
+    public RestResponse rtrvReqmntInfo(RtrvReqmntInfoRequest request) {
+        if (request == null || StringUtils.isEmpty(request.getReqmntId())) {
             restResponse.setStatusCode(String.valueOf(HttpStatus.BAD_REQUEST));
             restResponse.setResponseMsg("Requirement ID should not be empty");
             return restResponse;
         }
+
         String reqmntInfoUrl = config.getRtrvReqmntInfoUrl();
-//        requirementInfo = this.restTemplate.postForObject(reqmntInfoUrl, reqmntId , RequirementInfo.class);
-//        restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
-//        restResponse.setResponseBody(requirementInfo);
+        ResponseEntity<RequirementInfo> responseEntity = this.restTemplate.postForEntity(reqmntInfoUrl, request, RequirementInfo.class);
+        if (responseEntity.getStatusCode() == HttpStatus.NO_CONTENT) {
+            // does not exists
+            throw new BusinessException(ExceptionEnum.REQMNT_DOES_NOT_EXIST);
+        }
+
+        requirementInfo = responseEntity.getBody();
+        restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
+        restResponse.setResponseBody(requirementInfo);
+        rtrvReqmntInfoResponse.setReqmntInfo(requirementInfo);
+
+        // 查询tag
+//        List<ReqmntTag> reqmntTags = restTemplate.postForObject(config.getRtrvReqmntTagsUrl(), requirementInfo.getRqmntId(), List.class);
+
+        // 查询members
+        try {
+            // call reqmnt sapi
+            ParameterizedTypeReference parameterizedTypeReference = new ParameterizedTypeReference<List<ReqmntMember>>(){};
+            List<ReqmntMember> data = FetchListUtil.fetch(restTemplate, config.getRtrvReqmntMembersUrl(), requirementInfo.getRqmntId(), parameterizedTypeReference);
+            List<ReqmntMember> reqmntMembers = data;
+            List<String> memberIds = new ArrayList<>();
+            for (int i = 0; i < reqmntMembers.size(); i++) {
+                String id = reqmntMembers.get(i).getReqmntId();
+                if (!memberIds.isEmpty() && memberIds.contains(id)) {
+                    continue;
+                }
+                memberIds.add(reqmntMembers.get(i).getStaffId());
+            }
+
+            // call staff sapi
+            Map<String, Object> params = new HashMap<>();
+            params.put("staffIdList", memberIds);
+            ParameterizedTypeReference typeReference = new ParameterizedTypeReference<List<Staff>>() {};
+            List<Staff> stafList = (List<Staff>) FetchListUtil.fetch(restTemplate, config.getRtrvStaffsByIdsUrl(), params, typeReference);
+
+            Map<String, List<Staff>> map = new HashMap<>();
+            for (ReqmntMember member : reqmntMembers) {
+                if (map.containsKey(member.getRoleName())) {
+                    List<Staff> list = map.get(member.getRoleName());
+                    list.add(getById(stafList, member.getStaffId()));
+                } else {
+                    List<Staff> list = new ArrayList<>();
+                    list.add(getById(stafList, member.getStaffId()));
+                    map.put(member.getRoleName(), list);
+                }
+            }
+
+            List<Role> roles = new ArrayList<>();
+            for (Map.Entry<String, List<Staff>> entity : map.entrySet()) {
+                Role role = new Role();
+                role.setRoleName(entity.getKey());
+                role.setMembers(entity.getValue());
+                roles.add(role);
+            }
+
+            rtrvReqmntInfoResponse.setMembers(roles);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BusinessException(ExceptionEnum.REQMNT_QUERY_MEMBER_FAIELD);
+        }
+
+        // query CheckList
+        try {
+            ParameterizedTypeReference typeReference = new ParameterizedTypeReference<List<ReqmntCheckList>>() {};
+            List<ReqmntCheckList> checkLists = FetchListUtil.fetch(restTemplate, config.getRtrvReqmntCheckListUrl(), requirementInfo.getRqmntId(), typeReference);
+            if (checkLists != null || !checkLists.isEmpty()) {
+                List<String> assigneeIds = new ArrayList<>();
+                List<String> assignerIds = new ArrayList<>();
+                for (ReqmntCheckList checklist : checkLists) {
+                    assigneeIds.add(checklist.getAssigneeId());
+                    assignerIds.add(checklist.getAssignerId());
+                }
+                Map<String, Object> params1 = new HashMap<>();
+                params1.put("staffIdList", assigneeIds);
+
+                typeReference = new ParameterizedTypeReference<List<Staff>>() {};
+                List<Staff> assigneedStaffList = FetchListUtil.fetch(restTemplate, config.getRtrvStaffsByIdsUrl(), params1, typeReference);
+                params1.put("staffIdList", assignerIds);
+                List<Staff> assignerdStaffList = FetchListUtil.fetch(restTemplate, config.getRtrvStaffsByIdsUrl(), params1, typeReference);
+
+                for (int i = 0; i < checkLists.size(); i++) {
+                    checkLists.get(i).setAssigner(assignerdStaffList.get(i));
+                    checkLists.get(i).setAssignee(assigneedStaffList.get(i));
+                }
+
+                rtrvReqmntInfoResponse.setCheckLists(checkLists);
+            } else {
+                rtrvReqmntInfoResponse.setCheckLists(new ArrayList<>());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BusinessException(ExceptionEnum.REQMNT_QUERY_CHECKLIST_FAIELD);
+        }
+
+        // query attchs
+        ParameterizedTypeReference typeReference = new ParameterizedTypeReference<List<ReqmntAttchUrl>>() {};
+        List<ReqmntAttchUrl> attchUrls = FetchListUtil.fetch(restTemplate, config.getRtrvReqmntAttchsUrl(), requirementInfo.getRqmntId(), typeReference);
+        rtrvReqmntInfoResponse.setAttchUrls(attchUrls);
+
+        restResponse.setResponseBody(rtrvReqmntInfoResponse);
+
+        return restResponse;
+    }
+
+    /**
+     * saff list query by id
+     * @param staffs
+     * @param id
+     * @return
+     */
+    private static Staff getById(List<Staff> staffs, String id) {
+        for (Staff staff : staffs) {
+            if (staff.getStaffId().equals(id)) {
+                return staff;
+            }
+        }
 
         return null;
     }
+
 
 //    /**
 //     * 调用sapi更改project

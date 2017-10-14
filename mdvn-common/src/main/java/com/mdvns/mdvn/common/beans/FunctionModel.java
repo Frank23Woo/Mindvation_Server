@@ -1,33 +1,22 @@
-package com.mdvns.mdvn.model.sapi.domain.entity;
+package com.mdvns.mdvn.common.beans;
 
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import java.sql.Timestamp;
 
-@Entity
+
 @Component
+//最后一层的过程方法子模块
 public class FunctionModel {
 
-    @Id
-    @GeneratedValue
     private Integer uuId;
-
-    @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false)
     private Integer quoteCnt;
 
     private String modelId;
     //父模型Id
     private String parentId;
-
     // 创建人ID
-    @Column(nullable = false)
     private String creatorId;
 
     private String color;

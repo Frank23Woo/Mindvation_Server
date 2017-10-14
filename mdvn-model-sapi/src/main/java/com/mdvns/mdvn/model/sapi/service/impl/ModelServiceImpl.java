@@ -1,9 +1,7 @@
 package com.mdvns.mdvn.model.sapi.service.impl;
 
-import com.mdvns.mdvn.common.beans.RestResponse;
-import com.mdvns.mdvn.model.sapi.domain.CreateModelRequest;
-import com.mdvns.mdvn.model.sapi.domain.CreateModelResponse;
-import com.mdvns.mdvn.model.sapi.domain.RetrieveModelListResponse;
+import com.mdvns.mdvn.model.sapi.domain.*;
+
 import com.mdvns.mdvn.model.sapi.domain.entity.FunctionModel;
 import com.mdvns.mdvn.model.sapi.domain.entity.Model;
 import com.mdvns.mdvn.model.sapi.domain.entity.ModelRole;
@@ -22,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -48,8 +47,11 @@ public class ModelServiceImpl implements ModelService {
     private FunctionModel functionModel;
 
     @Autowired
+    private FunctionModel subfunctionModel;
+
+    @Autowired
     private ModelRole modelRole;
-    /**
+    /**           注：未测试通过
      * @param request
      * @return Model
      * @desc: 保存新建模块
@@ -73,26 +75,52 @@ public class ModelServiceImpl implements ModelService {
         model.setModelId("M"+ model.getUuId());
         model = this.modelRepository.saveAndFlush(model);
         createModelResponse.setModel(model);
-        //2.保存FunctionModel表数据
-        List<FunctionModel> functionModels = request.getFunctionLabel();
-        List<FunctionModel> functionModelList = null;
-        for (int i = 0; i < functionModels.size(); i++) {
+        //2.保存FunctionModel表数据(过程方法模块)
+        List<FunctionLabel> functionLabels = request.getFunctionLabels();
+        List<FunctionLabel> functionLabelList = null;
+        for (int i = 0; i < functionLabels.size(); i++) {
+            FunctionLabel functionLabel = new FunctionLabel();
             functionModel.setCreateTime(createTime);
             functionModel.setCreatorId(request.getCreatorId());
             functionModel.setIsDeleted(0);
             functionModel.setQuoteCnt(0);
-            functionModel.setName(functionModels.get(i).getName());
+            functionModel.setName(functionLabels.get(i).getName());
             functionModel.setParentId(model.getModelId());
             functionModel = this.functionModelRepository.saveAndFlush(functionModel);
             functionModel.setModelId("MF"+ functionModel.getUuId());
             functionModel = this.functionModelRepository.saveAndFlush(functionModel);
-            functionModelList.add(functionModel);
+            functionLabel.setName(functionModel.getName());
+            functionLabel.setCreateTime(functionModel.getCreateTime());
+            functionLabel.setCreatorId(functionModel.getCreatorId());
+            functionLabel.setModelId(functionModel.getModelId());
+            functionLabel.setParentId(functionModel.getParentId());
+            functionLabel.setIsDeleted(functionModel.getIsDeleted());
+            //3.保存FunctionModel表数据(过程方法子模块)
+            List<FunctionModel> subfunctionLabels = functionLabels.get(i).getSubFunctionLabels();
+            List<FunctionModel> subfunctionModelList = null;
+            for (int j = 0; j < subfunctionLabels.size() ; j++) {
+                FunctionModel  funcModel = new FunctionModel();
+                subfunctionModel.setCreateTime(createTime);
+                subfunctionModel.setCreatorId(request.getCreatorId());
+                subfunctionModel.setIsDeleted(0);
+                subfunctionModel.setQuoteCnt(0);
+                subfunctionModel.setName(subfunctionLabels.get(i).getName());
+                subfunctionModel.setParentId(functionModel.getModelId());
+                subfunctionModel = this.functionModelRepository.saveAndFlush(subfunctionModel);
+                subfunctionModel.setModelId("MF"+ subfunctionModel.getUuId());
+                subfunctionModel = this.functionModelRepository.saveAndFlush(subfunctionModel);
+                subfunctionModelList.add(subfunctionModel);
+            }
+            functionLabel.setSubFunctionLabels(subfunctionModelList);
+            functionLabelList.add(functionLabel);
         }
-        createModelResponse.setFunctionLabel(functionModelList);
-        //3.保存ModelRole表数据
+        createModelResponse.setFunctionLabels(functionLabelList);
+
+        //4.保存ModelRole表数据
         List<ModelRole> modelRoles = request.getRoles();
         List<ModelRole> modelRoleList = null;
         for (int i = 0; i < modelRoles.size(); i++) {
+            modelRole.setModelId(model.getModelId());
             modelRole.setName(modelRoles.get(i).getName());
             modelRole.setCreateTime(createTime);
             modelRole.setCreatorId(request.getCreatorId());
@@ -157,6 +185,25 @@ public class ModelServiceImpl implements ModelService {
         retrieveModelListResponse.setModels(modelPage.getContent());
         retrieveModelListResponse.setTotalNumber(modelPage.getTotalElements());
         return retrieveModelListResponse;
+    }
+
+    /**
+     * 通过Id获取过程方法模块对象
+     * @param request
+     * @return
+     */
+    @Override
+    public RtrvModelByIdResponse findById(RtrvModelByIdRequest request) {
+        LOG.info("开始执行{} findById()方法.", this.CLASS);
+        RtrvModelByIdResponse rtrvModelByIdResponse = new RtrvModelByIdResponse();
+        List<FunctionModel> functionModels = new ArrayList<>();
+        functionModels = this.functionModelRepository.findByParentId(request.getModelId());
+        rtrvModelByIdResponse.setFunctionModels(functionModels);
+        List<ModelRole> modelRoles = new ArrayList<>();
+        modelRoles = this.modelRoleRepository.findByModelId(request.getModelId());
+        rtrvModelByIdResponse.setModelRoles(modelRoles);
+        LOG.info("执行结束{} findById()方法.", this.CLASS);
+        return rtrvModelByIdResponse;
     }
 
     /**

@@ -16,6 +16,13 @@ public class ReqmntConfig {
     private String saveRCheckListUrl;
     private String saveRAttchUrl;
     private String rtrvReqmntInfoUrl;
+    private String rtrvReqmntTagsUrl;
+    private String rtrvReqmntMembersUrl;
+    private String rtrvReqmntCheckListUrl;
+    private String rtrvReqmntAttchsUrl;
+
+    //staff sapi url
+    private String rtrvStaffsByIdsUrl;
 
     public String getRtrvReqmntListUrl() {
         return rtrvReqmntListUrl;
@@ -73,5 +80,45 @@ public class ReqmntConfig {
 
     public void setSaveReqmntUrl(String saveReqmntUrl) {
         this.saveReqmntUrl = saveReqmntUrl;
+    }
+
+    public String getRtrvReqmntTagsUrl() {
+        return rtrvReqmntTagsUrl;
+    }
+
+    public void setRtrvReqmntTagsUrl(String rtrvReqmntTagsUrl) {
+        this.rtrvReqmntTagsUrl = rtrvReqmntTagsUrl;
+    }
+
+    public String getRtrvReqmntMembersUrl() {
+        return rtrvReqmntMembersUrl;
+    }
+
+    public void setRtrvReqmntMembersUrl(String rtrvReqmntMembersUrl) {
+        this.rtrvReqmntMembersUrl = rtrvReqmntMembersUrl;
+    }
+
+    public String getRtrvStaffsByIdsUrl() {
+        return rtrvStaffsByIdsUrl;
+    }
+
+    public void setRtrvStaffsByIdsUrl(String rtrvStaffsByIdsUrl) {
+        this.rtrvStaffsByIdsUrl = rtrvStaffsByIdsUrl;
+    }
+
+    public String getRtrvReqmntCheckListUrl() {
+        return rtrvReqmntCheckListUrl;
+    }
+
+    public void setRtrvReqmntCheckListUrl(String rtrvReqmntCheckListUrl) {
+        this.rtrvReqmntCheckListUrl = rtrvReqmntCheckListUrl;
+    }
+
+    public String getRtrvReqmntAttchsUrl() {
+        return rtrvReqmntAttchsUrl;
+    }
+
+    public void setRtrvReqmntAttchsUrl(String rtrvReqmntAttchsUrl) {
+        this.rtrvReqmntAttchsUrl = rtrvReqmntAttchsUrl;
     }
 }

@@ -1,30 +1,20 @@
-package com.mdvns.mdvn.model.sapi.domain.entity;
+package com.mdvns.mdvn.common.beans;
 
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import java.sql.Timestamp;
 
-@Entity
 @Component
 public class ModelRole {
 
-    @Id
-    @GeneratedValue
+
     private Integer uuId;
-    @Column(nullable = false)
     private String roleId;
-    @Column(nullable = false)
     private String name;
     private String creatorId;
     private Timestamp createTime;
     private Integer isDeleted;
     private Integer quoteCnt;
-    //角色表里的角色不可以共用
-    private String modelId;
 
     public Integer getUuId() {
         return uuId;
@@ -75,13 +65,5 @@ public class ModelRole {
 
     public void setQuoteCnt(Integer quoteCnt) {
         this.quoteCnt = quoteCnt;
-    }
-
-    public String getModelId() {
-        return modelId;
-    }
-
-    public void setModelId(String modelId) {
-        this.modelId = modelId;
     }
 }

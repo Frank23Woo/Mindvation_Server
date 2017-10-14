@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 
 
 @Component
+//最后一层的过程方法子模块
 public class FunctionModel {
 
     private Integer uuId;
@@ -13,11 +14,8 @@ public class FunctionModel {
     private Integer quoteCnt;
 
     private String modelId;
-    //模型类型
-    private String modelType;
     //父模型Id
     private String parentId;
-
     // 创建人ID
     private String creatorId;
 
@@ -82,14 +80,6 @@ public class FunctionModel {
 
     public void setModelId(String modelId) {
         this.modelId = modelId;
-    }
-
-    public String getModelType() {
-        return modelType;
-    }
-
-    public void setModelType(String modelType) {
-        this.modelType = modelType;
     }
 
     public String getParentId() {
