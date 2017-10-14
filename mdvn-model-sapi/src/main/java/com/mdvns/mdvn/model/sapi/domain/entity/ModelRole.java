@@ -23,6 +23,8 @@ public class ModelRole {
     private Timestamp createTime;
     private Integer isDeleted;
     private Integer quoteCnt;
+    //角色表里的角色不可以共用
+    private String modelId;
 
     public Integer getUuId() {
         return uuId;
@@ -73,5 +75,13 @@ public class ModelRole {
 
     public void setQuoteCnt(Integer quoteCnt) {
         this.quoteCnt = quoteCnt;
+    }
+
+    public String getModelId() {
+        return modelId;
+    }
+
+    public void setModelId(String modelId) {
+        this.modelId = modelId;
     }
 }

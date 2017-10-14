@@ -13,11 +13,8 @@ public class FunctionModel {
     private Integer quoteCnt;
 
     private String modelId;
-    //模型类型
-    private String modelType;
     //父模型Id
     private String parentId;
-
     // 创建人ID
     private String creatorId;
 
@@ -82,14 +79,6 @@ public class FunctionModel {
 
     public void setModelId(String modelId) {
         this.modelId = modelId;
-    }
-
-    public String getModelType() {
-        return modelType;
-    }
-
-    public void setModelType(String modelType) {
-        this.modelType = modelType;
     }
 
     public String getParentId() {

@@ -18,9 +18,9 @@ public class CreateModelRequest {
     private String creatorId;
     //行业
     @NotBlank(message = "模块行业不能为空")
-    private String industry;
+    private String modelType;
     //过程方法模块
-    private List<FunctionModel> functionLabel;
+    private List<FunctionLabel> functionLabels;
     //模块下对应的角色
     private List<ModelRole> roles;
     private List<String> remarks;
@@ -41,20 +41,20 @@ public class CreateModelRequest {
         this.creatorId = creatorId;
     }
 
-    public String getIndustry() {
-        return industry;
+    public String getModelType() {
+        return modelType;
     }
 
-    public void setIndustry(String industry) {
-        this.industry = industry;
+    public void setModelType(String modelType) {
+        this.modelType = modelType;
     }
 
-    public List<FunctionModel> getFunctionLabel() {
-        return functionLabel;
+    public List<FunctionLabel> getFunctionLabels() {
+        return functionLabels;
     }
 
-    public void setFunctionLabel(List<FunctionModel> functionLabel) {
-        this.functionLabel = functionLabel;
+    public void setFunctionLabels(List<FunctionLabel> functionLabels) {
+        this.functionLabels = functionLabels;
     }
 
     public List<ModelRole> getRoles() {

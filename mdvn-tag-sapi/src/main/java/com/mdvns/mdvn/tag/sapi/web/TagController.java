@@ -41,13 +41,6 @@ public class TagController {
     /**
      * 获取Tag列表，分页/排序
      */
-
-//    @PostMapping(value = "/tags")
-//    public ResponseEntity<?> rtrvTagList(@RequestBody RetrieveTagListRequest retrieveTagListRequest) throws SQLException {
-//
-//        return this.tagService.rtrvTagList(retrieveTagListRequest);
-//    }
-
     @PostMapping(value = "/tagList")
     public ResponseEntity<?> rtrvTagList(@RequestBody RetrieveTagListRequest retrieveTagListRequest) throws SQLException, BusinessException {
 
@@ -76,6 +69,16 @@ public class TagController {
         return this.tagService.findByName(name);
     }
 
+    /**
+     * 根据Id查询tag
+     * @param tagId
+     * @return
+     */
+    @PostMapping(value = "/{tagId}/tag")
+    public ResponseEntity<?> findById(@PathVariable String tagId) {
+        LOG.info("标签编号："+tagId);
+        return this.tagService.findById(tagId);
+    }
     /**
      * 根据指定的ID给quoteCnt值+1
      *

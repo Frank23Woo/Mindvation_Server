@@ -10,7 +10,7 @@ public class CreateModelResponse {
     //模块
     private Model model;
     //过程方法模块
-    private List<FunctionModel> functionLabel;
+    private List<FunctionLabel> functionLabels;
     //模块下对应的角色
     private List<ModelRole> roles;
     private List<String> remarks;
@@ -23,12 +23,12 @@ public class CreateModelResponse {
         this.model = model;
     }
 
-    public List<FunctionModel> getFunctionLabel() {
-        return functionLabel;
+    public List<FunctionLabel> getFunctionLabels() {
+        return functionLabels;
     }
 
-    public void setFunctionLabel(List<FunctionModel> functionLabel) {
-        this.functionLabel = functionLabel;
+    public void setFunctionLabels(List<FunctionLabel> functionLabels) {
+        this.functionLabels = functionLabels;
     }
 
     public List<ModelRole> getRoles() {

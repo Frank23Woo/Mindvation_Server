@@ -24,4 +24,6 @@ public interface TagService {
 
     ResponseEntity<?> rtrvTagList(Integer page, Integer pageSize, String sortBy) throws SQLException;
 
+    /*根据tagId获取标签数据*/
+    ResponseEntity<?> findById(String tagId);
 }

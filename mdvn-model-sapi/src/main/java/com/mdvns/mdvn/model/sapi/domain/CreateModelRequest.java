@@ -1,6 +1,6 @@
 package com.mdvns.mdvn.model.sapi.domain;
 
-import com.mdvns.mdvn.model.sapi.domain.entity.FunctionModel;
+
 import com.mdvns.mdvn.model.sapi.domain.entity.ModelRole;
 import org.springframework.stereotype.Component;
 
@@ -11,10 +11,10 @@ public class CreateModelRequest {
 
     private String name;
     private String creatorId;
-    //行业
+    //行业(model_type)
     private String industry;
     //过程方法模块
-    private List<FunctionModel> functionLabel;
+    private List<FunctionLabel> functionLabels;
     //模块下对应的角色
     private List<ModelRole> roles;
     private List<String> remarks;
@@ -43,12 +43,12 @@ public class CreateModelRequest {
         this.industry = industry;
     }
 
-    public List<FunctionModel> getFunctionLabel() {
-        return functionLabel;
+    public List<FunctionLabel> getFunctionLabels() {
+        return functionLabels;
     }
 
-    public void setFunctionLabel(List<FunctionModel> functionLabel) {
-        this.functionLabel = functionLabel;
+    public void setFunctionLabels(List<FunctionLabel> functionLabels) {
+        this.functionLabels = functionLabels;
     }
 
     public List<ModelRole> getRoles() {

@@ -2,16 +2,20 @@ package com.mdvns.mdvn.tag.papi.domain;
 
 public class RetrieveTagRequest {
 
-    private String name;
+    private String param;
 
     private String remark;
 
-    public String getName() {
-        return name;
+    public String getParam() {
+        return param;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setParam(String param) {
+        this.param = param;
+    }
+
+    public void setName(String param) {
+        this.param = param;
     }
 
     public String getRemark() {
