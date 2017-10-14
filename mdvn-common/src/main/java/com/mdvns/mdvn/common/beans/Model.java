@@ -1,31 +1,31 @@
-package com.mdvns.mdvn.model.papi.domain;
+package com.mdvns.mdvn.common.beans;
 
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
-import java.util.List;
-
 
 @Component
-//第二层过程方法模块的详情
-public class FunctionLabel {
+public class Model {
+    
+    private Integer uuId;
 
     private String name;
+
+    private Integer quoteCnt;
+
     private String modelId;
+    //模型类型
+    private String modelType;
     //父模型Id
     private String parentId;
-
     // 创建人ID
     private String creatorId;
 
-    private Timestamp createTime;
+    private String color;
+
+    private Long createTime;
 
     /*是否已删除*/
     private Integer isDeleted;
-
-    private List<FunctionModel> subFunctionLabels;
-
-    private List<String> remarks;
 
     public String getName() {
         return name;
@@ -33,6 +33,14 @@ public class FunctionLabel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getQuoteCnt() {
+        return quoteCnt;
+    }
+
+    public void setQuoteCnt(Integer quoteCnt) {
+        this.quoteCnt = quoteCnt;
     }
 
     public String getCreatorId() {
@@ -43,12 +51,28 @@ public class FunctionLabel {
         this.creatorId = creatorId;
     }
 
-    public Timestamp getCreateTime() {
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public Long getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Long createTime) {
         this.createTime = createTime;
+    }
+
+    public Integer getUuId() {
+        return uuId;
+    }
+
+    public void setUuId(Integer uuId) {
+        this.uuId = uuId;
     }
 
     public String getModelId() {
@@ -57,6 +81,14 @@ public class FunctionLabel {
 
     public void setModelId(String modelId) {
         this.modelId = modelId;
+    }
+
+    public String getModelType() {
+        return modelType;
+    }
+
+    public void setModelType(String modelType) {
+        this.modelType = modelType;
     }
 
     public String getParentId() {
@@ -73,21 +105,5 @@ public class FunctionLabel {
 
     public void setIsDeleted(Integer isDeleted) {
         this.isDeleted = isDeleted;
-    }
-
-    public List<FunctionModel> getSubFunctionLabels() {
-        return subFunctionLabels;
-    }
-
-    public void setSubFunctionLabels(List<FunctionModel> subFunctionLabels) {
-        this.subFunctionLabels = subFunctionLabels;
-    }
-
-    public List<String> getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(List<String> remarks) {
-        this.remarks = remarks;
     }
 }

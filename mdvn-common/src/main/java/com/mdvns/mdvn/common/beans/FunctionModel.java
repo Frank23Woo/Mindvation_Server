@@ -1,31 +1,30 @@
-package com.mdvns.mdvn.model.papi.domain;
+package com.mdvns.mdvn.common.beans;
 
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 
 @Component
-//第二层过程方法模块的详情
-public class FunctionLabel {
+//最后一层的过程方法子模块
+public class FunctionModel {
 
+    private Integer uuId;
     private String name;
+    private Integer quoteCnt;
+
     private String modelId;
     //父模型Id
     private String parentId;
-
     // 创建人ID
     private String creatorId;
+
+    private String color;
 
     private Timestamp createTime;
 
     /*是否已删除*/
     private Integer isDeleted;
-
-    private List<FunctionModel> subFunctionLabels;
-
-    private List<String> remarks;
 
     public String getName() {
         return name;
@@ -33,6 +32,14 @@ public class FunctionLabel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getQuoteCnt() {
+        return quoteCnt;
+    }
+
+    public void setQuoteCnt(Integer quoteCnt) {
+        this.quoteCnt = quoteCnt;
     }
 
     public String getCreatorId() {
@@ -43,12 +50,28 @@ public class FunctionLabel {
         this.creatorId = creatorId;
     }
 
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
     public Timestamp getCreateTime() {
         return createTime;
     }
 
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
+    }
+
+    public Integer getUuId() {
+        return uuId;
+    }
+
+    public void setUuId(Integer uuId) {
+        this.uuId = uuId;
     }
 
     public String getModelId() {
@@ -73,21 +96,5 @@ public class FunctionLabel {
 
     public void setIsDeleted(Integer isDeleted) {
         this.isDeleted = isDeleted;
-    }
-
-    public List<FunctionModel> getSubFunctionLabels() {
-        return subFunctionLabels;
-    }
-
-    public void setSubFunctionLabels(List<FunctionModel> subFunctionLabels) {
-        this.subFunctionLabels = subFunctionLabels;
-    }
-
-    public List<String> getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(List<String> remarks) {
-        this.remarks = remarks;
     }
 }
