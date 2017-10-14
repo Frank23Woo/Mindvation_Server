@@ -1,4 +1,4 @@
-package com.mdvns.mdvn.project.papi.config;
+package com.mdvns.mdvn.story.papi.config;
 
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
