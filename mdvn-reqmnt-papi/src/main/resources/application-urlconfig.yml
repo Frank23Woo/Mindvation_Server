@@ -18,6 +18,13 @@ config:
 
   rtrvReqmntInfoUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntInfo
   rtrvReqmntListUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntList
+  rtrvReqmntTagsUrl: http://localhost:10012/mdvn-reqmnt-sapi/getRtrvReqmntInfoUrl
+  rtrvReqmntMembersUrl : http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntMembers
+  rtrvReqmntCheckListUrl : http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntCheckList
+  rtrvReqmntAttchsUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntAttUrls
+
+# staff sapi urls
+  rtrvStaffsByIdsUrl: http://localhost:10013/mdvn-staff-s/rtrvStaffListByStaffIdList
 
 
 

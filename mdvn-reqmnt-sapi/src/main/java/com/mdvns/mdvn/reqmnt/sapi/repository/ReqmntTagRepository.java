@@ -11,4 +11,9 @@ public interface ReqmntTagRepository extends JpaRepository<ReqmntTag,Integer>{
 
     @Query(value="SELECT * FROM tag_proj_map WHERE proj_id =?1 AND is_deleted = 0;",nativeQuery = true )
     List<ReqmntTag> findPTags(String projId);
+
+
+    List<ReqmntTag> findAllByReqmntIdAndIsDeleted(String reqmntId, Integer isDeleted);
+
+
 }

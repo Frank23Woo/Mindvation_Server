@@ -1,5 +1,8 @@
 package com.mdvns.mdvn.reqmnt.papi.domain;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class ReqmntMember {
 
     private String uuId;

@@ -1,6 +1,7 @@
 package com.mdvns.mdvn.reqmnt.papi.domain;
 
 
+import com.mdvns.mdvn.common.beans.Staff;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -34,6 +35,12 @@ public class ReqmntCheckList {
     //任务状态
     private String status;
 
+    //执行者ID
+    private Staff assignee;
+    //设计者ID
+    private Staff assigner;
+
+
     public Integer getUuId() {
         return uuId;
     }
@@ -56,14 +63,6 @@ public class ReqmntCheckList {
 
     public void setReqmntId(String reqmntId) {
         this.reqmntId = reqmntId;
-    }
-
-    public String getdescription() {
-        return description;
-    }
-
-    public void setdescription(String description) {
-        this.description = description;
     }
 
     public String getAssigneeId() {
@@ -144,6 +143,31 @@ public class ReqmntCheckList {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Staff getAssignee() {
+        return assignee;
+    }
+
+    public void setAssignee(Staff assignee) {
+        this.assignee = assignee;
+    }
+
+    public Staff getAssigner() {
+        return assigner;
+    }
+
+    public void setAssigner(Staff assigner) {
+        this.assigner = assigner;
     }
 
     @Override

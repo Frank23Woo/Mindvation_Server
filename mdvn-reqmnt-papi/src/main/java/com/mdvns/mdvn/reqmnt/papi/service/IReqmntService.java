@@ -18,7 +18,7 @@ public interface IReqmntService {
      * @return
      */
     RestResponse createReqmnt(CreateReqmntRequest createReqmntRequest);
-    RestResponse rtrvReqmntInfo(String reqmntId);
+    RestResponse rtrvReqmntInfo(RtrvReqmntInfoRequest request);
 
 //    /**
 //     * 更改project

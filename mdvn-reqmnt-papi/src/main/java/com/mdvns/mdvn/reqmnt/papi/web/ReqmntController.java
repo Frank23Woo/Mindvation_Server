@@ -41,8 +41,8 @@ public class ReqmntController {
      * @return
      */
     @PostMapping(value="/rtrvReqmntInfo")
-    public RestResponse rtrvProjInfoList(@RequestParam("reqmntId") String reqmntId){
-        return this.iReqmntService.rtrvReqmntInfo(reqmntId);
+    public RestResponse rtrvProjInfoList(@RequestBody RtrvReqmntInfoRequest request){
+        return this.iReqmntService.rtrvReqmntInfo(request);
     }
 
 

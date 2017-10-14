@@ -1,5 +1,7 @@
 package com.mdvns.mdvn.reqmnt.sapi.repository;
 
+import com.mdvns.mdvn.reqmnt.sapi.domain.entity.ReqmntAttchUrl;
+import com.mdvns.mdvn.reqmnt.sapi.domain.entity.ReqmntMember;
 import com.mdvns.mdvn.reqmnt.sapi.domain.entity.RequirementInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,11 +13,11 @@ import java.util.List;
 
 public interface ReqmntRepository extends JpaRepository<RequirementInfo, Integer>{
 
-
-
     Page<RequirementInfo> findAllByProjIdAndIsDeleted(String projId, Integer isDeleted, Pageable pageable);
 
     List<RequirementInfo> findAllByProjIdAndIsDeletedOrderByUuIdAsc(String projId, Integer isDeleted);
+
+    RequirementInfo findByRqmntIdAndIsDeleted(String reqmntId, Integer isDelete);
 
 
     //获取project列表总条数

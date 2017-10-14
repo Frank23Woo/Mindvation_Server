@@ -22,3 +22,11 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+mdvn-pchklst-papi/mvnw.cmd
+*.cmd
+*.cmd
+mdvn-pchklst-papi/mvnw.cmd
+mdvn-pchklst-papi/mvnw.cmd
+mdvn-pchklst-papi/mvnw.cmd
+mdvn-pchklst-sapi/mvnw.cmd
+mdvn-reqmnt-papi/mvnw.cmd
