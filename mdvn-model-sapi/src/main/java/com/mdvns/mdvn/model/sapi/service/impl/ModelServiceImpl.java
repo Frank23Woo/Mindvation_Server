@@ -2,7 +2,7 @@ package com.mdvns.mdvn.model.sapi.service.impl;
 
 import com.mdvns.mdvn.model.sapi.domain.*;
 
-import com.mdvns.mdvn.model.sapi.domain.entity.FunctionModel;
+import com.mdvns.mdvn.model.sapi.domain.entity.SubFunctionLabel;
 import com.mdvns.mdvn.model.sapi.domain.entity.Model;
 import com.mdvns.mdvn.model.sapi.domain.entity.ModelRole;
 import com.mdvns.mdvn.model.sapi.repository.FunctionModelRepository;
@@ -44,10 +44,10 @@ public class ModelServiceImpl implements ModelService {
     private Model model;
 
     @Autowired
-    private FunctionModel functionModel;
+    private SubFunctionLabel subFunctionLabel;
 
     @Autowired
-    private FunctionModel subfunctionModel;
+    private SubFunctionLabel subfunctionModelSub;
 
     @Autowired
     private ModelRole modelRole;
@@ -80,38 +80,38 @@ public class ModelServiceImpl implements ModelService {
         List<FunctionLabel> functionLabelList = null;
         for (int i = 0; i < functionLabels.size(); i++) {
             FunctionLabel functionLabel = new FunctionLabel();
-            functionModel.setCreateTime(createTime);
-            functionModel.setCreatorId(request.getCreatorId());
-            functionModel.setIsDeleted(0);
-            functionModel.setQuoteCnt(0);
-            functionModel.setName(functionLabels.get(i).getName());
-            functionModel.setParentId(model.getModelId());
-            functionModel = this.functionModelRepository.saveAndFlush(functionModel);
-            functionModel.setModelId("MF"+ functionModel.getUuId());
-            functionModel = this.functionModelRepository.saveAndFlush(functionModel);
-            functionLabel.setName(functionModel.getName());
-            functionLabel.setCreateTime(functionModel.getCreateTime());
-            functionLabel.setCreatorId(functionModel.getCreatorId());
-            functionLabel.setModelId(functionModel.getModelId());
-            functionLabel.setParentId(functionModel.getParentId());
-            functionLabel.setIsDeleted(functionModel.getIsDeleted());
+            subFunctionLabel.setCreateTime(createTime);
+            subFunctionLabel.setCreatorId(request.getCreatorId());
+            subFunctionLabel.setIsDeleted(0);
+            subFunctionLabel.setQuoteCnt(0);
+            subFunctionLabel.setName(functionLabels.get(i).getName());
+            subFunctionLabel.setParentId(model.getModelId());
+            subFunctionLabel = this.functionModelRepository.saveAndFlush(subFunctionLabel);
+            subFunctionLabel.setModelId("MF"+ subFunctionLabel.getUuId());
+            subFunctionLabel = this.functionModelRepository.saveAndFlush(subFunctionLabel);
+            functionLabel.setName(subFunctionLabel.getName());
+            functionLabel.setCreateTime(subFunctionLabel.getCreateTime());
+            functionLabel.setCreatorId(subFunctionLabel.getCreatorId());
+            functionLabel.setModelId(subFunctionLabel.getModelId());
+            functionLabel.setParentId(subFunctionLabel.getParentId());
+            functionLabel.setIsDeleted(subFunctionLabel.getIsDeleted());
             //3.保存FunctionModel表数据(过程方法子模块)
-            List<FunctionModel> subfunctionLabels = functionLabels.get(i).getSubFunctionLabels();
-            List<FunctionModel> subfunctionModelList = null;
+            List<SubFunctionLabel> subfunctionLabels = functionLabels.get(i).getSubFunctionLabels();
+            List<SubFunctionLabel> subfunctionModelListSub = null;
             for (int j = 0; j < subfunctionLabels.size() ; j++) {
-                FunctionModel  funcModel = new FunctionModel();
-                subfunctionModel.setCreateTime(createTime);
-                subfunctionModel.setCreatorId(request.getCreatorId());
-                subfunctionModel.setIsDeleted(0);
-                subfunctionModel.setQuoteCnt(0);
-                subfunctionModel.setName(subfunctionLabels.get(i).getName());
-                subfunctionModel.setParentId(functionModel.getModelId());
-                subfunctionModel = this.functionModelRepository.saveAndFlush(subfunctionModel);
-                subfunctionModel.setModelId("MF"+ subfunctionModel.getUuId());
-                subfunctionModel = this.functionModelRepository.saveAndFlush(subfunctionModel);
-                subfunctionModelList.add(subfunctionModel);
+                SubFunctionLabel funcModel = new SubFunctionLabel();
+                subfunctionModelSub.setCreateTime(createTime);
+                subfunctionModelSub.setCreatorId(request.getCreatorId());
+                subfunctionModelSub.setIsDeleted(0);
+                subfunctionModelSub.setQuoteCnt(0);
+                subfunctionModelSub.setName(subfunctionLabels.get(i).getName());
+                subfunctionModelSub.setParentId(subFunctionLabel.getModelId());
+                subfunctionModelSub = this.functionModelRepository.saveAndFlush(subfunctionModelSub);
+                subfunctionModelSub.setModelId("MF"+ subfunctionModelSub.getUuId());
+                subfunctionModelSub = this.functionModelRepository.saveAndFlush(subfunctionModelSub);
+                subfunctionModelListSub.add(subfunctionModelSub);
             }
-            functionLabel.setSubFunctionLabels(subfunctionModelList);
+            functionLabel.setSubFunctionLabels(subfunctionModelListSub);
             functionLabelList.add(functionLabel);
         }
         createModelResponse.setFunctionLabels(functionLabelList);
@@ -196,9 +196,9 @@ public class ModelServiceImpl implements ModelService {
     public RtrvModelByIdResponse findById(RtrvModelByIdRequest request) {
         LOG.info("开始执行{} findById()方法.", this.CLASS);
         RtrvModelByIdResponse rtrvModelByIdResponse = new RtrvModelByIdResponse();
-        List<FunctionModel> functionModels = new ArrayList<>();
-        functionModels = this.functionModelRepository.findByParentId(request.getModelId());
-        rtrvModelByIdResponse.setFunctionModels(functionModels);
+        List<SubFunctionLabel> subFunctionLabels = new ArrayList<>();
+        subFunctionLabels = this.functionModelRepository.findByParentId(request.getModelId());
+        rtrvModelByIdResponse.setSubFunctionLabels(subFunctionLabels);
         List<ModelRole> modelRoles = new ArrayList<>();
         modelRoles = this.modelRoleRepository.findByModelId(request.getModelId());
         rtrvModelByIdResponse.setModelRoles(modelRoles);

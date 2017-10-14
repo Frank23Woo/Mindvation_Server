@@ -23,7 +23,7 @@ public class FunctionLabel {
     /*是否已删除*/
     private Integer isDeleted;
 
-    private List<FunctionModel> subFunctionLabels;
+    private List<SubFunctionLabel> subFunctionLabels;
 
     private List<String> remarks;
 
@@ -75,11 +75,11 @@ public class FunctionLabel {
         this.isDeleted = isDeleted;
     }
 
-    public List<FunctionModel> getSubFunctionLabels() {
+    public List<SubFunctionLabel> getSubFunctionLabels() {
         return subFunctionLabels;
     }
 
-    public void setSubFunctionLabels(List<FunctionModel> subFunctionLabels) {
+    public void setSubFunctionLabels(List<SubFunctionLabel> subFunctionLabels) {
         this.subFunctionLabels = subFunctionLabels;
     }
 

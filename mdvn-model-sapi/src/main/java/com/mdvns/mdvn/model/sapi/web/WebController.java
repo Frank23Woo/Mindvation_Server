@@ -2,7 +2,6 @@ package com.mdvns.mdvn.model.sapi.web;
 
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.model.sapi.domain.*;
-import com.mdvns.mdvn.model.sapi.domain.entity.FunctionModel;
 import com.mdvns.mdvn.model.sapi.domain.entity.Model;
 import com.mdvns.mdvn.model.sapi.service.ModelService;
 import org.slf4j.Logger;
@@ -12,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
-import java.util.List;
 
 
 @RestController

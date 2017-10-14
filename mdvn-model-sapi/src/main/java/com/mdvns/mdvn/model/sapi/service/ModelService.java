@@ -1,16 +1,13 @@
 package com.mdvns.mdvn.model.sapi.service;
 
-import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.model.sapi.domain.CreateModelRequest;
 import com.mdvns.mdvn.model.sapi.domain.RetrieveModelListResponse;
 import com.mdvns.mdvn.model.sapi.domain.RtrvModelByIdRequest;
 import com.mdvns.mdvn.model.sapi.domain.RtrvModelByIdResponse;
-import com.mdvns.mdvn.model.sapi.domain.entity.FunctionModel;
 import com.mdvns.mdvn.model.sapi.domain.entity.Model;
 import org.springframework.http.ResponseEntity;
 
 import java.sql.SQLException;
-import java.util.List;
 
 public interface ModelService {
 
