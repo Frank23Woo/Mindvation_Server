@@ -2,6 +2,7 @@ package com.mdvns.mdvn.tag.sapi.web;
 
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.tag.sapi.domain.RetrieveTagListRequest;
+import com.mdvns.mdvn.tag.sapi.domain.RtrvTagsRequest;
 import com.mdvns.mdvn.tag.sapi.domain.entity.Tag;
 import com.mdvns.mdvn.tag.sapi.service.TagService;
 import org.slf4j.Logger;
@@ -90,5 +91,8 @@ public class TagController {
         return this.tagService.updateQupteCnt(tagId);
     }
 
-
+    @PostMapping(value = "/rtrvTags")
+    public ResponseEntity<?> rtrvTagsById(@RequestBody RtrvTagsRequest rtrvTagsRequest ) {
+        return this.tagService.rtrvTagsById(rtrvTagsRequest);
+    }
 }
