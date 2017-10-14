@@ -1,10 +1,8 @@
 package com.mdvns.mdvn.model.sapi.service;
 
-import com.mdvns.mdvn.model.sapi.domain.CreateModelRequest;
-import com.mdvns.mdvn.model.sapi.domain.RetrieveModelListResponse;
-import com.mdvns.mdvn.model.sapi.domain.RtrvModelByIdRequest;
-import com.mdvns.mdvn.model.sapi.domain.RtrvModelByIdResponse;
+import com.mdvns.mdvn.model.sapi.domain.*;
 import com.mdvns.mdvn.model.sapi.domain.entity.Model;
+import com.mdvns.mdvn.model.sapi.domain.entity.SubFunctionLabel;
 import org.springframework.http.ResponseEntity;
 
 import java.sql.SQLException;
@@ -25,5 +23,7 @@ public interface ModelService {
     RetrieveModelListResponse rtrvModelList(Integer page, Integer pageSize, String sortBy) throws SQLException;
 
     RtrvModelByIdResponse findById(RtrvModelByIdRequest request);
+
+    SubFunctionLabel findById(RtrvSubFunctionLabelById request);
 
 }

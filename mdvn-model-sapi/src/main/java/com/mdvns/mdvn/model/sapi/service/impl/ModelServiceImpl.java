@@ -87,12 +87,12 @@ public class ModelServiceImpl implements ModelService {
             subFunctionLabel.setName(functionLabels.get(i).getName());
             subFunctionLabel.setParentId(model.getModelId());
             subFunctionLabel = this.functionModelRepository.saveAndFlush(subFunctionLabel);
-            subFunctionLabel.setModelId("MF"+ subFunctionLabel.getUuId());
+            subFunctionLabel.setLabelId("MF"+ subFunctionLabel.getUuId());
             subFunctionLabel = this.functionModelRepository.saveAndFlush(subFunctionLabel);
             functionLabel.setName(subFunctionLabel.getName());
             functionLabel.setCreateTime(subFunctionLabel.getCreateTime());
             functionLabel.setCreatorId(subFunctionLabel.getCreatorId());
-            functionLabel.setModelId(subFunctionLabel.getModelId());
+            functionLabel.setModelId(subFunctionLabel.getLabelId());
             functionLabel.setParentId(subFunctionLabel.getParentId());
             functionLabel.setIsDeleted(subFunctionLabel.getIsDeleted());
             //3.保存FunctionModel表数据(过程方法子模块)
@@ -105,9 +105,9 @@ public class ModelServiceImpl implements ModelService {
                 subfunctionModelSub.setIsDeleted(0);
                 subfunctionModelSub.setQuoteCnt(0);
                 subfunctionModelSub.setName(subfunctionLabels.get(i).getName());
-                subfunctionModelSub.setParentId(subFunctionLabel.getModelId());
+                subfunctionModelSub.setParentId(subFunctionLabel.getLabelId());
                 subfunctionModelSub = this.functionModelRepository.saveAndFlush(subfunctionModelSub);
-                subfunctionModelSub.setModelId("MF"+ subfunctionModelSub.getUuId());
+                subfunctionModelSub.setLabelId("MF"+ subfunctionModelSub.getUuId());
                 subfunctionModelSub = this.functionModelRepository.saveAndFlush(subfunctionModelSub);
                 subfunctionModelListSub.add(subfunctionModelSub);
             }
@@ -188,7 +188,7 @@ public class ModelServiceImpl implements ModelService {
     }
 
     /**
-     * 通过Id获取过程方法模块对象
+     * 通过modelId获取它的过程方法模块对象（List）
      * @param request
      * @return
      */
@@ -207,6 +207,24 @@ public class ModelServiceImpl implements ModelService {
     }
 
     /**
+     * 通过labelId获取它自己的过程方法模块对象（单个）
+     * @param request
+     * @return
+     */
+    @Override
+    public SubFunctionLabel findById(RtrvSubFunctionLabelById request) {
+        LOG.info("开始执行{} findById()方法.", this.CLASS);
+        subFunctionLabel = this.functionModelRepository.findByLabelId(request.getLabelId());
+        LOG.info("执行结束{} findById()方法.", this.CLASS);
+        return subFunctionLabel;
+    }
+
+
+
+
+
+
+    /**
      * 获取全部模块
      * @return
      */
@@ -219,5 +237,7 @@ public class ModelServiceImpl implements ModelService {
         retrieveModelListResponse.setTotalNumber(count);
         return retrieveModelListResponse;
     }
+
+
 
 }

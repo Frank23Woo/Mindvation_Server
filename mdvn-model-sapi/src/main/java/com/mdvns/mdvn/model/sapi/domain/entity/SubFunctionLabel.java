@@ -22,7 +22,7 @@ public class SubFunctionLabel {
     @Column(nullable = false)
     private Integer quoteCnt;
 
-    private String modelId;
+    private String labelId;
     //父模型Id
     private String parentId;
 
@@ -85,12 +85,12 @@ public class SubFunctionLabel {
         this.uuId = uuId;
     }
 
-    public String getModelId() {
-        return modelId;
+    public String getLabelId() {
+        return labelId;
     }
 
-    public void setModelId(String modelId) {
-        this.modelId = modelId;
+    public void setLabelId(String labelId) {
+        this.labelId = labelId;
     }
 
     public String getParentId() {

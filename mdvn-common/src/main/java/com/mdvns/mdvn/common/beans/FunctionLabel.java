@@ -11,7 +11,7 @@ import java.util.List;
 public class FunctionLabel {
 
     private String name;
-    private String modelId;
+    private String labelId;
     //父模型Id
     private String parentId;
 
@@ -51,12 +51,12 @@ public class FunctionLabel {
         this.createTime = createTime;
     }
 
-    public String getModelId() {
-        return modelId;
+    public String getLabelId() {
+        return labelId;
     }
 
-    public void setModelId(String modelId) {
-        this.modelId = modelId;
+    public void setLabelId(String labelId) {
+        this.labelId = labelId;
     }
 
     public String getParentId() {
