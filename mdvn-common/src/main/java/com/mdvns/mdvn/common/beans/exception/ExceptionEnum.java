@@ -10,6 +10,7 @@ public enum ExceptionEnum {
 	 * 1100~1200 PCheckList
 	 * 1200~1300 Model
 	 * 1300~1400 Project
+	 * 1400~1500 Reqmnt
 	 */
 	UNKNOW_EXCEPTION("555","未知错误"),
 
@@ -25,6 +26,9 @@ public enum ExceptionEnum {
 	USER_NOT_FOUND("101", "用户不存在!"),
 	
 	SAPI_EXCEPTION("10001", "SAPI异常"),
+
+
+
 
 	//project
 	//所有的请求参数错误
@@ -48,10 +52,12 @@ public enum ExceptionEnum {
 	PROJECT_DETAIL_TAG_NOT_RTRV("1317", "调用SAPI获取项目detail标签信息时失败"),
 	PROJECT_DETAIL_MODEL_NOT_RTRV("1318", "调用SAPI获取项目detail模型信息时失败"),
 	PROJECT_DETAIL_CHECKLIST_NOT_RTRV("1319", "调用SAPI获取项目detail Checklist信息时失败"),
-	PROJECT_DETAIL_ATTCHURL_NOT_RTRV("1320", "调用SAPI获取项目detail附件信息时失败");
+	PROJECT_DETAIL_ATTCHURL_NOT_RTRV("1320", "调用SAPI获取项目detail附件信息时失败"),
 
 
-
+	REQMNT_DOES_NOT_EXIST("1401", "Reqmnt不存在"),
+    REQMNT_QUERY_MEMBER_FAIELD("1402", "查询失败"),
+    REQMNT_QUERY_CHECKLIST_FAIELD("1403", "查询失败");
 
 
 		String erroCode;
