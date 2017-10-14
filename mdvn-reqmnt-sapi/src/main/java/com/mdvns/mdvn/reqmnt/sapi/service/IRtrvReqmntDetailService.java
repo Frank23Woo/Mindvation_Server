@@ -12,7 +12,7 @@ public interface IRtrvReqmntDetailService {
 
     ResponseEntity<?> rtrvReqmntInfo(RtrvReqmntInfoRequest request);
 
-    List<Tag> rtrvReqmntTags(RtrvReqmntInfoRequest request);
+    List<ReqmntTag> rtrvReqmntTags(String reqmntId);
 
     List<ReqmntCheckListDetail> rtrvReqmntCheckLists(RtrvReqmntInfoRequest request);
 

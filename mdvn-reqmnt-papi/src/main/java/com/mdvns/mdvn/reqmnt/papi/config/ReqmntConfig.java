@@ -20,6 +20,8 @@ public class ReqmntConfig {
     private String rtrvReqmntMembersUrl;
     private String rtrvReqmntCheckListUrl;
     private String rtrvReqmntAttchsUrl;
+    private String rtrvTagsByIdsUrl;
+    private String rtrvFuncLabelUrl;
 
     //staff sapi url
     private String rtrvStaffsByIdsUrl;
@@ -120,5 +122,21 @@ public class ReqmntConfig {
 
     public void setRtrvReqmntAttchsUrl(String rtrvReqmntAttchsUrl) {
         this.rtrvReqmntAttchsUrl = rtrvReqmntAttchsUrl;
+    }
+
+    public String getRtrvTagsByIdsUrl() {
+        return rtrvTagsByIdsUrl;
+    }
+
+    public void setRtrvTagsByIdsUrl(String rtrvTagsByIdsUrl) {
+        this.rtrvTagsByIdsUrl = rtrvTagsByIdsUrl;
+    }
+
+    public String getRtrvFuncLabelUrl() {
+        return rtrvFuncLabelUrl;
+    }
+
+    public void setRtrvFuncLabelUrl(String rtrvFuncLabelUrl) {
+        this.rtrvFuncLabelUrl = rtrvFuncLabelUrl;
     }
 }

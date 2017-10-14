@@ -1,20 +1,13 @@
 package com.mdvns.mdvn.reqmnt.papi.domain;
 
-import com.mdvns.mdvn.common.beans.FunctionLabel;
-import com.mdvns.mdvn.common.beans.Tag;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
 
 @Component
-public class RtrvReqmntInfoResponse{
+public class UpdateReqmntInfoResponse {
 
     private RequirementInfo reqmntInfo;
-
-    private FunctionLabel labelDetail;
-
-    private List<Tag> tagList;
 
     private List<Role> members;
 
@@ -52,21 +45,5 @@ public class RtrvReqmntInfoResponse{
 
     public void setAttchUrls(List<ReqmntAttchUrl> attchUrls) {
         this.attchUrls = attchUrls;
-    }
-
-    public List<Tag> getTagList() {
-        return tagList;
-    }
-
-    public void setTagList(List<Tag> tagList) {
-        this.tagList = tagList;
-    }
-
-    public FunctionLabel getLabelDetail() {
-        return labelDetail;
-    }
-
-    public void setLabelDetail(FunctionLabel labelDetail) {
-        this.labelDetail = labelDetail;
     }
 }

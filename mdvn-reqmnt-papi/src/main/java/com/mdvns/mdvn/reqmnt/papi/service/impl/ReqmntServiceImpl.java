@@ -1,7 +1,9 @@
 package com.mdvns.mdvn.reqmnt.papi.service.impl;
 
+import com.mdvns.mdvn.common.beans.FunctionLabel;
 import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.common.beans.Staff;
+import com.mdvns.mdvn.common.beans.Tag;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
 import com.mdvns.mdvn.common.utils.FetchListUtil;
@@ -9,6 +11,7 @@ import com.mdvns.mdvn.common.utils.HttpJsonRequestUtil;
 import com.mdvns.mdvn.reqmnt.papi.config.ReqmntConfig;
 import com.mdvns.mdvn.reqmnt.papi.domain.*;
 import com.mdvns.mdvn.reqmnt.papi.service.IReqmntService;
+import org.omg.IOP.TAG_CODE_SETS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -188,10 +191,40 @@ public class ReqmntServiceImpl implements IReqmntService {
         requirementInfo = responseEntity.getBody();
         restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
         restResponse.setResponseBody(requirementInfo);
+        restResponse.setResponseCode("000");
+        restResponse.setResponseMsg("Success");
         rtrvReqmntInfoResponse.setReqmntInfo(requirementInfo);
 
+        //retriveFunctionLable
+
+        ParameterizedTypeReference funcLabelTypeReference = new ParameterizedTypeReference<FunctionLabel>(){};
+
+        Map  mapLabel = new HashMap();
+        mapLabel.put("labelId",requirementInfo.getFunctionLabelId());
+
+        FunctionLabel funcLabel = this.restTemplate.postForObject(config.getRtrvFuncLabelUrl(), mapLabel , FunctionLabel.class);
+        rtrvReqmntInfoResponse.setLabelDetail(funcLabel);
+
+
         // 查询tag
-//        List<ReqmntTag> reqmntTags = restTemplate.postForObject(config.getRtrvReqmntTagsUrl(), requirementInfo.getRqmntId(), List.class);
+        ParameterizedTypeReference reqmntTagTypeReference = new ParameterizedTypeReference<List<ReqmntTag>>(){};
+        List<ReqmntTag> reqmntTags = FetchListUtil.fetch(restTemplate, config.getRtrvReqmntTagsUrl(), requirementInfo.getRqmntId(), reqmntTagTypeReference);
+
+        List<String> tagIdList = new ArrayList<>();
+        if (reqmntTags!=null && !reqmntTags.isEmpty()){
+            for (int i = 0; i < reqmntTags.size(); i++) {
+                tagIdList.add(reqmntTags.get(i).getTagId());
+            }
+
+        }
+
+
+        ParameterizedTypeReference tagTypeReference = new ParameterizedTypeReference<List<Tag>>(){};
+        Map<String,List<String>> idListMap = new HashMap<String,List<String>>();
+        idListMap.put("tagIds",tagIdList);
+
+        List<Tag> tagList = FetchListUtil.fetch(restTemplate, config.getRtrvTagsByIdsUrl(), idListMap, tagTypeReference);
+        rtrvReqmntInfoResponse.setTagList(tagList);
 
         // 查询members
         try {
