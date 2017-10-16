@@ -16,6 +16,6 @@ public class MdvnFileApplicationTests {
 
 	@Test
 	public void NanoTest() {
-		Assert
+
 	}
 }
