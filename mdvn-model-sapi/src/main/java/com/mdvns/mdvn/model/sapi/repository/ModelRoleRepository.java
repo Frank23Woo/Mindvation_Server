@@ -16,6 +16,8 @@ public interface ModelRoleRepository extends JpaRepository<ModelRole,Integer>{
 
     List<ModelRole> findByModelId(String modelId);
 
+    ModelRole findByRoleId(String roleId);
+
     @Query(value="  SELECT DISTINCT COUNT(*) FROM model_role", nativeQuery = true)
     Long getModelCount();
 }
