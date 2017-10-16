@@ -11,6 +11,7 @@ public enum ExceptionEnum {
 	 * 1200~1300 Model
 	 * 1300~1400 Project
 	 * 1400~1500 Reqmnt
+	 * 1500~1600 story
 	 */
 	UNKNOW_EXCEPTION("555","未知错误"),
 
@@ -58,7 +59,29 @@ public enum ExceptionEnum {
 
 	REQMNT_DOES_NOT_EXIST("1401", "Reqmnt不存在"),
     REQMNT_QUERY_MEMBER_FAIELD("1402", "查询失败"),
-    REQMNT_QUERY_CHECKLIST_FAIELD("1403", "查询失败");
+    REQMNT_QUERY_CHECKLIST_FAIELD("1403", "查询失败"),
+	
+	//用户故事
+	STORY_NOT_FOUND("1501", "用户故事不存在!"),
+	STORY_STAFF_NOT_CREATE("1502", "调用SAPI保存用户故事成员数据失败"),
+	STORY_TAG_NOT_CREATE("1503", "调用SAPI保存用户故事标签数据失败"),
+	STORY_MODEL_NOT_CREATE("1504", "调用SAPI保存用户故事模块数据失败"),
+	STORY_TASK_NOT_CREATE("1505", "调用SAPI保存用户故事task数据失败"),
+	STORY_ATTCHURL_NOT_CREATE("1506", "调用SAPI保存用户故事附件数据失败"),
+	STORY_BASEINFO_NOT_CREATE("1507", "调用SAPI保存用户故事基础信息数据失败"),
+	STORY_STAFF_NOT_UPDATE("1508", "调用SAPI更改用户故事成员数据失败"),
+	STORY_TAG_NOT_UPDATE("1509", "调用SAPI更改用户故事标签数据失败"),
+	STORY_MODEL_NOT_UPDATE("1510", "调用SAPI更改用户故事模块数据失败"),
+	STORY_TASK_NOT_UPDATE("1511", "调用SAPI更改用户故事task数据失败"),
+	STORY_TASK_STAFFDETAIL_NOT_RTRV("1512", "调用SAPI获取用户故事task中的人员详细信息时失败"),
+	STORY_ATTCHURL_NOT_UPDATE("1513", "调用SAPI更改用户故事附件数据失败"),
+	STORY_BASEINFO_NOT_UPDATE("1514", "调用SAPI更改用户故事基础信息数据失败"),
+	STORY_DETAIL_BASEINFO_NOT_RTRV("1515", "用户故事不存在!"),
+	STORY_DETAIL_STAFF_NOT_RTRV("1516", "调用SAPI获取用户故事detail成员信息时失败"),
+	STORY_DETAIL_TAG_NOT_RTRV("1517", "调用SAPI获取用户故事detail标签信息时失败"),
+	STORY_DETAIL_MODEL_NOT_RTRV("1518", "调用SAPI获取用户故事detail模型信息时失败"),
+	STORY_DETAIL_TASK_NOT_RTRV("1519", "调用SAPI获取用户故事detail Task信息时失败"),
+	STORY_DETAIL_ATTCHURL_NOT_RTRV("1520", "调用SAPI获取用户故事detail附件信息时失败");
 
 
 		String erroCode;
