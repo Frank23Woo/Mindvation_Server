@@ -127,7 +127,7 @@ public class TagServiceImpl implements TagService {
         Long count = this.tagRepository.getTagCount();
         retrieveTagListResponse.setTags(tagList);
         retrieveTagListResponse.setTotalNumber(count);
-        return ResponseEntity.ok(tagList);
+        return ResponseEntity.ok(retrieveTagListResponse);
     }
 
     public ResponseEntity<?> rtrvTagsById(RtrvTagsRequest rtrvTagsRequest) {

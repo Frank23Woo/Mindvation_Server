@@ -8,15 +8,15 @@ import java.util.List;
 
 @Component
 public class RtrvModelByIdResponse {
-    private List<SubFunctionLabel> subFunctionLabels;
+    private List<SubFunctionLabel> FunctionLabels;
     private List<ModelRole> modelRoles;
 
-    public List<SubFunctionLabel> getSubFunctionLabels() {
-        return subFunctionLabels;
+    public List<SubFunctionLabel> getFunctionLabels() {
+        return FunctionLabels;
     }
 
-    public void setSubFunctionLabels(List<SubFunctionLabel> subFunctionLabels) {
-        this.subFunctionLabels = subFunctionLabels;
+    public void setFunctionLabels(List<SubFunctionLabel> functionLabels) {
+        FunctionLabels = functionLabels;
     }
 
     public List<ModelRole> getModelRoles() {

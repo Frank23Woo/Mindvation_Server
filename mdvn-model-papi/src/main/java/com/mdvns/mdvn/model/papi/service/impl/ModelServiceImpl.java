@@ -86,7 +86,7 @@ public class ModelServiceImpl implements ModelService {
         } catch (Exception ex) {
             throw new BusinessException(ExceptionEnum.SAPI_EXCEPTION);
         }
-        if (rtrvModelByIdResponse.getSubFunctionLabels().size() <= 0) {
+        if (rtrvModelByIdResponse.getFunctionLabels().size() <= 0) {
             throw new BusinessException(ExceptionEnum.functionModel_NOT_FOUND);
         }
         restResponse.setResponseBody(rtrvModelByIdResponse);

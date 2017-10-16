@@ -198,7 +198,7 @@ public class ModelServiceImpl implements ModelService {
         RtrvModelByIdResponse rtrvModelByIdResponse = new RtrvModelByIdResponse();
         List<SubFunctionLabel> subFunctionLabels = new ArrayList<>();
         subFunctionLabels = this.functionModelRepository.findByParentId(request.getModelId());
-        rtrvModelByIdResponse.setSubFunctionLabels(subFunctionLabels);
+        rtrvModelByIdResponse.setFunctionLabels(subFunctionLabels);
         List<ModelRole> modelRoles = new ArrayList<>();
         modelRoles = this.modelRoleRepository.findByModelId(request.getModelId());
         rtrvModelByIdResponse.setModelRoles(modelRoles);
@@ -218,11 +218,6 @@ public class ModelServiceImpl implements ModelService {
         LOG.info("执行结束{} findById()方法.", this.CLASS);
         return subFunctionLabel;
     }
-
-
-
-
-
 
     /**
      * 获取全部模块
