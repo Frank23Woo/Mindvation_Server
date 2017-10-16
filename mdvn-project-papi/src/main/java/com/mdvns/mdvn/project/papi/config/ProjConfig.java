@@ -49,7 +49,8 @@ public class ProjConfig {
     private String rtrvProjModelsUrl;
     private String rtrvProjCheckListsUrl;
     private String rtrvProjAttUrlsUrl;
-
+    //获取requirment列表信息
+    private String rtrvReqmntListUrl;
 
 
     public String getRtrvProjInfoListUrl() {
@@ -218,5 +219,13 @@ public class ProjConfig {
 
     public void setChecklistsListByUuIdUrl(String checklistsListByUuIdUrl) {
         this.checklistsListByUuIdUrl = checklistsListByUuIdUrl;
+    }
+
+    public String getRtrvReqmntListUrl() {
+        return rtrvReqmntListUrl;
+    }
+
+    public void setRtrvReqmntListUrl(String rtrvReqmntListUrl) {
+        this.rtrvReqmntListUrl = rtrvReqmntListUrl;
     }
 }

@@ -30,7 +30,7 @@ public class ModelServiceImpl implements ModelService {
     private Model model;
 
     @Autowired
-    private FunctionModel functionModel;
+    private SubFunctionLabel subFunctionLabel;
 
     @Autowired
     private RestResponse restResponse;
@@ -80,13 +80,13 @@ public class ModelServiceImpl implements ModelService {
     public RestResponse findById(RtrvModelByIdRequest request) {
         String findByIdUrl = webConfig.getFindByIdUrl();
         RtrvModelByIdResponse rtrvModelByIdResponse = new RtrvModelByIdResponse();
-        List<FunctionModel> functionModels = new ArrayList<>();
+        List<SubFunctionLabel> subFunctionLabels = new ArrayList<>();
         try {
             rtrvModelByIdResponse = this.restTemplate.postForObject(findByIdUrl, request, RtrvModelByIdResponse.class);
         } catch (Exception ex) {
             throw new BusinessException(ExceptionEnum.SAPI_EXCEPTION);
         }
-        if (rtrvModelByIdResponse.getFunctionModels().size() <= 0) {
+        if (rtrvModelByIdResponse.getSubFunctionLabels().size() <= 0) {
             throw new BusinessException(ExceptionEnum.functionModel_NOT_FOUND);
         }
         restResponse.setResponseBody(rtrvModelByIdResponse);

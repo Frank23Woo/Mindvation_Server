@@ -18,7 +18,7 @@ config:
 
   rtrvReqmntInfoUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntInfo
   rtrvReqmntListUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntList
-  rtrvReqmntTagsUrl: http://localhost:10012/mdvn-reqmnt-sapi/getRtrvReqmntInfoUrl
+  rtrvReqmntTagsUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntTags
   rtrvReqmntMembersUrl : http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntMembers
   rtrvReqmntCheckListUrl : http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntCheckList
   rtrvReqmntAttchsUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntAttUrls
@@ -26,6 +26,11 @@ config:
 # staff sapi urls
   rtrvStaffsByIdsUrl: http://localhost:10013/mdvn-staff-s/rtrvStaffListByStaffIdList
 
+# tag sapi urls
+  rtrvTagsByIdsUrl: http://localhost:10002/mdvn-tag-s/tags/rtrvTags
+
+# model sapi urls
+  rtrvFuncLabelUrl: http://localhost:10009/mdvn-model-s/models/findFuncById
 
 
 

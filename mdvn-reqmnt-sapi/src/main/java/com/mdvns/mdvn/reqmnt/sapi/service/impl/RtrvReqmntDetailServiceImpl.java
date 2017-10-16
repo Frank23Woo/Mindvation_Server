@@ -3,10 +3,7 @@ package com.mdvns.mdvn.reqmnt.sapi.service.impl;
 import com.mdvns.mdvn.common.beans.Tag;
 import com.mdvns.mdvn.reqmnt.sapi.domain.ReqmntCheckListDetail;
 import com.mdvns.mdvn.reqmnt.sapi.domain.RtrvReqmntInfoRequest;
-import com.mdvns.mdvn.reqmnt.sapi.domain.entity.ReqmntAttchUrl;
-import com.mdvns.mdvn.reqmnt.sapi.domain.entity.ReqmntCheckList;
-import com.mdvns.mdvn.reqmnt.sapi.domain.entity.ReqmntMember;
-import com.mdvns.mdvn.reqmnt.sapi.domain.entity.RequirementInfo;
+import com.mdvns.mdvn.reqmnt.sapi.domain.entity.*;
 import com.mdvns.mdvn.reqmnt.sapi.repository.*;
 import com.mdvns.mdvn.reqmnt.sapi.service.IRtrvReqmntDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +15,7 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 
 @Service
-public class RtrvReqmntDetailService implements IRtrvReqmntDetailService {
+public class RtrvReqmntDetailServiceImpl implements IRtrvReqmntDetailService {
 
     @Autowired
     private ReqmntRepository reqmntRepository;
@@ -53,9 +50,11 @@ public class RtrvReqmntDetailService implements IRtrvReqmntDetailService {
     }
 
     @Override
-    public List<Tag> rtrvReqmntTags(RtrvReqmntInfoRequest request) {
-        return null;
+    public List<ReqmntTag> rtrvReqmntTags(String reqmntId) {
+        return reqmntTagRepository.findAllByReqmntIdAndIsDeleted(reqmntId,0);
     }
+
+
 
     @Override
     public List<ReqmntCheckListDetail> rtrvReqmntCheckLists(RtrvReqmntInfoRequest request) {

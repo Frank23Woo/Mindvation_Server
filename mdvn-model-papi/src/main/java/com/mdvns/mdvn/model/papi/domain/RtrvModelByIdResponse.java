@@ -6,15 +6,15 @@ import java.util.List;
 
 @Component
 public class RtrvModelByIdResponse {
-    private List<FunctionModel> functionModels;
+    private List<SubFunctionLabel> subFunctionLabels;
     private List<ModelRole> modelRoles;
 
-    public List<FunctionModel> getFunctionModels() {
-        return functionModels;
+    public List<SubFunctionLabel> getSubFunctionLabels() {
+        return subFunctionLabels;
     }
 
-    public void setFunctionModels(List<FunctionModel> functionModels) {
-        this.functionModels = functionModels;
+    public void setSubFunctionLabels(List<SubFunctionLabel> subFunctionLabels) {
+        this.subFunctionLabels = subFunctionLabels;
     }
 
     public List<ModelRole> getModelRoles() {

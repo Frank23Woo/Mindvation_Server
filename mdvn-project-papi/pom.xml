@@ -54,7 +54,12 @@
 			<artifactId>mdvn-common</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>com.mdvns.mdvn</groupId>
+            <artifactId>mdvn-reqmnt-papi</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>

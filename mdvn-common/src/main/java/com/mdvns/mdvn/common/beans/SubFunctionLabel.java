@@ -1,33 +1,22 @@
-package com.mdvns.mdvn.model.sapi.domain.entity;
+package com.mdvns.mdvn.common.beans;
 
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import java.sql.Timestamp;
 
-@Entity
+
 @Component
-public class FunctionModel {
+//最后一层的过程方法子模块
+public class SubFunctionLabel {
 
-    @Id
-    @GeneratedValue
     private Integer uuId;
-
-    @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false)
     private Integer quoteCnt;
 
-    private String modelId;
+    private String labelId;
     //父模型Id
     private String parentId;
-
     // 创建人ID
-    @Column(nullable = false)
     private String creatorId;
 
     private String color;
@@ -85,12 +74,12 @@ public class FunctionModel {
         this.uuId = uuId;
     }
 
-    public String getModelId() {
-        return modelId;
+    public String getLabelId() {
+        return labelId;
     }
 
-    public void setModelId(String modelId) {
-        this.modelId = modelId;
+    public void setLabelId(String labelId) {
+        this.labelId = labelId;
     }
 
     public String getParentId() {

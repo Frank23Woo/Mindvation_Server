@@ -58,7 +58,7 @@ public class CreateReqmntRequestTest {
             checkList.setIsDeleted(0);
             checkList.setAssigneeId("staff" + i);
             checkList.setAssignerId("staff" + i);
-            checkList.setChecklistStatus("new");
+            checkList.setCheckListStatus("new");
             checkList.setCreateTime(System.currentTimeMillis());
             checkList.setDescription("dddfsdfadesfadsfadsf");
             checkList.setStartDate(System.currentTimeMillis());

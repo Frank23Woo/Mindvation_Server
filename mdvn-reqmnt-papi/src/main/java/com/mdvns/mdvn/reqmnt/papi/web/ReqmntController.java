@@ -41,20 +41,22 @@ public class ReqmntController {
      * @return
      */
     @PostMapping(value="/rtrvReqmntInfo")
-    public RestResponse rtrvProjInfoList(@RequestBody RtrvReqmntInfoRequest request){
+    public RestResponse rtrvReqmntInfo(@RequestBody RtrvReqmntInfoRequest request){
         return this.iReqmntService.rtrvReqmntInfo(request);
     }
 
 
 
-//    /**
-//     * 更改项目
-//     * @param updateReqmntRequest
-//     * @return
-//     */
-//    @PostMapping(value="/updateProject")
-//    public UpdateProjectResponse updateProject(@RequestBody UpdateReqmntRequest updateReqmntRequest){
-//        return projService.updateProject(updateReqmntRequest);
-//    }
+
+
+    /**
+     * 更改reqmnt
+     * @param updateReqmntInfoRequest
+     * @return
+     */
+    @PostMapping(value="/updateReqmntInfo")
+    public RestResponse updateReqmntInfo(@RequestBody UpdateReqmntInfoRequest updateReqmntInfoRequest){
+        return null;
+    }
 
 }

@@ -351,6 +351,15 @@ public class ProjServiceImpl implements IProjService {
         } catch (Exception ex) {
             throw new BusinessException(ExceptionEnum.PROJECT_DETAIL_ATTCHURL_NOT_RTRV);
         }
+        //7.获取requirment列表信息
+        String rtrvReqmntListUrl = config.getRtrvReqmntListUrl();
+        try {
+            restResponse = restTemplate.postForObject(rtrvReqmntListUrl, rtrvProjectDetailRequest, RestResponse.class);
+//            projectDetail.setRequirementInfos(restResponse.getResponseBody());
+        } catch (Exception ex) {
+            throw new BusinessException(ExceptionEnum.PROJECT_DETAIL_ATTCHURL_NOT_RTRV);
+        }
+
         rtrvProjectDetailResponse.setProjectDetail(projectDetail);
         restResponse.setResponseBody(rtrvProjectDetailResponse);
         restResponse.setStatusCode("200");

@@ -9,7 +9,7 @@ public class ReqmntCheckList {
 
     private Integer uuId;
     //任务ID
-    private String checklistId;
+    private String checkListId;
     //projectID
     private String reqmntId;
     //任务描述
@@ -27,7 +27,7 @@ public class ReqmntCheckList {
     //结束日期
     private Long endDate;
     //任务状态
-    private String checklistStatus;
+    private String checkListStatus;
     //有效标志
     private Integer isDeleted;
     //更新时间
@@ -49,12 +49,12 @@ public class ReqmntCheckList {
         this.uuId = uuId;
     }
 
-    public String getChecklistId() {
-        return checklistId;
+    public String getCheckListId() {
+        return checkListId;
     }
 
-    public void setChecklistId(String checklistId) {
-        this.checklistId = checklistId;
+    public void setCheckListId(String checkListId) {
+        this.checkListId = checkListId;
     }
 
     public String getReqmntId() {
@@ -113,12 +113,12 @@ public class ReqmntCheckList {
         this.endDate = endDate;
     }
 
-    public String getChecklistStatus() {
-        return checklistStatus;
+    public String getCheckListStatus() {
+        return checkListStatus;
     }
 
-    public void setChecklistStatus(String checklistStatus) {
-        this.checklistStatus = checklistStatus;
+    public void setCheckListStatus(String checkListStatus) {
+        this.checkListStatus = checkListStatus;
     }
 
     public Integer getIsDeleted() {
@@ -174,7 +174,7 @@ public class ReqmntCheckList {
     public String toString() {
         return "ReqmntCheckList{" +
                 "uuId=" + uuId +
-                ", checklistId='" + checklistId + '\'' +
+                ", checkListId='" + checkListId + '\'' +
                 ", reqmntId='" + reqmntId + '\'' +
                 ", description='" + description + '\'' +
                 ", assigneeId='" + assigneeId + '\'' +
@@ -183,7 +183,7 @@ public class ReqmntCheckList {
                 ", lastUpdateTime=" + lastUpdateTime +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
-                ", checklistStatus='" + checklistStatus + '\'' +
+                ", checkListStatus='" + checkListStatus + '\'' +
                 ", isDeleted=" + isDeleted +
                 ", updateTime=" + updateTime +
                 ", status='" + status + '\'' +
@@ -199,7 +199,7 @@ public class ReqmntCheckList {
         ReqmntCheckList that = (ReqmntCheckList) o;
 
         if (uuId != null ? !uuId.equals(that.uuId) : that.uuId != null) return false;
-        if (checklistId != null ? !checklistId.equals(that.checklistId) : that.checklistId != null) return false;
+        if (checkListId != null ? !checkListId.equals(that.checkListId) : that.checkListId != null) return false;
         if (reqmntId != null ? !reqmntId.equals(that.reqmntId) : that.reqmntId != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null)
             return false;
@@ -210,7 +210,7 @@ public class ReqmntCheckList {
             return false;
         if (startDate != null ? !startDate.equals(that.startDate) : that.startDate != null) return false;
         if (endDate != null ? !endDate.equals(that.endDate) : that.endDate != null) return false;
-        if (checklistStatus != null ? !checklistStatus.equals(that.checklistStatus) : that.checklistStatus != null)
+        if (checkListStatus != null ? !checkListStatus.equals(that.checkListStatus) : that.checkListStatus != null)
             return false;
         if (isDeleted != null ? !isDeleted.equals(that.isDeleted) : that.isDeleted != null) return false;
         if (updateTime != null ? !updateTime.equals(that.updateTime) : that.updateTime != null) return false;
@@ -220,7 +220,7 @@ public class ReqmntCheckList {
     @Override
     public int hashCode() {
         int result = uuId != null ? uuId.hashCode() : 0;
-        result = 31 * result + (checklistId != null ? checklistId.hashCode() : 0);
+        result = 31 * result + (checkListId != null ? checkListId.hashCode() : 0);
         result = 31 * result + (reqmntId != null ? reqmntId.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (assigneeId != null ? assigneeId.hashCode() : 0);
@@ -229,7 +229,7 @@ public class ReqmntCheckList {
         result = 31 * result + (lastUpdateTime != null ? lastUpdateTime.hashCode() : 0);
         result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
         result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
-        result = 31 * result + (checklistStatus != null ? checklistStatus.hashCode() : 0);
+        result = 31 * result + (checkListStatus != null ? checkListStatus.hashCode() : 0);
         result = 31 * result + (isDeleted != null ? isDeleted.hashCode() : 0);
         result = 31 * result + (updateTime != null ? updateTime.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
