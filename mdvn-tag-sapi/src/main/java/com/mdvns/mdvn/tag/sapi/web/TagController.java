@@ -22,6 +22,7 @@ import java.sql.SQLException;
 public class TagController {
 
     private Logger LOG = LoggerFactory.getLogger(TagController.class);
+    private final String CLASS = this.getClass().getName();
 
     /*标签service注入*/
     @Autowired
@@ -44,7 +45,7 @@ public class TagController {
      */
     @PostMapping(value = "/tagList")
     public ResponseEntity<?> rtrvTagList(@RequestBody RetrieveTagListRequest retrieveTagListRequest) throws SQLException, BusinessException {
-
+        LOG.info("开始执行{} rtrvTagList()方法.", this.CLASS);
         Integer page = retrieveTagListRequest.getPage();
         Integer pageSize = retrieveTagListRequest.getPageSize();
         if (null==page||pageSize==null) {
