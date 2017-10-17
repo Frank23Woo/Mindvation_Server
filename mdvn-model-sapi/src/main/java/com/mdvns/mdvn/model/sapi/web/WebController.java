@@ -3,6 +3,7 @@ package com.mdvns.mdvn.model.sapi.web;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.model.sapi.domain.*;
 import com.mdvns.mdvn.model.sapi.domain.entity.Model;
+import com.mdvns.mdvn.model.sapi.domain.entity.ModelRole;
 import com.mdvns.mdvn.model.sapi.domain.entity.SubFunctionLabel;
 import com.mdvns.mdvn.model.sapi.service.ModelService;
 import org.slf4j.Logger;
@@ -87,6 +88,16 @@ public class WebController {
     @PostMapping(value = "/models/findFuncById")
     public SubFunctionLabel findById(@RequestBody RtrvSubFunctionLabelById request) {
         return this.modelService.findById(request);
+    }
+    /**
+     * 根据角色id查询角色对象
+     *
+     * @param roleId 角色Id
+     * @return ModelRole
+     */
+    @PostMapping(value = "/models/findFuncById")
+    public ModelRole findById(@RequestBody String roleId) {
+        return this.modelService.findById(roleId);
     }
 
 }

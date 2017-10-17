@@ -2,6 +2,7 @@ package com.mdvns.mdvn.model.sapi.service;
 
 import com.mdvns.mdvn.model.sapi.domain.*;
 import com.mdvns.mdvn.model.sapi.domain.entity.Model;
+import com.mdvns.mdvn.model.sapi.domain.entity.ModelRole;
 import com.mdvns.mdvn.model.sapi.domain.entity.SubFunctionLabel;
 import org.springframework.http.ResponseEntity;
 
@@ -25,5 +26,7 @@ public interface ModelService {
     RtrvModelByIdResponse findById(RtrvModelByIdRequest request);
 
     SubFunctionLabel findById(RtrvSubFunctionLabelById request);
+
+    ModelRole findById(String roleId);
 
 }

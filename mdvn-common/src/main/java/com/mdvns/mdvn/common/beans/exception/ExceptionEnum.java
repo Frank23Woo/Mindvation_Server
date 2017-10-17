@@ -57,6 +57,7 @@ public enum ExceptionEnum {
 	PROJECT_DETAIL_MODEL_NOT_RTRV("1318", "调用SAPI获取项目detail模型信息时失败"),
 	PROJECT_DETAIL_CHECKLIST_NOT_RTRV("1319", "调用SAPI获取项目detail Checklist信息时失败"),
 	PROJECT_DETAIL_ATTCHURL_NOT_RTRV("1320", "调用SAPI获取项目detail附件信息时失败"),
+	PROJECT_DETAIL_REQMNT_NOT_RTRV("1321", "调用SAPI获取项目detail下的requirment列表信息时失败"),
 
 
 	REQMNT_DOES_NOT_EXIST("1401", "Reqmnt不存在"),

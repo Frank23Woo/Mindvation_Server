@@ -220,6 +220,19 @@ public class ModelServiceImpl implements ModelService {
     }
 
     /**
+     * 通过roleId获取ModelRole对象（单个）
+     * @param roleId
+     * @return
+     */
+    @Override
+    public ModelRole findById(String roleId) {
+        LOG.info("开始执行{} findById()方法.", this.CLASS);
+        modelRole = this.modelRoleRepository.findByRoleId(roleId);
+        LOG.info("执行结束{} findById()方法.", this.CLASS);
+        return modelRole;
+    }
+
+    /**
      * 获取全部模块
      * @return
      */
