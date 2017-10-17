@@ -3,6 +3,7 @@ package com.mdvns.mdvn.reqmnt.papi.domain;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CreateReqmntRequestTest {
@@ -31,15 +32,29 @@ public class CreateReqmntRequestTest {
         createReqmntRequest.setStartDate(System.currentTimeMillis());
         createReqmntRequest.setEndDate(System.currentTimeMillis());
         createReqmntRequest.setLeaderId("staff333");
-        ReqmntMember reqmntMember = new ReqmntMember();
-        reqmntMember.setReqmntId("");
-        reqmntMember.setRoleName("BA");
-        reqmntMember.setStaffId("staff1");
-        reqmntMember.setIsDeleted(0);
-        List<ReqmntMember> members = new ArrayList<>();
+        createReqmntRequest.setModelId("M1");
+//        ReqmntMember reqmntMember = new ReqmntMember();
+//        reqmntMember.setReqmntId("");
+//        reqmntMember.setRoleName("BA");
+//        reqmntMember.setStaffId("staff1");
+//        reqmntMember.setIsDeleted(0);
+//        List<ReqmntMember> members = new ArrayList<>();
+//        for (int i = 0; i < 3; i++) {
+//            members.add(reqmntMember);
+//        }
+//        createReqmntRequest.setMembers(members);
+
+        List<RoleMember> members = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            members.add(reqmntMember);
+            RoleMember roleMembers = new RoleMember();
+            List<String> memberIds = Arrays.asList(new String[]{"Staff1","Staff2","Staff3"});
+            roleMembers.setRoleId("roleId"+i);
+            roleMembers.setMemberIds(memberIds);
+            members.add(roleMembers);
         }
+
+
+
         createReqmntRequest.setMembers(members);
 
         List<ReqmntTag> tags = new ArrayList<>();

@@ -5,7 +5,6 @@ import com.mdvns.mdvn.common.beans.Tag;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class RtrvReqmntInfoResponse{
@@ -16,7 +15,7 @@ public class RtrvReqmntInfoResponse{
 
     private List<Tag> tagList;
 
-    private List<Role> members;
+    private List<RoleAndMember> members;
 
     private List<ReqmntCheckList> checkLists;
 
@@ -30,11 +29,11 @@ public class RtrvReqmntInfoResponse{
         return reqmntInfo;
     }
 
-    public List<Role> getMembers() {
+    public List<RoleAndMember> getMembers() {
         return members;
     }
 
-    public void setMembers(List<Role> members) {
+    public void setMembers(List<RoleAndMember> members) {
         this.members = members;
     }
 

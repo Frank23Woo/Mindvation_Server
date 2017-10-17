@@ -33,6 +33,7 @@ config:
 
 # model sapi urls
   rtrvFuncLabelUrl: http://localhost:10009/mdvn-model-s/models/findFuncById
+  rtrvModelRoleByModelIdUrl: http://localhost:10009/mdvn-model-s/models/findById
 
 
 

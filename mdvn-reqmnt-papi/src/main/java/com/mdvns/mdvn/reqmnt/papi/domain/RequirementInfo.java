@@ -7,7 +7,8 @@ public class RequirementInfo {
 
     /* project ID */
     private String projId;
-    /* requirement ID */
+    /* model ID */
+    private String modelId;
 
     public String getProjId() {
         return projId;
@@ -175,6 +176,14 @@ public class RequirementInfo {
 
     public void setFunctionLabelId(String functionLabelId) {
         this.functionLabelId = functionLabelId;
+    }
+
+    public String getModelId() {
+        return modelId;
+    }
+
+    public void setModelId(String modelId) {
+        this.modelId = modelId;
     }
 
     @Override

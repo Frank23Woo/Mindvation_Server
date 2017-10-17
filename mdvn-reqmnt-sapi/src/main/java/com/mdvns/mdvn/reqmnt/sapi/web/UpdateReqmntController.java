@@ -16,7 +16,7 @@ public class UpdateReqmntController {
     private IUpdateReqmntService updateReqmntService;
 
     @PostMapping("/updateReqmntInfo")
-    private ResponseEntity<?> updateReqmntInfo(UpdateReqmntInfoRequest request){
+    private ResponseEntity<?> updateReqmntInfo(UpdateReqmntInfoRequest request) throws Exception{
         Boolean result = updateReqmntService.updateReqmntInfo(request);
         ResponseEntity<Boolean> responseEntity = new ResponseEntity<>(result, result ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR);
         return responseEntity;

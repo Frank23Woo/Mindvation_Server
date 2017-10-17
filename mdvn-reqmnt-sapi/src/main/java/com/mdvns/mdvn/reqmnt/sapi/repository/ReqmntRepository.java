@@ -17,7 +17,7 @@ public interface ReqmntRepository extends JpaRepository<RequirementInfo, Integer
 
     List<RequirementInfo> findAllByProjIdAndIsDeletedOrderByUuIdAsc(String projId, Integer isDeleted);
 
-    RequirementInfo findByRqmntIdAndIsDeleted(String reqmntId, Integer isDelete);
+    RequirementInfo findByReqmntIdAndIsDeleted(String reqmntId, Integer isDelete);
 
 
     //获取project列表总条数

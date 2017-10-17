@@ -28,6 +28,17 @@ public class ReqmntConfig {
     //staff sapi url
     private String rtrvStaffsByIdsUrl;
 
+    //Model sapi url
+    private String rtrvModelRoleByModelIdUrl;
+
+    public String getRtrvModelRoleByModelIdUrl() {
+        return rtrvModelRoleByModelIdUrl;
+    }
+
+    public void setRtrvModelRoleByModelIdUrl(String rtrvModelRoleByModelIdUrl) {
+        this.rtrvModelRoleByModelIdUrl = rtrvModelRoleByModelIdUrl;
+    }
+
     public String getRtrvReqmntListUrl() {
         return rtrvReqmntListUrl;
     }

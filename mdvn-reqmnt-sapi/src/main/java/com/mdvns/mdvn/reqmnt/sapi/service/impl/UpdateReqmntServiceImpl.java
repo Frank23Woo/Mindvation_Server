@@ -39,7 +39,7 @@ public class UpdateReqmntServiceImpl implements IUpdateReqmntService {
         // 基本信息
         if (request.getReqmntInfo() != null) {
             RequirementInfo newInfo = request.getReqmntInfo();
-            RequirementInfo oldInfo = reqmntRepository.findByRqmntIdAndIsDeleted(newInfo.getReqmntId(), 0);
+            RequirementInfo oldInfo = reqmntRepository.findByReqmntIdAndIsDeleted(newInfo.getReqmntId(), 0);
             if (oldInfo != null) {
                 // sumary
                 if (newInfo.getSummary() != null && !newInfo.getSummary().equals(oldInfo.getSummary())) {

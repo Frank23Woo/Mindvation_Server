@@ -9,7 +9,7 @@ public class ReqmntMember {
 
     private String staffId;
 
-    private String roleName;
+       private String roleId;
 
     private String reqmntId;
 
@@ -33,13 +33,7 @@ public class ReqmntMember {
         this.staffId = staffId;
     }
 
-    public String getRoleName() {
-        return roleName;
-    }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
 
     public String getReqmntId() {
         return reqmntId;
@@ -65,41 +59,11 @@ public class ReqmntMember {
         this.lastUpdateTime = lastUpdateTime;
     }
 
-    @Override
-    public String toString() {
-        return "ReqmntMember{" +
-                "uuId='" + uuId + '\'' +
-                ", staffId='" + staffId + '\'' +
-                ", roleName='" + roleName + '\'' +
-                ", reqmntId='" + reqmntId + '\'' +
-                ", isDeleted=" + isDeleted +
-                ", lastUpdateTime=" + lastUpdateTime +
-                '}';
+    public String getRoleId() {
+        return roleId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ReqmntMember that = (ReqmntMember) o;
-
-        if (uuId != null ? !uuId.equals(that.uuId) : that.uuId != null) return false;
-        if (staffId != null ? !staffId.equals(that.staffId) : that.staffId != null) return false;
-        if (roleName != null ? !roleName.equals(that.roleName) : that.roleName != null) return false;
-        if (reqmntId != null ? !reqmntId.equals(that.reqmntId) : that.reqmntId != null) return false;
-        if (isDeleted != null ? !isDeleted.equals(that.isDeleted) : that.isDeleted != null) return false;
-        return lastUpdateTime != null ? lastUpdateTime.equals(that.lastUpdateTime) : that.lastUpdateTime == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = uuId != null ? uuId.hashCode() : 0;
-        result = 31 * result + (staffId != null ? staffId.hashCode() : 0);
-        result = 31 * result + (roleName != null ? roleName.hashCode() : 0);
-        result = 31 * result + (reqmntId != null ? reqmntId.hashCode() : 0);
-        result = 31 * result + (isDeleted != null ? isDeleted.hashCode() : 0);
-        result = 31 * result + (lastUpdateTime != null ? lastUpdateTime.hashCode() : 0);
-        return result;
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
     }
 }

@@ -103,14 +103,15 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
         RequirementInfo requirementInfo = new RequirementInfo();
         //先保存项目基本信息
         if (StringUtils.isEmpty(createReqmntRequest) || StringUtils.isEmpty(createReqmntRequest.getCreatorId()) ||
-                StringUtils.isEmpty(createReqmntRequest.getSummary()) || StringUtils.isEmpty(createReqmntRequest.getDescription()) ||
-                StringUtils.isEmpty(createReqmntRequest.getStartDate()) || StringUtils.isEmpty(createReqmntRequest.getEndDate()) || StringUtils.isEmpty(createReqmntRequest.getProjId())) {
+                StringUtils.isEmpty(createReqmntRequest.getSummary()) || StringUtils.isEmpty(createReqmntRequest.getDescription()) || StringUtils.isEmpty(createReqmntRequest.getModelId())||
+        StringUtils.isEmpty(createReqmntRequest.getStartDate()) || StringUtils.isEmpty(createReqmntRequest.getEndDate()) || StringUtils.isEmpty(createReqmntRequest.getProjId())) {
             throw new NullPointerException("Mandatory fields should not be empty for createReqmntRequest");
         }
         requirementInfo.setProjId(createReqmntRequest.getProjId());
         requirementInfo.setSummary(createReqmntRequest.getSummary());
         requirementInfo.setDescription(createReqmntRequest.getDescription());
         requirementInfo.setCreatorId(createReqmntRequest.getCreatorId());
+        requirementInfo.setModelId(createReqmntRequest.getModelId());
         if (!StringUtils.isEmpty(createReqmntRequest.getPriority())) {
             requirementInfo.setPriority(createReqmntRequest.getPriority());
         }
@@ -144,6 +145,9 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
 
     @Override
     public List<ReqmntMember> saveReqmntMembers(List<ReqmntMember> members) {
+        for (int i = 0; i < members.size(); i++) {
+            members.get(i).setIsDeleted(0);
+        }
         List<ReqmntMember> result = reqmntMemberRepository.save(members);
         reqmntMemberRepository.flush();
         return result;
