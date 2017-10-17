@@ -96,6 +96,9 @@ public class WebController {
      * @return ModelRole
      */
     @PostMapping(value = "/models/findModelRoleById")
+=======
+    @PostMapping(value = "/models/findRoleById")
+>>>>>>> 71a76d1982e88238a3b91ad8d8c0dedc68640adc
     public ModelRole findById(@RequestBody String roleId) {
         return this.modelService.findById(roleId);
     }

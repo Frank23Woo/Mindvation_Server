@@ -15,5 +15,6 @@ public interface ReqmntTagRepository extends JpaRepository<ReqmntTag,Integer>{
 
     List<ReqmntTag> findAllByReqmntIdAndIsDeleted(String reqmntId, Integer isDeleted);
 
+    Integer deleteAllByReqmntId(String reqmntId);
 
 }

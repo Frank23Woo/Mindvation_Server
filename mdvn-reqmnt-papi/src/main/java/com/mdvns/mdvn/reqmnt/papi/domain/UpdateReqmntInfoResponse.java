@@ -9,7 +9,7 @@ public class UpdateReqmntInfoResponse {
 
     private RequirementInfo reqmntInfo;
 
-    private List<Role> members;
+    private List<RoleAndMember> members;
 
     private List<ReqmntCheckList> checkLists;
 
@@ -23,11 +23,11 @@ public class UpdateReqmntInfoResponse {
         return reqmntInfo;
     }
 
-    public List<Role> getMembers() {
+    public List<RoleAndMember> getMembers() {
         return members;
     }
 
-    public void setMembers(List<Role> members) {
+    public void setMembers(List<RoleAndMember> members) {
         this.members = members;
     }
 

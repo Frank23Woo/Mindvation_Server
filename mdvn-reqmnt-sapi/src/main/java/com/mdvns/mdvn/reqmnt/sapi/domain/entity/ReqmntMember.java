@@ -19,6 +19,8 @@ public class ReqmntMember {
 
     private String reqmntId;
 
+    private String roleId;
+
     @Column(name = "is_deleted", columnDefinition = "INT default 0")
     private Integer isDeleted;
 
@@ -71,6 +73,14 @@ public class ReqmntMember {
 
     public void setLastUpdateTime(Long lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
+    }
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
     }
 
     @Override

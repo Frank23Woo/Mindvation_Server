@@ -40,7 +40,7 @@ public class RtrvReqmntDetailServiceImpl implements IRtrvReqmntDetailService {
             throw new IllegalArgumentException("reqmntId should not be null");
         }
         ResponseEntity<RequirementInfo> responseEntity = null;
-        RequirementInfo requirementInfo = reqmntRepository.findByRqmntIdAndIsDeleted(reqmntId, 0);
+        RequirementInfo requirementInfo = reqmntRepository.findByReqmntIdAndIsDeleted(reqmntId, 0);
         if (requirementInfo == null) {
             responseEntity = new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {

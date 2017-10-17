@@ -3,6 +3,7 @@ package com.mdvns.mdvn.reqmnt.papi.domain;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class CreateReqmntRequest {
@@ -11,6 +12,8 @@ public class CreateReqmntRequest {
 
     /* staff id of creator*/
     private String creatorId;
+    /* model id */
+    private String modelId;
     /* reqirement summary*/
     private String summary;
     /* requirement description */
@@ -26,7 +29,7 @@ public class CreateReqmntRequest {
     /* staff id of Leader*/
     private String leaderId;
     /* members of requirement*/
-    private List<ReqmntMember> members;
+    private List<RoleMember> members;
     /* tags of requirement*/
     private List<ReqmntTag> tags;
     /* requirement checklist */
@@ -100,11 +103,11 @@ public class CreateReqmntRequest {
         this.leaderId = leaderId;
     }
 
-    public List<ReqmntMember> getMembers() {
+    public List<RoleMember> getMembers() {
         return members;
     }
 
-    public void setMembers(List<ReqmntMember> members) {
+    public void setMembers(List<RoleMember> members) {
         this.members = members;
     }
 
@@ -148,66 +151,11 @@ public class CreateReqmntRequest {
         this.projId = projId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        CreateReqmntRequest that = (CreateReqmntRequest) o;
-
-        if (projId != null ? !projId.equals(that.projId) : that.projId != null) return false;
-        if (creatorId != null ? !creatorId.equals(that.creatorId) : that.creatorId != null) return false;
-        if (summary != null ? !summary.equals(that.summary) : that.summary != null) return false;
-        if (description != null ? !description.equals(that.description) : that.description != null) return false;
-        if (priority != null ? !priority.equals(that.priority) : that.priority != null) return false;
-        if (functionLabelId != null ? !functionLabelId.equals(that.functionLabelId) : that.functionLabelId != null)
-            return false;
-        if (startDate != null ? !startDate.equals(that.startDate) : that.startDate != null) return false;
-        if (endDate != null ? !endDate.equals(that.endDate) : that.endDate != null) return false;
-        if (leaderId != null ? !leaderId.equals(that.leaderId) : that.leaderId != null) return false;
-        if (members != null ? !members.equals(that.members) : that.members != null) return false;
-        if (tags != null ? !tags.equals(that.tags) : that.tags != null) return false;
-        if (rCheckLists != null ? !rCheckLists.equals(that.rCheckLists) : that.rCheckLists != null) return false;
-        if (attchUrls != null ? !attchUrls.equals(that.attchUrls) : that.attchUrls != null) return false;
-        return remarks != null ? remarks.equals(that.remarks) : that.remarks == null;
+    public String getModelId() {
+        return modelId;
     }
 
-    @Override
-    public int hashCode() {
-        int result = projId != null ? projId.hashCode() : 0;
-        result = 31 * result + (creatorId != null ? creatorId.hashCode() : 0);
-        result = 31 * result + (summary != null ? summary.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (priority != null ? priority.hashCode() : 0);
-        result = 31 * result + (functionLabelId != null ? functionLabelId.hashCode() : 0);
-        result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
-        result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
-        result = 31 * result + (leaderId != null ? leaderId.hashCode() : 0);
-        result = 31 * result + (members != null ? members.hashCode() : 0);
-        result = 31 * result + (tags != null ? tags.hashCode() : 0);
-        result = 31 * result + (rCheckLists != null ? rCheckLists.hashCode() : 0);
-        result = 31 * result + (attchUrls != null ? attchUrls.hashCode() : 0);
-        result = 31 * result + (remarks != null ? remarks.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "CreateReqmntRequest{" +
-                "projId='" + projId + '\'' +
-                ", creatorId='" + creatorId + '\'' +
-                ", summary='" + summary + '\'' +
-                ", description='" + description + '\'' +
-                ", priority=" + priority +
-                ", functionLabelId='" + functionLabelId + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", leaderId='" + leaderId + '\'' +
-                ", members=" + members +
-                ", tags=" + tags +
-                ", rCheckLists=" + rCheckLists +
-                ", attchUrls=" + attchUrls +
-                ", remarks=" + remarks +
-                '}';
+    public void setModelId(String modelId) {
+        this.modelId = modelId;
     }
 }

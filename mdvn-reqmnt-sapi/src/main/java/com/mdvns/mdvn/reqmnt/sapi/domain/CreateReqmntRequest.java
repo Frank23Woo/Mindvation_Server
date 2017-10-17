@@ -15,6 +15,10 @@ public class CreateReqmntRequest {
     private String projId;
     /* staff id of creator*/
     private String creatorId;
+
+    /* model id */
+    private String modelId;
+
     /* reqirement summary*/
     private String summary;
     /* requirement description */
@@ -150,6 +154,14 @@ public class CreateReqmntRequest {
 
     public void setProjId(String projId) {
         this.projId = projId;
+    }
+
+    public String getModelId() {
+        return modelId;
+    }
+
+    public void setModelId(String modelId) {
+        this.modelId = modelId;
     }
 
     @Override

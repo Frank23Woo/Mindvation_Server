@@ -14,6 +14,8 @@ public enum ExceptionEnum {
 	 * 1500~1600 story
 	 */
 	UNKNOW_EXCEPTION("555","未知错误"),
+	PARAMS_EXCEPTION("556", "参数异常"),
+    BASE_SAPI_EXCEPTION("10001", "SAPI异常"),
 
 	//标签
 	TAG_NOT_FOUND("1000", "Tag不存在!"),

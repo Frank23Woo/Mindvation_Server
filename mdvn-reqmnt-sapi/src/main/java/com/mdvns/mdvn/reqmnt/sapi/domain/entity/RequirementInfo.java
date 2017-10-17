@@ -2,11 +2,9 @@ package com.mdvns.mdvn.reqmnt.sapi.domain.entity;
 
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.sql.Timestamp;
 
 @Component
 @Entity
@@ -15,7 +13,11 @@ public class RequirementInfo {
     private String projId;
 
     /* requirement ID */
-    private String rqmntId;
+    private String reqmntId;
+
+    /* model ID */
+    private String modelId;
+
     /* unique id in db */
     @Id
     @GeneratedValue
@@ -48,8 +50,10 @@ public class RequirementInfo {
     //是否被删除
     private Integer isDeleted;
 
-    public String getRqmntId() {
-        return rqmntId;
+    private Long lastUpdateTime;
+
+    public String getReqmntId() {
+        return reqmntId;
     }
 
     public String getProjId() {
@@ -60,8 +64,8 @@ public class RequirementInfo {
         this.projId = projId;
     }
 
-    public void setRqmntId(String rqmntId) {
-        this.rqmntId = rqmntId;
+    public void setReqmntId(String reqmntId) {
+        this.reqmntId = reqmntId;
     }
 
     public Integer getUuId() {
@@ -186,54 +190,23 @@ public class RequirementInfo {
         this.functionLabelId = functionLabelId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        RequirementInfo that = (RequirementInfo) o;
-
-        if (projId != null ? !projId.equals(that.projId) : that.projId != null) return false;
-        if (rqmntId != null ? !rqmntId.equals(that.rqmntId) : that.rqmntId != null) return false;
-        if (uuId != null ? !uuId.equals(that.uuId) : that.uuId != null) return false;
-        if (summary != null ? !summary.equals(that.summary) : that.summary != null) return false;
-        if (creatorId != null ? !creatorId.equals(that.creatorId) : that.creatorId != null) return false;
-        if (description != null ? !description.equals(that.description) : that.description != null) return false;
-        if (priority != null ? !priority.equals(that.priority) : that.priority != null) return false;
-        if (functionLabelId != null ? !functionLabelId.equals(that.functionLabelId) : that.functionLabelId != null)
-            return false;
-        if (startDate != null ? !startDate.equals(that.startDate) : that.startDate != null) return false;
-        if (endDate != null ? !endDate.equals(that.endDate) : that.endDate != null) return false;
-        if (createTime != null ? !createTime.equals(that.createTime) : that.createTime != null) return false;
-        if (status != null ? !status.equals(that.status) : that.status != null) return false;
-        if (ragStatus != null ? !ragStatus.equals(that.ragStatus) : that.ragStatus != null) return false;
-        if (progress != null ? !progress.equals(that.progress) : that.progress != null) return false;
-        if (totalStoryPoint != null ? !totalStoryPoint.equals(that.totalStoryPoint) : that.totalStoryPoint != null)
-            return false;
-        if (remarks != null ? !remarks.equals(that.remarks) : that.remarks != null) return false;
-        return isDeleted != null ? isDeleted.equals(that.isDeleted) : that.isDeleted == null;
+    public Long getLastUpdateTime() {
+        return lastUpdateTime;
     }
 
-    @Override
-    public int hashCode() {
-        int result = projId != null ? projId.hashCode() : 0;
-        result = 31 * result + (rqmntId != null ? rqmntId.hashCode() : 0);
-        result = 31 * result + (uuId != null ? uuId.hashCode() : 0);
-        result = 31 * result + (summary != null ? summary.hashCode() : 0);
-        result = 31 * result + (creatorId != null ? creatorId.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (priority != null ? priority.hashCode() : 0);
-        result = 31 * result + (functionLabelId != null ? functionLabelId.hashCode() : 0);
-        result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
-        result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
-        result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
-        result = 31 * result + (status != null ? status.hashCode() : 0);
-        result = 31 * result + (ragStatus != null ? ragStatus.hashCode() : 0);
-        result = 31 * result + (progress != null ? progress.hashCode() : 0);
-        result = 31 * result + (totalStoryPoint != null ? totalStoryPoint.hashCode() : 0);
-        result = 31 * result + (remarks != null ? remarks.hashCode() : 0);
-        result = 31 * result + (isDeleted != null ? isDeleted.hashCode() : 0);
-        return result;
+    public void setLastUpdateTime(Long lastUpdateTime) {
+        this.lastUpdateTime = lastUpdateTime;
     }
+
+    public String getModelId() {
+        return modelId;
+    }
+
+    public void setModelId(String modelId) {
+        this.modelId = modelId;
+    }
+
+
 
 }

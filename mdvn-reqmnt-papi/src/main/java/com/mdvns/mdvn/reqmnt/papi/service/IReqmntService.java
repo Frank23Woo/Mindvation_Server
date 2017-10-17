@@ -20,10 +20,10 @@ public interface IReqmntService {
     RestResponse createReqmnt(CreateReqmntRequest createReqmntRequest);
     RestResponse rtrvReqmntInfo(RtrvReqmntInfoRequest request);
 
-//    /**
-//     * 更改project
-//     * @param updateReqmntRequest
-//     * @return
-//     */
-//    UpdateProjectResponse updateProject(UpdateReqmntRequest updateReqmntRequest);
+    /**
+     * update reqmnt
+     * @param request
+     * @return
+     */
+    RestResponse updateReqmntInfo(UpdateReqmntInfoRequest request);
 }
