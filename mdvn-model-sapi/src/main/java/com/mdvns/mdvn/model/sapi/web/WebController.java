@@ -95,9 +95,22 @@ public class WebController {
      * @param roleId 角色Id
      * @return ModelRole
      */
-    @PostMapping(value = "/models/findFuncById")
+    @PostMapping(value = "/models/findModelRoleById")
     public ModelRole findById(@RequestBody String roleId) {
         return this.modelService.findById(roleId);
     }
+
+    /**
+     * 根据parentId 和 过程方法子模块的那么 查询过程方法子模块的Id，如果不存在添加
+     *
+     * @param request
+     * @return ModelRole
+     */
+    @PostMapping(value = "/models/judgeSubLabelId")
+    public SubFunctionLabel judgeSubLabelId(@RequestBody JudgeSubLabelIdRequest request) {
+        return this.modelService.judgeSubLabelId(request);
+    }
+
+
 
 }

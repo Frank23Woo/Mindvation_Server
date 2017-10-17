@@ -17,6 +17,9 @@ public interface FunctionModelRepository extends JpaRepository<SubFunctionLabel,
 
     SubFunctionLabel findByLabelId(String labelId);
 
-    @Query(value="  SELECT DISTINCT COUNT(*) FROM function_model ", nativeQuery = true)
+    @Query(value="  SELECT * FROM sub_function_label where parent_id=?1 AND name = ?2", nativeQuery = true)
+    SubFunctionLabel findLabelId(String parentId,String name);
+
+    @Query(value="  SELECT DISTINCT COUNT(*) FROM sub_function_label ", nativeQuery = true)
     Long getModelCount();
 }

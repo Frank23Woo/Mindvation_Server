@@ -29,4 +29,6 @@ public interface ModelService {
 
     ModelRole findById(String roleId);
 
+    SubFunctionLabel judgeSubLabelId(JudgeSubLabelIdRequest request);
+
 }
