@@ -1,6 +1,10 @@
-package com.mdvns.mdvn.reqmnt.papi.domain;
+package com.mdvns.mdvn.reqmnt.sapi.domain;
 
 import com.mdvns.mdvn.common.beans.Tag;
+import com.mdvns.mdvn.reqmnt.sapi.domain.entity.ReqmntAttchUrl;
+import com.mdvns.mdvn.reqmnt.sapi.domain.entity.ReqmntCheckList;
+import com.mdvns.mdvn.reqmnt.sapi.domain.entity.ReqmntMember;
+import com.mdvns.mdvn.reqmnt.sapi.domain.entity.RequirementInfo;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

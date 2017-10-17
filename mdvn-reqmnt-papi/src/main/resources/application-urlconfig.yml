@@ -22,6 +22,8 @@ config:
   rtrvReqmntMembersUrl : http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntMembers
   rtrvReqmntCheckListUrl : http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntCheckList
   rtrvReqmntAttchsUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntAttUrls
+  updateReqmntInfoUrl: http://localhost:10012/mdvn-reqmnt-sapi/updateReqmntInfo
+
 
 # staff sapi urls
   rtrvStaffsByIdsUrl: http://localhost:10013/mdvn-staff-s/rtrvStaffListByStaffIdList

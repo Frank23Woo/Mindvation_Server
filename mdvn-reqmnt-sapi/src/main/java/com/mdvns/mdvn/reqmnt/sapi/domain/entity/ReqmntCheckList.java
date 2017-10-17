@@ -19,7 +19,7 @@ public class ReqmntCheckList {
     //projectID
     private String reqmntId;
     //任务描述
-    @Column(columnDefinition = "text",nullable = false)
+    @Column(columnDefinition = "text", nullable = false)
     private String description;
     //创建者ID(更改checkList的staffId)
     private String creatorId;

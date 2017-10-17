@@ -1,7 +1,5 @@
 package com.mdvns.mdvn.reqmnt.sapi.service.impl;
 
-import com.mdvns.mdvn.common.beans.RestResponse;
-import com.mdvns.mdvn.common.utils.RestResponseUtil;
 import com.mdvns.mdvn.reqmnt.sapi.domain.*;
 import com.mdvns.mdvn.reqmnt.sapi.domain.entity.*;
 import com.mdvns.mdvn.reqmnt.sapi.repository.*;
@@ -133,7 +131,7 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
 
         try {
             requirementInfo = reqmntRepository.saveAndFlush(requirementInfo);
-            requirementInfo.setRqmntId("R" + requirementInfo.getUuId());
+            requirementInfo.setReqmntId("R" + requirementInfo.getUuId());
             requirementInfo = reqmntRepository.saveAndFlush(requirementInfo);
             ResponseEntity<?> responseEntity = new ResponseEntity<Object>(requirementInfo, HttpStatus.OK);
             return responseEntity;
@@ -267,7 +265,7 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
         RequirementInfo requirementInfo = new RequirementInfo();
         Object[] objs = (Object[]) obj;
         if (obj.toString().length() > 0) {
-            requirementInfo.setRqmntId((String) objs[1]);
+            requirementInfo.setReqmntId((String) objs[1]);
         }
         return requirementInfo;
 

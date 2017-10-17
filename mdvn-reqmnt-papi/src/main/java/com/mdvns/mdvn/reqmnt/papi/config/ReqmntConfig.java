@@ -23,6 +23,8 @@ public class ReqmntConfig {
     private String rtrvTagsByIdsUrl;
     private String rtrvFuncLabelUrl;
 
+    private String updateReqmntInfoUrl;
+
     //staff sapi url
     private String rtrvStaffsByIdsUrl;
 
@@ -138,5 +140,13 @@ public class ReqmntConfig {
 
     public void setRtrvFuncLabelUrl(String rtrvFuncLabelUrl) {
         this.rtrvFuncLabelUrl = rtrvFuncLabelUrl;
+    }
+
+    public String getUpdateReqmntInfoUrl() {
+        return updateReqmntInfoUrl;
+    }
+
+    public void setUpdateReqmntInfoUrl(String updateReqmntInfoUrl) {
+        this.updateReqmntInfoUrl = updateReqmntInfoUrl;
     }
 }

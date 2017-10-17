@@ -63,4 +63,24 @@ public class ReqmntAttchUrl {
     public void setUpdateTime(Timestamp updateTime) {
         this.updateTime = updateTime;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ReqmntAttchUrl that = (ReqmntAttchUrl) o;
+
+        if (attachmentId != null ? !attachmentId.equals(that.attachmentId) : that.attachmentId != null) return false;
+        if (reqmntId != null ? !reqmntId.equals(that.reqmntId) : that.reqmntId != null) return false;
+        return attachmentName != null ? attachmentName.equals(that.attachmentName) : that.attachmentName == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = attachmentId != null ? attachmentId.hashCode() : 0;
+        result = 31 * result + (reqmntId != null ? reqmntId.hashCode() : 0);
+        result = 31 * result + (attachmentName != null ? attachmentName.hashCode() : 0);
+        return result;
+    }
 }

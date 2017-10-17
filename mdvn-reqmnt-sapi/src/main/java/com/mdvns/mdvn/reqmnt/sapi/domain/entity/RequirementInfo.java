@@ -2,11 +2,9 @@ package com.mdvns.mdvn.reqmnt.sapi.domain.entity;
 
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.sql.Timestamp;
 
 @Component
 @Entity
@@ -15,7 +13,7 @@ public class RequirementInfo {
     private String projId;
 
     /* requirement ID */
-    private String rqmntId;
+    private String reqmntId;
     /* unique id in db */
     @Id
     @GeneratedValue
@@ -48,8 +46,10 @@ public class RequirementInfo {
     //是否被删除
     private Integer isDeleted;
 
-    public String getRqmntId() {
-        return rqmntId;
+    private Long lastUpdateTime;
+
+    public String getReqmntId() {
+        return reqmntId;
     }
 
     public String getProjId() {
@@ -60,8 +60,8 @@ public class RequirementInfo {
         this.projId = projId;
     }
 
-    public void setRqmntId(String rqmntId) {
-        this.rqmntId = rqmntId;
+    public void setReqmntId(String reqmntId) {
+        this.reqmntId = reqmntId;
     }
 
     public Integer getUuId() {
@@ -186,6 +186,15 @@ public class RequirementInfo {
         this.functionLabelId = functionLabelId;
     }
 
+
+    public Long getLastUpdateTime() {
+        return lastUpdateTime;
+    }
+
+    public void setLastUpdateTime(Long lastUpdateTime) {
+        this.lastUpdateTime = lastUpdateTime;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -194,7 +203,7 @@ public class RequirementInfo {
         RequirementInfo that = (RequirementInfo) o;
 
         if (projId != null ? !projId.equals(that.projId) : that.projId != null) return false;
-        if (rqmntId != null ? !rqmntId.equals(that.rqmntId) : that.rqmntId != null) return false;
+        if (reqmntId != null ? !reqmntId.equals(that.reqmntId) : that.reqmntId != null) return false;
         if (uuId != null ? !uuId.equals(that.uuId) : that.uuId != null) return false;
         if (summary != null ? !summary.equals(that.summary) : that.summary != null) return false;
         if (creatorId != null ? !creatorId.equals(that.creatorId) : that.creatorId != null) return false;
@@ -217,7 +226,7 @@ public class RequirementInfo {
     @Override
     public int hashCode() {
         int result = projId != null ? projId.hashCode() : 0;
-        result = 31 * result + (rqmntId != null ? rqmntId.hashCode() : 0);
+        result = 31 * result + (reqmntId != null ? reqmntId.hashCode() : 0);
         result = 31 * result + (uuId != null ? uuId.hashCode() : 0);
         result = 31 * result + (summary != null ? summary.hashCode() : 0);
         result = 31 * result + (creatorId != null ? creatorId.hashCode() : 0);

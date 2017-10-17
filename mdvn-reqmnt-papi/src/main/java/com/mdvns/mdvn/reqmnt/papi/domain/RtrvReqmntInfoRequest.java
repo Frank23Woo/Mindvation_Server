@@ -10,6 +10,14 @@ public class RtrvReqmntInfoRequest {
     private String reqmntId;
     private List<String> remarks;
 
+    public RtrvReqmntInfoRequest(){
+
+    }
+
+    public RtrvReqmntInfoRequest(String reqmntId) {
+        this.reqmntId = reqmntId;
+    }
+
     public String getReqmntId() {
         return reqmntId;
     }
