@@ -13,4 +13,7 @@ public interface ReqmntMemberRepository extends JpaRepository<ReqmntMember,Integ
 
     @Query(value="SELECT * FROM staff_reqmnt_map WHERE reqmnt_id =?1 AND is_deleted = 0;",nativeQuery = true )
     List<ReqmntMember> findPLeders(String reqmnt);
+
+    Integer deleteAllByReqmntId(String reqmntId);
+
 }

@@ -1,6 +1,7 @@
 package com.mdvns.mdvn.reqmnt.sapi.service.impl;
 
 import com.mdvns.mdvn.common.beans.Tag;
+import com.mdvns.mdvn.reqmnt.sapi.domain.RoleMember;
 import com.mdvns.mdvn.reqmnt.sapi.domain.UpdateReqmntInfoRequest;
 import com.mdvns.mdvn.reqmnt.sapi.domain.entity.*;
 import com.mdvns.mdvn.reqmnt.sapi.repository.*;
@@ -8,6 +9,7 @@ import com.mdvns.mdvn.reqmnt.sapi.service.IUpdateReqmntService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -103,6 +105,12 @@ public class UpdateReqmntServiceImpl implements IUpdateReqmntService {
                     changeFlag = true;
                 }
 
+                //modelID change
+                if (!StringUtils.isEmpty(newInfo.getModelId()) &&  !newInfo.getModelId().equals(oldInfo.getModelId())) {
+                    oldInfo.setModelId(newInfo.getModelId());
+                    changeFlag = true;
+                }
+
                 if (changeFlag) {
                     oldInfo.setLastUpdateTime(System.currentTimeMillis());
                     reqmntRepository.save(oldInfo);
@@ -126,6 +134,8 @@ public class UpdateReqmntServiceImpl implements IUpdateReqmntService {
 
             tagRepository.save(reqmntTags);
         }
+
+
 
         // attch urls
         changeFlag = false;
@@ -202,6 +212,31 @@ public class UpdateReqmntServiceImpl implements IUpdateReqmntService {
 
         // memebers
 
+        if(request.getMembers()!=null){
+            List<RoleMember>  roleMembers = request.getMembers();
+            List<ReqmntMember> reqmntMembers = new ArrayList<>();
+            ReqmntMember reqmntMember = null;
+            String roleId = "";
+            for (int i = 0; i < roleMembers.size(); i++) {
+                roleId = roleMembers.get(i).getRoleId();
+                List<String> memberIds = roleMembers.get(i).getMemberIds();
+                for (int j = 0; j < memberIds.size(); j++) {
+                    reqmntMember = new ReqmntMember();
+                    reqmntMember.setStaffId(memberIds.get(j));
+                    reqmntMember.setRoleId(roleId);
+                    reqmntMember.setReqmntId(request.getReqmntInfo().getReqmntId());
+                    reqmntMember.setIsDeleted(0);
+                    reqmntMember.setLastUpdateTime(new Timestamp(System.currentTimeMillis()));
+                    reqmntMembers.add(reqmntMember);
+                }
+
+            }
+
+            int tmp = memberRepository.deleteAllByReqmntId(request.getReqmntInfo().getReqmntId());
+            memberRepository.save(reqmntMembers);
+        }
+
+        result=true;
         return result;
     }
 
