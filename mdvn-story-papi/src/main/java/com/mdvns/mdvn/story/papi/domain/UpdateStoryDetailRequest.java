@@ -1,6 +1,7 @@
 package com.mdvns.mdvn.story.papi.domain;
 
 import com.mdvns.mdvn.common.beans.AttchUrl;
+import com.mdvns.mdvn.common.beans.FunctionLabel;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +22,7 @@ public class UpdateStoryDetailRequest {
     //用户故事Tasks（集合）
     private List<StoryTask> sTasks;
     //最后一层过程方法模块对象
-    private FunctionModel subFunctionLabel;
+    private FunctionLabel subFunctionLabel;
     //用户故事附件（集合）
     private List<AttchUrl> attchUrls;
 
@@ -65,11 +66,11 @@ public class UpdateStoryDetailRequest {
         this.sTasks = sTasks;
     }
 
-    public FunctionModel getSubFunctionLabel() {
+    public FunctionLabel getSubFunctionLabel() {
         return subFunctionLabel;
     }
 
-    public void setSubFunctionLabel(FunctionModel subFunctionLabel) {
+    public void setSubFunctionLabel(FunctionLabel subFunctionLabel) {
         this.subFunctionLabel = subFunctionLabel;
     }
 

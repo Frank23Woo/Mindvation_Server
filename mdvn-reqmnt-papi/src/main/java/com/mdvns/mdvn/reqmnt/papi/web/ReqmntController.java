@@ -4,14 +4,12 @@ import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.reqmnt.papi.domain.*;
 import com.mdvns.mdvn.reqmnt.papi.service.IReqmntService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-
+@CrossOrigin
+@RequestMapping(value = {"/reqmnts", "/v1.0/reqmnts"})
 public class ReqmntController {
 
     @Autowired

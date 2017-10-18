@@ -2,7 +2,6 @@ package com.mdvns.mdvn.story.sapi.domain;
 
 import com.mdvns.mdvn.common.beans.AttchUrl;
 import com.mdvns.mdvn.story.sapi.domain.entity.Story;
-import com.mdvns.mdvn.story.sapi.domain.entity.StoryModel;
 import com.mdvns.mdvn.story.sapi.domain.entity.StoryRoleMember;
 import com.mdvns.mdvn.story.sapi.domain.entity.StoryTag;
 import org.springframework.stereotype.Component;
@@ -21,8 +20,6 @@ public class CreateStoryRequest {
     private List<StoryTag> sTags;
 //    //用户故事checkList（集合）
 //    private List<StoryCheckList> checkLists;
-    //用户故事模型
-    private StoryModel sModel;
     //用户故事附件（集合）
     private List<AttchUrl> sAttchUrls;
 
@@ -56,14 +53,6 @@ public class CreateStoryRequest {
 
     public void setsTags(List<StoryTag> sTags) {
         this.sTags = sTags;
-    }
-
-    public StoryModel getsModel() {
-        return sModel;
-    }
-
-    public void setsModel(StoryModel sModel) {
-        this.sModel = sModel;
     }
 
     public List<AttchUrl> getsAttchUrls() {

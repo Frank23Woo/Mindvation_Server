@@ -2,6 +2,8 @@ package com.mdvns.mdvn.staff.sapi.service.impl;
 
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.staff.sapi.domain.RetrieveStaffListResponse;
+import com.mdvns.mdvn.staff.sapi.domain.RtrvStaffListByNameRequest;
+import com.mdvns.mdvn.staff.sapi.domain.RtrvStaffListByNameResponse;
 import com.mdvns.mdvn.staff.sapi.domain.RtrvStaffListByStaffIbListRequest;
 import com.mdvns.mdvn.staff.sapi.domain.entity.Staff;
 import com.mdvns.mdvn.staff.sapi.repository.StaffRepository;
@@ -9,8 +11,14 @@ import com.mdvns.mdvn.staff.sapi.service.StaffService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +31,9 @@ public class StaffServiceImpl implements StaffService {
 
     @Autowired
     private StaffRepository staffRepository;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     private Staff staff;
@@ -70,6 +81,48 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public Staff rtrvStaffInfo(String staffId) {
         return this.staffRepository.findByStaffId(staffId);
+    }
+
+    /**
+     * 简单模糊查询staff(不分页不存在，后续删除)
+     * @param name
+     * @return
+     */
+    @Override
+    public ResponseEntity<?> rtrvStaffListByStaffName(String name) {
+        String flag = "%"+name+"%";
+//        String flag = "%"+name+"%";
+//        String sql = "SELECT *  FROM staff where NAME LIKE"+ "\"" + flag +"\" ";
+//        List<Staff> staffList = this.jdbcTemplate.queryForList(sql, Staff.class);
+        RtrvStaffListByNameResponse rtrvStaffListByNameResponse = new RtrvStaffListByNameResponse();
+        List<Staff> staffList = this.staffRepository.rtrvStaffListByStaffName(flag);
+        Long count = this.staffRepository.getStaffCount();
+        rtrvStaffListByNameResponse.setStaffs(staffList);
+        rtrvStaffListByNameResponse.setTotalNumber(count);
+        return ResponseEntity.ok(rtrvStaffListByNameResponse);
+    }
+
+    /**
+     * 姓名分页查询（模糊）
+     * @param page
+     * @param pageSize
+     * @param sortBy
+     * @return
+     * @throws SQLException
+     */
+    @Override
+    public ResponseEntity<?> rtrvStaffListByStaffName(Integer page, Integer pageSize, String name, String sortBy) throws SQLException {
+        RtrvStaffListByNameResponse rtrvStaffListByNameResponse = new RtrvStaffListByNameResponse();
+        sortBy = (sortBy == null) ? "staffId" : sortBy;
+        PageRequest pageable = new PageRequest(page, pageSize,Sort.Direction.DESC, sortBy);
+        Page<Staff> staffPage = null;
+        String flag = "%"+name+"%";
+        List<Staff> staffList =  this.staffRepository.rtrvStaffListByStaffName(flag);
+        staffPage = this.staffRepository.findByNameLike(flag,pageable);
+//        staffPage = this.staffRepository.findAll(pageable);
+        rtrvStaffListByNameResponse.setStaffs(staffPage.getContent());
+        rtrvStaffListByNameResponse.setTotalNumber(staffPage.getTotalElements());
+        return ResponseEntity.ok(rtrvStaffListByNameResponse);
     }
 
 }

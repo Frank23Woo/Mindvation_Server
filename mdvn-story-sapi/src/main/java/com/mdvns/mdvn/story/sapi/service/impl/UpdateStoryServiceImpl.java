@@ -1,8 +1,6 @@
 package com.mdvns.mdvn.story.sapi.service.impl;
 
-import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.story.sapi.domain.UpdateSMembersRequest;
-import com.mdvns.mdvn.story.sapi.domain.UpdateSModelRequest;
 import com.mdvns.mdvn.story.sapi.domain.UpdateSTagsRequest;
 import com.mdvns.mdvn.story.sapi.domain.UpdateSTasksRequest;
 import com.mdvns.mdvn.story.sapi.domain.entity.*;
@@ -40,9 +38,6 @@ public class UpdateStoryServiceImpl implements IUpdateStoryService {
 
     @Autowired
     private StoryTagRepository storyTagRepository;
-
-    @Autowired
-    private StoryModelRepository storyModelRepository;
 
     @Autowired
     private StoryTaskRepository storyTaskRepository;
@@ -187,44 +182,6 @@ public class UpdateStoryServiceImpl implements IUpdateStoryService {
         List<StoryTag> storyTags = this.storyTagRepository.findSTags(storyId);
         LOG.info("finish executing updateStoryTags()方法.", this.CLASS);
         return storyTags;
-    }
-
-    /**
-     * 更改用户故事模型信息
-     *
-     * @param request
-     * @return
-     */
-    @Override
-    public StoryModel updateStoryModel(UpdateSModelRequest request) {
-        LOG.info("start executing updateStoryModels()方法.", this.CLASS);
-        if (request == null || request.getsModel() == null) {
-            throw new NullPointerException("StoryModels List is empty");
-        }
-        String storyId = request.getStoryId();
-        //将数据库中没有的插入
-        StoryModel storyModel = new StoryModel();
-        storyModel = this.storyModelRepository.findByStoryIdAndModelId(storyId, request.getsModel().getModelId());
-        //不存在的加上
-        if (storyModel == null) {
-            request.getsModel().setStoryId(storyId);
-            request.getsModel().setIsDeleted(0);
-            this.storyModelRepository.saveAndFlush(request.getsModel());
-        } else {
-            //之前是用户故事模型后来改掉，数据库中存在记录，但是is_deleted为1，需要修改成0
-            if (storyModel.getIsDeleted().equals(1)) {
-                String sql = "UPDATE model_story_map SET is_deleted= 0 WHERE story_id=" + "\"" + storyId + "\"" + "AND model_id =" + "\"" + request.getsModel().getModelId() + "\"" + "";
-                this.jdbcTemplate.update(sql);
-            }
-        }
-
-        //将数据库中将要删除的模型信息修改is_deleted状态
-        String sql = "UPDATE model_story_map SET is_deleted= 1 WHERE story_id= " + "\"" + storyId + "\"" + " AND model_id NOT IN (" + storyModel.getModelId() + ")";
-        this.jdbcTemplate.update(sql);
-        //查询数据库中有效的模型
-        StoryModel sModel = this.storyModelRepository.findSModel(storyId);
-        LOG.info("finish executing updateStoryModels()方法.", this.CLASS);
-        return sModel;
     }
 
     /**

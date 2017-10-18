@@ -68,16 +68,6 @@ public class CreateStoryController {
     }
 
     /**
-     * 创建story时保存模型信息
-     * @param request
-     * @return
-     */
-    @PostMapping(value="/savePModels")
-    public StoryModel saveSModel(@RequestBody StoryModel request){
-        StoryModel storyModel = storyService.saveSModel(request);
-        return storyModel;
-    }
-    /**
      * 创建story时保存story任务（checkLists）(多了一个保存创建者信息的动作)
      * @param request
      * @return

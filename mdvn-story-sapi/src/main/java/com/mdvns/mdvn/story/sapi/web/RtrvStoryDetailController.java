@@ -1,7 +1,6 @@
 package com.mdvns.mdvn.story.sapi.web;
 
 import com.mdvns.mdvn.story.sapi.domain.RtrvStoryDetailRequest;
-import com.mdvns.mdvn.story.sapi.domain.entity.StoryModel;
 import com.mdvns.mdvn.story.sapi.domain.entity.StoryRoleMember;
 import com.mdvns.mdvn.story.sapi.domain.entity.StoryTag;
 import com.mdvns.mdvn.story.sapi.domain.entity.StoryTask;
@@ -56,16 +55,6 @@ public class RtrvStoryDetailController {
         return rtrvStoryDetailService.rtrvStoryTags(request);
     }
 
-    /**
-     * 获得某个用户故事模型信息
-     * @param request
-     * @return
-     * @throws SQLException
-     */
-    @PostMapping(value="/rtrvStoryModel")
-    public StoryModel rtrvStoryModel(@RequestBody RtrvStoryDetailRequest request) throws SQLException {
-        return rtrvStoryDetailService.rtrvStoryModel(request);
-    }
 
     /**
      * 获得某个用户故事checkList信息

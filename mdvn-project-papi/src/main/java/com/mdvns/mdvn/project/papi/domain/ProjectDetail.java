@@ -1,6 +1,6 @@
 package com.mdvns.mdvn.project.papi.domain;
 
-import com.mdvns.mdvn.reqmnt.papi.domain.RequirementInfo;
+import com.mdvns.mdvn.common.beans.RequirementInfo;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,8 +21,7 @@ public class ProjectDetail {
     //项目附件（集合）
     private List<ProjAttchUrls> attchUrls;
     //获取requirement列表（外加的）
-    private List<RequirementInfo> requirementInfos;
-
+    private RtrvReqmntListResponse reqmntListResponse;
 
     public List<Staff> getLeaders() {
         return leaders;
@@ -73,11 +72,11 @@ public class ProjectDetail {
         this.project = project;
     }
 
-    public List<RequirementInfo> getRequirementInfos() {
-        return requirementInfos;
+    public RtrvReqmntListResponse getReqmntListResponse() {
+        return reqmntListResponse;
     }
 
-    public void setRequirementInfos(List<RequirementInfo> requirementInfos) {
-        this.requirementInfos = requirementInfos;
+    public void setReqmntListResponse(RtrvReqmntListResponse reqmntListResponse) {
+        this.reqmntListResponse = reqmntListResponse;
     }
 }

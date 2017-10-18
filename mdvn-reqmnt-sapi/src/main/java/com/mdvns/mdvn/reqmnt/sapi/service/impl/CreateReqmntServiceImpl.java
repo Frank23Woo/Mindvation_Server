@@ -107,6 +107,7 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
         StringUtils.isEmpty(createReqmntRequest.getStartDate()) || StringUtils.isEmpty(createReqmntRequest.getEndDate()) || StringUtils.isEmpty(createReqmntRequest.getProjId())) {
             throw new NullPointerException("Mandatory fields should not be empty for createReqmntRequest");
         }
+        LOG.info("。。。。。保存需求开始。。。。。");
         requirementInfo.setProjId(createReqmntRequest.getProjId());
         requirementInfo.setSummary(createReqmntRequest.getSummary());
         requirementInfo.setDescription(createReqmntRequest.getDescription());

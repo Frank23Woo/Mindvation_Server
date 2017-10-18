@@ -28,6 +28,8 @@ public class ProjConfig {
     //创建project时保存AttchUrls信息
     private String savePAttchUrlsUrl;
 
+
+
     //---------------------------------更改项目--------------------------
 
     //更改项目基本信息
@@ -49,9 +51,29 @@ public class ProjConfig {
     private String rtrvProjModelsUrl;
     private String rtrvProjCheckListsUrl;
     private String rtrvProjAttUrlsUrl;
-    //获取requirment列表信息
+    //获取requirment列表信息 分页信息不能小于1
+    //获取reqmnt列表page默认值
+    private String reqmntListPage;
+    //获取reqmnt列表pageSize默认值
+    private String reqmntListPageSize;
+
     private String rtrvReqmntListUrl;
 
+    public String getReqmntListPage() {
+        return reqmntListPage;
+    }
+
+    public void setReqmntListPage(String reqmntListPage) {
+        this.reqmntListPage = reqmntListPage;
+    }
+
+    public String getReqmntListPageSize() {
+        return reqmntListPageSize;
+    }
+
+    public void setReqmntListPageSize(String reqmntListPageSize) {
+        this.reqmntListPageSize = reqmntListPageSize;
+    }
 
     public String getRtrvProjInfoListUrl() {
         return rtrvProjInfoListUrl;

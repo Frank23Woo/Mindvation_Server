@@ -1,6 +1,7 @@
 package com.mdvns.mdvn.staff.papi.service.impl;
 
 import com.mdvns.mdvn.common.beans.RestResponse;
+import com.mdvns.mdvn.common.utils.RestResponseUtil;
 import com.mdvns.mdvn.staff.papi.config.WebConfig;
 import com.mdvns.mdvn.staff.papi.domain.*;
 import com.mdvns.mdvn.staff.papi.service.StaffService;
@@ -83,6 +84,21 @@ public class StaffServiceImpl implements StaffService{
         restResponse.setStatusCode("200");
         return restResponse;
     }
+
+    /**
+     * 调用SAPI获取Tag列表
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public ResponseEntity<?> rtrvStaffListByName(RtrvStaffListByNameRequest request) {
+        String url = webConfig.getRtrvStaffListByNameUrl();
+        RtrvStaffListByNameResponse rtrvStaffListByNameResponse = this.restTemplate.postForObject(url, request, RtrvStaffListByNameResponse.class);
+        restResponse = RestResponseUtil.success(rtrvStaffListByNameResponse);
+        return ResponseEntity.ok(restResponse);
+    }
+
 
 
 }

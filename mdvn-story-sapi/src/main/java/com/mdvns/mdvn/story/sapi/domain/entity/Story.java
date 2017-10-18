@@ -22,6 +22,8 @@ public class Story {
     //用户故事概要
     @Column(nullable = false)
     private String summary;
+    //过程方法子模块
+    private String subLabel;
     //用户故事创建者Id
     private String creatorId;
     //用户故事描述
@@ -59,6 +61,15 @@ public class Story {
     private Integer finishedSP;
     //缺陷总数
     private Integer defectQty;
+
+    public String getSubLabel() {
+        return subLabel;
+    }
+
+    public void setSubLabel(String subLabel) {
+        this.subLabel = subLabel;
+    }
+
     //缺陷严重
     @Column(columnDefinition = "int default 0")
     private Integer criticalDefectQtys;

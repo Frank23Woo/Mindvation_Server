@@ -1,0 +1,25 @@
+config:
+  judgeSubLabelIdUrl: http://localhost:10009/mdvn-model-s/models/judgeSubLabelId
+  rtrvStoryInfoListUrl: http://localhost:10015/mdvn-story-sapi/story/rtrvStoryInfoList
+  createStoryUrl: http://localhost:10015/mdvn-story-sapi/story/createStory
+  saveStoryBaseUrl: http://localhost:10015/mdvn-story-sapi/story/saveStory
+  savePTagsUrl: http://localhost:10015/mdvn-story-sapi/story/savePTags
+  savePModelsUrl: http://localhost:10015/mdvn-story-sapi/story/savePModels
+  saveCheckListsUrl: http://localhost:10015/mdvn-story-sapi/story/savePCheckLists
+  checklistsListByUuIdUrl: http://localhost:10015/mdvn-story-sapi/story/checklistsListByUuId
+  savePAttchUrlsUrl: http://localhost:10015/mdvn-story-sapi/story/savePAttchUrls
+  savePLeadersUrl: http://localhost:10015/mdvn-story-sapi/story/savePLeaders
+  updateStoryBaseInfoUrl: http://localhost:10015/mdvn-story-sapi/updateStory/updateStoryBaseInfo
+  updateStoryLeadersUrl: http://localhost:10015/mdvn-story-sapi/updateStory/updateStoryLeaders
+  updateStoryAttchUrlsUrl: http://localhost:10015/mdvn-story-sapi/updateStory/updateStoryAttchUrls
+  updateStoryTagsUrl: http://localhost:10015/mdvn-story-sapi/updateStory/updateStoryTags
+  updateStoryChecklistsUrl: http://localhost:10015/mdvn-story-sapi/updateStory/updateStoryChecklists
+  updateStoryModelsUrl: http://localhost:10015/mdvn-story-sapi/updateStory/updateStoryModels
+  rtrvStoryBaseInfoUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/rtrvStoryBaseInfo
+  rtrvStoryLedersUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/rtrvStoryLeders
+  rtrvStoryTagsUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/rtrvStoryTags
+  rtrvStoryModelsUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/rtrvStoryModels
+  rtrvStoryCheckListsUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/rtrvStoryCheckLists
+  rtrvStoryAttUrlsUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/rtrvStoryAttUrls
+  rtrvReqmntListUrl: http://localhost:10011/mdvn-reqmnt-papi/rtrvReqmntList
+

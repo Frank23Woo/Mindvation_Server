@@ -3,9 +3,11 @@ package com.mdvns.mdvn.staff.papi.web;
 import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.staff.papi.domain.RetrieveStaffListRequest;
 import com.mdvns.mdvn.staff.papi.domain.RtrvStaffInfoRequest;
+import com.mdvns.mdvn.staff.papi.domain.RtrvStaffListByNameRequest;
 import com.mdvns.mdvn.staff.papi.domain.RtrvStaffListByStaffIbListRequest;
 import com.mdvns.mdvn.staff.papi.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
@@ -44,6 +46,16 @@ public class StaffController {
     @PostMapping(value = "/rtrvStaffInfo")
     public RestResponse rtrvStaffInfo(@RequestBody RtrvStaffInfoRequest request) {
         return this.staffService.rtrvStaffInfo(request);
+    }
+
+    /**
+     * 模糊查询
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/rtrvStaffListByName")
+    public ResponseEntity<?> rtrvStaffListByName(@RequestBody RtrvStaffListByNameRequest request) {
+        return this.staffService.rtrvStaffListByName(request);
     }
 
 }

@@ -2,7 +2,6 @@ package com.mdvns.mdvn.story.sapi.web;
 
 
 import com.mdvns.mdvn.story.sapi.domain.UpdateSMembersRequest;
-import com.mdvns.mdvn.story.sapi.domain.UpdateSModelRequest;
 import com.mdvns.mdvn.story.sapi.domain.UpdateSTagsRequest;
 import com.mdvns.mdvn.story.sapi.domain.UpdateSTasksRequest;
 import com.mdvns.mdvn.story.sapi.domain.entity.*;
@@ -44,17 +43,7 @@ public class UpdateStoryController {
     public List<StoryRoleMember> updateStoryMembers(@RequestBody UpdateSMembersRequest members){
         return this.updateStoryService.updateStoryMembers(members);
     }
-    
 
-    /**
-     * 更改用户故事模型信息
-     * @param model
-     * @return
-     */
-    @PostMapping(value="/updateStoryModel")
-    public StoryModel updateStoryModels(@RequestBody UpdateSModelRequest model){
-        return this.updateStoryService.updateStoryModel(model);
-    }
 
     /**
      * 更改用户故事标签信息

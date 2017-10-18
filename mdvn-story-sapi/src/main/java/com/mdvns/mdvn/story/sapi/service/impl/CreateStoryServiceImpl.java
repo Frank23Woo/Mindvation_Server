@@ -43,8 +43,6 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
     @Autowired
     private StoryTagRepository storyTagRepository;
 
-    @Autowired
-    private StoryModelRepository storyModelRepository;
 
     @Autowired
     private StoryTaskRepository storyTaskRepository;
@@ -82,14 +80,16 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
         //先保存项目基本信息
         if (StringUtils.isEmpty(createStoryRequest) || StringUtils.isEmpty(createStoryRequest.getStoryInfo().getSummary())||
                 StringUtils.isEmpty(createStoryRequest.getCreatorId()) ||
+                StringUtils.isEmpty(createStoryRequest.getStoryInfo().getSubLabel()) ||
                 StringUtils.isEmpty(createStoryRequest.getStoryInfo().getDescription()) ||
                 StringUtils.isEmpty(createStoryRequest.getStoryInfo().getStartDate()) ||
                 StringUtils.isEmpty(createStoryRequest.getStoryInfo().getEndDate())) {
-            throw new NullPointerException("createStoryRequest不能为空 或创建者Id不能为空 或用户故事概要不能为空 或用户故事描述不能为空 或者用户故事开始结束时间不能为空");
+            throw new NullPointerException("createStoryRequest不能为空 或创建者Id不能为空 或过程方法子模块 或用户故事概要不能为空 或用户故事描述不能为空 或者用户故事开始结束时间不能为空");
         }
         story.setSummary(createStoryRequest.getStoryInfo().getSummary());
         story.setDescription(createStoryRequest.getStoryInfo().getDescription());
-        story.setCreatorId(createStoryRequest.getStoryInfo().getCreatorId());
+        story.setCreatorId(createStoryRequest.getCreatorId());
+        story.setSubLabel(createStoryRequest.getStoryInfo().getSubLabel());
         story.setIsDeleted(0);
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
         story.setCreateTime(currentTime);
@@ -145,20 +145,7 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
     }
 
     /**
-     * 创建story时保存模型信息
-     *
-     * @param request
-     * @return
-     */
-    @Override
-    public StoryModel saveSModel(StoryModel request) {
-            request.setIsDeleted(0);
-        StoryModel storyModel = storyModelRepository.save(request);
-        return storyModel;
-    }
-
-    /**
-     * 保存story多条任务（checkLists）
+     * 保存story多条任务（TASKS）
      *
      * @param request
      * @return

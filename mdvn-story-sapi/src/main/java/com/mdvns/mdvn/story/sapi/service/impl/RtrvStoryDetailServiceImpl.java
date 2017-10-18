@@ -29,13 +29,10 @@ public class RtrvStoryDetailServiceImpl implements IRtrvStoryDetailService {
     private StoryTagRepository storyTagRepository;
 
     @Autowired
-    private StoryModelRepository storyModelRepository;
-
-    @Autowired
     private StoryTaskRepository storyTaskRepository;
 
     /**
-     * 获得某个项目基础信息
+     * 获得某个用户故事基础信息
      *
      * @param request
      * @return
@@ -45,15 +42,15 @@ public class RtrvStoryDetailServiceImpl implements IRtrvStoryDetailService {
         LOG.info("start executing rtrvStoryBaseInfo()方法.", this.CLASS);
         Story story = this.storyRepository.rtrvStoryBaseInfo(request.getStoryId());
 //        if (null == story) {
-//            LOG.error("项目不存在.", story);
-//            throw new NullPointerException(story + "项目不存在.");
+//            LOG.error("用户故事不存在.", story);
+//            throw new NullPointerException(story + "用户故事不存在.");
 //        }
         LOG.info("finish executing rtrvStoryBaseInfo()方法.", this.CLASS);
         return ResponseEntity.ok().body(story);
     }
 
     /**
-     * 获得某个项目成员信息
+     * 获得某个用户故事成员信息
      *
      * @param request
      * @return
@@ -67,7 +64,7 @@ public class RtrvStoryDetailServiceImpl implements IRtrvStoryDetailService {
     }
 
     /**
-     * 获得某个项目标签信息
+     * 获得某个用户故事标签信息
      *
      * @param request
      * @return
@@ -81,21 +78,7 @@ public class RtrvStoryDetailServiceImpl implements IRtrvStoryDetailService {
     }
 
     /**
-     * 获得某个项目模型信息
-     *
-     * @param request
-     * @return
-     */
-    @Override
-    public StoryModel rtrvStoryModel(RtrvStoryDetailRequest request) {
-        LOG.info("start executing rtrvStoryModel()方法.", this.CLASS);
-        StoryModel storyModels = this.storyModelRepository.findSModel(request.getStoryId());
-        LOG.info("finish executing rtrvStoryModel()方法.", this.CLASS);
-        return storyModels;
-    }
-
-    /**
-     * 获得某个项目checkList信息
+     * 获得某个用户故事checkList信息
      *
      * @param request
      * @return

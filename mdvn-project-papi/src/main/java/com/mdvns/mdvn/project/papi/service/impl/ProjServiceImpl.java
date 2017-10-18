@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.project.papi.service.impl;
 
+import com.mdvns.mdvn.common.beans.RequirementInfo;
 import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
@@ -68,8 +69,9 @@ public class ProjServiceImpl implements IProjService {
         //1.先保存项目基本信息（获取projId）
         String saveProjectBaseUrl = config.getSaveProjectBaseUrl();
         ResponseEntity<Project> responseEntity = null;
-        responseEntity = restTemplate.postForEntity(saveProjectBaseUrl, createProjectRequest, Project.class);
-        if (!responseEntity.getStatusCode().equals(HttpStatus.OK.toString())) {
+        try {
+            responseEntity = restTemplate.postForEntity(saveProjectBaseUrl, createProjectRequest, Project.class);
+        } catch (Exception ex) {
             throw new BusinessException(ExceptionEnum.PROJECT_BASEINFO_NOT_CREATE);
         }
         restResponse.setResponseBody(responseEntity.getBody());
@@ -153,7 +155,8 @@ public class ProjServiceImpl implements IProjService {
 
     /**
      * 调用sapi更改project
-     *(更新那一块儿，就把这一块儿所有信息传过来，没更新就不传)
+     * (更新那一块儿，就把这一块儿所有信息传过来，没更新就不传)
+     *
      * @param updateProjectDetailRequest
      * @return
      */
@@ -353,11 +356,21 @@ public class ProjServiceImpl implements IProjService {
         }
         //7.获取requirment列表信息
         String rtrvReqmntListUrl = config.getRtrvReqmntListUrl();
+        RtrvReqmntListRequest rtrvReqmntListRequest = new RtrvReqmntListRequest();
+        String porjId = rtrvProjectDetailRequest.getProjId();
+        //项目需求列表分页信息按默认值处理
+        Integer page = Integer.parseInt(config.getReqmntListPage());
+        LOG.info("需求分页参数, page:{}, pageSize:{}", page, config.getReqmntListPageSize());
+        Integer pageSize = Integer.parseInt(config.getReqmntListPageSize());
+
+        rtrvReqmntListRequest.setPage(page);
+        rtrvReqmntListRequest.setPageSize(pageSize);
+        rtrvReqmntListRequest.setProjId(rtrvProjectDetailRequest.getProjId());
         try {
-            restResponse = restTemplate.postForObject(rtrvReqmntListUrl, rtrvProjectDetailRequest, RestResponse.class);
-//            projectDetail.setRequirementInfos(restResponse.getResponseBody());
+            RtrvReqmntListResponse rtrvReqmntListResponse = restTemplate.postForObject(rtrvReqmntListUrl, rtrvReqmntListRequest, RtrvReqmntListResponse.class);
+            projectDetail.setReqmntListResponse(rtrvReqmntListResponse);
         } catch (Exception ex) {
-            throw new BusinessException(ExceptionEnum.PROJECT_DETAIL_ATTCHURL_NOT_RTRV);
+            throw new BusinessException(ExceptionEnum.PROJECT_DETAIL_REQMNT_NOT_RTRV);
         }
 
         rtrvProjectDetailResponse.setProjectDetail(projectDetail);

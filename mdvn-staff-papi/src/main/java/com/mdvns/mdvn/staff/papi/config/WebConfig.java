@@ -14,6 +14,8 @@ public class WebConfig {
     private String rtrvStaffListByStaffIdListUrl;
     /*通过staffId获取staff对象信息*/
     private String rtrvStaffInfoUrl;
+    /*模糊查询*/
+    private String rtrvStaffListByNameUrl;
 
     public String getRtrvStaffListUrl() {
         return rtrvStaffListUrl;
@@ -35,5 +37,13 @@ public class WebConfig {
 
     public void setRtrvStaffInfoUrl(String rtrvStaffInfoUrl) {
         this.rtrvStaffInfoUrl = rtrvStaffInfoUrl;
+    }
+
+    public String getRtrvStaffListByNameUrl() {
+        return rtrvStaffListByNameUrl;
+    }
+
+    public void setRtrvStaffListByNameUrl(String rtrvStaffListByNameUrl) {
+        this.rtrvStaffListByNameUrl = rtrvStaffListByNameUrl;
     }
 }

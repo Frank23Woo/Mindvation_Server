@@ -14,6 +14,8 @@ public class Story {
     private String summary;
     //用户故事创建者Id
     private String creatorId;
+    //过程方法子模块
+    private String subLabel;
     //用户故事描述
     private String description;
     //用户故事优先级
@@ -245,5 +247,13 @@ public class Story {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public String getSubLabel() {
+        return subLabel;
+    }
+
+    public void setSubLabel(String subLabel) {
+        this.subLabel = subLabel;
     }
 }
