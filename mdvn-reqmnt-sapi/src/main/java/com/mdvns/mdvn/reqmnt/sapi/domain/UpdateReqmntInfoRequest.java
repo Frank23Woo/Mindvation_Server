@@ -14,8 +14,7 @@ public class UpdateReqmntInfoRequest {
     private String staffId;
     private RequirementInfo reqmntInfo;
     private List<Tag> tags;
-    private String functionLabelId;
-    private List<ReqmntMember> members;
+    private List<RoleMember> members;
     private List<ReqmntCheckList> checkLists;
     private List<ReqmntAttchUrl> attchUrls;
     private List<String> remarks;
@@ -44,19 +43,12 @@ public class UpdateReqmntInfoRequest {
         this.tags = tags;
     }
 
-    public String getFunctionLabelId() {
-        return functionLabelId;
-    }
 
-    public void setFunctionLabelId(String functionLabelId) {
-        this.functionLabelId = functionLabelId;
-    }
-
-    public List<ReqmntMember> getMembers() {
+    public List<RoleMember> getMembers() {
         return members;
     }
 
-    public void setMembers(List<ReqmntMember> members) {
+    public void setMembers(List<RoleMember> members) {
         this.members = members;
     }
 

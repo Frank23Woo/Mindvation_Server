@@ -8,6 +8,7 @@ import com.mdvns.mdvn.reqmnt.papi.config.ReqmntConfig;
 import com.mdvns.mdvn.reqmnt.papi.domain.*;
 import com.mdvns.mdvn.reqmnt.papi.domain.RequirementInfo;
 import com.mdvns.mdvn.reqmnt.papi.service.IReqmntService;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -353,7 +354,7 @@ public class ReqmntServiceImpl implements IReqmntService {
         }
 
         final String url = config.getUpdateReqmntInfoUrl();
-        ResponseEntity<UpdateReqmntInfoResponse> responseEntity = restTemplate.postForEntity(url, request, UpdateReqmntInfoResponse.class);
+        ResponseEntity<Boolean> responseEntity = restTemplate.postForEntity(url, request, Boolean.class);
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             return rtrvReqmntInfo(new RtrvReqmntInfoRequest(request.getReqmntInfo().getReqmntId()));
         } else {

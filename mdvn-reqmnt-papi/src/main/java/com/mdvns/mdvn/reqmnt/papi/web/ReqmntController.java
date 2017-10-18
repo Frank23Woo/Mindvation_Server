@@ -54,7 +54,8 @@ public class ReqmntController {
      */
     @PostMapping(value="/updateReqmntInfo")
     public RestResponse updateReqmntInfo(@RequestBody UpdateReqmntInfoRequest updateReqmntInfoRequest){
-        return null;
+        return iReqmntService.updateReqmntInfo(updateReqmntInfoRequest);
+
     }
 
 }
