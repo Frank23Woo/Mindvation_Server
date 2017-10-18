@@ -286,7 +286,6 @@ public class ReqmntServiceImpl implements IReqmntService {
                 for (int j = 0; j <reqmntMembers.size() ; j++) {
                     if(modelRoleList.get(i).getRoleId().equals(reqmntMembers.get(j).getRoleId())){
                         stafs.add(stafList.get(j));
-                        break;
                     }
                 }
 

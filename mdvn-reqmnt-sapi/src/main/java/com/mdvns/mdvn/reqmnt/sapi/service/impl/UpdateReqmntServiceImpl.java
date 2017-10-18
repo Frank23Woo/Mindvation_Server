@@ -160,55 +160,49 @@ public class UpdateReqmntServiceImpl implements IUpdateReqmntService {
 
         // checklist
         List<ReqmntCheckList> checkLists = request.getCheckLists();
-        if (checkLists != null) {
-            List<ReqmntCheckList> oldList = checkListRepository.findAllByReqmntIdAndIsDeleted(reqmntId, 0);
-            for (ReqmntCheckList checkList:oldList) {
+        if(checkLists ==null || checkLists.isEmpty()){
+            List<ReqmntCheckList> deleteList = checkListRepository.findAllByReqmntIdAndIsDeleted(reqmntId, 0);
+            for (ReqmntCheckList checkList:deleteList) {
                 checkList.setIsDeleted(1);
+                checkList.setLastUpdateTime(now);
             }
+            checkListRepository.save(deleteList);
+        }else{
+            List<ReqmntCheckList> addList = new ArrayList<>();
+            for (int i = 0; i < checkLists.size(); i++) {
 
-            boolean find = false;
-            ReqmntCheckList oldItem, newItem;
-            List<ReqmntCheckList> insertList = new ArrayList<>();
-            for (ReqmntCheckList checkList:checkLists) {
-                String id = checkList.getCheckListId();
-
-                find = false;
-                newItem = checkList;
-                for (int k = 0; k < oldList.size(); k++) {
-                    oldItem = oldList.get(k);
-                    if (oldItem.getCheckListId().equals(id)) {
-                        // 比较并复制
-
-                        // description
-                        if (newItem.getdescription() != null && newItem.getdescription().equals(oldItem.getdescription())) {
-                            oldItem.setdescription(newItem.getdescription());
-                            newItem.setLastUpdateTime(now);
-                        }
-
-                        // assignee
-                        if (newItem.getAssigneeId() != null && newItem.getAssigneeId().equals(oldItem.getAssigneeId())) {
-                            oldItem.setAssigneeId(newItem.getAssigneeId());
-                            newItem.setLastUpdateTime(now);
-                        }
-
-                        newItem.setIsDeleted(0);
-                        find = true;
-                    }
+                // if id is empty, it means we need to add new CheckList
+                if(StringUtils.isEmpty(checkLists.get(i).getCheckListId())){
+                    checkLists.get(i).setReqmntId(reqmntId);
+                    checkLists.get(i).setCreateTime(now);
+                    checkLists.get(i).setIsDeleted(0);
+                    checkLists.get(i).setStatus("new");
+                    checkLists.get(i).setCreatorId(request.getStaffId());
+                    addList.add(checkLists.get(i));
+                }else{
+                    // get the check list which has check list id
+                    List<ReqmntCheckList> items = checkListRepository.findAllByReqmntIdAndCheckListIdAndIsDeleted(reqmntId,checkLists.get(i).getCheckListId(), 0);
+                    ReqmntCheckList item = items.get(0);
+                    item.setLastUpdateTime(now);
+                    item.setIsDeleted(0);
+                    item.setStatus("new");
+                    item.setCreatorId(request.getStaffId());
+                    item.setdescription(checkLists.get(i).getdescription());
+                    item.setAssigneeId(checkLists.get(i).getAssigneeId());
+                    ReqmntCheckList updateItem = checkListRepository.save(item);
+                    updateItem.setCheckListId("RC"+updateItem.getUuId());
+                    checkListRepository.save(updateItem);
                 }
 
-                if (!find) {
-                    // insert
-                    newItem.setLastUpdateTime(now);
-                    newItem.setCreateTime(now);
-                    newItem.setIsDeleted(0);
-                    insertList.add(newItem);
-                }
             }
 
-            oldList.addAll(insertList);
-
-            checkListRepository.save(oldList);
+            List<ReqmntCheckList> updateIdList = checkListRepository.save(addList);
+            for (int i = 0; i < updateIdList.size(); i++) {
+                updateIdList.get(i).setCheckListId("RC"+updateIdList.get(i).getUuId());
+            }
+            checkListRepository.save(updateIdList);
         }
+
 
         // memebers
 
