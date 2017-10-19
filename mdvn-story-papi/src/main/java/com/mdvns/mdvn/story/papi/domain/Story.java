@@ -26,6 +26,8 @@ public class Story {
     private Long startDate;
     //用户故事结束时期
     private Long endDate;
+    //用户故事最后一次更新时间
+    private Long lastUpdateTime;
     //创建时间
     private Long createTime;
     //用户故事状态
@@ -265,5 +267,13 @@ public class Story {
 
     public void setReqmntId(String reqmntId) {
         this.reqmntId = reqmntId;
+    }
+
+    public Long getLastUpdateTime() {
+        return lastUpdateTime;
+    }
+
+    public void setLastUpdateTime(Long lastUpdateTime) {
+        this.lastUpdateTime = lastUpdateTime;
     }
 }

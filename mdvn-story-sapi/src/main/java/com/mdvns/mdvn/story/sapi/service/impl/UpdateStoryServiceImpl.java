@@ -52,37 +52,51 @@ public class UpdateStoryServiceImpl implements IUpdateStoryService {
     public Story updateStoryBaseInfo(Story st) {
         LOG.info("start executing updateStoryBaseInfo()方法.", this.CLASS);
         story = this.storyRepository.findByStoryId(st.getStoryId());
+        boolean changeFlag = false;
         if (story == null) {
             throw new NullPointerException("story cannot be found");
         }
         if (!StringUtils.isEmpty(st.getSummary()) && (!st.getSummary().equals(story.getSummary()))) {
             story.setSummary(st.getSummary());
-
+            changeFlag = true;
+        }
+        if (!StringUtils.isEmpty(st.getLabelId()) && (!st.getLabelId().equals(story.getLabelId()))) {
+            story.setLabelId(st.getLabelId());
+            changeFlag = true;
         }
         if (!StringUtils.isEmpty(st.getDescription()) && (!st.getDescription().equals(story.getDescription()))) {
             story.setDescription(st.getDescription());
+            changeFlag = true;
         }
         if (!StringUtils.isEmpty(st.getStartDate()) && (!st.getStartDate().equals(story.getStartDate()))) {
             story.setStartDate(st.getStartDate());
-
+            changeFlag = true;
         }
         if (!StringUtils.isEmpty(st.getEndDate()) && (!st.getEndDate().equals(story.getEndDate()))) {
             story.setEndDate(st.getEndDate());
-
+            changeFlag = true;
         }
         if (!StringUtils.isEmpty(st.getPriority()) && (!st.getPriority().equals(story.getPriority()))) {
             story.setPriority(st.getPriority());
-
+            changeFlag = true;
         }
         if (!StringUtils.isEmpty(st.getStatus()) && (!st.getStatus().equals(story.getStatus()))) {
             story.setStatus(st.getStatus());
-
+            changeFlag = true;
         }
+//        if (!StringUtils.isEmpty(st.getReqmntId()) && (!st.getReqmntId().equals(story.getReqmntId()))) {
+//            story.setReqmntId(st.getReqmntId());
+//        }
+
         //之后ragStatus需要后台计算以后传给前台
         if (!StringUtils.isEmpty(st.getRagStatus()) && (!st.getRagStatus().equals(story.getRagStatus()))) {
             story.setRagStatus(st.getRagStatus());
         }
-        story = storyRepository.save(story);
+        if (changeFlag) {
+            Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+            story.setLastUpdateTime(currentTime);
+            story = storyRepository.save(story);
+        }
         LOG.info("finish executing updateStoryBaseInfo()方法.", this.CLASS);
         return story;
     }
@@ -100,35 +114,49 @@ public class UpdateStoryServiceImpl implements IUpdateStoryService {
             throw new NullPointerException("StoryLeaders List is empty");
         }
         String storyId = list.getStoryId();
-        List<String> staffIdList = new ArrayList();
-        //将数据库中没有的插入
+        //选出不同的角色
+        List<String> roleIds = new ArrayList<>();
         for (int i = 0; i < list.getsRoleMembers().size(); i++) {
-            StoryRoleMember storyLeader = new StoryRoleMember();
-            staffIdList.add(list.getsRoleMembers().get(i).getStaffId());
-            storyLeader = this.storyRoleMemberRepository.findByStoryIdAndRoleIdAndStaffId(storyId, list.getsRoleMembers().get(i).getRoleId(), list.getsRoleMembers().get(i).getStaffId());
-            //不存在的加上
-            if (storyLeader == null) {
-                list.getsRoleMembers().get(i).setStoryId(storyId);
-                list.getsRoleMembers().get(i).setIsDeleted(0);
-                this.storyRoleMemberRepository.saveAndFlush(list.getsRoleMembers().get(i));
-            } else {
-                //之前是成员后来改掉，数据库中存在记录，但是is_deleted为1，需要修改成0
-                if (storyLeader.getIsDeleted().equals(1)) {
-                    String sql = "UPDATE staff_role_story_map SET is_deleted= 0 WHERE story_id=" + "\"" + storyId + "\"" + "AND  role_id =" + "\"" + list.getsRoleMembers().get(i).getRoleId() + "\"" + "AND  staff_id =" + "\"" + list.getsRoleMembers().get(i).getStaffId() + "\"" + "";
-                    this.jdbcTemplate.update(sql);
+            String id = list.getsRoleMembers().get(i).getRoleId();
+            if (!roleIds.isEmpty() && roleIds.contains(id)) {
+                continue;
+            }
+            roleIds.add(list.getsRoleMembers().get(i).getRoleId());
+        }
+        //将数据库中没有的插入(分单个角色update)
+        for (int j = 0; j < roleIds.size(); j++) {
+            String roleId = roleIds.get(j);
+            List<String> staffIdList = new ArrayList();
+            for (int i = 0; i < list.getsRoleMembers().size(); i++) {
+                if (roleId.equals(list.getsRoleMembers().get(i).getRoleId())) {
+                    StoryRoleMember storyLeader = new StoryRoleMember();
+                    staffIdList.add(list.getsRoleMembers().get(i).getStaffId());
+                    storyLeader = this.storyRoleMemberRepository.findByStoryIdAndRoleIdAndStaffId(storyId, list.getsRoleMembers().get(i).getRoleId(), list.getsRoleMembers().get(i).getStaffId());
+                    //不存在的加上
+                    if (storyLeader == null) {
+                        list.getsRoleMembers().get(i).setStoryId(storyId);
+                        list.getsRoleMembers().get(i).setIsDeleted(0);
+                        this.storyRoleMemberRepository.saveAndFlush(list.getsRoleMembers().get(i));
+                    } else {
+                        //之前是成员后来改掉，数据库中存在记录，但是is_deleted为1，需要修改成0
+                        if (storyLeader.getIsDeleted().equals(1)) {
+                            String sql = "UPDATE staff_role_story_map SET is_deleted= 0 WHERE story_id=" + "\"" + storyId + "\"" + "AND  role_id =" + "\"" + list.getsRoleMembers().get(i).getRoleId() + "\"" + "AND  staff_id =" + "\"" + list.getsRoleMembers().get(i).getStaffId() + "\"" + "";
+                            this.jdbcTemplate.update(sql);
+                        }
+                    }
                 }
             }
+                //将数据库中将要删除的成员信息修改is_deleted状态
+                //数组转化为字符串格式
+                StringBuffer members = new StringBuffer();
+                for (int k = 0; k < staffIdList.size(); k++) {
+                    members.append("\"" + staffIdList.get(k) + "\"");
+                    members.append(",");
+                }
+                String pLeaders = members.substring(0, members.length() - 1);
+                String sql = "UPDATE staff_role_story_map SET is_deleted= 1 WHERE story_id= " + "\"" + storyId + "\"" + "AND  role_id = " + "\"" + roleIds.get(j) + "\"" + " AND staff_id NOT IN (" + pLeaders + ")";
+                this.jdbcTemplate.update(sql);
         }
-        //将数据库中将要删除的成员信息修改is_deleted状态
-        //数组转化为字符串格式
-        StringBuffer members = new StringBuffer();
-        for (int i = 0; i < staffIdList.size(); i++) {
-            members.append("\"" + staffIdList.get(i) + "\"");
-            members.append(",");
-        }
-        String pLeaders = members.substring(0, members.length() - 1);
-        String sql = "UPDATE staff_role_story_map SET is_deleted= 1 WHERE story_id= " + "\"" + storyId + "\"" + " AND staff_id NOT IN (" + pLeaders + ")";
-        this.jdbcTemplate.update(sql);
         //查询数据库中有效的负责人
         List<StoryRoleMember> storyLeaders = this.storyRoleMemberRepository.findSRoleMembers(storyId);
         LOG.info("finish executing updateStoryLeaders()方法.", this.CLASS);
@@ -207,7 +235,7 @@ public class UpdateStoryServiceImpl implements IUpdateStoryService {
                 Timestamp currentTime = new Timestamp(System.currentTimeMillis());
                 list.getsTasks().get(i).setCreateTime(currentTime);
                 list.getsTasks().get(i).setIsDeleted(0);
-                StoryTask storyTask= storyTaskRepository.saveAndFlush(list.getsTasks().get(i));
+                StoryTask storyTask = storyTaskRepository.saveAndFlush(list.getsTasks().get(i));
                 storyTask.setTaskId("T" + storyTask.getUuId());
                 StoryTask sTask = storyTaskRepository.saveAndFlush(storyTask);
                 uuIds.add(sTask.getUuId());
