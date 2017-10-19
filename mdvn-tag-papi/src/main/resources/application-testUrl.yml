@@ -1,0 +1,11 @@
+url:
+    saveTagUrl: http://localhost:8080/mdvn-tag-sapi/tags/tag
+    rtrvTagListUrl: http://localhost:8080/mdvn-tag-sapi/tags/tagList
+    updateQuoteCntUrl: http://localhost:8080/mdvn-tag-sapi/tags
+    rtrvTagsUrl: http://localhost:8080/mdvn-tag-sapi/tagList
+    findByNameUrl : http://localhost:8080/mdvn-tag-sapi/tags/tag
+    findByIdUrl : http://localhost:8080/mdvn-tag-sapi/tags/{tagId}/tag
+
+
+
+
