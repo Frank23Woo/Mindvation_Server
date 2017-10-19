@@ -1,8 +1,0 @@
-url:
-  saveModelUrl: http://localhost:10009/mdvn-model-s/models/model
-  rtrvModelListUrl: http://localhost:10009/mdvn-model-s/models
-  updateQuoteCntUrl: http://localhost:10009/mdvn-model-s/models
-  findByNameUrl : http://localhost:10009/mdvn-model-s/models/model
-  findByIdUrl: http://localhost:10009/mdvn-model-s/models/findById
-
-

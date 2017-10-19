@@ -1,0 +1,24 @@
+config:
+  rtrvProjInfoListUrl: http://localhost:10005/mdvn-project-sapi/project/rtrvProjInfoList
+  createProjectUrl: http://localhost:10005/mdvn-project-sapi/project/createProject
+  saveProjectBaseUrl: http://localhost:10005/mdvn-project-sapi/project/saveProject
+  savePTagsUrl: http://localhost:10005/mdvn-project-sapi/project/savePTags
+  savePModelsUrl: http://localhost:10005/mdvn-project-sapi/project/savePModels
+  saveCheckListsUrl: http://localhost:10005/mdvn-project-sapi/project/savePCheckLists
+  checklistsListByUuIdUrl: http://localhost:10005/mdvn-project-sapi/project/checklistsListByUuId
+  savePAttchUrlsUrl: http://localhost:10005/mdvn-project-sapi/project/savePAttchUrls
+  savePLeadersUrl: http://localhost:10005/mdvn-project-sapi/project/savePLeaders
+  updateProjBaseInfoUrl: http://localhost:10005/mdvn-project-sapi/updateProject/updateProjBaseInfo
+  updateProjLeadersUrl: http://localhost:10005/mdvn-project-sapi/updateProject/updateProjLeaders
+  updateProjAttchUrlsUrl: http://localhost:10005/mdvn-project-sapi/updateProject/updateProjAttchUrls
+  updateProjTagsUrl: http://localhost:10005/mdvn-project-sapi/updateProject/updateProjTags
+  updateProjChecklistsUrl: http://localhost:10005/mdvn-project-sapi/updateProject/updateProjChecklists
+  updateProjModelsUrl: http://localhost:10005/mdvn-project-sapi/updateProject/updateProjModels
+  rtrvProjBaseInfoUrl: http://localhost:10005/mdvn-project-sapi/projDetail/rtrvProjBaseInfo
+  rtrvProjLedersUrl: http://localhost:10005/mdvn-project-sapi/projDetail/rtrvProjLeders
+  rtrvProjTagsUrl: http://localhost:10005/mdvn-project-sapi/projDetail/rtrvProjTags
+  rtrvProjModelsUrl: http://localhost:10005/mdvn-project-sapi/projDetail/rtrvProjModels
+  rtrvProjCheckListsUrl: http://localhost:10005/mdvn-project-sapi/projDetail/rtrvProjCheckLists
+  rtrvProjAttUrlsUrl: http://localhost:10005/mdvn-project-sapi/projDetail/rtrvProjAttUrls
+  rtrvReqmntListUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntList
+
