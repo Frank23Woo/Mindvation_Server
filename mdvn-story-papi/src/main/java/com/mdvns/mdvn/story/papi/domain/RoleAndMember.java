@@ -8,9 +8,9 @@ import java.util.List;
 @Component
 public class RoleAndMember {
 
-    private List<Staff> memberDetails;
-
     private ModelRole roleDetail;
+
+    private List<Staff> memberDetails;
 
     public List<Staff> getMemberDetails() {
         return memberDetails;

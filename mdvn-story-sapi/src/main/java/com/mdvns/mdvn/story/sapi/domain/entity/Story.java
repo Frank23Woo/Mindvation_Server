@@ -37,6 +37,9 @@ public class Story {
     //用户故事结束时期
     @Column(name = "end_date", columnDefinition = "timestamp", nullable = false)
     private Timestamp endDate;
+    //用户故事最后一次更新时间
+    @Column(name = "last_update_time", columnDefinition = "timestamp", nullable = false)
+    private Timestamp lastUpdateTime;
     //创建时间
     @Column(name = "create_time", nullable = false)
     private Timestamp createTime;
@@ -90,6 +93,14 @@ public class Story {
     private Integer isDeleted;
     //备注
     private String remarks;
+
+    public Timestamp getLastUpdateTime() {
+        return lastUpdateTime;
+    }
+
+    public void setLastUpdateTime(Timestamp lastUpdateTime) {
+        this.lastUpdateTime = lastUpdateTime;
+    }
 
     public String getStoryId() {
         return storyId;

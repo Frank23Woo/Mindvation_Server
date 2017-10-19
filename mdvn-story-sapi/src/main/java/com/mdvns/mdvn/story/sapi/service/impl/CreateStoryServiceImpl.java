@@ -118,6 +118,7 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
         story.setIsDeleted(0);
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
         story.setCreateTime(currentTime);
+        story.setLastUpdateTime(currentTime);
         story.setStatus("new");
         story.setRagStatus("G");
         story.setProgress((double) 0);
