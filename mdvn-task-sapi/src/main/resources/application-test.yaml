@@ -1,8 +1,8 @@
 server:
-  port: 10004
+  port: 8080
   context-path: /mdvn-task-sapi
 spring:
   datasource:
-    url: jdbc:mysql://192.168.0.254:3306/db_mdvn_dev
+    url: jdbc:mysql://192.168.0.254:3306/db_mdvn_test
     username: tom
     password: tom
