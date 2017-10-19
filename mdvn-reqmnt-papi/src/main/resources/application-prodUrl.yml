@@ -26,14 +26,14 @@ config:
 
 
 # staff sapi urls
-  rtrvStaffsByIdsUrl: http://localhost:10013/mdvn-staff-s/rtrvStaffListByStaffIdList
+  rtrvStaffsByIdsUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffListByStaffIdList
 
 # tag sapi urls
-  rtrvTagsByIdsUrl: http://localhost:10002/mdvn-tag-s/tags/rtrvTags
+  rtrvTagsByIdsUrl: http://localhost:10002/mdvn-tag-sapi/tags/rtrvTags
 
 # model sapi urls
-  rtrvFuncLabelUrl: http://localhost:10009/mdvn-model-s/models/findFuncById
-  rtrvModelRoleByModelIdUrl: http://localhost:10009/mdvn-model-s/models/findById
+  rtrvFuncLabelUrl: http://localhost:10009/mdvn-model-sapi/models/findFuncById
+  rtrvModelRoleByModelIdUrl: http://localhost:10009/mdvn-model-sapi/models/findById
 
 
 
