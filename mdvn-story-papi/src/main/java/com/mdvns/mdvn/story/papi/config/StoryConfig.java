@@ -35,7 +35,7 @@ public class StoryConfig {
     //更改用户故事基本信息
     private String updateStoryBaseInfoUrl;
     //更改用户故事负责人信息
-    private String updateStoryLeadersUrl;
+    private String updateStoryMembersUrl;
     //更该用户故事附件信息
     private String updateStoryAttchUrlsUrl;
     //更改用户故事标签信息
@@ -46,7 +46,7 @@ public class StoryConfig {
     private String updateStoryModelsUrl;
     //---------------------------------获取用户故事详细信息--------------------------
     private String rtrvStoryBaseInfoUrl;
-    private String rtrvStoryLedersUrl;
+    private String rtrvSRoleMembersUrl;
     private String rtrvStoryTagsUrl;
     private String rtrvStoryModelsUrl;
     private String rtrvStoryCheckListsUrl;
@@ -54,6 +54,30 @@ public class StoryConfig {
     //获取requirment列表信息
     private String rtrvReqmntListUrl;
 
+    private String rtrvMembersByRoleIdUrl;
+
+    private String rtrvStaffsByIdsUrl;
+    private String rtrvTagsByIdsUrl;
+    private String rtrvFuncLabelUrl;
+    private String rtrvModelRoleByModelIdUrl;
+    private String rtrvRoleByRoleIdUrl;
+
+
+    public String getRtrvMembersByRoleIdUrl() {
+        return rtrvMembersByRoleIdUrl;
+    }
+
+    public void setRtrvMembersByRoleIdUrl(String rtrvMembersByRoleIdUrl) {
+        this.rtrvMembersByRoleIdUrl = rtrvMembersByRoleIdUrl;
+    }
+
+    public String getRtrvRoleByRoleIdUrl() {
+        return rtrvRoleByRoleIdUrl;
+    }
+
+    public void setRtrvRoleByRoleIdUrl(String rtrvRoleByRoleIdUrl) {
+        this.rtrvRoleByRoleIdUrl = rtrvRoleByRoleIdUrl;
+    }
 
     public String getRtrvStoryInfoListUrl() {
         return rtrvStoryInfoListUrl;
@@ -127,12 +151,12 @@ public class StoryConfig {
         this.updateStoryBaseInfoUrl = updateStoryBaseInfoUrl;
     }
 
-    public String getUpdateStoryLeadersUrl() {
-        return updateStoryLeadersUrl;
+    public String getUpdateStoryMembersUrl() {
+        return updateStoryMembersUrl;
     }
 
-    public void setUpdateStoryLeadersUrl(String updateStoryLeadersUrl) {
-        this.updateStoryLeadersUrl = updateStoryLeadersUrl;
+    public void setUpdateStoryMembersUrl(String updateStoryMembersUrl) {
+        this.updateStoryMembersUrl = updateStoryMembersUrl;
     }
 
     public String getUpdateStoryAttchUrlsUrl() {
@@ -175,12 +199,12 @@ public class StoryConfig {
         this.rtrvStoryBaseInfoUrl = rtrvStoryBaseInfoUrl;
     }
 
-    public String getRtrvStoryLedersUrl() {
-        return rtrvStoryLedersUrl;
+    public String getRtrvSRoleMembersUrl() {
+        return rtrvSRoleMembersUrl;
     }
 
-    public void setRtrvStoryLedersUrl(String rtrvStoryLedersUrl) {
-        this.rtrvStoryLedersUrl = rtrvStoryLedersUrl;
+    public void setRtrvSRoleMembersUrl(String rtrvSRoleMembersUrl) {
+        this.rtrvSRoleMembersUrl = rtrvSRoleMembersUrl;
     }
 
     public String getRtrvStoryTagsUrl() {
@@ -237,5 +261,37 @@ public class StoryConfig {
 
     public void setJudgeSubLabelIdUrl(String judgeSubLabelIdUrl) {
         this.judgeSubLabelIdUrl = judgeSubLabelIdUrl;
+    }
+
+    public String getRtrvStaffsByIdsUrl() {
+        return rtrvStaffsByIdsUrl;
+    }
+
+    public void setRtrvStaffsByIdsUrl(String rtrvStaffsByIdsUrl) {
+        this.rtrvStaffsByIdsUrl = rtrvStaffsByIdsUrl;
+    }
+
+    public String getRtrvTagsByIdsUrl() {
+        return rtrvTagsByIdsUrl;
+    }
+
+    public void setRtrvTagsByIdsUrl(String rtrvTagsByIdsUrl) {
+        this.rtrvTagsByIdsUrl = rtrvTagsByIdsUrl;
+    }
+
+    public String getRtrvFuncLabelUrl() {
+        return rtrvFuncLabelUrl;
+    }
+
+    public void setRtrvFuncLabelUrl(String rtrvFuncLabelUrl) {
+        this.rtrvFuncLabelUrl = rtrvFuncLabelUrl;
+    }
+
+    public String getRtrvModelRoleByModelIdUrl() {
+        return rtrvModelRoleByModelIdUrl;
+    }
+
+    public void setRtrvModelRoleByModelIdUrl(String rtrvModelRoleByModelIdUrl) {
+        this.rtrvModelRoleByModelIdUrl = rtrvModelRoleByModelIdUrl;
     }
 }

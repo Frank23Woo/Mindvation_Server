@@ -10,16 +10,28 @@ config:
   savePAttchUrlsUrl: http://localhost:10015/mdvn-story-sapi/story/savePAttchUrls
   savePLeadersUrl: http://localhost:10015/mdvn-story-sapi/story/savePLeaders
   updateStoryBaseInfoUrl: http://localhost:10015/mdvn-story-sapi/updateStory/updateStoryBaseInfo
-  updateStoryLeadersUrl: http://localhost:10015/mdvn-story-sapi/updateStory/updateStoryLeaders
+  updateStoryMembersUrl: http://localhost:10015/mdvn-story-sapi/updateStory/updateStoryMembers
   updateStoryAttchUrlsUrl: http://localhost:10015/mdvn-story-sapi/updateStory/updateStoryAttchUrls
   updateStoryTagsUrl: http://localhost:10015/mdvn-story-sapi/updateStory/updateStoryTags
   updateStoryChecklistsUrl: http://localhost:10015/mdvn-story-sapi/updateStory/updateStoryChecklists
   updateStoryModelsUrl: http://localhost:10015/mdvn-story-sapi/updateStory/updateStoryModels
   rtrvStoryBaseInfoUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/rtrvStoryBaseInfo
-  rtrvStoryLedersUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/rtrvStoryLeders
+  rtrvSRoleMembersUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/rtrvSRoleMembers
   rtrvStoryTagsUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/rtrvStoryTags
   rtrvStoryModelsUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/rtrvStoryModels
   rtrvStoryCheckListsUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/rtrvStoryCheckLists
   rtrvStoryAttUrlsUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/rtrvStoryAttUrls
   rtrvReqmntListUrl: http://localhost:10011/mdvn-reqmnt-papi/rtrvReqmntList
 
+  rtrvMembersByRoleIdUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/rtrvMembersByRoleId
+# staff sapi urls
+  rtrvStaffsByIdsUrl: http://localhost:10013/mdvn-staff-s/rtrvStaffListByStaffIdList
+
+
+# tag sapi urls
+  rtrvTagsByIdsUrl: http://localhost:10002/mdvn-tag-s/tags/rtrvTags
+
+# model sapi urls
+  rtrvFuncLabelUrl: http://localhost:10009/mdvn-model-s/models/findFuncById
+  rtrvModelRoleByModelIdUrl: http://localhost:10009/mdvn-model-s/models/findById
+  rtrvRoleByRoleIdUrl: http://localhost:10009/mdvn-model-s/models/findRoleById

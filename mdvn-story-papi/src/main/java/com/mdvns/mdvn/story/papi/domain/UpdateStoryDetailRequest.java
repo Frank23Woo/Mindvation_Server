@@ -2,6 +2,7 @@ package com.mdvns.mdvn.story.papi.domain;
 
 import com.mdvns.mdvn.common.beans.AttchUrl;
 import com.mdvns.mdvn.common.beans.FunctionLabel;
+import com.mdvns.mdvn.common.beans.SubFunctionLabel;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.stereotype.Component;
 
@@ -12,26 +13,26 @@ public class UpdateStoryDetailRequest {
 
     //staffID
     @NotBlank(message = "请求参数错误，staffId不能为空")
-    private String staffId;
+    private String creatorId;
     //storyInfo
     private Story storyInfo;
     //成员（集合）
-    private List<StoryRoleMember> sRoleMembers;
+    private List<StoryRoleMember> sMembers;
     //用户故事标签（集合）
     private List<StoryTag> sTags;
     //用户故事Tasks（集合）
     private List<StoryTask> sTasks;
     //最后一层过程方法模块对象
-    private FunctionLabel subFunctionLabel;
+    private SubFunctionLabel subFunctionLabel;
     //用户故事附件（集合）
     private List<AttchUrl> attchUrls;
 
-    public String getStaffId() {
-        return staffId;
+    public String getCreatorId() {
+        return creatorId;
     }
 
-    public void setStaffId(String staffId) {
-        this.staffId = staffId;
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
     }
 
     public Story getStoryInfo() {
@@ -42,12 +43,12 @@ public class UpdateStoryDetailRequest {
         this.storyInfo = storyInfo;
     }
 
-    public List<StoryRoleMember> getsRoleMembers() {
-        return sRoleMembers;
+    public List<StoryRoleMember> getsMembers() {
+        return sMembers;
     }
 
-    public void setsRoleMembers(List<StoryRoleMember> sRoleMembers) {
-        this.sRoleMembers = sRoleMembers;
+    public void setsMembers(List<StoryRoleMember> sMembers) {
+        this.sMembers = sMembers;
     }
 
     public List<StoryTag> getsTags() {
@@ -66,11 +67,11 @@ public class UpdateStoryDetailRequest {
         this.sTasks = sTasks;
     }
 
-    public FunctionLabel getSubFunctionLabel() {
+    public SubFunctionLabel getSubFunctionLabel() {
         return subFunctionLabel;
     }
 
-    public void setSubFunctionLabel(FunctionLabel subFunctionLabel) {
+    public void setSubFunctionLabel(SubFunctionLabel subFunctionLabel) {
         this.subFunctionLabel = subFunctionLabel;
     }
 

@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.story.sapi.web;
 
+import com.mdvns.mdvn.story.sapi.domain.RtrvMembersByRoleIdRequest;
 import com.mdvns.mdvn.story.sapi.domain.RtrvStoryDetailRequest;
 import com.mdvns.mdvn.story.sapi.domain.entity.StoryRoleMember;
 import com.mdvns.mdvn.story.sapi.domain.entity.StoryTag;
@@ -42,6 +43,18 @@ public class RtrvStoryDetailController {
     @PostMapping(value="/rtrvSRoleMembers")
     public List<StoryRoleMember> rtrvSRoleMembers(@RequestBody RtrvStoryDetailRequest request) throws SQLException {
         return rtrvStoryDetailService.rtrvSRoleMembers(request);
+    };
+
+
+    /**
+     * 通过角色Id获得该角色下的成员id信息（映射表）
+     * @param request
+     * @return
+     * @throws SQLException
+     */
+    @PostMapping(value="/rtrvMembersByRoleId")
+    public List<StoryRoleMember> rtrvMembersByRoleId(@RequestBody RtrvMembersByRoleIdRequest request)throws SQLException {
+        return rtrvStoryDetailService.rtrvMembersByRoleId(request);
     }
 
     /**

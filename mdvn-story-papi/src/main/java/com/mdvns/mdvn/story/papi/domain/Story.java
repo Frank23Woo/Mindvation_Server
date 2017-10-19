@@ -12,10 +12,12 @@ public class Story {
     private Integer uuId;
     //用户故事概要
     private String summary;
+    //需求Id
+    private String reqmntId;
     //用户故事创建者Id
     private String creatorId;
     //过程方法子模块
-    private String subLabel;
+    private String labelId;
     //用户故事描述
     private String description;
     //用户故事优先级
@@ -249,11 +251,19 @@ public class Story {
         this.remarks = remarks;
     }
 
-    public String getSubLabel() {
-        return subLabel;
+    public String getLabelId() {
+        return labelId;
     }
 
-    public void setSubLabel(String subLabel) {
-        this.subLabel = subLabel;
+    public void setLabelId(String labelId) {
+        this.labelId = labelId;
+    }
+
+    public String getReqmntId() {
+        return reqmntId;
+    }
+
+    public void setReqmntId(String reqmntId) {
+        this.reqmntId = reqmntId;
     }
 }

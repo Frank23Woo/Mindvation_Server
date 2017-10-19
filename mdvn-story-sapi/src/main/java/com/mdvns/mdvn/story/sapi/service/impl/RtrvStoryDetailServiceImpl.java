@@ -1,6 +1,7 @@
 package com.mdvns.mdvn.story.sapi.service.impl;
 
 
+import com.mdvns.mdvn.story.sapi.domain.RtrvMembersByRoleIdRequest;
 import com.mdvns.mdvn.story.sapi.domain.RtrvStoryDetailRequest;
 import com.mdvns.mdvn.story.sapi.domain.entity.*;
 import com.mdvns.mdvn.story.sapi.repository.*;
@@ -50,7 +51,7 @@ public class RtrvStoryDetailServiceImpl implements IRtrvStoryDetailService {
     }
 
     /**
-     * 获得某个用户故事成员信息
+     * 获得某个用户故事角色成员信息（映射表）
      *
      * @param request
      * @return
@@ -62,6 +63,21 @@ public class RtrvStoryDetailServiceImpl implements IRtrvStoryDetailService {
         LOG.info("finish executing rtrvSRoleMembers()方法.", this.CLASS);
         return storyRoleMembers;
     }
+
+    /**
+     * 通过角色Id获得该角色下的成员id信息（映射表）
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public List<StoryRoleMember> rtrvMembersByRoleId(RtrvMembersByRoleIdRequest request) {
+        LOG.info("start executing rtrvMembersByRoleId()方法.", this.CLASS);
+        List<StoryRoleMember> storyRoleMembers = this.storyRoleMemberRepository.rtrvMembersByRoleId(request.getStoryId(),request.getRoleId());
+        LOG.info("finish executing rtrvMembersByRoleId()方法.", this.CLASS);
+        return storyRoleMembers;
+    }
+
 
     /**
      * 获得某个用户故事标签信息

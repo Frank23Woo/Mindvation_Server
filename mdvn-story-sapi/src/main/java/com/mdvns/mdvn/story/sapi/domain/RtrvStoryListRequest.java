@@ -16,7 +16,7 @@ public class RtrvStoryListRequest {
     @Min(value=1,message = "请求参数错误，pageSize不能小于1")
     private Integer pageSize;
     /*排序条件：字段名*/
-    private String sortBy;
+    private List<String> sortBy;
 
     private List<String> remarks;
 
@@ -44,11 +44,11 @@ public class RtrvStoryListRequest {
         this.pageSize = pageSize;
     }
 
-    public String getSortBy() {
+    public List<String> getSortBy() {
         return sortBy;
     }
 
-    public void setSortBy(String sortBy) {
+    public void setSortBy(List<String> sortBy) {
         this.sortBy = sortBy;
     }
 

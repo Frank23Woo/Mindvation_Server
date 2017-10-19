@@ -23,7 +23,7 @@ public class Story {
     @Column(nullable = false)
     private String summary;
     //过程方法子模块
-    private String subLabel;
+    private String labelId;
     //用户故事创建者Id
     private String creatorId;
     //用户故事描述
@@ -62,12 +62,12 @@ public class Story {
     //缺陷总数
     private Integer defectQty;
 
-    public String getSubLabel() {
-        return subLabel;
+    public String getLabelId() {
+        return labelId;
     }
 
-    public void setSubLabel(String subLabel) {
-        this.subLabel = subLabel;
+    public void setLabelId(String labelId) {
+        this.labelId = labelId;
     }
 
     //缺陷严重

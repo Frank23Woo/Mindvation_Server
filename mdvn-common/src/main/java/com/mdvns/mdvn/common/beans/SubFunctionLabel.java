@@ -21,7 +21,7 @@ public class SubFunctionLabel {
 
     private String color;
 
-    private Timestamp createTime;
+    private Long createTime;
 
     /*是否已删除*/
     private Integer isDeleted;
@@ -58,11 +58,11 @@ public class SubFunctionLabel {
         this.color = color;
     }
 
-    public Timestamp getCreateTime() {
+    public Long getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Long createTime) {
         this.createTime = createTime;
     }
 

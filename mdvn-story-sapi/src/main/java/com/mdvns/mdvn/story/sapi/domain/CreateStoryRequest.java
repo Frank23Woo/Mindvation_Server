@@ -1,6 +1,7 @@
 package com.mdvns.mdvn.story.sapi.domain;
 
 import com.mdvns.mdvn.common.beans.AttchUrl;
+import com.mdvns.mdvn.common.beans.SubFunctionLabel;
 import com.mdvns.mdvn.story.sapi.domain.entity.Story;
 import com.mdvns.mdvn.story.sapi.domain.entity.StoryRoleMember;
 import com.mdvns.mdvn.story.sapi.domain.entity.StoryTag;
@@ -12,8 +13,9 @@ import java.util.List;
 public class CreateStoryRequest {
 
     private String creatorId;
-
     private Story storyInfo;
+    //过程方法模块Id(用在判断是否子模块在数据库中)
+    private SubFunctionLabel subFunctionLabel;
     //用户故事负责人（集合）
     private List<StoryRoleMember> sMembers;
     //用户故事标签（集合）
@@ -61,5 +63,13 @@ public class CreateStoryRequest {
 
     public void setsAttchUrls(List<AttchUrl> sAttchUrls) {
         this.sAttchUrls = sAttchUrls;
+    }
+
+    public SubFunctionLabel getSubFunctionLabel() {
+        return subFunctionLabel;
+    }
+
+    public void setSubFunctionLabel(SubFunctionLabel subFunctionLabel) {
+        this.subFunctionLabel = subFunctionLabel;
     }
 }

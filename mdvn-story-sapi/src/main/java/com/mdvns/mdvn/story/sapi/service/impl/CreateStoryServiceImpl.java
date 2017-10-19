@@ -14,6 +14,9 @@ import com.mdvns.mdvn.story.sapi.service.ICreateStoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -54,19 +57,39 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
      */
     public RestResponse rtrvStoryInfoList(RtrvStoryListRequest request) throws SQLException {
         RtrvStoryListResponse rtrvStoryListResponse = new RtrvStoryListResponse();
-        //获取多张表数据联合查询然后分页
-        Integer page = request.getPage();
-        Integer pageSize = request.getPageSize();
-        Integer m = page * pageSize;
-        Integer n = pageSize;
-        List<Story> pageList = this.storyRepository.rtrvStoryInfoList(request.getReqmntId(), m, n);
-        Long totalElements = this.storyRepository.getStoryBaseInfoCount(request.getReqmntId());
-        rtrvStoryListResponse.setStories(pageList);
-        rtrvStoryListResponse.setTotalElements(totalElements);
+        if (request.getPage() != null && request.getPageSize() != null) {
+            if (request.getPage() < 1 || request.getPageSize() < 1) {
+                throw new IllegalArgumentException("Illegal Arguments for Pagination");
+            }
+        }
+        if (request.getPage() == null || request.getPageSize() == null) {
+            List<Story> list = this.storyRepository.findAllByReqmntIdAndIsDeletedOrderByUuIdAsc(request.getReqmntId(), 0);
+            rtrvStoryListResponse.setStories(list);
+            rtrvStoryListResponse.setTotalElements(Long.valueOf(list.size()));
+            return RestResponseUtil.success(rtrvStoryListResponse);
+        } else {
+            Integer page = request.getPage();
+            Integer pageSize = request.getPageSize();
+            List<String> sortBy = request.getSortBy();
+            Page<Story> storyInfos = null;
+            PageRequest pageable = null;
 
-        LOG.info("查询结果为：{}", rtrvStoryListResponse);
-        return RestResponseUtil.success(rtrvStoryListResponse);
-//        return ReturnFormat.retParam(HttpStatus.OK.toString(), "000", rtrvStoryListResponse);
+            if (sortBy == null) {
+                pageable = new PageRequest(page - 1, pageSize);
+            } else {
+                Sort.Order order = null;
+                for (int i = 0; i < sortBy.size(); i++) {
+                    order = new Sort.Order(Sort.Direction.ASC, sortBy.get(i));
+                }
+                Sort sort = new Sort(order);
+                pageable = new PageRequest(page - 1, pageSize, sort);
+            }
+            storyInfos = this.storyRepository.findAllByReqmntIdAndIsDeleted(request.getReqmntId(), 0, pageable);
+            rtrvStoryListResponse.setStories(storyInfos.getContent());
+            rtrvStoryListResponse.setTotalElements(storyInfos.getTotalElements());
+            LOG.info("查询结果为：{}", rtrvStoryListResponse);
+            return RestResponseUtil.success(rtrvStoryListResponse);
+        }
     }
 
     /**
@@ -78,37 +101,33 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
     @Override
     public ResponseEntity<?> saveStory(CreateStoryRequest createStoryRequest) {
         //先保存项目基本信息
-        if (StringUtils.isEmpty(createStoryRequest) || StringUtils.isEmpty(createStoryRequest.getStoryInfo().getSummary())||
+        if (StringUtils.isEmpty(createStoryRequest) || StringUtils.isEmpty(createStoryRequest.getStoryInfo().getSummary()) ||
                 StringUtils.isEmpty(createStoryRequest.getCreatorId()) ||
-                StringUtils.isEmpty(createStoryRequest.getStoryInfo().getSubLabel()) ||
+                StringUtils.isEmpty(createStoryRequest.getStoryInfo().getReqmntId()) ||
+                StringUtils.isEmpty(createStoryRequest.getSubFunctionLabel().getLabelId()) ||
                 StringUtils.isEmpty(createStoryRequest.getStoryInfo().getDescription()) ||
                 StringUtils.isEmpty(createStoryRequest.getStoryInfo().getStartDate()) ||
                 StringUtils.isEmpty(createStoryRequest.getStoryInfo().getEndDate())) {
-            throw new NullPointerException("createStoryRequest不能为空 或创建者Id不能为空 或过程方法子模块 或用户故事概要不能为空 或用户故事描述不能为空 或者用户故事开始结束时间不能为空");
+            throw new NullPointerException("createStoryRequest不能为空 或创建者Id不能为空 或所属需求 或过程方法子模块 或用户故事概要不能为空 或用户故事描述不能为空 或者用户故事开始结束时间不能为空");
         }
+        story.setReqmntId(createStoryRequest.getStoryInfo().getReqmntId());
         story.setSummary(createStoryRequest.getStoryInfo().getSummary());
         story.setDescription(createStoryRequest.getStoryInfo().getDescription());
         story.setCreatorId(createStoryRequest.getCreatorId());
-        story.setSubLabel(createStoryRequest.getStoryInfo().getSubLabel());
+        story.setLabelId(createStoryRequest.getSubFunctionLabel().getLabelId());
         story.setIsDeleted(0);
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
         story.setCreateTime(currentTime);
         story.setStatus("new");
         story.setRagStatus("G");
         story.setProgress((double) 0);
-
-        if (!StringUtils.isEmpty(createStoryRequest.getStoryInfo().getStartDate())) {
-            story.setStartDate(createStoryRequest.getStoryInfo().getStartDate());
-        }
-        if (!StringUtils.isEmpty(createStoryRequest.getStoryInfo().getEndDate())) {
-            story.setEndDate(createStoryRequest.getStoryInfo().getEndDate());
-        }
+        story.setStartDate(createStoryRequest.getStoryInfo().getStartDate());
+        story.setEndDate(createStoryRequest.getStoryInfo().getEndDate());
         if (!StringUtils.isEmpty(createStoryRequest.getStoryInfo().getPriority())) {
             story.setPriority(createStoryRequest.getStoryInfo().getPriority());
         }
-
         story = storyRepository.saveAndFlush(story);
-        story.setStoryId("S"+story.getUuId());
+        story.setStoryId("S" + story.getUuId());
         Story st = storyRepository.saveAndFlush(story);
         ResponseEntity<?> responseEntity = new ResponseEntity<Object>(st, HttpStatus.OK);
         return responseEntity;
@@ -160,8 +179,8 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
             request.getSTasks().get(i).setCreatorId(request.getStaffId());
         }
         List<StoryTask> storyTaskList = storyTaskRepository.save(request.getSTasks());
-        for (int j = 0; j <storyTaskList.size(); j++) {
-            storyTaskList.get(j).setTaskId("T"+storyTaskList.get(j).getUuId());
+        for (int j = 0; j < storyTaskList.size(); j++) {
+            storyTaskList.get(j).setTaskId("T" + storyTaskList.get(j).getUuId());
         }
         List<StoryTask> storyTasks = storyTaskRepository.save(storyTaskList);
         return storyTasks;

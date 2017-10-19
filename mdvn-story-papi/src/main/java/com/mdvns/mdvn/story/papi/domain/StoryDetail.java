@@ -1,9 +1,6 @@
 package com.mdvns.mdvn.story.papi.domain;
 
-import com.mdvns.mdvn.common.beans.AttchUrl;
-import com.mdvns.mdvn.common.beans.FunctionLabel;
-import com.mdvns.mdvn.common.beans.Staff;
-import com.mdvns.mdvn.common.beans.Tag;
+import com.mdvns.mdvn.common.beans.*;
 import org.springframework.stereotype.Component;
 
 
@@ -15,11 +12,11 @@ public class StoryDetail {
     //用户故事基本信息
     private Story storyInfo;
     //用户故事成员（集合）
-    private List<Staff> members;
+    private List<RoleAndMember> members;
     //用户故事标签（集合）
     private List<Tag> tags;
     //最后一层过程方法模块对象
-    private FunctionLabel subFunctionLabel;
+    private SubFunctionLabel subFunctionLabel;
     //用户故事附件（集合）
     private List<AttchUrl> sattchUrls;
     //用户故事task(可以创建完后添加)
@@ -34,11 +31,11 @@ public class StoryDetail {
         this.storyInfo = storyInfo;
     }
 
-    public List<Staff> getMembers() {
+    public List<RoleAndMember> getMembers() {
         return members;
     }
 
-    public void setMembers(List<Staff> members) {
+    public void setMembers(List<RoleAndMember> members) {
         this.members = members;
     }
 
@@ -50,11 +47,11 @@ public class StoryDetail {
         this.tags = tags;
     }
 
-    public FunctionLabel getSubFunctionLabel() {
+    public SubFunctionLabel getSubFunctionLabel() {
         return subFunctionLabel;
     }
 
-    public void setSubFunctionLabel(FunctionLabel subFunctionLabel) {
+    public void setSubFunctionLabel(SubFunctionLabel subFunctionLabel) {
         this.subFunctionLabel = subFunctionLabel;
     }
 
