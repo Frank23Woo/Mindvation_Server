@@ -1,5 +1,5 @@
 config:
-  judgeSubLabelIdUrl: http://localhost:8080/mdvn-model-s/models/judgeSubLabelId
+  judgeSubLabelIdUrl: http://localhost:8080/mdvn-model-sapi/models/judgeSubLabelId
   rtrvStoryInfoListUrl: http://localhost:8080/mdvn-story-sapi/story/rtrvStoryInfoList
   createStoryUrl: http://localhost:8080/mdvn-story-sapi/story/createStory
   saveStoryBaseUrl: http://localhost:8080/mdvn-story-sapi/story/saveStory
@@ -25,13 +25,13 @@ config:
 
   rtrvMembersByRoleIdUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/rtrvMembersByRoleId
 # staff sapi urls
-  rtrvStaffsByIdsUrl: http://localhost:8080/mdvn-staff-s/rtrvStaffListByStaffIdList
+  rtrvStaffsByIdsUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffListByStaffIdList
 
 
 # tag sapi urls
-  rtrvTagsByIdsUrl: http://localhost:8080/mdvn-tag-s/tags/rtrvTags
+  rtrvTagsByIdsUrl: http://localhost:8080/mdvn-tag-sapi/tags/rtrvTags
 
 # model sapi urls
-  rtrvFuncLabelUrl: http://localhost:8080/mdvn-model-s/models/findFuncById
-  rtrvModelRoleByModelIdUrl: http://localhost:8080/mdvn-model-s/models/findById
-  rtrvRoleByRoleIdUrl: http://localhost:8080/mdvn-model-s/models/findRoleById
+  rtrvFuncLabelUrl: http://localhost:8080/mdvn-model-sapi/models/findFuncById
+  rtrvModelRoleByModelIdUrl: http://localhost:8080/mdvn-model-sapi/models/findById
+  rtrvRoleByRoleIdUrl: http://localhost:8080/mdvn-model-sapi/models/findRoleById
