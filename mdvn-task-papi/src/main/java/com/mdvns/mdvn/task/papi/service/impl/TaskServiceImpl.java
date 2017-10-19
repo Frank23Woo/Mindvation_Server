@@ -1,17 +1,27 @@
 package com.mdvns.mdvn.task.papi.service.impl;
 
+import com.mdvns.mdvn.common.beans.RestResponse;
+import com.mdvns.mdvn.common.beans.Staff;
+import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
+import com.mdvns.mdvn.common.utils.FetchListUtil;
+import com.mdvns.mdvn.task.papi.config.UrlConfig;
 import com.mdvns.mdvn.task.papi.domain.*;
 import com.mdvns.mdvn.task.papi.service.TaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -24,139 +34,132 @@ public class TaskServiceImpl implements TaskService {
 
     private static final int PAGE = 0;
     private static final int PAGE_SIZE = 10;
-    private static final String SPI_BASE_URL = "http://localhost:10004/";
+
+    @Autowired
+    private UrlConfig urlConfig;
 
 
     @Autowired
     private RestTemplate restTemplate;
 
     @Override
-    public CreateTaskResponse createTask(CreateTaskRequest request) throws Exception {
-        if (request == null) {
-            throw new NullPointerException("task is null");
+    public RestResponse createTask(CreateOrUpdateTaskRequest request) throws Exception {
+        if (request == null || StringUtils.isEmpty(request.getCreatorId()) ||
+                StringUtils.isEmpty(request.getStoryId()) || StringUtils.isEmpty(request.getAssigneeId()) ||
+                StringUtils.isEmpty(request.getDescription()) || request.getDeliver() == null ||
+                StringUtils.isEmpty(request.getDeliver().getModelId()) || StringUtils.isEmpty(request.getDeliver().getName()) ||
+                request.getStartTime() == null || request.getEndTime() == null) {
+            return new RestResponse(ExceptionEnum.PARAMS_EXCEPTION.getErroCode(), null);
         }
 
-        if (request.getAsigneeId() == null || request.getAsignerId() == null || request.getStoryId() == null
-                || request.getDescription() == null || request.getPriority() == null
-                || request.getStatus() == null || request.getStartTime() == null
-                || request.getEndTime() == null) {
-            throw new IllegalArgumentException("缺少参数");
-        }
-
-        Task task = new Task();
-        task.setAsigneeId(request.getAsigneeId());
-        task.setAsignerId(request.getAsignerId());
-        task.setDescription(request.getDescription());
-        task.setPriority(request.getPriority());
-        task.setRemarks(request.getRemarks());
-        task.setStoryId(request.getStoryId());
-        task.setStatus(request.getStatus());
-        task.setStartTime(request.getStartTime());
-        task.setEndTime(request.getEndTime());
-        task.setAttachment(request.getAttachment());
-
-        CreateTaskResponse response = new CreateTaskResponse();
+        RestResponse response = new RestResponse();
         try {
-            task = restTemplate.postForObject(SPI_BASE_URL + "createTask", task, Task.class);
-            response.setErrorCode(0);
-            response.setErrorMsg("");
+            TaskDetail task = restTemplate.postForObject(urlConfig.getSaveTaskUrl(), request, TaskDetail.class);
+
+            // 查询creator和assinee
+            Staff creator = restTemplate.postForObject(urlConfig.getRtrvStaffInfoUrl(), task.getCreatorId(), Staff.class);
+            task.setCreator(creator);
+
+            Staff assignee = restTemplate.postForObject(urlConfig.getRtrvStaffInfoUrl(), task.getAssigneeId(), Staff.class);
+            task.setAssignee(assignee);
+
+            // todo 查询附件
+
             response.setResponseBody(task);
-        } catch (RestClientException e) {
-//            e.printStackTrace();
-            throw new RuntimeException("task sapi error");
-        }
-
-        return response;
-    }
-
-    @Override
-    public BaseResponse deleteTask(DeleteTaskRequest request) throws Exception {
-        BaseResponse response = new BaseResponse();
-        if (request == null) {
-            response.setErrorCode(10000);
-            response.setErrorMsg("need request body");
-            return response;
-        }
-
-        if (request.getUuid() == null && request.getTaskId() == null) {
-            response.setErrorCode(10000);
-            response.setErrorMsg("need uuid or taskId");
-            return response;
-        }
-
-        Task task = new Task();
-        task.setUuid(request.getUuid());
-        task.setTaskId(request.getTaskId());
-
-        try {
-            boolean success  = restTemplate.postForObject(SPI_BASE_URL + "deleteTask", task, Boolean.class);
-            if (success) {
-                response.setErrorCode(0);
-                response.setErrorMsg("");
-            } else {
-                response.setErrorCode(10003);
-                response.setErrorMsg("SAPI ERROR");
-            }
+            response.setResponseCode("000");
+            response.setResponseMsg("ok");
         } catch (RestClientException e) {
             e.printStackTrace();
-            response.setErrorCode(10003);
-            response.setErrorMsg("SAPI ERROR");
+            response.setResponseCode(ExceptionEnum.TASK_SAVE_FAILED.getErroCode());
+            response.setResponseMsg(ExceptionEnum.TASK_SAVE_FAILED.getErrorMsg());
         }
 
         return response;
     }
 
     @Override
-    public RetrieveTaskListResponse retrieveTaskList(RetrieveTaskListRequest request) throws Exception {
-        if (request == null || request.getStoryId() == null){
-            throw new NullPointerException("request or storyId is null");
+    public RestResponse retrieveTaskList(RtrvTaskListRequest request) throws Exception {
+        RestResponse restResponse = new RestResponse();
+
+        // 参数检查
+        if (request == null || request.getStoryId() == null) {
+            restResponse.setResponseCode(ExceptionEnum.PARAMS_EXCEPTION.getErroCode());
+            restResponse.setResponseMsg(ExceptionEnum.PARAMS_EXCEPTION.getErrorMsg());
+            return restResponse;
         }
 
         int page = request.getPage() == null ? PAGE : request.getPage();
-        int pageSize = request.getPageSize() == null ? PAGE_SIZE :  request.getPageSize();
+        int pageSize = request.getPageSize() == null ? PAGE_SIZE : request.getPageSize();
 
-        RetrieveTaskListResponse response = new RetrieveTaskListResponse();
         MultiValueMap params = new LinkedMultiValueMap();
         params.add("storyId", request.getStoryId());
         params.add("page", page);
-        params.add("pageSise", pageSize);
+        params.add("pageSize", pageSize);
 
         try {
-            List<Task> taskList = restTemplate.postForObject(SPI_BASE_URL + "rtrvTaskList", params, List.class);
-            response.setErrorCode(0);
-            response.setErrorMsg("");
-            response.setResponseBody(taskList);
+            // 查询task sapi
+            List<TaskDetail> taskList = restTemplate.postForObject(urlConfig.getRtrvTaskListUrl(), params, List.class);
+
+            // 查询creator和assignee
+            List<String> creatorIds = new ArrayList<>();
+            List<String> assigneeIds = new ArrayList<>();
+            for (TaskDetail task : taskList) {
+                creatorIds.add(task.getCreatorId());
+                assigneeIds.add(task.getAssigneeId());
+            }
+
+            Map<String, Object> paramsMap = new HashMap<>();
+            paramsMap.put("staffIdList", creatorIds);
+            ParameterizedTypeReference typeReference = new ParameterizedTypeReference<List<Staff>>() {
+            };
+            List<Staff> creatorList = (List<Staff>) FetchListUtil.fetch(restTemplate, urlConfig.getRtrvStaffsByIdsUrl(), params, typeReference);
+            paramsMap.put("staffIdList", assigneeIds);
+            List<Staff> assigneeList = (List<Staff>) FetchListUtil.fetch(restTemplate, urlConfig.getRtrvStaffsByIdsUrl(), params, typeReference);
+
+            for (int i = 0; i < taskList.size(); i++) {
+                taskList.get(i).setCreator(creatorList.get(i));
+                taskList.get(i).setAssignee(assigneeList.get(i));
+            }
+
+            //
+            restResponse.setResponseCode("000");
+            restResponse.setResponseMsg("ok");
+            restResponse.setResponseBody(taskList);
         } catch (RestClientException e) {
-            throw new RuntimeException("sapi调用失败");
+            e.printStackTrace();
+            restResponse.setResponseCode(ExceptionEnum.BASE_SAPI_EXCEPTION.getErroCode());
+            restResponse.setResponseMsg(ExceptionEnum.BASE_SAPI_EXCEPTION.getErrorMsg());
         }
 
-        return response;
+        return restResponse;
     }
 
     @Override
-    public CreateTaskResponse updateTask(Task request) throws Exception {
-        CreateTaskResponse response = new CreateTaskResponse();
-        if (request == null) {
-            response.setErrorCode(10000);
-            response.setErrorMsg("need request body");
-            return response;
-        }
+    public RestResponse updateTask(CreateOrUpdateTaskRequest request) throws Exception {
+        RestResponse restResponse = new RestResponse();
 
-        if (request.getUuid() == null && request.getTaskId() == null) {
-            response.setErrorCode(10000);
-            response.setErrorMsg("need uuid or taskId");
-            return response;
+        if (request == null || StringUtils.isEmpty(request.getTaskId())) {
+            restResponse.setResponseCode(ExceptionEnum.PARAMS_EXCEPTION.getErroCode());
+            restResponse.setResponseMsg(ExceptionEnum.PARAMS_EXCEPTION.getErrorMsg());
+            return restResponse;
         }
 
         try {
-            Task result = restTemplate.postForObject(SPI_BASE_URL + "updateTask", request, Task.class);
-            response.setErrorCode(0);
-            response.setErrorMsg("");
-            response.setResponseBody(result);
+            TaskDetail result = restTemplate.postForObject(urlConfig.getUpdateTaskUrl(), request, TaskDetail.class);
+            if (result == null) {
+                restResponse.setResponseCode(ExceptionEnum.TASK_DOES_NOT_EXIST.getErroCode());
+                restResponse.setResponseMsg(ExceptionEnum.TASK_DOES_NOT_EXIST.getErrorMsg());
+            } else {
+                restResponse.setResponseCode("000");
+                restResponse.setResponseMsg("ok");
+                restResponse.setResponseBody(result);
+            }
         } catch (RestClientException e) {
-            throw e;
+            e.printStackTrace();
+            restResponse.setResponseCode(ExceptionEnum.BASE_SAPI_EXCEPTION.getErroCode());
+            restResponse.setResponseMsg(ExceptionEnum.BASE_SAPI_EXCEPTION.getErrorMsg());
         }
 
-        return response;
+        return restResponse;
     }
 }

@@ -1,7 +1,8 @@
 server:
-  port: 10004
+  port: 80
+  context-path: /mdvn-task-sapi
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/db_mindvation
+    url: jdbc:mysql://localhost:3306/db_mdvn_prod
     username: tom
     password: tom

@@ -1,0 +1,32 @@
+config:
+  saveReqmntUrl: http://localhost:10012/mdvn-reqmnt-sapi/saveReqmnt
+  saveRMembersUrl: http://localhost:10012/mdvn-reqmnt-sapi/saveRMembers
+  saveRTagsUrl: http://localhost:10012/mdvn-reqmnt-sapi/saveRTags
+  saveRCheckListUrl: http://localhost:10012/mdvn-reqmnt-sapi/saveRCheckLists
+  saveRAttchUrl: http://localhost:10012/mdvn-reqmnt-sapi/saveRAttchUrls
+
+  rtrvReqmntInfoUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntInfo
+  rtrvReqmntListUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntList
+  rtrvReqmntTagsUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntTags
+  rtrvReqmntMembersUrl : http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntMembers
+  rtrvReqmntCheckListUrl : http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntCheckList
+  rtrvReqmntAttchsUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntAttUrls
+  updateReqmntInfoUrl: http://localhost:10012/mdvn-reqmnt-sapi/updateReqmntInfo
+
+
+# staff sapi urls
+  rtrvStaffsByIdsUrl: http://localhost:10013/mdvn-staff-s/rtrvStaffListByStaffIdList
+  rtrvStaffInfoUrl: http://localhost:10013/mdvn-staff-s/rtrvStaffInfo
+
+# tag sapi urls
+  rtrvTagsByIdsUrl: http://localhost:10002/mdvn-tag-s/tags/rtrvTags
+
+# model sapi urls
+  rtrvFuncLabelUrl: http://localhost:10009/mdvn-model-s/models/findFuncById
+  rtrvModelRoleByModelIdUrl: http://localhost:10009/mdvn-model-s/models/findById
+
+# task sapi urls
+  saveTaskUrl: http://localhost:10004/mdvn-task-sapi/saveTask
+  rtrvTaskListUrl: http://localhost:10004/mdvn-task-sapi/rtrvTaskList
+  updateTaskUrl: http://localhost:10004/mdvn-task-sapi/updateTask
+

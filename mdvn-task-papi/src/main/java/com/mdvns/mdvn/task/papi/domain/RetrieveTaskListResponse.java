@@ -9,7 +9,7 @@ public class RetrieveTaskListResponse {
 
     private Integer errorCode;
     private String errorMsg;
-    private List<Task> responseBody;
+
 
     public Integer getErrorCode() {
         return errorCode;
@@ -27,19 +27,4 @@ public class RetrieveTaskListResponse {
         this.errorMsg = errorMsg;
     }
 
-    public List<Task> getResponseBody() {
-        return responseBody;
-    }
-
-    public void setResponseBody(List<Task> responseBody) {
-        this.responseBody = responseBody;
-    }
-
-    @Override
-    public String toString() {
-        return new StringBuffer().append("errorCode:").append(errorCode)
-                .append(" | errorMsg:").append(errorMsg)
-                .append(" | body:").append(responseBody)
-                .toString();
-    }
 }

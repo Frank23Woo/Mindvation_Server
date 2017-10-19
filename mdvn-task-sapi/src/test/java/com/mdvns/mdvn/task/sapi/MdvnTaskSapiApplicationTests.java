@@ -12,7 +12,7 @@ public class MdvnTaskSapiApplicationTests {
 
 	@Test
 	public void contextLoads() {
-
+		System.out.print(System.currentTimeMillis());
 	}
 
 	@Test

@@ -84,8 +84,11 @@ public enum ExceptionEnum {
 	STORY_DETAIL_TAG_NOT_RTRV("1517", "调用SAPI获取用户故事detail标签信息时失败"),
 	STORY_DETAIL_MODEL_NOT_RTRV("1518", "调用SAPI获取用户故事detail模型信息时失败"),
 	STORY_DETAIL_TASK_NOT_RTRV("1519", "调用SAPI获取用户故事detail Task信息时失败"),
-	STORY_DETAIL_ATTCHURL_NOT_RTRV("1520", "调用SAPI获取用户故事detail附件信息时失败");
+	STORY_DETAIL_ATTCHURL_NOT_RTRV("1520", "调用SAPI获取用户故事detail附件信息时失败"),
 
+	// TASK
+	TASK_SAVE_FAILED("1601", "保存task失败"),
+	TASK_DOES_NOT_EXIST("1602", "task不存在");
 
 		String erroCode;
 		String ErrorMsg;
