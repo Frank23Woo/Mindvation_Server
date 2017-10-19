@@ -124,6 +124,7 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
         }
         Long currentTime = System.currentTimeMillis();
         requirementInfo.setCreateTime(currentTime);
+        requirementInfo.setLastUpdateTime(currentTime);
         requirementInfo.setStatus("new");
         requirementInfo.setRagStatus("G");
         requirementInfo.setProgress((double) 0);

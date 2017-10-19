@@ -14,8 +14,8 @@ config:
   updateReqmntInfoUrl: http://localhost/mdvn-reqmnt-sapi:8080/updateReqmntInfo
 
 # staff sapi urls
-  rtrvStaffsByIdsUrl: http://localhost/mdvn-staff-s:8080/rtrvStaffListByStaffIdList
-  rtrvStaffInfoUrl: http://localhost:10013/mdvn-staff-s:8080/rtrvStaffInfo
+  rtrvStaffsByIdsUrl: http://localhost/mdvn-staff-sapi:8080/rtrvStaffListByStaffIdList
+  rtrvStaffInfoUrl: http://localhost:10013/mdvn-staff-sapi:8080/rtrvStaffInfo
 
 # tag sapi urls
   rtrvTagsByIdsUrl: http://localhost/mdvn-tag-s:8080/tags/rtrvTags
