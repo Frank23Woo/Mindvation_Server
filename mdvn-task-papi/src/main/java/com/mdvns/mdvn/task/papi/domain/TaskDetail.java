@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.task.papi.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mdvns.mdvn.common.beans.AttchUrl;
 import com.mdvns.mdvn.common.beans.Staff;
 import com.mdvns.mdvn.task.papi.domain.entity.TaskDeliver;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
+@JsonIgnoreProperties(value={"uuid", "deliverId", "isDeleted"})
 public class TaskDetail {
 
     private Integer uuid;
@@ -35,7 +37,7 @@ public class TaskDetail {
 
     private Staff assignee;
 
-    private List<AttchUrl> attchUrlList;
+    private List<AttchUrl> attachUrlList;
 
     public TaskDetail() {
     }
@@ -65,12 +67,12 @@ public class TaskDetail {
         this.assignee = assignee;
     }
 
-    public List<AttchUrl> getAttchUrlList() {
-        return attchUrlList;
+    public List<AttchUrl> getAttachUrlList() {
+        return attachUrlList;
     }
 
-    public void setAttchUrlList(List<AttchUrl> attchUrlList) {
-        this.attchUrlList = attchUrlList;
+    public void setAttachUrlList(List<AttchUrl> attachUrlList) {
+        this.attachUrlList = attachUrlList;
     }
 
     public Integer getUuid() {

@@ -15,8 +15,8 @@ config:
 
 
 # staff sapi urls
-  rtrvStaffsByIdsUrl: http://localhost:10013/mdvn-staff-s/rtrvStaffListByStaffIdList
-  rtrvStaffInfoUrl: http://localhost:10013/mdvn-staff-s/rtrvStaffInfo
+  rtrvStaffsByIdsUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffListByStaffIdList
+  rtrvStaffInfoUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffInfo
 
 # tag sapi urls
   rtrvTagsByIdsUrl: http://localhost:10002/mdvn-tag-s/tags/rtrvTags

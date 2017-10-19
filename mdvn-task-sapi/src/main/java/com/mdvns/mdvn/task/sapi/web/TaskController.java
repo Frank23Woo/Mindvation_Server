@@ -1,6 +1,7 @@
 package com.mdvns.mdvn.task.sapi.web;
 
 import com.mdvns.mdvn.task.sapi.domain.CreateTaskRequest;
+import com.mdvns.mdvn.task.sapi.domain.RtrvTaskListRequest;
 import com.mdvns.mdvn.task.sapi.domain.TaskDetail;
 import com.mdvns.mdvn.task.sapi.domain.entity.Task;
 import com.mdvns.mdvn.task.sapi.service.TaskService;
@@ -19,10 +20,8 @@ public class TaskController {
     private TaskService taskService;
 
     @PostMapping("/rtrvTaskList")
-    private List<TaskDetail> rtrvTaskList(@RequestParam("storyId") String storyId,
-                                          @RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
-                                          @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize) throws Exception {
-        return taskService.rtrvTaskList(storyId, page, pageSize);
+    private List<TaskDetail> rtrvTaskList(@RequestBody RtrvTaskListRequest request) throws Exception {
+        return taskService.rtrvTaskList(request);
     }
 
     @PostMapping("/saveTask")
@@ -36,7 +35,7 @@ public class TaskController {
     }
 
     @PostMapping("/updateTask")
-    private TaskDetail updateTask(@RequestBody CreateTaskRequest request) throws Exception{
+    private TaskDetail updateTask(@RequestBody CreateTaskRequest request) throws Exception {
         return taskService.updateTask(request);
     }
 

@@ -2,6 +2,7 @@ package com.mdvns.mdvn.task.sapi.service.impl;
 
 
 import com.mdvns.mdvn.task.sapi.domain.CreateTaskRequest;
+import com.mdvns.mdvn.task.sapi.domain.RtrvTaskListRequest;
 import com.mdvns.mdvn.task.sapi.domain.entity.Task;
 import com.mdvns.mdvn.task.sapi.domain.entity.TaskDeliver;
 import com.mdvns.mdvn.task.sapi.domain.TaskDetail;
@@ -35,13 +36,21 @@ public class TaskServiceImpl implements TaskService {
     private TaskDeliverRepository deliverRepository;
 
     @Override
-    public List<TaskDetail> rtrvTaskList(String storyId, Integer page, Integer pageSize) throws Exception {
+    public List<TaskDetail> rtrvTaskList(RtrvTaskListRequest request) throws Exception {
+        if (request == null) {
+            return new ArrayList<>();
+        }
+
+        String storyId = request.getStoryId();
+        Integer page = request.getPage() == null ? 0 : request.getPage();
+        Integer pageSize = request.getPageSize() == null ? 10 : request.getPageSize();
+
         List<TaskDetail> taskDetails = new ArrayList<>();
 
         Pageable pageable = new PageRequest(page, pageSize, new Sort(Sort.DEFAULT_DIRECTION, "uuid"));
 
         List<Task> tasks = taskRepository.findAllByStoryIdAndIsDeleted(storyId, 0, pageable).getContent();
-        for (Task task:tasks) {
+        for (Task task : tasks) {
             TaskDetail detail = new TaskDetail(task);
             detail.setDeliver(deliverRepository.getOne(task.getDeliverId()));
             taskDetails.add(detail);
@@ -173,10 +182,10 @@ public class TaskServiceImpl implements TaskService {
             if (changed) {
                 taskOld.setLastUpdateTime(new Timestamp(System.currentTimeMillis()));
                 taskOld = taskRepository.save(taskOld);
-
-                detail = new TaskDetail(taskOld);
-                detail.setDeliver(deliver);
             }
+
+            detail = new TaskDetail(taskOld);
+            detail.setDeliver(deliverRepository.findOne(taskOld.getDeliverId()));
         }
 
         return detail;
