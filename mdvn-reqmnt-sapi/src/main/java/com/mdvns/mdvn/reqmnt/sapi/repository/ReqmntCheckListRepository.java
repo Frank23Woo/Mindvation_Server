@@ -17,4 +17,5 @@ public interface ReqmntCheckListRepository extends JpaRepository<ReqmntCheckList
 
     List<ReqmntCheckList> findAllByReqmntIdAndIsDeleted(String reqmntId, Integer isDeleted);
 
+    List<ReqmntCheckList> findAllByReqmntIdAndCheckListIdAndIsDeleted(String reqmntId, String checkListId ,Integer isDeleted);
 }
