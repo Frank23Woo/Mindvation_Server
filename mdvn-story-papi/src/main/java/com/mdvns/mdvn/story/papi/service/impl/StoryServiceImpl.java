@@ -95,8 +95,19 @@ public class StoryServiceImpl implements IStoryService {
         story = responseEntity.getBody();
         String storyId = story.getStoryId();
         //2.保存用户故事成员信息
-        if (createStoryRequest.getsMembers() != null && !createStoryRequest.getsMembers().isEmpty()) {
-            List<StoryRoleMember> storyLeaders = createStoryRequest.getsMembers();
+        if (createStoryRequest.getMembers() != null && !createStoryRequest.getMembers().isEmpty()) {
+            List<RoleMember> members = createStoryRequest.getMembers();
+            List<StoryRoleMember> list = new ArrayList<>();
+            for (int i = 0; i < members.size(); i++) {
+                String roleId = members.get(i).getRoleId();
+                for (int j = 0; j < members.get(i).getMemberIds().size(); j++) {
+                    StoryRoleMember storyRoleMember = new StoryRoleMember();
+                    storyRoleMember.setRoleId(roleId);
+                    storyRoleMember.setStaffId(members.get(i).getMemberIds().get(j));
+                    list.add(storyRoleMember);
+                }
+            }
+            List<StoryRoleMember> storyLeaders = list;
             for (int i = 0; i < storyLeaders.size(); i++) {
                 storyLeaders.get(i).setStoryId(storyId);
             }
@@ -182,10 +193,22 @@ public class StoryServiceImpl implements IStoryService {
 //            story.setRagStatus(updateStoryDetailRequest.getRagStatus());
 //        }
         //2.判断是否更改用户故事下的角色下的成员信息
-        if (updateStoryDetailRequest.getsMembers() != null && !updateStoryDetailRequest.getsMembers().isEmpty()) {
+        if (updateStoryDetailRequest.getMembers() != null && !updateStoryDetailRequest.getMembers().isEmpty()) {
             UpdateSMembersRequest updateSMembersRequest = new UpdateSMembersRequest();
+            //角色集合转为对象
+            List<RoleMember> members = updateStoryDetailRequest.getMembers();
+            List<StoryRoleMember> list = new ArrayList<>();
+            for (int i = 0; i < members.size(); i++) {
+                String roleId = members.get(i).getRoleId();
+                for (int j = 0; j < members.get(i).getMemberIds().size(); j++) {
+                    StoryRoleMember storyRoleMember = new StoryRoleMember();
+                    storyRoleMember.setRoleId(roleId);
+                    storyRoleMember.setStaffId(members.get(i).getMemberIds().get(j));
+                    list.add(storyRoleMember);
+                }
+            }
             updateSMembersRequest.setStoryId(updateStoryDetailRequest.getStoryInfo().getStoryId());
-            updateSMembersRequest.setsRoleMembers(updateStoryDetailRequest.getsMembers());
+            updateSMembersRequest.setsRoleMembers(list);
             String updateStoryMembersUrl = config.getUpdateStoryMembersUrl();
             try {
                 ParameterizedTypeReference reqmntTagTypeReference = new ParameterizedTypeReference<List<StoryRoleMember>>() {
@@ -210,10 +233,10 @@ public class StoryServiceImpl implements IStoryService {
                     RtrvMembersByRoleIdRequest rtrvMembersByRoleIdRequest = new RtrvMembersByRoleIdRequest();
                     rtrvMembersByRoleIdRequest.setRoleId(roleId);
                     rtrvMembersByRoleIdRequest.setStoryId(updateStoryDetailRequest.getStoryInfo().getStoryId());
-                    List<StoryRoleMember> members = FetchListUtil.fetch(restTemplate, config.getRtrvMembersByRoleIdUrl(), rtrvMembersByRoleIdRequest, reqmntTagTypeReference);
+                    List<StoryRoleMember> memberList = FetchListUtil.fetch(restTemplate, config.getRtrvMembersByRoleIdUrl(), rtrvMembersByRoleIdRequest, reqmntTagTypeReference);
                     List staffIds = new ArrayList();
-                    for (int j = 0; j < members.size(); j++) {
-                        staffIds.add(members.get(j).getStaffId());
+                    for (int j = 0; j < memberList.size(); j++) {
+                        staffIds.add(memberList.get(j).getStaffId());
                     }
                     RtrvStaffListByStaffIbListRequest rtrvStaffListRequest = new RtrvStaffListByStaffIbListRequest();
                     rtrvStaffListRequest.setStaffIdList(staffIds);
@@ -342,10 +365,10 @@ public class StoryServiceImpl implements IStoryService {
             for (int i = 0; i < storyTags.size(); i++) {
                 tagIds.add(storyTags.get(i).getTagId());
             }
-                RtrvTagsRequest rtrvTagsRequest = new RtrvTagsRequest();
-                rtrvTagsRequest.setTagIds(tagIds);
-                List<Tag> tagList = restTemplate.postForObject(config.getRtrvTagsByIdsUrl(), rtrvTagsRequest, List.class);
-                storyDetail.setTags(tagList);
+            RtrvTagsRequest rtrvTagsRequest = new RtrvTagsRequest();
+            rtrvTagsRequest.setTagIds(tagIds);
+            List<Tag> tagList = restTemplate.postForObject(config.getRtrvTagsByIdsUrl(), rtrvTagsRequest, List.class);
+            storyDetail.setTags(tagList);
         } catch (Exception ex) {
             throw new BusinessException(ExceptionEnum.STORY_DETAIL_TAG_NOT_RTRV);
         }

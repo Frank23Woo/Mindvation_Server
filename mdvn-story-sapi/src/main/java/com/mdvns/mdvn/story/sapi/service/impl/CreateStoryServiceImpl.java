@@ -104,17 +104,18 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
         if (StringUtils.isEmpty(createStoryRequest) || StringUtils.isEmpty(createStoryRequest.getStoryInfo().getSummary()) ||
                 StringUtils.isEmpty(createStoryRequest.getCreatorId()) ||
                 StringUtils.isEmpty(createStoryRequest.getStoryInfo().getReqmntId()) ||
-                StringUtils.isEmpty(createStoryRequest.getSubFunctionLabel().getLabelId()) ||
                 StringUtils.isEmpty(createStoryRequest.getStoryInfo().getDescription()) ||
                 StringUtils.isEmpty(createStoryRequest.getStoryInfo().getStartDate()) ||
                 StringUtils.isEmpty(createStoryRequest.getStoryInfo().getEndDate())) {
-            throw new NullPointerException("createStoryRequest不能为空 或创建者Id不能为空 或所属需求 或过程方法子模块 或用户故事概要不能为空 或用户故事描述不能为空 或者用户故事开始结束时间不能为空");
+            throw new NullPointerException("createStoryRequest不能为空 或创建者Id不能为空 或所属需求 或用户故事概要不能为空 或用户故事描述不能为空 或者用户故事开始结束时间不能为空");
         }
+        story.setProjId(createStoryRequest.getStoryInfo().getProjId());
         story.setReqmntId(createStoryRequest.getStoryInfo().getReqmntId());
         story.setSummary(createStoryRequest.getStoryInfo().getSummary());
         story.setDescription(createStoryRequest.getStoryInfo().getDescription());
         story.setCreatorId(createStoryRequest.getCreatorId());
         story.setLabelId(createStoryRequest.getSubFunctionLabel().getLabelId());
+        story.setStoryPoint(createStoryRequest.getStoryInfo().getStoryPoint());
         story.setIsDeleted(0);
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
         story.setCreateTime(currentTime);

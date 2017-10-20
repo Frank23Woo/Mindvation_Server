@@ -11,6 +11,10 @@ import java.sql.Timestamp;
 @Component
 @Entity
 public class Story {
+    //项目ID
+    private String projId;
+    //用户故事点数
+    private Integer storyPoint;
     //用户故事编号
     private String storyId;
     //表自增长生成的Id
@@ -93,6 +97,22 @@ public class Story {
     private Integer isDeleted;
     //备注
     private String remarks;
+
+    public String getProjId() {
+        return projId;
+    }
+
+    public void setProjId(String projId) {
+        this.projId = projId;
+    }
+
+    public Integer getStoryPoint() {
+        return storyPoint;
+    }
+
+    public void setStoryPoint(Integer storyPoint) {
+        this.storyPoint = storyPoint;
+    }
 
     public Timestamp getLastUpdateTime() {
         return lastUpdateTime;

@@ -12,6 +12,8 @@ public class Story {
     private Integer uuId;
     //用户故事概要
     private String summary;
+    //项目ID
+    private String projId;
     //需求Id
     private String reqmntId;
     //用户故事创建者Id
@@ -58,8 +60,26 @@ public class Story {
     private Double qutityIndex;
     //是否被删除
     private Integer isDeleted;
+    //用户故事点数
+    private Integer storyPoint;
     //备注
     private String remarks;
+
+    public String getProjId() {
+        return projId;
+    }
+
+    public void setProjId(String projId) {
+        this.projId = projId;
+    }
+
+    public Integer getStoryPoint() {
+        return storyPoint;
+    }
+
+    public void setStoryPoint(Integer storyPoint) {
+        this.storyPoint = storyPoint;
+    }
 
     public String getStoryId() {
         return storyId;
