@@ -1,6 +1,7 @@
 package com.mdvns.mdvn.reqmnt.papi.domain;
 
 import com.mdvns.mdvn.common.beans.FunctionLabel;
+import com.mdvns.mdvn.common.beans.Story;
 import com.mdvns.mdvn.common.beans.Tag;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +21,8 @@ public class RtrvReqmntInfoResponse{
     private List<ReqmntCheckList> checkLists;
 
     private List<ReqmntAttchUrl> attchUrls;
+
+    private RtrvStoryListResponse rtrvStoryListResponse;
 
     public void setReqmntInfo(RequirementInfo reqmntInfo) {
         this.reqmntInfo = reqmntInfo;
@@ -67,5 +70,13 @@ public class RtrvReqmntInfoResponse{
 
     public void setLabelDetail(FunctionLabel labelDetail) {
         this.labelDetail = labelDetail;
+    }
+
+    public RtrvStoryListResponse getRtrvStoryListResponse() {
+        return rtrvStoryListResponse;
+    }
+
+    public void setRtrvStoryListResponse(RtrvStoryListResponse rtrvStoryListResponse) {
+        this.rtrvStoryListResponse = rtrvStoryListResponse;
     }
 }

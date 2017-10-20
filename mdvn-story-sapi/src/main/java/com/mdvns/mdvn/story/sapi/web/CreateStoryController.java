@@ -32,7 +32,7 @@ public class CreateStoryController {
      * @return
      */
     @PostMapping(value="/rtrvStoryInfoList")
-    public RestResponse rtrvStoryInfoList(@RequestBody RtrvStoryListRequest request) throws SQLException{
+    public ResponseEntity<?> rtrvStoryInfoList(@RequestBody RtrvStoryListRequest request) throws SQLException{
         return storyService.rtrvStoryInfoList(request);
     }
 

@@ -54,6 +54,44 @@ public class StoryConfig {
     private String rtrvModelRoleByModelIdUrl;
     private String rtrvRoleByRoleIdUrl;//====
 
+    private String labelIdByStoryIdUrl;
+    private String modelIdByStoryIdUrl;
+
+    private String rtrvReqmntMembersUrl;
+
+    private String reqmntIdByStoryIdUrl;
+
+    public String getReqmntIdByStoryIdUrl() {
+        return reqmntIdByStoryIdUrl;
+    }
+
+    public void setReqmntIdByStoryIdUrl(String reqmntIdByStoryIdUrl) {
+        this.reqmntIdByStoryIdUrl = reqmntIdByStoryIdUrl;
+    }
+
+    public String getRtrvReqmntMembersUrl() {
+        return rtrvReqmntMembersUrl;
+    }
+
+    public void setRtrvReqmntMembersUrl(String rtrvReqmntMembersUrl) {
+        this.rtrvReqmntMembersUrl = rtrvReqmntMembersUrl;
+    }
+
+    public String getModelIdByStoryIdUrl() {
+        return modelIdByStoryIdUrl;
+    }
+
+    public void setModelIdByStoryIdUrl(String modelIdByStoryIdUrl) {
+        this.modelIdByStoryIdUrl = modelIdByStoryIdUrl;
+    }
+
+    public String getLabelIdByStoryIdUrl() {
+        return labelIdByStoryIdUrl;
+    }
+
+    public void setLabelIdByStoryIdUrl(String labelIdByStoryIdUrl) {
+        this.labelIdByStoryIdUrl = labelIdByStoryIdUrl;
+    }
 
     public String getRtrvMembersByRoleIdUrl() {
         return rtrvMembersByRoleIdUrl;

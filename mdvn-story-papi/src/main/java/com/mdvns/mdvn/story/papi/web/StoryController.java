@@ -37,7 +37,7 @@ public class StoryController {
      * @return
      */
     @PostMapping(value="/rtrvStoryInfoList")
-    public ResponseEntity<?> rtrvStoryInfoList(@RequestBody @Validated RtrvStoryListRequest rtrvStoryListRequest, BindingResult bindingResult) throws BindException{
+    public RestResponse rtrvStoryInfoList(@RequestBody @Validated RtrvStoryListRequest rtrvStoryListRequest, BindingResult bindingResult) throws BindException{
         LOG.info("开始执行 rtrvStoryInfoList 方法.");
         if (bindingResult.hasErrors()) {
             //获取对象给出的message信息

@@ -14,7 +14,7 @@ public interface IStoryService {
      * @param rtrvStoryListRequest
      * @return
      */
-    ResponseEntity<?> rtrvStoryInfoList(RtrvStoryListRequest rtrvStoryListRequest);
+    RestResponse rtrvStoryInfoList(RtrvStoryListRequest rtrvStoryListRequest);
 
     /**
      * 创建story

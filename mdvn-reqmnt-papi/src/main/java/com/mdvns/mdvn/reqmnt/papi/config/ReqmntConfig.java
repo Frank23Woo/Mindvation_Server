@@ -31,6 +31,30 @@ public class ReqmntConfig {
     //Model sapi url
     private String rtrvModelRoleByModelIdUrl;
 
+    //获取story列表信息url=====
+    private String rtrvStoryInfoListUrl;
+
+    //获取reqmnt列表page默认值
+    private String storyListPage;
+    //获取reqmnt列表pageSize默认值
+    private String storyListPageSize;
+
+    public String getStoryListPage() {
+        return storyListPage;
+    }
+
+    public void setStoryListPage(String storyListPage) {
+        this.storyListPage = storyListPage;
+    }
+
+    public String getStoryListPageSize() {
+        return storyListPageSize;
+    }
+
+    public void setStoryListPageSize(String storyListPageSize) {
+        this.storyListPageSize = storyListPageSize;
+    }
+
     public String getRtrvModelRoleByModelIdUrl() {
         return rtrvModelRoleByModelIdUrl;
     }
@@ -159,5 +183,13 @@ public class ReqmntConfig {
 
     public void setUpdateReqmntInfoUrl(String updateReqmntInfoUrl) {
         this.updateReqmntInfoUrl = updateReqmntInfoUrl;
+    }
+
+    public String getRtrvStoryInfoListUrl() {
+        return rtrvStoryInfoListUrl;
+    }
+
+    public void setRtrvStoryInfoListUrl(String rtrvStoryInfoListUrl) {
+        this.rtrvStoryInfoListUrl = rtrvStoryInfoListUrl;
     }
 }

@@ -84,6 +84,11 @@ public class UpdateStoryServiceImpl implements IUpdateStoryService {
             story.setStatus(st.getStatus());
             changeFlag = true;
         }
+        if (!StringUtils.isEmpty(st.getProgress()) && (!st.getProgress().equals(story.getProgress()))) {
+            story.setProgress(st.getProgress());
+            changeFlag = true;
+        }
+
 //        if (!StringUtils.isEmpty(st.getReqmntId()) && (!st.getReqmntId().equals(story.getReqmntId()))) {
 //            story.setReqmntId(st.getReqmntId());
 //        }

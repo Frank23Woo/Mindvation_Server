@@ -6,6 +6,7 @@ import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
 import com.mdvns.mdvn.common.utils.FetchListUtil;
 import com.mdvns.mdvn.reqmnt.papi.config.ReqmntConfig;
 import com.mdvns.mdvn.reqmnt.papi.domain.*;
+import com.mdvns.mdvn.reqmnt.papi.domain.ReqmntMember;
 import com.mdvns.mdvn.reqmnt.papi.domain.RequirementInfo;
 import com.mdvns.mdvn.reqmnt.papi.service.IReqmntService;
 import com.sun.org.apache.xpath.internal.operations.Bool;
@@ -89,7 +90,7 @@ public class ReqmntServiceImpl implements IReqmntService {
 
         if (createReqmntRequest == null || StringUtils.isEmpty(createReqmntRequest.getCreatorId()) ||
                 StringUtils.isEmpty(createReqmntRequest.getSummary()) || StringUtils.isEmpty(createReqmntRequest.getDescription()) || StringUtils.isEmpty(createReqmntRequest.getFunctionLabelId())
-                || StringUtils.isEmpty(createReqmntRequest.getProjId())|| StringUtils.isEmpty(createReqmntRequest.getModelId())) {
+                || StringUtils.isEmpty(createReqmntRequest.getProjId()) || StringUtils.isEmpty(createReqmntRequest.getModelId())) {
             throw new NullPointerException("Mandatory fields should not be empty for createReqmntRequest");
         }
 
@@ -106,7 +107,7 @@ public class ReqmntServiceImpl implements IReqmntService {
 
         //2.保存requirement member信息
         if (createReqmntRequest.getMembers() != null && !createReqmntRequest.getMembers().isEmpty()) {
-            List<RoleMember>  roleMembers = createReqmntRequest.getMembers();
+            List<RoleMember> roleMembers = createReqmntRequest.getMembers();
             List<ReqmntMember> reqmntMembers = new ArrayList<>();
             ReqmntMember reqmntMember = null;
             String roleId = "";
@@ -129,9 +130,6 @@ public class ReqmntServiceImpl implements IReqmntService {
                 throw new RuntimeException("调用SAPI获取项目负责人信息保存数据失败.");
             }
         }
-
-
-
 
 
         //3.保存requirement标签信息
@@ -246,15 +244,17 @@ public class ReqmntServiceImpl implements IReqmntService {
         try {
 
             String modelId = requirementInfo.getModelId();
-            ParameterizedTypeReference modelRoleRef = new ParameterizedTypeReference<List<ModelRole>>() {};
+            ParameterizedTypeReference modelRoleRef = new ParameterizedTypeReference<List<ModelRole>>() {
+            };
             Map modelIdMap = new HashMap();
-            modelIdMap.put("modelId",modelId);
-            RtrvModelByIdResponse MRresp = restTemplate.postForObject(config.getRtrvModelRoleByModelIdUrl(),modelIdMap,RtrvModelByIdResponse.class);
+            modelIdMap.put("modelId", modelId);
+            RtrvModelByIdResponse MRresp = restTemplate.postForObject(config.getRtrvModelRoleByModelIdUrl(), modelIdMap, RtrvModelByIdResponse.class);
             List<ModelRole> modelRoleList = MRresp.getModelRoles();
 
 
             // call reqmnt sapi
-            ParameterizedTypeReference parameterizedTypeReference = new ParameterizedTypeReference<List<ReqmntMember>>() {};
+            ParameterizedTypeReference parameterizedTypeReference = new ParameterizedTypeReference<List<ReqmntMember>>() {
+            };
             List<ReqmntMember> data = FetchListUtil.fetch(restTemplate, config.getRtrvReqmntMembersUrl(), requirementInfo.getReqmntId(), parameterizedTypeReference);
             List<ReqmntMember> reqmntMembers = data;
             List<String> memberIds = new ArrayList<>();
@@ -277,14 +277,14 @@ public class ReqmntServiceImpl implements IReqmntService {
             List<RoleAndMember> roleAndMembers = new ArrayList<>();
 
 
-            for (int i = 0; i <modelRoleList.size() ; i++) {
+            for (int i = 0; i < modelRoleList.size(); i++) {
                 RoleAndMember roleAndMember = new RoleAndMember();
                 roleAndMember.setRoleDetail(modelRoleList.get(i));
                 List<Staff> stafs = new ArrayList<>();
                 roleAndMember.setMemberDetails(stafs);
 
-                for (int j = 0; j <reqmntMembers.size() ; j++) {
-                    if(modelRoleList.get(i).getRoleId().equals(reqmntMembers.get(j).getRoleId())){
+                for (int j = 0; j < reqmntMembers.size(); j++) {
+                    if (modelRoleList.get(i).getRoleId().equals(reqmntMembers.get(j).getRoleId())) {
                         stafs.add(stafList.get(j));
                     }
                 }
@@ -340,6 +340,24 @@ public class ReqmntServiceImpl implements IReqmntService {
         List<ReqmntAttchUrl> attchUrls = FetchListUtil.fetch(restTemplate, config.getRtrvReqmntAttchsUrl(), requirementInfo.getReqmntId(), typeReference);
         rtrvReqmntInfoResponse.setAttchUrls(attchUrls);
 
+        //查询story列表
+        RtrvStoryListRequest rtrvStoryListRequest = new RtrvStoryListRequest();
+        //项目需求列表分页信息按默认值处理
+        Integer page = Integer.parseInt(config.getStoryListPage());
+        LOG.info("需求分页参数, page:{}, pageSize:{}", page, config.getStoryListPageSize());
+        Integer pageSize = Integer.parseInt(config.getStoryListPageSize());
+
+        rtrvStoryListRequest.setPage(page);
+        rtrvStoryListRequest.setPageSize(pageSize);
+        rtrvStoryListRequest.setReqmntId(request.getReqmntId());
+        String storyInfoListUrl = config.getRtrvStoryInfoListUrl();
+        try {
+            ResponseEntity<RtrvStoryListResponse> rtrvStoryListResponse = this.restTemplate.postForEntity(storyInfoListUrl, rtrvStoryListRequest, RtrvStoryListResponse.class);
+//            restResponse = this.restTemplate.postForObject(storyInfoListUrl, rtrvStoryListRequest, RestResponse.class);
+            rtrvReqmntInfoResponse.setRtrvStoryListResponse(rtrvStoryListResponse.getBody());
+        } catch (Exception ex) {
+            throw new BusinessException(ExceptionEnum.PROJECT_DETAIL_STORY_NOT_RTRV);
+        }
         restResponse.setResponseBody(rtrvReqmntInfoResponse);
 
         return restResponse;

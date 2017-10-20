@@ -20,4 +20,8 @@ public interface IRtrvStoryDetailService {
     List<StoryTag> rtrvStoryTags(RtrvStoryDetailRequest request);
 
     List<StoryTask> rtrvStoryTasks(RtrvStoryDetailRequest request);
+
+    String getLabelIdByStoryId(String storyId);
+    String getModelIdByStoryId(String storyId);
+    String getReqmntIdByStoryId(String storyId);
 }

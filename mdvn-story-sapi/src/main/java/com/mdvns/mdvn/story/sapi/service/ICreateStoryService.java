@@ -13,7 +13,7 @@ import java.util.List;
 public interface ICreateStoryService {
 
     //获取story整个列表
-    RestResponse rtrvStoryInfoList(RtrvStoryListRequest request) throws SQLException;
+    ResponseEntity<?> rtrvStoryInfoList(RtrvStoryListRequest request) throws SQLException;
     //创建story时保存story(基本信息)
     ResponseEntity<?> saveStory(CreateStoryRequest request);
 //    Story saveStory(CreateStoryRequest createStoryRequest);
