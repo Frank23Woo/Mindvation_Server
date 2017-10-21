@@ -116,9 +116,9 @@ public class RtrvStoryDetailServiceImpl implements IRtrvStoryDetailService {
     @Override
     public String getLabelIdByStoryId(String storyId) {
         LOG.info("start executing getLabelIdByStoryId()方法.", this.CLASS);
-        String funcLabelId= this.storyRepository.getLabelIdByStoryId(storyId);
+        String labelId= this.storyRepository.getLabelIdByStoryId(storyId);
         LOG.info("finish executing getLabelIdByStoryId()方法.", this.CLASS);
-        return funcLabelId;
+        return labelId;
     }
     /**
      * 查询上一层reqmnt下的modelId
@@ -129,9 +129,9 @@ public class RtrvStoryDetailServiceImpl implements IRtrvStoryDetailService {
     @Override
     public String getModelIdByStoryId(String storyId) {
         LOG.info("start executing getModelIdByStoryId()方法.", this.CLASS);
-        String funcLabelId= this.storyRepository.getModelIdByStoryId(storyId);
+        String modelId= this.storyRepository.getModelIdByStoryId(storyId);
         LOG.info("finish executing getModelIdByStoryId()方法.", this.CLASS);
-        return funcLabelId;
+        return modelId;
     }
     /**
      * 查询上一层reqmnt下的reqmntId
@@ -142,9 +142,9 @@ public class RtrvStoryDetailServiceImpl implements IRtrvStoryDetailService {
     @Override
     public String getReqmntIdByStoryId(String storyId) {
         LOG.info("start executing getReqmntIdByStoryId()方法.", this.CLASS);
-        String funcLabelId= this.storyRepository.getReqmntIdByStoryId(storyId);
+        String reqmntId= this.storyRepository.getReqmntIdByStoryId(storyId);
         LOG.info("finish executing getReqmntIdByStoryId()方法.", this.CLASS);
-        return funcLabelId;
+        return reqmntId;
     }
 
 
