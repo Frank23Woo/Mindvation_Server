@@ -15,11 +15,12 @@ public class ModelRole {
     @Id
     @GeneratedValue
     private Integer uuId;
-    @Column(nullable = false)
+
     private String roleId;
     @Column(nullable = false)
     private String name;
     private String creatorId;
+    @Column(columnDefinition = "timestamp", nullable = false)
     private Timestamp createTime;
     private Integer isDeleted;
     private Integer quoteCnt;

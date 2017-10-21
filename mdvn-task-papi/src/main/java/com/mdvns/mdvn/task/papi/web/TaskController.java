@@ -4,12 +4,12 @@ import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.task.papi.domain.*;
 import com.mdvns.mdvn.task.papi.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
+@CrossOrigin
 @RestController
+@RequestMapping(value= {"/task", "/v1.0/task"})
 public class TaskController {
 
     @Autowired

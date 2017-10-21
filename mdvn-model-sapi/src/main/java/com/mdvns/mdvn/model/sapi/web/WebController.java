@@ -28,7 +28,7 @@ public class WebController {
      * @param request
      * @return
      */
-    @PostMapping("/models/model")
+    @PostMapping("/models/saveModel")
     public ResponseEntity<?> saveModel(@RequestBody CreateModelRequest request) throws SQLException {
         LOG.info("开始执行 createModel 方法.");
         return this.modelService.saveModel(request);

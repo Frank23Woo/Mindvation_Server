@@ -323,7 +323,6 @@ public class StoryServiceImpl implements IStoryService {
             List<StoryRoleMember> storyRoleMembers = FetchListUtil.fetch(restTemplate, rtrvSRoleMembersUrl, rtrvStoryDetailRequest, reqmntTagTypeReference);
 //            List<StoryRoleMember> storyRoleMembers = restTemplate.postForObject(rtrvSRoleMembersUrl, rtrvStoryDetailRequest, List.class);
             List<RoleAndMember> roleAndMembers = new ArrayList<>();
-            RoleAndMember roleAndMember = new RoleAndMember();
             //选出不同的角色
             List<String> roleIds = new ArrayList<>();
             for (int i = 0; i < storyRoleMembers.size(); i++) {
@@ -335,6 +334,7 @@ public class StoryServiceImpl implements IStoryService {
             }
             //选出角色中不同的成员
             for (int i = 0; i < roleIds.size(); i++) {
+                RoleAndMember roleAndMember = new RoleAndMember();
                 String roleId = storyRoleMembers.get(i).getRoleId();
                 ModelRole modelRole = restTemplate.postForObject(config.getRtrvRoleByRoleIdUrl(), roleId, ModelRole.class);
                 roleAndMember.setRoleDetail(modelRole);
@@ -344,7 +344,7 @@ public class StoryServiceImpl implements IStoryService {
                 List<StoryRoleMember> members = FetchListUtil.fetch(restTemplate, config.getRtrvMembersByRoleIdUrl(), rtrvMembersByRoleIdRequest, reqmntTagTypeReference);
                 List staffIds = new ArrayList();
                 for (int j = 0; j < members.size(); j++) {
-                    staffIds.add(members.get(i).getStaffId());
+                    staffIds.add(members.get(j).getStaffId());
                 }
                 RtrvStaffListByStaffIbListRequest rtrvStaffListRequest = new RtrvStaffListByStaffIbListRequest();
                 rtrvStaffListRequest.setStaffIdList(staffIds);
@@ -453,6 +453,14 @@ public class StoryServiceImpl implements IStoryService {
         mapLabel.put("labelId", labelId);
         FunctionLabel funcLabel = this.restTemplate.postForObject(config.getRtrvFuncLabelUrl(), mapLabel, FunctionLabel.class);
         storyDetail.setLabelDetail(funcLabel);
+        //6.获取用户故事list<task>信息
+        String url = config.getRtrvTaskListByStoryIdUrl();
+        RtrvTaskListRequest rtrvTaskListRequest = new RtrvTaskListRequest();
+        rtrvTaskListRequest.setPage(0);
+        rtrvTaskListRequest.setPageSize(Integer.MAX_VALUE);
+        rtrvTaskListRequest.setStoryId(rtrvStoryDetailRequest.getStoryId());
+        RestResponse<List<TaskDetail>> response = restTemplate.postForObject(url,rtrvTaskListRequest,RestResponse.class);
+        storyDetail.setsTasks(response.getResponseBody());
 
         rtrvStoryDetailResponse.setStoryDetail(storyDetail);
         restResponse.setResponseBody(rtrvStoryDetailResponse);

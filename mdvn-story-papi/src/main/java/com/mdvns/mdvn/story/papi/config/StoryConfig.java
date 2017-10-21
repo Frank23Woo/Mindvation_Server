@@ -61,6 +61,16 @@ public class StoryConfig {
 
     private String reqmntIdByStoryIdUrl;
 
+    private String rtrvTaskListByStoryIdUrl;
+
+    public String getRtrvTaskListByStoryIdUrl() {
+        return rtrvTaskListByStoryIdUrl;
+    }
+
+    public void setRtrvTaskListByStoryIdUrl(String rtrvTaskListByStoryIdUrl) {
+        this.rtrvTaskListByStoryIdUrl = rtrvTaskListByStoryIdUrl;
+    }
+
     public String getReqmntIdByStoryIdUrl() {
         return reqmntIdByStoryIdUrl;
     }

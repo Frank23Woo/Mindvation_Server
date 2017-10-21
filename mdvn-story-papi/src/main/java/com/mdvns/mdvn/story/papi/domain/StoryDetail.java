@@ -25,7 +25,7 @@ public class StoryDetail {
     //用户故事附件（集合）
     private List<AttchUrl> sattchUrls;
     //用户故事task(可以创建完后添加)
-    private List<StoryTask> sTasks;
+    private List<TaskDetail> sTasks;
     private List<String> remarks;
 
     public List<RoleAndMember> getrMembers() {
@@ -84,11 +84,11 @@ public class StoryDetail {
         this.sattchUrls = sattchUrls;
     }
 
-    public List<StoryTask> getsTasks() {
+    public List<TaskDetail> getsTasks() {
         return sTasks;
     }
 
-    public void setsTasks(List<StoryTask> sTasks) {
+    public void setsTasks(List<TaskDetail> sTasks) {
         this.sTasks = sTasks;
     }
 

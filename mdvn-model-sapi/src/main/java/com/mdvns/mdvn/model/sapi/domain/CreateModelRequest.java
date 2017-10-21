@@ -12,7 +12,7 @@ public class CreateModelRequest {
     private String name;
     private String creatorId;
     //行业(model_type)
-    private String industry;
+    private String modelType;
     //过程方法模块
     private List<FunctionLabel> functionLabels;
     //模块下对应的角色
@@ -35,12 +35,12 @@ public class CreateModelRequest {
         this.creatorId = creatorId;
     }
 
-    public String getIndustry() {
-        return industry;
+    public String getModelType() {
+        return modelType;
     }
 
-    public void setIndustry(String industry) {
-        this.industry = industry;
+    public void setModelType(String modelType) {
+        this.modelType = modelType;
     }
 
     public List<FunctionLabel> getFunctionLabels() {

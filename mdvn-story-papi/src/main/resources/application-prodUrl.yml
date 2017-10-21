@@ -41,3 +41,5 @@ config:
   rtrvRoleByRoleIdUrl: http://localhost:10009/mdvn-model-sapi/models/findRoleById
 
   rtrvStoryInfoListUrl: http://localhost:10015/mdvn-story-sapi/story/rtrvStoryInfoList
+
+  rtrvTaskListByStoryIdUrl: http://127.0.0.1:10003/mdvn-task-papi/task/retrieveTaskList

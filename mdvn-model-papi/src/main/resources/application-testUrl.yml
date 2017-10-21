@@ -1,5 +1,5 @@
 url:
-  saveModelUrl: http://localhost:8080/mdvn-model-sapi/models/model
+  saveModelUrl: http://localhost:8080/mdvn-model-sapi/models/saveModel
   rtrvModelListUrl: http://localhost:8080/mdvn-model-sapi/models
   updateQuoteCntUrl: http://localhost:8080/mdvn-model-sapi/models
   findByNameUrl : http://localhost:8080/mdvn-model-sapi/models/model
