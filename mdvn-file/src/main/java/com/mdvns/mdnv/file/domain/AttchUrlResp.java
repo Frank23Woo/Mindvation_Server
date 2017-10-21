@@ -1,21 +1,22 @@
 package com.mdvns.mdnv.file.domain;
 
-import com.mdvns.mdnv.file.domain.entity.AttchUrl;
+
+import com.mdvns.mdnv.file.domain.entity.AttachUrl;
 
 import java.util.List;
 
 public class AttchUrlResp {
 
-    private List<AttchUrl> attchUrls;
+    private List<AttachUrl> attchUrls;
 
     private List<String> remarks;
 
 
-    public List<AttchUrl> getAttchUrls() {
+    public List<AttachUrl> getAttchUrls() {
         return attchUrls;
     }
 
-    public void setAttchUrls(List<AttchUrl> attchUrls) {
+    public void setAttchUrls(List<AttachUrl> attchUrls) {
         this.attchUrls = attchUrls;
     }
 
