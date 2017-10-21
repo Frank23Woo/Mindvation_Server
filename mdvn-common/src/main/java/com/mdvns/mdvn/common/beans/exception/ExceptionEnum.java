@@ -63,6 +63,7 @@ public enum ExceptionEnum {
 	REQMNT_DOES_NOT_EXIST("1401", "Reqmnt不存在"),
     REQMNT_QUERY_MEMBER_FAIELD("1402", "查询失败"),
     REQMNT_QUERY_CHECKLIST_FAIELD("1403", "查询失败"),
+	PROJECT_DETAIL_STORY_NOT_RTRV("1404", "调用SAPI获取项目detail下的STORY列表信息时失败"),
 	
 	//用户故事
 	STORY_NOT_FOUND("1501", "用户故事不存在!"),

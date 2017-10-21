@@ -25,8 +25,8 @@ config:
   updateReqmntInfoUrl: http://localhost/mdvn-reqmnt-sapi/updateReqmntInfo
 
 # staff sapi urls
-  rtrvStaffsByIdsUrl: http://localhost/mdvn-staff-s/rtrvStaffListByStaffIdList
-  rtrvStaffInfoUrl: http://localhost/mdvn-staff-s/rtrvStaffInfo
+  rtrvStaffsByIdsUrl: http://localhost/mdvn-staff-sapi/rtrvStaffListByStaffIdList
+  rtrvStaffInfoUrl: http://localhost/mdvn-staff-sapi/rtrvStaffInfo
 
 # tag sapi urls
   rtrvTagsByIdsUrl: http://localhost/mdvn-tag-s/tags/rtrvTags

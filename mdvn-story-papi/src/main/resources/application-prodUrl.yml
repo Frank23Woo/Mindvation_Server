@@ -24,6 +24,10 @@ config:
   rtrvReqmntListUrl: http://localhost:10011/mdvn-reqmnt-papi/rtrvReqmntList
 
   rtrvMembersByRoleIdUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/rtrvMembersByRoleId
+  labelIdByStoryIdUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/getLabelIdByStoryId
+  modelIdByStoryIdUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/getModelIdByStoryId
+  reqmntIdByStoryIdUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/getReqmntIdByStoryId
+  rtrvReqmntMembersUrl : http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntMembers
 # staff sapi urls
   rtrvStaffsByIdsUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffListByStaffIdList
 
@@ -35,3 +39,7 @@ config:
   rtrvFuncLabelUrl: http://localhost:10009/mdvn-model-sapi/models/findFuncById
   rtrvModelRoleByModelIdUrl: http://localhost:10009/mdvn-model-sapi/models/findById
   rtrvRoleByRoleIdUrl: http://localhost:10009/mdvn-model-sapi/models/findRoleById
+
+  rtrvStoryInfoListUrl: http://localhost:10015/mdvn-story-sapi/story/rtrvStoryInfoList
+
+  rtrvTaskListByStoryIdUrl: http://127.0.0.1:10003/mdvn-task-papi/task/retrieveTaskList

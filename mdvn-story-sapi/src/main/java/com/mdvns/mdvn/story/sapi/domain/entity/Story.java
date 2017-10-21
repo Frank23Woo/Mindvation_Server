@@ -11,6 +11,10 @@ import java.sql.Timestamp;
 @Component
 @Entity
 public class Story {
+    //项目ID
+    private String projId;
+    //用户故事点数
+    private Integer storyPoint;
     //用户故事编号
     private String storyId;
     //表自增长生成的Id
@@ -79,20 +83,47 @@ public class Story {
     //缺陷高
     @Column(columnDefinition = "int default 0")
     private Integer highDefectsQty;
-    //缺陷低
+    //缺陷中
     @Column(columnDefinition = "int default 0")
     private Integer midiumDefectsQty;
+    //缺陷低
+    @Column(columnDefinition = "int default 0")
+    private Integer lowDefectsQty;
     //缺陷修复率
     @Column(columnDefinition = "Double default 0")
     private Double defectFixRate;
     //品控指数
     @Column(columnDefinition = "Double default 0")
-    private Double qutityIndex;
+    private Double qualityIndex;
     //是否被删除
     @Column(name = "is_deleted", columnDefinition = "INT default 0")
     private Integer isDeleted;
     //备注
     private String remarks;
+
+    public Integer getLowDefectsQty() {
+        return lowDefectsQty;
+    }
+
+    public void setLowDefectsQty(Integer lowDefectsQty) {
+        this.lowDefectsQty = lowDefectsQty;
+    }
+
+    public String getProjId() {
+        return projId;
+    }
+
+    public void setProjId(String projId) {
+        this.projId = projId;
+    }
+
+    public Integer getStoryPoint() {
+        return storyPoint;
+    }
+
+    public void setStoryPoint(Integer storyPoint) {
+        this.storyPoint = storyPoint;
+    }
 
     public Timestamp getLastUpdateTime() {
         return lastUpdateTime;
@@ -270,12 +301,12 @@ public class Story {
         this.defectFixRate = defectFixRate;
     }
 
-    public Double getQutityIndex() {
-        return qutityIndex;
+    public Double getQualityIndex() {
+        return qualityIndex;
     }
 
-    public void setQutityIndex(Double qutityIndex) {
-        this.qutityIndex = qutityIndex;
+    public void setQualityIndex(Double qualityIndex) {
+        this.qualityIndex = qualityIndex;
     }
 
     public Integer getIsDeleted() {

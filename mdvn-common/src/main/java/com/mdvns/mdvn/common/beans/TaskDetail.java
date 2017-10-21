@@ -1,15 +1,10 @@
-package com.mdvns.mdvn.task.papi.domain;
+package com.mdvns.mdvn.common.beans;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.mdvns.mdvn.common.beans.AttchUrl;
-import com.mdvns.mdvn.common.beans.Staff;
-import com.mdvns.mdvn.task.papi.domain.entity.TaskDeliver;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-@JsonIgnoreProperties(value={"uuid", "deliverId", "isDeleted"})
 public class TaskDetail {
 
     private Integer uuid;

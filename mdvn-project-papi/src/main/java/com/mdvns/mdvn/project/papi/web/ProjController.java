@@ -80,7 +80,7 @@ public class ProjController {
         if (bindingResult.hasErrors()) {
             //获取对象给出的message信息
             FieldError fieldError= bindingResult.getFieldError();
-            LogUtil.errorLog("请求参数不正确");
+            LogUtil.errorLog("请求参数不正确:"+fieldError.getDefaultMessage());
             ExceptionEnum.REQUEST_NOT_VALID.setErrorMsg(fieldError.getDefaultMessage());
             throw new BusinessException(ExceptionEnum.REQUEST_NOT_VALID);
         }

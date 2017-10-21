@@ -13,15 +13,36 @@ public class StoryDetail {
     private Story storyInfo;
     //用户故事成员（集合）
     private List<RoleAndMember> members;
+    //需求成员（集合）
+    private List<RoleAndMember> rMembers;
     //用户故事标签（集合）
     private List<Tag> tags;
+    private FunctionLabel labelDetail;
+
+//    private List<RoleAndMember> members;
     //最后一层过程方法模块对象
     private SubFunctionLabel subFunctionLabel;
     //用户故事附件（集合）
     private List<AttchUrl> sattchUrls;
     //用户故事task(可以创建完后添加)
-    private List<StoryTask> sTasks;
+    private List<TaskDetail> sTasks;
     private List<String> remarks;
+
+    public List<RoleAndMember> getrMembers() {
+        return rMembers;
+    }
+
+    public void setrMembers(List<RoleAndMember> rMembers) {
+        this.rMembers = rMembers;
+    }
+
+    public FunctionLabel getLabelDetail() {
+        return labelDetail;
+    }
+
+    public void setLabelDetail(FunctionLabel labelDetail) {
+        this.labelDetail = labelDetail;
+    }
 
     public Story getStoryInfo() {
         return storyInfo;
@@ -63,11 +84,11 @@ public class StoryDetail {
         this.sattchUrls = sattchUrls;
     }
 
-    public List<StoryTask> getsTasks() {
+    public List<TaskDetail> getsTasks() {
         return sTasks;
     }
 
-    public void setsTasks(List<StoryTask> sTasks) {
+    public void setsTasks(List<TaskDetail> sTasks) {
         this.sTasks = sTasks;
     }
 

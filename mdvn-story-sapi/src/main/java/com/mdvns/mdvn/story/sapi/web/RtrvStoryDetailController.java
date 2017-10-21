@@ -79,5 +79,35 @@ public class RtrvStoryDetailController {
     public List<StoryTask> rtrvStoryTasks(@RequestBody RtrvStoryDetailRequest request) throws SQLException {
         return rtrvStoryDetailService.rtrvStoryTasks(request);
     }
-    
+
+    /**
+     * 查询上一层reqmnt下的labelId
+     * @param storyId
+     * @return
+     * @throws SQLException
+     */
+    @PostMapping(value="/getLabelIdByStoryId")
+    public String getLabelIdByStoryId(@RequestBody String storyId) throws SQLException {
+        return rtrvStoryDetailService.getLabelIdByStoryId(storyId);
+    }
+    /**
+     * 查询上一层reqmnt下的modelId
+     * @param storyId
+     * @return
+     * @throws SQLException
+     */
+    @PostMapping(value="/getModelIdByStoryId")
+    public String getModelIdByStoryId(@RequestBody String storyId) throws SQLException {
+        return rtrvStoryDetailService.getModelIdByStoryId(storyId);
+    }
+    /**
+     * 查询上一层reqmnt下的reqmntId
+     * @param storyId
+     * @return
+     * @throws SQLException
+     */
+    @PostMapping(value="/getReqmntIdByStoryId")
+    public String getReqmntIdByStoryId(@RequestBody String storyId) throws SQLException {
+        return rtrvStoryDetailService.getReqmntIdByStoryId(storyId);
+    }
 }

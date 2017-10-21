@@ -117,10 +117,10 @@ public class ModelServiceImpl implements ModelService {
         CreateModelResponse createModelResponse = new CreateModelResponse();
         String url = webConfig.getSaveModelUrl();
         //调用Sapi保存模块
-        responseEntity = this.restTemplate.postForEntity(url, createModelRequest, Model.class);
+        ResponseEntity<CreateModelResponse> respEntity = this.restTemplate.postForEntity(url, createModelRequest, CreateModelResponse.class);
         RestResponse restResponse = null;
         if (responseEntity.getStatusCode().equals(HttpStatus.OK)) {
-            restResponse = RestResponseUtil.success(responseEntity.getBody());
+            restResponse = RestResponseUtil.success(respEntity.getBody());
             return ResponseEntity.ok(restResponse);
         }
         throw new BusinessException(ExceptionEnum.UNKNOW_EXCEPTION);

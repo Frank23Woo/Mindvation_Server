@@ -88,17 +88,11 @@ public class TaskServiceImpl implements TaskService {
             return restResponse;
         }
 
-        int page = request.getPage() == null ? PAGE : request.getPage();
-        int pageSize = request.getPageSize() == null ? PAGE_SIZE : request.getPageSize();
-
-        MultiValueMap params = new LinkedMultiValueMap();
-        params.add("storyId", request.getStoryId());
-        params.add("page", page);
-        params.add("pageSize", pageSize);
-
         try {
             // 查询task sapi
-            List<TaskDetail> taskList = restTemplate.postForObject(urlConfig.getRtrvTaskListUrl(), params, List.class);
+            ParameterizedTypeReference typeReference = new ParameterizedTypeReference<List<TaskDetail>>() {
+            };
+            List<TaskDetail> taskList = FetchListUtil.fetch(restTemplate, urlConfig.getRtrvTaskListUrl(), request, typeReference);
 
             // 查询creator和assignee
             List<String> creatorIds = new ArrayList<>();
@@ -110,11 +104,11 @@ public class TaskServiceImpl implements TaskService {
 
             Map<String, Object> paramsMap = new HashMap<>();
             paramsMap.put("staffIdList", creatorIds);
-            ParameterizedTypeReference typeReference = new ParameterizedTypeReference<List<Staff>>() {
+            typeReference = new ParameterizedTypeReference<List<Staff>>() {
             };
-            List<Staff> creatorList = (List<Staff>) FetchListUtil.fetch(restTemplate, urlConfig.getRtrvStaffsByIdsUrl(), params, typeReference);
+            List<Staff> creatorList = (List<Staff>) FetchListUtil.fetch(restTemplate, urlConfig.getRtrvStaffsByIdsUrl(), paramsMap, typeReference);
             paramsMap.put("staffIdList", assigneeIds);
-            List<Staff> assigneeList = (List<Staff>) FetchListUtil.fetch(restTemplate, urlConfig.getRtrvStaffsByIdsUrl(), params, typeReference);
+            List<Staff> assigneeList = (List<Staff>) FetchListUtil.fetch(restTemplate, urlConfig.getRtrvStaffsByIdsUrl(), paramsMap, typeReference);
 
             for (int i = 0; i < taskList.size(); i++) {
                 taskList.get(i).setCreator(creatorList.get(i));
@@ -150,6 +144,12 @@ public class TaskServiceImpl implements TaskService {
                 restResponse.setResponseCode(ExceptionEnum.TASK_DOES_NOT_EXIST.getErroCode());
                 restResponse.setResponseMsg(ExceptionEnum.TASK_DOES_NOT_EXIST.getErrorMsg());
             } else {
+                // 查询creator和assinee
+                Staff creator = restTemplate.postForObject(urlConfig.getRtrvStaffInfoUrl(), result.getCreatorId(), Staff.class);
+                result.setCreator(creator);
+                Staff assignee = restTemplate.postForObject(urlConfig.getRtrvStaffInfoUrl(), result.getAssigneeId(), Staff.class);
+                result.setAssignee(assignee);
+
                 restResponse.setResponseCode("000");
                 restResponse.setResponseMsg("ok");
                 restResponse.setResponseBody(result);

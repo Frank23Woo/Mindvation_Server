@@ -63,16 +63,18 @@ public class ModelServiceImpl implements ModelService {
      */
     @Override
     public ResponseEntity<?> saveModel(CreateModelRequest request) throws SQLException {
-        LOG.info("开始执行{} createModel()方法.", this.CLASS);
+        LOG.info("开始执行{} saveModel()方法.", this.CLASS);
         CreateModelResponse createModelResponse = new CreateModelResponse();
         Timestamp createTime = new Timestamp(System.currentTimeMillis());
+        Model model = new Model();
+        ModelRole modelRole = new ModelRole();
         //1.保存Model表数据
-        model.setCreateTime(createTime);
         model.setIsDeleted(0);
         model.setQuoteCnt(0);
+        model.setCreateTime(createTime);
         model.setName(request.getName());
         model.setCreatorId(request.getCreatorId());
-        model.setModelType(request.getIndustry());
+        model.setModelType(request.getModelType());
         //数据保存后modelId没有生成
         model = this.modelRepository.saveAndFlush(model);
         model.setModelId("M" + model.getUuId());
@@ -80,8 +82,9 @@ public class ModelServiceImpl implements ModelService {
         createModelResponse.setModel(model);
         //2.保存FunctionModel表数据(过程方法模块)
         List<FunctionLabel> functionLabels = request.getFunctionLabels();
-        List<FunctionLabel> functionLabelList = null;
+        List<FunctionLabel> functionLabelList = new ArrayList<FunctionLabel>();
         for (int i = 0; i < functionLabels.size(); i++) {
+            SubFunctionLabel subFunctionLabel = new SubFunctionLabel();
             FunctionLabel functionLabel = new FunctionLabel();
             subFunctionLabel.setCreateTime(createTime);
             subFunctionLabel.setCreatorId(request.getCreatorId());
@@ -100,8 +103,9 @@ public class ModelServiceImpl implements ModelService {
             functionLabel.setIsDeleted(subFunctionLabel.getIsDeleted());
             //3.保存FunctionModel表数据(过程方法子模块)
             List<SubFunctionLabel> subfunctionLabels = functionLabels.get(i).getSubFunctionLabels();
-            List<SubFunctionLabel> subfunctionModelListSub = null;
+            List<SubFunctionLabel> subfunctionModelListSub = new ArrayList<SubFunctionLabel>();
             for (int j = 0; j < subfunctionLabels.size(); j++) {
+                SubFunctionLabel subfunctionModelSub = new SubFunctionLabel();
                 SubFunctionLabel funcModel = new SubFunctionLabel();
                 subfunctionModelSub.setCreateTime(createTime);
                 subfunctionModelSub.setCreatorId(request.getCreatorId());
@@ -118,10 +122,9 @@ public class ModelServiceImpl implements ModelService {
             functionLabelList.add(functionLabel);
         }
         createModelResponse.setFunctionLabels(functionLabelList);
-
         //4.保存ModelRole表数据
         List<ModelRole> modelRoles = request.getRoles();
-        List<ModelRole> modelRoleList = null;
+        List<ModelRole> modelRoleList = new ArrayList<ModelRole>();
         for (int i = 0; i < modelRoles.size(); i++) {
             modelRole.setModelId(model.getModelId());
             modelRole.setName(modelRoles.get(i).getName());
@@ -135,7 +138,7 @@ public class ModelServiceImpl implements ModelService {
             modelRoleList.add(modelRole);
         }
         createModelResponse.setRoles(modelRoleList);
-        LOG.info("执行结束{} createModel()方法.", this.CLASS);
+        LOG.info("执行结束{} saveModel()方法.", this.CLASS);
         return ResponseEntity.ok(createModelResponse);
     }
 

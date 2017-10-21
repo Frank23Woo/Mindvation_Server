@@ -31,7 +31,7 @@ public class SubFunctionLabel {
     private String creatorId;
 
     private String color;
-
+    @Column(columnDefinition = "timestamp", nullable = false)
     private Timestamp createTime;
 
     /*是否已删除*/

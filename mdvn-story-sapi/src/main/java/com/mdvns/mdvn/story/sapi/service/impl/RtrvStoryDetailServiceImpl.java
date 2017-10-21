@@ -107,4 +107,45 @@ public class RtrvStoryDetailServiceImpl implements IRtrvStoryDetailService {
         return storyTasks;
     }
 
+    /**
+     * 查询上一层reqmnt下的labelId
+     *
+     * @param storyId
+     * @return
+     */
+    @Override
+    public String getLabelIdByStoryId(String storyId) {
+        LOG.info("start executing getLabelIdByStoryId()方法.", this.CLASS);
+        String labelId= this.storyRepository.getLabelIdByStoryId(storyId);
+        LOG.info("finish executing getLabelIdByStoryId()方法.", this.CLASS);
+        return labelId;
+    }
+    /**
+     * 查询上一层reqmnt下的modelId
+     *
+     * @param storyId
+     * @return
+     */
+    @Override
+    public String getModelIdByStoryId(String storyId) {
+        LOG.info("start executing getModelIdByStoryId()方法.", this.CLASS);
+        String modelId= this.storyRepository.getModelIdByStoryId(storyId);
+        LOG.info("finish executing getModelIdByStoryId()方法.", this.CLASS);
+        return modelId;
+    }
+    /**
+     * 查询上一层reqmnt下的reqmntId
+     *
+     * @param storyId
+     * @return
+     */
+    @Override
+    public String getReqmntIdByStoryId(String storyId) {
+        LOG.info("start executing getReqmntIdByStoryId()方法.", this.CLASS);
+        String reqmntId= this.storyRepository.getReqmntIdByStoryId(storyId);
+        LOG.info("finish executing getReqmntIdByStoryId()方法.", this.CLASS);
+        return reqmntId;
+    }
+
+
 }

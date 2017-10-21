@@ -1,8 +1,6 @@
-package com.mdvns.mdvn.story.papi.domain;
+package com.mdvns.mdvn.common.beans;
 
 import org.springframework.stereotype.Component;
-
-import java.sql.Timestamp;
 
 @Component
 public class Story {
@@ -52,14 +50,12 @@ public class Story {
     private Integer criticalDefectQtys;
     //缺陷高
     private Integer highDefectsQty;
-    //缺陷中
-    private Integer midiumDefectsQty;
     //缺陷低
-    private Integer lowDefectsQty;
+    private Integer midiumDefectsQty;
     //缺陷修复率
     private Double defectFixRate;
     //品控指数
-    private Double qualityIndex;
+    private Double qutityIndex;
     //是否被删除
     private Integer isDeleted;
     //用户故事点数
@@ -251,20 +247,12 @@ public class Story {
         this.defectFixRate = defectFixRate;
     }
 
-    public Integer getLowDefectsQty() {
-        return lowDefectsQty;
+    public Double getQutityIndex() {
+        return qutityIndex;
     }
 
-    public void setLowDefectsQty(Integer lowDefectsQty) {
-        this.lowDefectsQty = lowDefectsQty;
-    }
-
-    public Double getQualityIndex() {
-        return qualityIndex;
-    }
-
-    public void setQualityIndex(Double qualityIndex) {
-        this.qualityIndex = qualityIndex;
+    public void setQutityIndex(Double qutityIndex) {
+        this.qutityIndex = qutityIndex;
     }
 
     public Integer getIsDeleted() {

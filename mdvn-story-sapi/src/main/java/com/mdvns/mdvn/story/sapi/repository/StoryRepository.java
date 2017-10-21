@@ -32,6 +32,15 @@ public interface StoryRepository extends JpaRepository<Story, Integer>{
 
     Story findByStoryId(String storyId);
 
+    @Query(value="SELECT function_label_id from requirement_info where reqmnt_id = (SELECT reqmnt_id from story WHERE story_id=?1)", nativeQuery = true)
+    String getLabelIdByStoryId(String storyId);
+
+    @Query(value="SELECT model_id from requirement_info where reqmnt_id = (SELECT reqmnt_id from story WHERE story_id=?1)", nativeQuery = true)
+    String getModelIdByStoryId(String storyId);
+
+    @Query(value="SELECT reqmnt_id from story WHERE story_id=?1", nativeQuery = true)
+    String getReqmntIdByStoryId(String storyId);
+
     @Query(value="SELECT * from story WHERE story_id=?1", nativeQuery = true)
     Story rtrvStoryBaseInfo(String storyId);
 }

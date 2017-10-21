@@ -17,7 +17,8 @@ public class UpdateStoryDetailRequest {
     //storyInfo
     private Story storyInfo;
     //成员（集合）
-    private List<StoryRoleMember> sMembers;
+    private List<RoleMember> members;
+//    private List<StoryRoleMember> sMembers;
     //用户故事标签（集合）
     private List<StoryTag> sTags;
     //用户故事Tasks（集合）
@@ -43,13 +44,21 @@ public class UpdateStoryDetailRequest {
         this.storyInfo = storyInfo;
     }
 
-    public List<StoryRoleMember> getsMembers() {
-        return sMembers;
+    public List<RoleMember> getMembers() {
+        return members;
     }
 
-    public void setsMembers(List<StoryRoleMember> sMembers) {
-        this.sMembers = sMembers;
+    public void setMembers(List<RoleMember> members) {
+        this.members = members;
     }
+
+    //    public List<StoryRoleMember> getsMembers() {
+//        return sMembers;
+//    }
+//
+//    public void setsMembers(List<StoryRoleMember> sMembers) {
+//        this.sMembers = sMembers;
+//    }
 
     public List<StoryTag> getsTags() {
         return sTags;
