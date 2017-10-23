@@ -1,6 +1,5 @@
 config:
   judgeSubLabelIdUrl: http://localhost:8080/mdvn-model-sapi/models/judgeSubLabelId
-  rtrvStoryInfoListUrl: http://localhost:8080/mdvn-story-sapi/story/rtrvStoryInfoList
   createStoryUrl: http://localhost:8080/mdvn-story-sapi/story/createStory
   saveStoryBaseUrl: http://localhost:8080/mdvn-story-sapi/story/saveStory
   savePTagsUrl: http://localhost:8080/mdvn-story-sapi/story/savePTags
@@ -41,5 +40,4 @@ config:
   rtrvRoleByRoleIdUrl: http://localhost:8080/mdvn-model-sapi/models/findRoleById
 
   rtrvStoryInfoListUrl: http://localhost:8080/mdvn-story-sapi/story/rtrvStoryInfoList
-
-  rtrvTaskListByStoryIdUrl: http://127.0.0.1:8080/mdvn-task-papi/task/retrieveTaskList
+  rtrvTaskListByStoryIdUrl: http://localhost:8080/mdvn-task-papi/task/retrieveTaskList
