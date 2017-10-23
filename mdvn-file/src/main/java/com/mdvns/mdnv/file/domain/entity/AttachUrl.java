@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Component
-public class AttchUrl {
+public class AttachUrl {
 
     @Id
     @GeneratedValue
@@ -27,12 +27,16 @@ public class AttchUrl {
     @Column(columnDefinition = "timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP")
     private Timestamp updateTime;
 
-    public AttchUrl(String belongTo, String url) {
+    public AttachUrl() {
+        super();
+    }
+
+    public AttachUrl(String belongTo, String url) {
         this.belongTo = belongTo;
         this.url = url;
     }
 
-    public AttchUrl(String belongTo, String url, Integer isDeleted, Timestamp updateTime) {
+    public AttachUrl(String belongTo, String url, Integer isDeleted, Timestamp updateTime) {
         this.belongTo = belongTo;
         this.url = url;
         this.isDeleted = isDeleted;

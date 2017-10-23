@@ -1,11 +1,13 @@
 package com.mdvns.mdnv.file.service.impl;
 
-import com.mdvns.mdnv.file.domain.entity.AttchUrl;
+import com.mdvns.mdnv.file.domain.entity.AttachUrl;
 import com.mdvns.mdnv.file.repository.AttchUrlRepository;
 import com.mdvns.mdnv.file.service.SFileService;
+import com.mdvns.mdnv.file.util.LocalHostUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -16,7 +18,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class SFileServiceImpl implements SFileService {
@@ -26,6 +27,10 @@ public class SFileServiceImpl implements SFileService {
 
     private final String CLASS = this.getClass().getName();
 
+    /*附件保存目录*/
+    @Value("${web.upload-path}")
+    private String uploadDir;
+
     @Autowired
     private AttchUrlRepository attchUrlRepository;
 
@@ -33,33 +38,39 @@ public class SFileServiceImpl implements SFileService {
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    private AttchUrl attchUrl;
+    private AttachUrl attchUrl;
 
     @Override
     public ResponseEntity<?> getFiles(String belongTo) {
-        List<AttchUrl> attchUrls = new ArrayList<AttchUrl>();
-        attchUrls.add(new AttchUrl("S2","http://ahgo/fagjlqwltji.jpg"));
-        attchUrls.add(new AttchUrl("S2","http://ahgo/fagjlqwltji.jpg"));
+        List<AttachUrl> attchUrls = new ArrayList<AttachUrl>();
+        attchUrls.add(new AttachUrl("S2","http://ahgo/fagjlqwltji.jpg"));
+        attchUrls.add(new AttachUrl("S2","http://ahgo/fagjlqwltji.jpg"));
         return ResponseEntity.ok(attchUrls);
     }
 
     @Override
     public ResponseEntity<?> uploadFiles(HttpServletRequest request, MultipartFile[] files) throws IOException {
-        //上传目录
-        String uploadDir = request.getSession().getServletContext().getRealPath("/") + "/upload";
+
         //如果目录不存在，自动创建文件夹
         File dir = new File(uploadDir);
         if (!dir.exists()) {
             dir.mkdir();
         }
-
-        for (int i = 0; i < files.length; i++) {
-            if (files[i] != null) {
-                this.executeUpload(uploadDir, files[i]);
+        List<String> attchUrls = new ArrayList<String>();
+        try {
+            for (int i = 0; i < files.length; i++) {
+                if (files[i] != null) {
+                    String url = this.uploadFile(request, uploadDir, files[i]);
+                    LOG.info("上传后的文件名称为：{}", url);
+                    attchUrls.add(url);
+                }
             }
+        }catch (Exception ex){
+            LOG.info("文件上传失败:{}", ex.getLocalizedMessage());
+            ex.printStackTrace();
+            throw new IOException("文件上传失败");
         }
-
-        return null;
+        return ResponseEntity.ok(attchUrls);
     }
 
 
@@ -68,7 +79,7 @@ public class SFileServiceImpl implements SFileService {
      * @param uploadDir 文件上传目录
      * @param mFile 文件对象
      */
-    private String executeUpload(String uploadDir, MultipartFile mFile) throws IOException {
+    private String uploadFile(HttpServletRequest request, String uploadDir, MultipartFile mFile) throws IOException {
 
         //原文件名
         String fileOrigName = mFile.getOriginalFilename();
@@ -78,9 +89,10 @@ public class SFileServiceImpl implements SFileService {
         //String fileName = UUID.randomUUID()+suffix;
         String fileName = System.nanoTime()+suffix;
         File file = new File(uploadDir, fileName);
+
         //将上传的文件写入到服务器端文件内
         mFile.transferTo(file);
-        return fileName;
+        return LocalHostUtil.genUrl(request, uploadDir, fileName);
     }
 
     /**
@@ -90,11 +102,11 @@ public class SFileServiceImpl implements SFileService {
      * @return
      */
     @Override
-    public List<AttchUrl> saveAttchUrls(List<AttchUrl> request) {
+    public List<AttachUrl> saveAttchUrls(List<AttachUrl> request) {
         for (int i = 0; i < request.size(); i++) {
             request.get(i).setIsDeleted(0);
         }
-        List<AttchUrl> attchUrls = attchUrlRepository.save(request);
+        List<AttachUrl> attchUrls = attchUrlRepository.save(request);
         return attchUrls;
     }
     /**
@@ -104,7 +116,7 @@ public class SFileServiceImpl implements SFileService {
      * @return
      */
     @Override
-    public List<AttchUrl> updateAttchUrls(List<AttchUrl> list) {
+    public List<AttachUrl> updateAttchUrls(List<AttachUrl> list) {
         LOG.info("start executing updateAttchUrls()方法.", this.CLASS);
         if (list == null || list.size() <= 0) {
             throw new NullPointerException("getAttchUrls List is empty");
@@ -140,8 +152,12 @@ public class SFileServiceImpl implements SFileService {
         String sql = "UPDATE attch_url SET is_deleted= 1 WHERE belong_to= " + "\"" + belongTo + "\"" + " AND url NOT IN (" + aUrls + ")";
         this.jdbcTemplate.update(sql);
         //查询数据库中有效的附件
-        List<AttchUrl> attchUrlList = this.attchUrlRepository.findAttchUrls(belongTo);
+        List<AttachUrl> attchUrlList = this.attchUrlRepository.findAttchUrls(belongTo);
         LOG.info("finish executing updateAttchUrls()方法.", this.CLASS);
         return attchUrlList;
+    }
+
+    public void setUploadDir(String uploadDir) {
+        this.uploadDir = uploadDir;
     }
 }
