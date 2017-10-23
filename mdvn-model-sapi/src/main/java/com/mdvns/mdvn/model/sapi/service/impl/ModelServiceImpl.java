@@ -1,13 +1,10 @@
 package com.mdvns.mdvn.model.sapi.service.impl;
 
+import com.mdvns.mdvn.common.beans.TaskDeliver;
 import com.mdvns.mdvn.model.sapi.domain.*;
 
-import com.mdvns.mdvn.model.sapi.domain.entity.SubFunctionLabel;
-import com.mdvns.mdvn.model.sapi.domain.entity.Model;
-import com.mdvns.mdvn.model.sapi.domain.entity.ModelRole;
-import com.mdvns.mdvn.model.sapi.repository.FunctionModelRepository;
-import com.mdvns.mdvn.model.sapi.repository.ModelRepository;
-import com.mdvns.mdvn.model.sapi.repository.ModelRoleRepository;
+import com.mdvns.mdvn.model.sapi.domain.entity.*;
+import com.mdvns.mdvn.model.sapi.repository.*;
 import com.mdvns.mdvn.model.sapi.service.ModelService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -41,6 +39,12 @@ public class ModelServiceImpl implements ModelService {
     private ModelRepository modelRepository;
 
     @Autowired
+    private ItModelRepository itModelRepository;
+
+    @Autowired
+    private TaskDeliveryRepository taskDeliveryRepository;
+
+    @Autowired
     private Model model;
 
     @Autowired
@@ -53,7 +57,7 @@ public class ModelServiceImpl implements ModelService {
     private ModelRole modelRole;
 
     /**
-     * 注：未测试通过
+     *
      *
      * @param request
      * @return Model
@@ -138,6 +142,70 @@ public class ModelServiceImpl implements ModelService {
             modelRoleList.add(modelRole);
         }
         createModelResponse.setRoles(modelRoleList);
+        //5.保存IterationModel表数据
+        if (request.getIterationModels() != null && !request.getIterationModels().isEmpty()) {
+            List<CreateItModelResponse> createItModelResponses = new ArrayList<>();
+            List<CreateItModelRequest> iterationModels = request.getIterationModels();
+            List<IterationModel> iterationModelList = new ArrayList<IterationModel>();
+            for (int i = 0; i < iterationModels.size(); i++) {
+                CreateItModelResponse createItModelResponse = new CreateItModelResponse();
+                IterationModel iterationModel = new IterationModel();
+                iterationModel.setModelId(model.getModelId());
+                iterationModel.setIsDeleted(0);
+                iterationModel.setCreateTime(createTime);
+                if (!StringUtils.isEmpty(iterationModels.get(i).getName())) {
+                    iterationModel.setName(iterationModels.get(i).getName());
+                }
+                List<String> labels = iterationModels.get(i).getLabels();
+                List<String> labelIds = new ArrayList<>();
+                for (int j = 0; j < labels.size(); j++) {
+                    SubFunctionLabel subfuncModel = this.functionModelRepository.findByNameAndParentId(labels.get(j),model.getModelId());
+                    String labelId = subfuncModel.getLabelId();
+                    labelIds.add(labelId);
+                }
+                StringBuilder str = new StringBuilder();
+                for (int j = 0; j < labelIds.size(); j++) {
+                    if (j == labelIds.size() - 1) {
+                        str.append(labelIds.get(j));
+                    } else {
+                        str.append(labelIds.get(j));
+                        str.append(",");
+                    }
+                }
+                iterationModel.setLabelIds(str.toString());
+                iterationModel = this.itModelRepository.saveAndFlush(iterationModel);
+                iterationModelList.add(iterationModel);
+                createItModelResponse.setIterationModel(iterationModel);
+                //响应
+                List<SubFunctionLabel> funcLabels = new ArrayList<>();
+                for (int j = 0; j < labelIds.size(); j++) {
+                    SubFunctionLabel subFuncLabel = new SubFunctionLabel();
+                    subFuncLabel = this.functionModelRepository.findByLabelId(labelIds.get(j));
+                    funcLabels.add(subFuncLabel);
+                }
+                createItModelResponse.setFunctionLabels(funcLabels);
+                createItModelResponses.add(createItModelResponse);
+            }
+            createModelResponse.setIterationModels(createItModelResponses);
+        }
+        //6.保存TaskDelinery表数据
+        if (request.getTaskDeliveries() != null && !request.getTaskDeliveries().isEmpty()) {
+            List<TaskDelivery> taskDelivers = request.getTaskDeliveries();
+            List<TaskDelivery> taskDeliverlist = new ArrayList<>();
+            for (int i = 0; i < taskDelivers.size() ; i++) {
+                TaskDelivery taskDelivery = new TaskDelivery();
+                taskDelivery.setName(taskDelivers.get(i).getName());
+                taskDelivery.setModelId(model.getModelId());
+                taskDelivery.setType(taskDelivers.get(i).getType());
+                if (!StringUtils.isEmpty(taskDelivers.get(i).getColor())){
+                    taskDelivery.setColor(taskDelivers.get(i).getColor());
+                }
+                taskDelivery.setCreateTime(createTime);
+                taskDelivery = this.taskDeliveryRepository.saveAndFlush(taskDelivery);
+                taskDeliverlist.add(taskDelivery);
+            }
+            createModelResponse.setTaskDeliveries(taskDeliverlist);
+        }
         LOG.info("执行结束{} saveModel()方法.", this.CLASS);
         return ResponseEntity.ok(createModelResponse);
     }
@@ -183,7 +251,8 @@ public class ModelServiceImpl implements ModelService {
      * @throws SQLException
      */
     @Override
-    public RetrieveModelListResponse rtrvModelList(Integer page, Integer pageSize, String sortBy) throws SQLException {
+    public RetrieveModelListResponse rtrvModelList(Integer page, Integer pageSize, String sortBy) throws
+            SQLException {
         RetrieveModelListResponse retrieveModelListResponse = new RetrieveModelListResponse();
         sortBy = (sortBy == null) ? "quoteCnt" : sortBy;
         PageRequest pageable = new PageRequest(page, pageSize, Sort.Direction.DESC, sortBy);
