@@ -57,8 +57,6 @@ public class ModelServiceImpl implements ModelService {
     private ModelRole modelRole;
 
     /**
-     *
-     *
      * @param request
      * @return Model
      * @desc: 保存新建模块
@@ -71,7 +69,6 @@ public class ModelServiceImpl implements ModelService {
         CreateModelResponse createModelResponse = new CreateModelResponse();
         Timestamp createTime = new Timestamp(System.currentTimeMillis());
         Model model = new Model();
-        ModelRole modelRole = new ModelRole();
         //1.保存Model表数据
         model.setIsDeleted(0);
         model.setQuoteCnt(0);
@@ -115,7 +112,7 @@ public class ModelServiceImpl implements ModelService {
                 subfunctionModelSub.setCreatorId(request.getCreatorId());
                 subfunctionModelSub.setIsDeleted(0);
                 subfunctionModelSub.setQuoteCnt(0);
-                subfunctionModelSub.setName(subfunctionLabels.get(i).getName());
+                subfunctionModelSub.setName(subfunctionLabels.get(j).getName());
                 subfunctionModelSub.setParentId(subFunctionLabel.getLabelId());
                 subfunctionModelSub = this.functionModelRepository.saveAndFlush(subfunctionModelSub);
                 subfunctionModelSub.setLabelId("MF" + subfunctionModelSub.getUuId());
@@ -130,6 +127,7 @@ public class ModelServiceImpl implements ModelService {
         List<ModelRole> modelRoles = request.getRoles();
         List<ModelRole> modelRoleList = new ArrayList<ModelRole>();
         for (int i = 0; i < modelRoles.size(); i++) {
+            ModelRole modelRole = new ModelRole();
             modelRole.setModelId(model.getModelId());
             modelRole.setName(modelRoles.get(i).getName());
             modelRole.setCreateTime(createTime);
@@ -159,7 +157,7 @@ public class ModelServiceImpl implements ModelService {
                 List<String> labels = iterationModels.get(i).getLabels();
                 List<String> labelIds = new ArrayList<>();
                 for (int j = 0; j < labels.size(); j++) {
-                    SubFunctionLabel subfuncModel = this.functionModelRepository.findByNameAndParentId(labels.get(j),model.getModelId());
+                    SubFunctionLabel subfuncModel = this.functionModelRepository.findByNameAndParentId(labels.get(j), model.getModelId());
                     String labelId = subfuncModel.getLabelId();
                     labelIds.add(labelId);
                 }
@@ -192,12 +190,13 @@ public class ModelServiceImpl implements ModelService {
         if (request.getTaskDeliveries() != null && !request.getTaskDeliveries().isEmpty()) {
             List<TaskDelivery> taskDelivers = request.getTaskDeliveries();
             List<TaskDelivery> taskDeliverlist = new ArrayList<>();
-            for (int i = 0; i < taskDelivers.size() ; i++) {
+            for (int i = 0; i < taskDelivers.size(); i++) {
                 TaskDelivery taskDelivery = new TaskDelivery();
                 taskDelivery.setName(taskDelivers.get(i).getName());
+                taskDelivery.setIsDeleted(0);
                 taskDelivery.setModelId(model.getModelId());
                 taskDelivery.setType(taskDelivers.get(i).getType());
-                if (!StringUtils.isEmpty(taskDelivers.get(i).getColor())){
+                if (!StringUtils.isEmpty(taskDelivers.get(i).getColor())) {
                     taskDelivery.setColor(taskDelivers.get(i).getColor());
                 }
                 taskDelivery.setCreateTime(createTime);
@@ -339,6 +338,12 @@ public class ModelServiceImpl implements ModelService {
         }
         LOG.info("执行结束{} findLabelId()方法.", this.CLASS);
         return subFunctionLabel;
+    }
+
+    @Override
+    public List<TaskDelivery> findTaskDeliveryById(RtrvModelByIdRequest request) {
+        List<TaskDelivery> taskDeliveries = this.taskDeliveryRepository.findByModelIdAndIsDeleted(request.getModelId(),0);
+        return taskDeliveries;
     }
 
     /**

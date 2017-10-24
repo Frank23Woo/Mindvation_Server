@@ -340,12 +340,13 @@ public class StoryServiceImpl implements IStoryService {
         }
         //3.获取用户故事上一层reqmnt所有角色成员信息
         // 查询members
+        String modelId = null;
         try {
             //查询reqmnt下的modelId
             String storyId = rtrvStoryDetailRequest.getStoryId();
             Map mapStory = new HashMap();
             mapStory.put("storyId", storyId);
-            String modelId = restTemplate.postForObject(config.getModelIdByStoryIdUrl(), storyId, String.class);
+            modelId = restTemplate.postForObject(config.getModelIdByStoryIdUrl(), storyId, String.class);
             ParameterizedTypeReference modelRoleRef = new ParameterizedTypeReference<List<ModelRole>>() {
             };
             Map modelIdMap = new HashMap();
@@ -443,6 +444,16 @@ public class StoryServiceImpl implements IStoryService {
         rtrvTaskListRequest.setStoryId(rtrvStoryDetailRequest.getStoryId());
         RestResponse<List<TaskDetail>> response = restTemplate.postForObject(url, rtrvTaskListRequest, RestResponse.class);
         storyDetail.setsTasks(response.getResponseBody());
+        //7.获取模块下的交付件信息
+        try {
+            String findTaskDeliveryByIdUrl = config.getFindTaskDeliveryByIdUrl();
+            RtrvModelByIdRequest rtrvModelByIdRequest = new RtrvModelByIdRequest();
+            rtrvModelByIdRequest.setModelId(modelId);
+            List<TaskDelivery> taskDeliveries = restTemplate.postForObject(findTaskDeliveryByIdUrl, rtrvModelByIdRequest, List.class);
+            storyDetail.setTaskDeliveries(taskDeliveries);
+        }catch (Exception ex) {
+            throw new BusinessException(ExceptionEnum.STORY_DETAIL_MODEL_TASKDELIVERY_NOT_RTRV);
+        }
 
         rtrvStoryDetailResponse.setStoryDetail(storyDetail);
         restResponse.setResponseBody(rtrvStoryDetailResponse);

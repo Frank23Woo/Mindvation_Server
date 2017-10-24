@@ -63,6 +63,16 @@ public class StoryConfig {
 
     private String rtrvTaskListByStoryIdUrl;
 
+    private String findTaskDeliveryByIdUrl;
+
+    public String getFindTaskDeliveryByIdUrl() {
+        return findTaskDeliveryByIdUrl;
+    }
+
+    public void setFindTaskDeliveryByIdUrl(String findTaskDeliveryByIdUrl) {
+        this.findTaskDeliveryByIdUrl = findTaskDeliveryByIdUrl;
+    }
+
     public String getRtrvTaskListByStoryIdUrl() {
         return rtrvTaskListByStoryIdUrl;
     }

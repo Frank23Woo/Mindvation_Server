@@ -38,6 +38,7 @@ config:
   rtrvFuncLabelUrl: http://localhost:8080/mdvn-model-sapi/models/findFuncById
   rtrvModelRoleByModelIdUrl: http://localhost:8080/mdvn-model-sapi/models/findById
   rtrvRoleByRoleIdUrl: http://localhost:8080/mdvn-model-sapi/models/findRoleById
+  findTaskDeliveryByIdUrl: http://localhost:8080/mdvn-model-sapi/models/findTaskDeliveryById
 
   rtrvStoryInfoListUrl: http://localhost:8080/mdvn-story-sapi/story/rtrvStoryInfoList
   rtrvTaskListByStoryIdUrl: http://localhost:8080/mdvn-task-papi/task/retrieveTaskList
