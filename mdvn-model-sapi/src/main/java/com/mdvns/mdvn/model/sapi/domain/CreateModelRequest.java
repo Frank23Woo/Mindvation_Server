@@ -2,6 +2,7 @@ package com.mdvns.mdvn.model.sapi.domain;
 
 
 import com.mdvns.mdvn.model.sapi.domain.entity.ModelRole;
+import com.mdvns.mdvn.model.sapi.domain.entity.TaskDelivery;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -17,6 +18,8 @@ public class CreateModelRequest {
     private List<FunctionLabel> functionLabels;
     //模块下对应的角色
     private List<ModelRole> roles;
+    private List<CreateItModelRequest> iterationModels;
+    private List<TaskDelivery> taskDeliveries;
     private List<String> remarks;
 
     public String getName() {
@@ -57,6 +60,22 @@ public class CreateModelRequest {
 
     public void setRoles(List<ModelRole> roles) {
         this.roles = roles;
+    }
+
+    public List<CreateItModelRequest> getIterationModels() {
+        return iterationModels;
+    }
+
+    public void setIterationModels(List<CreateItModelRequest> iterationModels) {
+        this.iterationModels = iterationModels;
+    }
+
+    public List<TaskDelivery> getTaskDeliveries() {
+        return taskDeliveries;
+    }
+
+    public void setTaskDeliveries(List<TaskDelivery> taskDeliveries) {
+        this.taskDeliveries = taskDeliveries;
     }
 
     public List<String> getRemarks() {

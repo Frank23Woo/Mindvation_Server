@@ -97,4 +97,8 @@ public class SubFunctionLabel {
     public void setIsDeleted(Integer isDeleted) {
         this.isDeleted = isDeleted;
     }
+
+    public SubFunctionLabel() {
+        super();
+    }
 }

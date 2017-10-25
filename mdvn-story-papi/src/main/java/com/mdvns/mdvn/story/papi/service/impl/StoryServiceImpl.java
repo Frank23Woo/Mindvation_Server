@@ -17,10 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class StoryServiceImpl implements IStoryService {
@@ -96,7 +93,7 @@ public class StoryServiceImpl implements IStoryService {
         //2.保存用户故事成员信息
         if (createStoryRequest.getMembers() != null && !createStoryRequest.getMembers().isEmpty()) {
             List<RoleMember> members = createStoryRequest.getMembers();
-            List<StoryRoleMember> list = new ArrayList<>();
+            List<StoryRoleMember> list = new ArrayList<StoryRoleMember>();
             for (int i = 0; i < members.size(); i++) {
                 String roleId = members.get(i).getRoleId();
                 for (int j = 0; j < members.get(i).getMemberIds().size(); j++) {
@@ -130,20 +127,6 @@ public class StoryServiceImpl implements IStoryService {
                 throw new BusinessException(ExceptionEnum.STORY_TAG_NOT_CREATE);
             }
         }
-//        //6.保存用户故事附件信息
-//        if (createStoryRequest.getsAttchUrls() != null && !createStoryRequest.getsAttchUrls().isEmpty()) {
-//            List<StoryAttchUrls> storyAttchUrls = createStoryRequest.getsAttchUrls();
-//            for (int i = 0; i < storyAttchUrls.size(); i++) {
-//                storyAttchUrls.get(i).setStoryId(storyId);
-////                storyAttchUrls.get(i).setYxbz("Y");
-//            }
-//            String savePAttchUrlsUrl = config.getSavePAttchUrlsUrl();
-//            try {
-//                List<StoryAttchUrls> pAttchUrls = restTemplate.postForObject(savePAttchUrlsUrl, storyAttchUrls, List.class);
-//            } catch (Exception ex) {
-//                throw new BusinessException(ExceptionEnum.STORY_ATTCHURL_NOT_CREATE);
-//            }
-//        }
         return restResponse;
     }
 
@@ -198,7 +181,7 @@ public class StoryServiceImpl implements IStoryService {
             UpdateSMembersRequest updateSMembersRequest = new UpdateSMembersRequest();
             //角色集合转为对象
             List<RoleMember> members = updateStoryDetailRequest.getMembers();
-            List<StoryRoleMember> list = new ArrayList<>();
+            List<StoryRoleMember> list = new ArrayList<StoryRoleMember>();
             for (int i = 0; i < members.size(); i++) {
                 String roleId = members.get(i).getRoleId();
                 for (int j = 0; j < members.get(i).getMemberIds().size(); j++) {
@@ -216,7 +199,7 @@ public class StoryServiceImpl implements IStoryService {
                 };
                 List<StoryRoleMember> storyRoleMembers = FetchListUtil.fetch(restTemplate, updateStoryMembersUrl, updateSMembersRequest, reqmntTagTypeReference);
                 //选出不同的角色
-                List<String> roleIds = new ArrayList<>();
+                List<String> roleIds = new ArrayList<String>();
                 for (int i = 0; i < storyRoleMembers.size(); i++) {
                     String id = storyRoleMembers.get(i).getRoleId();
                     if (!roleIds.isEmpty() && roleIds.contains(id)) {
@@ -235,7 +218,7 @@ public class StoryServiceImpl implements IStoryService {
                     rtrvMembersByRoleIdRequest.setRoleId(roleId);
                     rtrvMembersByRoleIdRequest.setStoryId(updateStoryDetailRequest.getStoryInfo().getStoryId());
                     List<StoryRoleMember> memberList = FetchListUtil.fetch(restTemplate, config.getRtrvMembersByRoleIdUrl(), rtrvMembersByRoleIdRequest, reqmntTagTypeReference);
-                    List staffIds = new ArrayList();
+                    List<String> staffIds = new ArrayList();
                     for (int j = 0; j < memberList.size(); j++) {
                         staffIds.add(memberList.get(j).getStaffId());
                     }
@@ -260,7 +243,7 @@ public class StoryServiceImpl implements IStoryService {
                 ParameterizedTypeReference reqmntTagTypeReference = new ParameterizedTypeReference<List<StoryTag>>() {
                 };
                 List<StoryTag> storyTags = FetchListUtil.fetch(restTemplate, updateStoryTagsUrl, updateSTagsRequest, reqmntTagTypeReference);
-                List tagIds = new ArrayList();
+                List<String> tagIds = new ArrayList();
                 for (int i = 0; i < storyTags.size(); i++) {
                     tagIds.add(storyTags.get(i).getTagId());
                 }
@@ -321,10 +304,9 @@ public class StoryServiceImpl implements IStoryService {
             ParameterizedTypeReference reqmntTagTypeReference = new ParameterizedTypeReference<List<StoryRoleMember>>() {
             };
             List<StoryRoleMember> storyRoleMembers = FetchListUtil.fetch(restTemplate, rtrvSRoleMembersUrl, rtrvStoryDetailRequest, reqmntTagTypeReference);
-//            List<StoryRoleMember> storyRoleMembers = restTemplate.postForObject(rtrvSRoleMembersUrl, rtrvStoryDetailRequest, List.class);
             List<RoleAndMember> roleAndMembers = new ArrayList<>();
             //选出不同的角色
-            List<String> roleIds = new ArrayList<>();
+            List<String> roleIds = new ArrayList<String>();
             for (int i = 0; i < storyRoleMembers.size(); i++) {
                 String id = storyRoleMembers.get(i).getRoleId();
                 if (!roleIds.isEmpty() && roleIds.contains(id)) {
@@ -342,7 +324,7 @@ public class StoryServiceImpl implements IStoryService {
                 rtrvMembersByRoleIdRequest.setRoleId(roleId);
                 rtrvMembersByRoleIdRequest.setStoryId(rtrvStoryDetailRequest.getStoryId());
                 List<StoryRoleMember> members = FetchListUtil.fetch(restTemplate, config.getRtrvMembersByRoleIdUrl(), rtrvMembersByRoleIdRequest, reqmntTagTypeReference);
-                List staffIds = new ArrayList();
+                List<String> staffIds = new ArrayList();
                 for (int j = 0; j < members.size(); j++) {
                     staffIds.add(members.get(j).getStaffId());
                 }
@@ -358,12 +340,13 @@ public class StoryServiceImpl implements IStoryService {
         }
         //3.获取用户故事上一层reqmnt所有角色成员信息
         // 查询members
+        String modelId = null;
         try {
             //查询reqmnt下的modelId
             String storyId = rtrvStoryDetailRequest.getStoryId();
             Map mapStory = new HashMap();
             mapStory.put("storyId", storyId);
-            String  modelId = restTemplate.postForObject(config.getModelIdByStoryIdUrl(), storyId, String.class);
+            modelId = restTemplate.postForObject(config.getModelIdByStoryIdUrl(), storyId, String.class);
             ParameterizedTypeReference modelRoleRef = new ParameterizedTypeReference<List<ModelRole>>() {
             };
             Map modelIdMap = new HashMap();
@@ -378,7 +361,7 @@ public class StoryServiceImpl implements IStoryService {
             };
             List<ReqmntMember> data = FetchListUtil.fetch(restTemplate, config.getRtrvReqmntMembersUrl(), reqmntId, parameterizedTypeReference);
             List<ReqmntMember> reqmntMembers = data;
-            List<String> memberIds = new ArrayList<>();
+            List<String> memberIds = new ArrayList<String>();
             for (int i = 0; i < reqmntMembers.size(); i++) {
                 String id = reqmntMembers.get(i).getReqmntId();
                 if (!memberIds.isEmpty() && memberIds.contains(id)) {
@@ -398,7 +381,7 @@ public class StoryServiceImpl implements IStoryService {
             for (int i = 0; i < modelRoleList.size(); i++) {
                 RoleAndMember roleAndMember = new RoleAndMember();
                 roleAndMember.setRoleDetail(modelRoleList.get(i));
-                List<Staff> stafs = new ArrayList<>();
+                List<Staff> stafs = new ArrayList<Staff>();
                 roleAndMember.setMemberDetails(stafs);
 
                 for (int j = 0; j < reqmntMembers.size(); j++) {
@@ -420,7 +403,7 @@ public class StoryServiceImpl implements IStoryService {
             ParameterizedTypeReference reqmntTagTypeReference = new ParameterizedTypeReference<List<StoryTag>>() {
             };
             List<StoryTag> storyTags = FetchListUtil.fetch(restTemplate, rtrvStoryTagsUrl, rtrvStoryDetailRequest, reqmntTagTypeReference);
-            List tagIds = new ArrayList();
+            List<String> tagIds = new ArrayList<String>();
             for (int i = 0; i < storyTags.size(); i++) {
                 tagIds.add(storyTags.get(i).getTagId());
             }
@@ -459,8 +442,18 @@ public class StoryServiceImpl implements IStoryService {
         rtrvTaskListRequest.setPage(0);
         rtrvTaskListRequest.setPageSize(Integer.MAX_VALUE);
         rtrvTaskListRequest.setStoryId(rtrvStoryDetailRequest.getStoryId());
-        RestResponse<List<TaskDetail>> response = restTemplate.postForObject(url,rtrvTaskListRequest,RestResponse.class);
+        RestResponse<List<TaskDetail>> response = restTemplate.postForObject(url, rtrvTaskListRequest, RestResponse.class);
         storyDetail.setsTasks(response.getResponseBody());
+        //7.获取模块下的交付件信息
+        try {
+            String findTaskDeliveryByIdUrl = config.getFindTaskDeliveryByIdUrl();
+            RtrvModelByIdRequest rtrvModelByIdRequest = new RtrvModelByIdRequest();
+            rtrvModelByIdRequest.setModelId(modelId);
+            List<TaskDelivery> taskDeliveries = restTemplate.postForObject(findTaskDeliveryByIdUrl, rtrvModelByIdRequest, List.class);
+            storyDetail.setTaskDeliveries(taskDeliveries);
+        }catch (Exception ex) {
+            throw new BusinessException(ExceptionEnum.STORY_DETAIL_MODEL_TASKDELIVERY_NOT_RTRV);
+        }
 
         rtrvStoryDetailResponse.setStoryDetail(storyDetail);
         restResponse.setResponseBody(rtrvStoryDetailResponse);

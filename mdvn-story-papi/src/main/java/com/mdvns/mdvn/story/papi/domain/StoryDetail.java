@@ -19,6 +19,8 @@ public class StoryDetail {
     private List<Tag> tags;
     private FunctionLabel labelDetail;
 
+    private List<TaskDelivery> taskDeliveries;
+
 //    private List<RoleAndMember> members;
     //最后一层过程方法模块对象
     private SubFunctionLabel subFunctionLabel;
@@ -27,6 +29,14 @@ public class StoryDetail {
     //用户故事task(可以创建完后添加)
     private List<TaskDetail> sTasks;
     private List<String> remarks;
+
+    public List<TaskDelivery> getTaskDeliveries() {
+        return taskDeliveries;
+    }
+
+    public void setTaskDeliveries(List<TaskDelivery> taskDeliveries) {
+        this.taskDeliveries = taskDeliveries;
+    }
 
     public List<RoleAndMember> getrMembers() {
         return rMembers;

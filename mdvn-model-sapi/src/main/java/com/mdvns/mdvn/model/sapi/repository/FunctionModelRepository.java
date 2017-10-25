@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface FunctionModelRepository extends JpaRepository<SubFunctionLabel,Integer>{
-    SubFunctionLabel findByName(String name);
+    SubFunctionLabel findByNameAndParentId(String name,String parentId);
 
     Page<SubFunctionLabel> findAll(Pageable pageable);
 
