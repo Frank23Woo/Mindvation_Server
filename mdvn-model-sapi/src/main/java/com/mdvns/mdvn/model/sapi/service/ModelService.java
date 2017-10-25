@@ -4,9 +4,11 @@ import com.mdvns.mdvn.model.sapi.domain.*;
 import com.mdvns.mdvn.model.sapi.domain.entity.Model;
 import com.mdvns.mdvn.model.sapi.domain.entity.ModelRole;
 import com.mdvns.mdvn.model.sapi.domain.entity.SubFunctionLabel;
+import com.mdvns.mdvn.model.sapi.domain.entity.TaskDelivery;
 import org.springframework.http.ResponseEntity;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public interface ModelService {
 
@@ -30,5 +32,7 @@ public interface ModelService {
     ModelRole findById(String roleId);
 
     SubFunctionLabel judgeSubLabelId(JudgeSubLabelIdRequest request);
+
+    List<TaskDelivery> findTaskDeliveryById(RtrvModelByIdRequest request);
 
 }

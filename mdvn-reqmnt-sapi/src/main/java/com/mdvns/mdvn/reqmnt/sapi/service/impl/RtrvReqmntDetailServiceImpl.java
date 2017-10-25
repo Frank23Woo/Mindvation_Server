@@ -2,6 +2,8 @@ package com.mdvns.mdvn.reqmnt.sapi.service.impl;
 
 import com.mdvns.mdvn.common.beans.Tag;
 import com.mdvns.mdvn.reqmnt.sapi.domain.ReqmntCheckListDetail;
+import com.mdvns.mdvn.reqmnt.sapi.domain.RtrvReqmntInfoByModelIdResponse;
+import com.mdvns.mdvn.reqmnt.sapi.domain.RtrvReqmntInfoByModelRequest;
 import com.mdvns.mdvn.reqmnt.sapi.domain.RtrvReqmntInfoRequest;
 import com.mdvns.mdvn.reqmnt.sapi.domain.entity.*;
 import com.mdvns.mdvn.reqmnt.sapi.repository.*;
@@ -12,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -51,9 +54,8 @@ public class RtrvReqmntDetailServiceImpl implements IRtrvReqmntDetailService {
 
     @Override
     public List<ReqmntTag> rtrvReqmntTags(String reqmntId) {
-        return reqmntTagRepository.findAllByReqmntIdAndIsDeleted(reqmntId,0);
+        return reqmntTagRepository.findAllByReqmntIdAndIsDeleted(reqmntId, 0);
     }
-
 
 
     @Override
@@ -74,5 +76,24 @@ public class RtrvReqmntDetailServiceImpl implements IRtrvReqmntDetailService {
     @Override
     public List<ReqmntCheckList> rtrvReqmntCheckList(String reqmntId) {
         return reqmntCheckListRepository.findAllByReqmntIdAndIsDeleted(reqmntId, 0);
+    }
+    /**
+     * 看板那里，获取model下的所有reqmnt信息
+     * @param request
+     * @return
+     */
+    @Override
+    public List<RtrvReqmntInfoByModelIdResponse> rtrvReqmntInfoBymodelId(RtrvReqmntInfoByModelRequest request) {
+        List<String> modelIds = this.reqmntRepository.findModelId(request.getProjId(), request.getCreatorId());
+        List<RtrvReqmntInfoByModelIdResponse> list = new ArrayList<>();
+        for (int i = 0; i < modelIds.size(); i++) {
+            RtrvReqmntInfoByModelIdResponse response = new RtrvReqmntInfoByModelIdResponse();
+            String modelId = modelIds.get(i);
+            response.setModelId(modelId);
+            List<RequirementInfo> requirementInfos = this.reqmntRepository.findByProjIdAndCreatorIdAndModelIdAndIsDeleted(request.getProjId(), request.getCreatorId(), modelId, 0);
+            response.setRequirementInfos(requirementInfos);
+            list.add(response);
+        }
+        return list;
     }
 }
