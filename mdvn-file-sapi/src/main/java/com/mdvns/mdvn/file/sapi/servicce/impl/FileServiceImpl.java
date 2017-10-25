@@ -2,6 +2,7 @@ package com.mdvns.mdvn.file.sapi.servicce.impl;
 
 
 import com.mdvns.mdvn.common.utils.RestResponseUtil;
+import com.mdvns.mdvn.file.sapi.domain.UpdateAttchRequest;
 import com.mdvns.mdvn.file.sapi.domain.entity.AttchInfo;
 import com.mdvns.mdvn.file.sapi.repository.AttchInfoRepository;
 import com.mdvns.mdvn.file.sapi.servicce.FileService;
@@ -25,26 +26,38 @@ public class FileServiceImpl implements FileService {
 
     /*注入AttchInfo*/
     @Autowired
-    private AttchInfo attch;
+    private AttchInfo attchInfo;
 
     /**
      * 保存上传成功的附件的信息
      * @param attchInfo
      * @return
      */
-    public ResponseEntity<?> createAttchInfo(AttchInfo attchInfo) {
+    public ResponseEntity<?> createAttchInfo(AttchInfo attch) {
         //附件原名，上传人Id， 附件url 不能为空
-        if (StringUtils.isEmpty(attchInfo.getOriginName())||StringUtils.isEmpty(attchInfo.getCreatorId())||StringUtils.isEmpty(attchInfo.getUrl())) {
+        if (StringUtils.isEmpty(attch.getOriginName())||StringUtils.isEmpty(attch.getCreatorId())||StringUtils.isEmpty(attch.getUrl())) {
         }
         //实例化附件信息添加时间*
         Timestamp createTime = new Timestamp(System.currentTimeMillis());
         //附件信息添加时间赋值为系统当前时间*
-        attchInfo.setCreateTime(createTime);
+        attch.setCreateTime(createTime);
         //附件信息是否已删除赋值为0，未删除
-        attchInfo.setIsDeleted(0);
+        attch.setIsDeleted(0);
         //保存附件信息
-        attch = this.attchRepository.save(attchInfo);
+        attchInfo = this.attchRepository.save(attch);
 
-        return RestResponseUtil.successResponseEntity(attch);
+        return RestResponseUtil.successResponseEntity(attchInfo);
+    }
+
+    @Override
+    public ResponseEntity<?> updateAttch(UpdateAttchRequest updateAttchRequest) {
+
+        attchInfo = this.attchRepository.findOne(updateAttchRequest.getAttchId());
+        if (!(updateAttchRequest.getSubjectid().equals(attchInfo.getSubjectId()))||attchInfo == null) {
+            LOG.error("更新的附件不存在!");
+        }
+        attchInfo.setIsDeleted(1);
+        attchInfo = this.attchRepository.saveAndFlush(attchInfo);
+        return RestResponseUtil.successResponseEntity(attchInfo);
     }
 }

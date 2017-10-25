@@ -14,6 +14,9 @@ public class AttchInfo {
     /*文件上传后的url*/
     private String url;
 
+    /*附件的主体：是project或requriement的附件*/
+    private String subjectId;
+
     /*上传文件人的Id*/
     private String creatorId;
 
@@ -56,6 +59,14 @@ public class AttchInfo {
 
     public Long getCreateTime() {
         return createTime;
+    }
+
+    public String getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(String subjectId) {
+        this.subjectId = subjectId;
     }
 
     public void setCreateTime(Long createTime) {

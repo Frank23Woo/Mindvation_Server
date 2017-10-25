@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.file.papi.service;
 
+import com.mdvns.mdvn.file.papi.domain.UpdateAttchRequest;
 import com.mdvns.mdvn.file.papi.domain.UploadFileRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,9 +11,12 @@ import java.util.List;
 
 public interface FileService {
 //    ResponseEntity<?> getFiles(String belongTo);
-    ResponseEntity<?> uploadFiles(HttpServletRequest request, List<MultipartFile> files, String creatorId) throws IOException;
+    ResponseEntity<?> uploadFiles(HttpServletRequest request, String subjectId, List<MultipartFile> mFiles, String creatorId) throws IOException;
+    ResponseEntity<?> uploadFile(HttpServletRequest request, String subjectId, MultipartFile mFile, String creatorId) throws IOException;
 
     ResponseEntity<?> healthCheck(String checkCode);
+
+    ResponseEntity<?> updateAttch(UpdateAttchRequest updateAttchRequest);
 
    /* //创建时保存附件信息
     List<AttachUrl> saveAttchUrls(List<AttachUrl> request);

@@ -25,6 +25,9 @@ public class AttchInfo {
     /*附件上传后的url*/
     private String url;
 
+    /*附件主体Id：即表明附件是project的还是requirement的*/
+    private String subjectId;
+
     /*是否已删除*/
     private Integer isDeleted;
 
@@ -64,6 +67,14 @@ public class AttchInfo {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(String subjectId) {
+        this.subjectId = subjectId;
     }
 
     public Integer getIsDeleted() {

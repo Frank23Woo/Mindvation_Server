@@ -5,6 +5,7 @@ import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.common.utils.RestResponseUtil;
 import com.mdvns.mdvn.file.papi.config.WebConfig;
 import com.mdvns.mdvn.file.papi.domain.AttchInfo;
+import com.mdvns.mdvn.file.papi.domain.UpdateAttchRequest;
 import com.mdvns.mdvn.file.papi.domain.UploadFileRequest;
 import com.mdvns.mdvn.file.papi.service.FileService;
 import com.mdvns.mdvn.file.papi.util.FileUtil;
@@ -66,24 +67,23 @@ public class FileServiceImpl implements FileService {
     }*/
 
     /**
-     *
      * @param request
-     * @param files
+     * @param mFiles
      * @param creatorId
      * @return
      * @throws IOException
      */
     @Transactional
     @Override
-    public ResponseEntity<?> uploadFiles(HttpServletRequest request, List<MultipartFile> files, String creatorId) throws IOException {
+    public ResponseEntity<?> uploadFiles(HttpServletRequest request, String subjectId, List<MultipartFile> mFiles, String creatorId) throws IOException {
 
         //保存成功的附件信息Id使用List保存
         List<AttchInfo> attchs = new ArrayList<AttchInfo>();
 
         //文件依次上传
         try {
-            for (MultipartFile file : files) {
-                attchs.add(uploadFile(request, file, creatorId));
+            for (MultipartFile mFile : mFiles) {
+                attchs.add(doUpload(request, subjectId, mFile, creatorId));
             }
         } catch (Exception ex) {
             LOG.info("文件上传失败:{}", ex.getLocalizedMessage());
@@ -91,6 +91,21 @@ public class FileServiceImpl implements FileService {
         }
 
         return RestResponseUtil.successResponseEntity(attchs);
+    }
+
+    /**
+     * 单文件上传
+     *
+     * @param request
+     * @param mFile
+     * @param creatorId
+     * @return
+     * @throws IOException
+     */
+    @Override
+    public ResponseEntity<?> uploadFile(HttpServletRequest request, String subjectId, MultipartFile mFile, String creatorId) throws IOException {
+        attch = doUpload(request, subjectId, mFile, creatorId);
+        return RestResponseUtil.successResponseEntity(attch);
     }
 
     @Override
@@ -106,13 +121,29 @@ public class FileServiceImpl implements FileService {
         return responseEntity;
     }
 
+    @Override
+    public ResponseEntity<?> updateAttch(UpdateAttchRequest updateAttchRequest) {
+
+        String updateAttchUrl = "";
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity responseEntity = null;
+        try {
+            restTemplate.put(updateAttchUrl, updateAttchRequest);
+
+        } catch (Exception ex) {
+            LOG.error("跟新附件：{}, 失败:{}", updateAttchRequest.getAttchId(), ex.getLocalizedMessage());
+        }
+
+        return RestResponseUtil.successResponseEntity();
+    }
+
     /**
      * @param request
      * @param mFile   文件对象
      * @return 文件信息保存后的Id
      * @throws IOException
      */
-    private AttchInfo uploadFile(HttpServletRequest request, MultipartFile mFile, String creatorId) throws IOException {
+    private AttchInfo doUpload(HttpServletRequest request, String subjectId, MultipartFile mFile, String creatorId) throws IOException {
 
         //如果目录不存在，自动创建文件夹
         File dir = new File(uploadDir);
@@ -135,17 +166,19 @@ public class FileServiceImpl implements FileService {
         attch.setOriginName(fileOrigName);
         attch.setCreatorId(creatorId);
         attch.setUrl(url);
+        attch.setSubjectId(subjectId);
         //调用SAPI保存实例化AttchInfo对象
         String saveAttchInfoUrl = "http://localhost:10021/mdvn-file-sapi/files";
         LOG.info("========保存附件信息开始========, URL 为：{}", saveAttchInfoUrl);
         ResponseEntity<RestResponse<AttchInfo>> responseEntity = null;
         try {
             RestTemplate restTemplate = new RestTemplate();
-            ParameterizedTypeReference parameterizedTypeReference = new ParameterizedTypeReference<RestResponse<AttchInfo>>(){};
+            ParameterizedTypeReference parameterizedTypeReference = new ParameterizedTypeReference<RestResponse<AttchInfo>>() {
+            };
 
             responseEntity = restTemplate.exchange(saveAttchInfoUrl, HttpMethod.POST, new HttpEntity<>(attch), parameterizedTypeReference);
         } catch (Exception ex) {
-            LOG.error("保存信息失败:{}",ex.getLocalizedMessage());
+            LOG.error("保存信息失败:{}", ex.getLocalizedMessage());
         }
         LOG.info("========保存成功========{}", responseEntity.getBody());
         return responseEntity.getBody().getResponseBody();

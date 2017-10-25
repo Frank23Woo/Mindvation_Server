@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.file.papi.web;
 
+import com.mdvns.mdvn.file.papi.domain.UpdateAttchRequest;
 import com.mdvns.mdvn.file.papi.service.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,53 +27,31 @@ public class FileController {
 
     /**
      * 多文件上传处理
+     *
      * @param request
-     * @param files
+     * @param mFile
      * @return
      */
-    @PostMapping(value = "/uploadFiles/{creatorId}")
-    public ResponseEntity<?> uploads(HttpServletRequest request, @RequestParam List<MultipartFile> files, @PathVariable String creatorId) throws IOException {
-        LOG.info("Contrller 开始执行:{}",files.size());
-        return this.fileService.uploadFiles(request, files, creatorId);
+    @PostMapping(value = "/uploadFile")
+    public ResponseEntity<?> uploadFile(HttpServletRequest request, @RequestParam String subjectId, @RequestParam MultipartFile mFile, @RequestParam String creatorId) throws IOException {
+        LOG.info("Contrller 开始执行:{}");
+        return this.fileService.uploadFile(request, subjectId, mFile, creatorId);
     }
 
     @PostMapping(value = "/healthCheck/{checkCode}")
     public ResponseEntity<?> healthCheck(@PathVariable String checkCode) {
         return this.fileService.healthCheck(checkCode);
     }
-    /*
-        @PostMapping(value = "/{belongTo}")
-        public ResponseEntity<?> getFiles(@PathVariable String belongTo) {
-            return this.fileService.getFiles(belongTo);
-        }
-
-        /**
-         * 保存附件信息(创建)
-         * @param request
-         * @return
-         */
-   /*
-    @PostMapping(value="/saveAttchUrls")
-    public List<AttachUrl> saveAttchUrls(@RequestBody List<AttachUrl> request){
-        List<AttachUrl> attchUrls = fileService.saveAttchUrls(request);
-        return attchUrls;
-    }
 
     /**
-     * 更改附件信息
-     * @param attchUrls
+     * 更改附件信息(删除)
+     *
+     * @param
      * @return
      */
-  /*
-   @PostMapping(value="/updateAttchUrls")
-    public List<AttachUrl> updateAttchUrls(@RequestBody List<AttachUrl> attchUrls){
-        List<AttachUrl> attchUrlList = this.fileService.updateAttchUrls(attchUrls);
-        return attchUrlList;
+    @PostMapping(value = "/deleteAttch")
+    public ResponseEntity<?> updateAttch(@RequestBody UpdateAttchRequest updateAttchRequest) {
+
+        return this.fileService.updateAttch(updateAttchRequest);
     }
-
-   @RequestMapping("/fqdn")
-    public String generUrl() throws UnknownHostException {
-        return this.fileService.genUrl();
-    }*/
-
 }

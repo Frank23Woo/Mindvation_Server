@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.file.sapi.web;
 
+import com.mdvns.mdvn.file.sapi.domain.UpdateAttchRequest;
 import com.mdvns.mdvn.file.sapi.domain.entity.AttchInfo;
 import com.mdvns.mdvn.file.sapi.servicce.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,11 @@ public class FileController {
     public ResponseEntity<?> createAttchInfo(@RequestBody AttchInfo attchInfo) {
 
         return this.fileService.createAttchInfo(attchInfo);
+    }
+
+    @PutMapping(value = "/file")
+    public ResponseEntity<?> updateAttch(@RequestBody UpdateAttchRequest updateAttchRequest) {
+        return this.fileService.updateAttch(updateAttchRequest);
     }
 
     @PostMapping(value = "/healthCheck/{checkCode}")

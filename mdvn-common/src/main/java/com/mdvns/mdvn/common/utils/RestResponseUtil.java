@@ -32,6 +32,10 @@ public class RestResponseUtil {
 		return ResponseEntity.ok(restResponse);
 	}
 
+	public static ResponseEntity<?> successResponseEntity() {
+	
+		return successResponseEntity(null);
+	}
 	/**
 	 * 提供给部分不需要出參的接口
 	 * 
