@@ -1,73 +1,54 @@
 package com.mdvns.mdvn.mdvn.util;
 
-import java.io.*;
+import org.apache.maven.model.Dependency;
+import org.apache.maven.model.Model;
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
+import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
+import org.codehaus.plexus.util.WriterFactory;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 public class TempTest {
+
     public static void main(String[] args) {
-
-        updatePropViaAbsolutePath("dev",setPackageList());
-
-
-    }
-
-
-
-    private static void updatePropViaAbsolutePath(String config, List<String> packList){
+        File file = new File("");
+        String projPath = file.getAbsolutePath();
+        System.out.println(projPath);
+        File xmlFile = new File(projPath +File.separator+ "mdvn-task-sapi"+File.separator+"pom.xml");
         try {
-            Properties pro = new Properties();
-            InputStream in;
-            String projPath = "G:"+File.separator+"Github Repo"+File.separator+"Mindvation"+File.separator+"Mindvation_Server"+File.separator;
-            String configPath = File.separator + "src" + File.separator+ "main" + File.separator + "resources" +File.separator +"application.properties";
-            String attr = "spring.profiles.active";
-            for (int i = 0; i < packList.size(); i++) {
-                String packageName = packList.get(i);
-                String filePath = projPath + packageName + configPath;
-                in = new BufferedInputStream(new FileInputStream(filePath));
-                pro.load(in);
-                String currentConfig = pro.getProperty(attr);
-                System.out.println("current config: "+packageName+"-->"+attr+":"+currentConfig);
-                if(currentConfig.equals(config)){
-                    System.err.println("current config: "+packageName+" is correct, no need to change");
-                }else{
-                    FileOutputStream file = new FileOutputStream(filePath);
-                    pro.put("spring.profiles.active", config);
-                    pro.store(file, "update the config to "+config ); //这句话表示重新写入配置文件
-                    System.out.println("updated config: "+packageName+"-->"+attr+":"+pro.getProperty("spring.profiles.active"));
-                }
-            }
+//            DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+//            DocumentBuilder builder= builderFactory.newDocumentBuilder();
+//            Document document = builder.parse(xmlFile);
+//            Element element = document.getDocumentElement();
+//            System.out.println(element);
+            MavenXpp3Reader reader = new MavenXpp3Reader();
+            Model model = reader.read(new FileReader(projPath +File.separator+ "mdvn-task-papi"+File.separator+"pom.xml"));
+            List<Dependency> dependencies = model.getDependencies();
+            List<Dependency> newDependencies = model.getDependencies();
+            for (int i = 0; i < dependencies.size(); i++) {
+                if(dependencies.get(i).getArtifactId().equals("spring-boot-starter-tomcat")){
+                    System.out.println(dependencies.get(i).getScope());
+                    dependencies.get(i).setScope("provided");
+                    System.out.println(dependencies.get(i).getScope());
 
-        } catch (IOException e) {
+                }
+                newDependencies.add(dependencies.get(i));
+
+            }
+            model.setDependencies(newDependencies);
+
+
+            MavenXpp3Writer pomWriter = new MavenXpp3Writer();
+            Writer fileWriter = WriterFactory.newXmlWriter(xmlFile);
+            pomWriter.write(fileWriter,model);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-    private static List<String> setPackageList(){
-        List<String> packageList = new ArrayList<>();
-        packageList.add("mdvn-model-papi");
-        packageList.add("mdvn-model-sapi");
-        packageList.add("mdvn-project-papi");
-        packageList.add("mdvn-project-sapi");
-        packageList.add("mdvn-reqmnt-papi");
-        packageList.add("mdvn-reqmnt-sapi");
-        packageList.add("mdvn-staff-papi");
-        packageList.add("mdvn-staff-sapi");
-        packageList.add("mdvn-story-papi");
-        packageList.add("mdvn-story-sapi");
-        packageList.add("mdvn-tag-papi");
-        packageList.add("mdvn-tag-sapi");
-        packageList.add("mdvn-task-papi");
-        packageList.add("mdvn-task-sapi");
-        for (int i = 0; i < packageList.size(); i++) {
-            System.out.println(packageList.get(i));
-        }
-        return packageList;
+
 
     }
-
-
-
-
-
 }
