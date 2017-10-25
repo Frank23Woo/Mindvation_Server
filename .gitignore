@@ -30,3 +30,11 @@ mdvn-pchklst-papi/mvnw.cmd
 mdvn-pchklst-papi/mvnw.cmd
 mdvn-pchklst-sapi/mvnw.cmd
 mdvn-reqmnt-papi/mvnw.cmd
+mdvn-file-s/.mvn/wrapper/maven-wrapper.properties
+mdvn-file-s/.mvn/wrapper/maven-wrapper.jar
+mdvn-file-s/mvnw
+mdvn-file-sapi/.mvn/wrapper/maven-wrapper.jar
+mdvn-file-sapi/.mvn/wrapper/maven-wrapper.properties
+mdvn-file-sapi/mvnw
+mdvn-file-sapi/.mvn/wrapper/maven-wrapper.jar
+mdvn-file-sapi/.mvn/wrapper/maven-wrapper.jar

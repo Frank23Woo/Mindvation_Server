@@ -1,6 +1,7 @@
 package com.mdvns.mdvn.common.utils;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
@@ -20,6 +21,15 @@ public class RestResponseUtil {
 		restResponse.setResponseMsg("SUCCESS");
 		restResponse.setResponseBody(object);
 		return restResponse;
+	}
+	
+	public static ResponseEntity<?> successResponseEntity(Object object) {
+		RestResponse restResponse = new RestResponse();
+		restResponse.setStatusCode(HttpStatus.OK.toString());
+		restResponse.setResponseCode("000");
+		restResponse.setResponseMsg("SUCCESS");
+		restResponse.setResponseBody(object);
+		return ResponseEntity.ok(restResponse);
 	}
 
 	/**

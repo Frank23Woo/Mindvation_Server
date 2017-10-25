@@ -1,6 +1,7 @@
 package com.mdvns.mdvn.file.sapi.servicce.impl;
 
 
+import com.mdvns.mdvn.common.utils.RestResponseUtil;
 import com.mdvns.mdvn.file.sapi.domain.entity.AttchInfo;
 import com.mdvns.mdvn.file.sapi.repository.AttchInfoRepository;
 import com.mdvns.mdvn.file.sapi.servicce.FileService;
@@ -44,6 +45,6 @@ public class FileServiceImpl implements FileService {
         //保存附件信息
         attch = this.attchRepository.save(attchInfo);
 
-        return ResponseEntity.ok(attch);
+        return RestResponseUtil.successResponseEntity(attch);
     }
 }

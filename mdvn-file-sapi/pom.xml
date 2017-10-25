@@ -53,6 +53,12 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.6</version>
 		</dependency>
+		<!-- Dependency of common file-->
+		<dependency>
+			<groupId>com.mdvns.mdvn</groupId>
+			<artifactId>mdvn-common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>

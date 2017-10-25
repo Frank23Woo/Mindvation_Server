@@ -1,6 +1,8 @@
 package com.mdvns.mdvn.file.papi.service.impl;
 
 
+import com.mdvns.mdvn.common.beans.RestResponse;
+import com.mdvns.mdvn.common.utils.RestResponseUtil;
 import com.mdvns.mdvn.file.papi.config.WebConfig;
 import com.mdvns.mdvn.file.papi.domain.AttchInfo;
 import com.mdvns.mdvn.file.papi.domain.UploadFileRequest;
@@ -10,6 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -84,7 +90,7 @@ public class FileServiceImpl implements FileService {
             throw new IOException("文件上传失败");
         }
 
-        return ResponseEntity.ok(attchs);
+        return RestResponseUtil.successResponseEntity(attchs);
     }
 
     @Override
@@ -132,15 +138,17 @@ public class FileServiceImpl implements FileService {
         //调用SAPI保存实例化AttchInfo对象
         String saveAttchInfoUrl = "http://localhost:10021/mdvn-file-sapi/files";
         LOG.info("========保存附件信息开始========, URL 为：{}", saveAttchInfoUrl);
-        ResponseEntity<AttchInfo> responseEntity = null;
+        ResponseEntity<RestResponse<AttchInfo>> responseEntity = null;
         try {
             RestTemplate restTemplate = new RestTemplate();
-            responseEntity = restTemplate.postForEntity(saveAttchInfoUrl, attch, AttchInfo.class);
+            ParameterizedTypeReference parameterizedTypeReference = new ParameterizedTypeReference<RestResponse<AttchInfo>>(){};
+
+            responseEntity = restTemplate.exchange(saveAttchInfoUrl, HttpMethod.POST, new HttpEntity<>(attch), parameterizedTypeReference);
         } catch (Exception ex) {
             LOG.error("保存信息失败:{}",ex.getLocalizedMessage());
         }
         LOG.info("========保存成功========{}", responseEntity.getBody());
-        return responseEntity.getBody();
+        return responseEntity.getBody().getResponseBody();
     }
 
     /**
