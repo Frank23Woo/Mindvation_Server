@@ -15,9 +15,8 @@ import java.util.Properties;
 public class DeployUtil {
     public static void main(String[] args) {
 
-//        updateProperties("test",setPackageList());
-//        updatePomDependencyScope("spring-boot-starter-tomcat","",setPackageList());
-
+//        makeWarPackage();
+//        localhostIntegration();
     }
 
 
@@ -106,6 +105,15 @@ public class DeployUtil {
     }
 
 
+    private static void makeWarPackage(){
+        updateProperties("test",setPackageList());
+        updatePomDependencyScope("spring-boot-starter-tomcat","provided",setPackageList());
+    }
+
+    private static void localhostIntegration(){
+        updateProperties("dev",setPackageList());
+        updatePomDependencyScope("spring-boot-starter-tomcat","",setPackageList());
+    }
 
 
 
