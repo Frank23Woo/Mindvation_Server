@@ -54,7 +54,17 @@ public class ModelController {
     }
 
     /**
-     * 通过Id查询model信息
+     * 通过Id查询model全部详细信息
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/findModelDetailById")
+    public RestResponse findModelDetailById(@RequestBody RtrvModelByIdRequest request) {
+        return this.modelService.findModelDetailById(request);
+    }
+
+    /**
+     * 通过Id查询model信息（只到reqmnt下的过程方法模块和角色信息）
      * @param request
      * @return
      */
@@ -72,7 +82,7 @@ public class ModelController {
 
 
     @PostMapping(value = "/rtrvModelList")
-    public RestResponse rtrvModelList(@RequestBody RetrieveModelListRequest retrieveModelListRequest) {
+    public RestResponse rtrvModelList(@RequestBody RetrieveModelListByTypeRequest retrieveModelListRequest) {
         return this.modelService.rtrvModelList(retrieveModelListRequest);
     }
 

@@ -35,17 +35,36 @@ public class WebController {
         LOG.info("开始执行 createModel 方法.");
         return this.modelService.saveModel(request);
     }
+//    /**
+//     * 获取Model列表，分页/排序
+//     */
+//    @PostMapping(value = "/models")
+//    public RetrieveModelListResponse rtrvModelList(@RequestBody RetrieveModelListByTypeRequest retrieveModelListRequest) throws SQLException, BusinessException {
+//        Integer page = retrieveModelListRequest.getPage();
+//        Integer pageSize = retrieveModelListRequest.getPageSize();
+//        if (null==page||pageSize==null) {
+//            return this.modelService.rtrvModelList();
+//        }
+//        return this.modelService.rtrvModelList((page-1), pageSize, retrieveModelListRequest.getSortBy());
+//    }
+
     /**
-     * 获取Model列表，分页/排序
+     * 获取Model列表，分页/排序,由类型选择
      */
     @PostMapping(value = "/models")
-    public RetrieveModelListResponse rtrvModelList(@RequestBody RetrieveModelListRequest retrieveModelListRequest) throws SQLException, BusinessException {
+    public RetrieveModelListResponse rtrvModelList(@RequestBody RetrieveModelListByTypeRequest retrieveModelListRequest) throws SQLException, BusinessException {
         Integer page = retrieveModelListRequest.getPage();
         Integer pageSize = retrieveModelListRequest.getPageSize();
+        String modelType = retrieveModelListRequest.getModelType();
+        String creatorId = retrieveModelListRequest.getCreatorId();
         if (null==page||pageSize==null) {
             return this.modelService.rtrvModelList();
         }
-        return this.modelService.rtrvModelList((page-1), pageSize, retrieveModelListRequest.getSortBy());
+        if (null==modelType && null==creatorId){
+            return this.modelService.rtrvModelList((page-1), pageSize, retrieveModelListRequest.getSortBy());
+        }else{
+            return this.modelService.rtrvModelList(retrieveModelListRequest);
+        }
     }
 
     /**
@@ -71,7 +90,7 @@ public class WebController {
     }
 
     /**
-     * 根据id查询模块
+     * 根据id查询过程方法模块
      *
      * @param request 模块Id
      * @return Model
@@ -80,6 +99,29 @@ public class WebController {
     public RtrvModelByIdResponse findById(@RequestBody RtrvModelByIdRequest request) {
         return this.modelService.findById(request);
     }
+    /**
+     * 根据id查询模块全部详细信息
+     *
+     * @param request 模块Id
+     * @return Model
+     */
+    @PostMapping(value = "/models/findModelDetailById")
+    public CreateModelResponse findModelDetailById(@RequestBody RtrvModelByIdRequest request) {
+        return this.modelService.findModelDetailById(request);
+    }
+
+
+    /**
+     * 根据id查询模块对象
+     *
+     * @param modelId 模块Id
+     * @return Model
+     */
+    @PostMapping(value = "/models/findModelById")
+    public Model findModelById(@RequestBody String modelId) {
+        return this.modelService.findModelById(modelId);
+    }
+
 
     /**
      * 根据id查询模块

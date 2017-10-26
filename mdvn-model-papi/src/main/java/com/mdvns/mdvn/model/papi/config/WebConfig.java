@@ -22,6 +22,26 @@ public class WebConfig {
 
     private String findByIdUrl;
 
+    private String findModelDetailByIdUrl;
+
+    private String rtrvModelListByTypeUrl;
+
+    public String getRtrvModelListByTypeUrl() {
+        return rtrvModelListByTypeUrl;
+    }
+
+    public void setRtrvModelListByTypeUrl(String rtrvModelListByTypeUrl) {
+        this.rtrvModelListByTypeUrl = rtrvModelListByTypeUrl;
+    }
+
+    public String getFindModelDetailByIdUrl() {
+        return findModelDetailByIdUrl;
+    }
+
+    public void setFindModelDetailByIdUrl(String findModelDetailByIdUrl) {
+        this.findModelDetailByIdUrl = findModelDetailByIdUrl;
+    }
+
     public String getFindByNameUrl() {
         return findByNameUrl;
     }

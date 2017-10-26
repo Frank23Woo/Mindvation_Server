@@ -25,14 +25,23 @@ public interface ModelService {
 
     RetrieveModelListResponse rtrvModelList(Integer page, Integer pageSize, String sortBy) throws SQLException;
 
+//    RetrieveModelListResponse rtrvModelList(Integer page, Integer pageSize, String modelType, String sortBy) throws
+//            SQLException;
+    RetrieveModelListResponse rtrvModelList(RetrieveModelListByTypeRequest retrieveModelListRequest) throws
+            SQLException;
+
     RtrvModelByIdResponse findById(RtrvModelByIdRequest request);
 
     SubFunctionLabel findById(RtrvSubFunctionLabelById request);
 
     ModelRole findById(String roleId);
 
+    Model findModelById(String modelId);
+
     SubFunctionLabel judgeSubLabelId(JudgeSubLabelIdRequest request);
 
     List<TaskDelivery> findTaskDeliveryById(RtrvModelByIdRequest request);
+
+    CreateModelResponse findModelDetailById(RtrvModelByIdRequest request);
 
 }

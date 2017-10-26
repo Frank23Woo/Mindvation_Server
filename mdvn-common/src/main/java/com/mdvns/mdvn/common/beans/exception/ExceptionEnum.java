@@ -12,6 +12,8 @@ public enum ExceptionEnum {
 	 * 1300~1400 Project
 	 * 1400~1500 Reqmnt
 	 * 1500~1600 story
+	 * 1600~1700 task
+	 * 1700~1800 dashboard
 	 */
 	UNKNOW_EXCEPTION("555","未知错误"),
 	PARAMS_EXCEPTION("556", "参数异常"),
@@ -90,7 +92,15 @@ public enum ExceptionEnum {
 
 	// TASK
 	TASK_SAVE_FAILED("1601", "保存task失败"),
-	TASK_DOES_NOT_EXIST("1602", "task不存在");
+	TASK_DOES_NOT_EXIST("1602", "task不存在"),
+
+	//dashboard
+	DASHBOARD_DETAIL_REQMNTINFO_NOT_RTRV("1701", "调用SAPI获取看板前的reqmnt信息时失败"),
+	DASHBOARD_DETAIL_STORY_NOT_RTRV("1702", "调用SAPI获取看板的storylist信息时失败"),
+	DASHBOARD_NOT_CREATE("1703", "调用SAPI创建dashboard时失败"),
+	DASHBOARD_NOT_UPDATE("1704", "调用SAPI更改dashboard时失败");
+
+
 
 		String erroCode;
 		String ErrorMsg;

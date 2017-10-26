@@ -42,7 +42,7 @@ public class ModelServiceImpl implements ModelService {
      * @param retrieveModelListRequest
      * @return
      */
-    public RestResponse rtrvModelList(RetrieveModelListRequest retrieveModelListRequest) {
+    public RestResponse rtrvModelList(RetrieveModelListByTypeRequest retrieveModelListRequest) {
         RetrieveModelListResponse retrieveModelListResponse = new RetrieveModelListResponse();
         ResponseEntity<Object> responseEntity;
         String url = webConfig.getRtrvModelListUrl();
@@ -71,7 +71,7 @@ public class ModelServiceImpl implements ModelService {
     }
 
     /**
-     * 由modelId查询model对象
+     * 通过Id查询model信息（只到reqmnt下的过程方法模块和角色信息）
      *
      * @param request
      * @return
@@ -96,6 +96,27 @@ public class ModelServiceImpl implements ModelService {
         return restResponse;
     }
 
+    /**
+     * 通过Id查询model全部详细信息
+     * @param request
+     * @return
+     */
+    @Override
+    public RestResponse findModelDetailById(RtrvModelByIdRequest request) {
+        String findByIdUrl = webConfig.getFindModelDetailByIdUrl();
+        CreateModelResponse createModelResponse = new CreateModelResponse();
+        try {
+            createModelResponse = this.restTemplate.postForObject(findByIdUrl, request, CreateModelResponse.class);
+        } catch (Exception ex) {
+            throw new BusinessException(ExceptionEnum.SAPI_EXCEPTION);
+        }
+        restResponse.setResponseBody(createModelResponse);
+        restResponse.setResponseCode("000");
+        restResponse.setResponseMsg("请求成功");
+        restResponse.setStatusCode("200");
+        return restResponse;
+    }
+
     @Override
     public ResponseEntity<?> createModel(CreateModelRequest createModelRequest) {
 
@@ -114,7 +135,6 @@ public class ModelServiceImpl implements ModelService {
         }
         LogUtil.errorLog("新建Model的名称为：" + modelName);
         //开始新建model
-        CreateModelResponse createModelResponse = new CreateModelResponse();
         String url = webConfig.getSaveModelUrl();
         //调用Sapi保存模块
         ResponseEntity<CreateModelResponse> respEntity = this.restTemplate.postForEntity(url, createModelRequest, CreateModelResponse.class);

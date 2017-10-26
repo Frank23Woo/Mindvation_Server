@@ -3,10 +3,7 @@ package com.mdvns.mdvn.story.sapi.service.impl;
 import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.common.utils.RestResponseUtil;
-import com.mdvns.mdvn.story.sapi.domain.CreateStoryRequest;
-import com.mdvns.mdvn.story.sapi.domain.RtrvStoryListRequest;
-import com.mdvns.mdvn.story.sapi.domain.RtrvStoryListResponse;
-import com.mdvns.mdvn.story.sapi.domain.SaveSTasksRequest;
+import com.mdvns.mdvn.story.sapi.domain.*;
 import com.mdvns.mdvn.story.sapi.domain.entity.*;
 import com.mdvns.mdvn.story.sapi.repository.*;
 import com.mdvns.mdvn.story.sapi.service.ICreateStoryService;
@@ -92,6 +89,37 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
             LOG.info("查询结果为：{}", rtrvStoryListResponse);
             return ResponseEntity.ok(rtrvStoryListResponse);
         }
+    }
+
+    /**
+     * 通过reqmntlist获取story整个列表
+     * @param request
+     * @return
+     * @throws SQLException
+     */
+    @Override
+    public ResponseEntity<?> rtrvStoryInfoListByReqmntIds(RtrvStoryListByReqmntIdsRequest request) throws SQLException {
+        RtrvStoryListByReqmntIdsResponse rtrvStoryListResponse = new RtrvStoryListByReqmntIdsResponse();
+        List<String> reqmntIds = request.getReqmntIds();
+        List<Story> list = this.storyRepository.rtrvStoryInfoList(reqmntIds);
+        rtrvStoryListResponse.setStories(list);
+        rtrvStoryListResponse.setTotalElements(Long.valueOf(list.size()));
+        return ResponseEntity.ok(rtrvStoryListResponse);
+    }
+    /**
+     * 通过storylist获取story整个列表
+     * @param request
+     * @return
+     * @throws SQLException
+     */
+    @Override
+    public ResponseEntity<?> rtrvStoryInfoListByStoryIds(RtrvStoryListByStoryIdsRequest request) throws SQLException {
+        RtrvStoryListByStoryIdsResponse rtrvStoryListResponse = new RtrvStoryListByStoryIdsResponse();
+        List<String> storyIds = request.getStoryIds();
+        List<Story> list = this.storyRepository.rtrvStoryInfoByStoryIdsList(storyIds);
+        rtrvStoryListResponse.setStories(list);
+        rtrvStoryListResponse.setTotalElements(Long.valueOf(list.size()));
+        return ResponseEntity.ok(rtrvStoryListResponse);
     }
 
     /**

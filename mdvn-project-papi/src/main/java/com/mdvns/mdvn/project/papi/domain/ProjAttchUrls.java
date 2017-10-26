@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProjAttchUrls {
 
+    //uuId
+    private Integer uuId;
     //附件Id
     private Integer attachmentId;
     //项目Id
@@ -15,6 +17,14 @@ public class ProjAttchUrls {
     private Integer isDeleted;
     //更新时间
     private Long updateTime;
+
+    public Integer getUuId() {
+        return uuId;
+    }
+
+    public void setUuId(Integer uuId) {
+        this.uuId = uuId;
+    }
 
     public Long getUpdateTime() {
         return updateTime;

@@ -10,7 +10,7 @@ import java.util.List;
 public interface ProjAttchUrlsRepository extends JpaRepository<ProjAttchUrls,Integer>{
 
     List<ProjAttchUrls> findByProjId(String projId);
-    ProjAttchUrls findByProjIdAndAttachmentName(String projId,String AttachmentName);
+    ProjAttchUrls findByProjIdAndAttachmentId(String projId,Integer attachmentId);
 
     @Query(value="SELECT * FROM attachment_proj WHERE proj_id =?1 AND is_deleted = 0;",nativeQuery = true )
     List<ProjAttchUrls> findPAttchUrls(String projId);

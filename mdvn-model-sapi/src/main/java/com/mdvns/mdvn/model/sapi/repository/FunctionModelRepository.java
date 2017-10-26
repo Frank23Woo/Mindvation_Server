@@ -15,6 +15,8 @@ public interface FunctionModelRepository extends JpaRepository<SubFunctionLabel,
 
     List<SubFunctionLabel> findByParentId(String modelId);
 
+    List<SubFunctionLabel> findByLabelIdIn(List<String> labelIds);
+
     SubFunctionLabel findByLabelId(String labelId);
 
     @Query(value="  SELECT * FROM sub_function_label where parent_id=?1 AND name = ?2", nativeQuery = true)
