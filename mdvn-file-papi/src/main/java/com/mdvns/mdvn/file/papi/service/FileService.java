@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface FileService {
-//    ResponseEntity<?> getFiles(String belongTo);
+
     ResponseEntity<?> uploadFiles(HttpServletRequest request, List<MultipartFile> mFiles, String creatorId) throws IOException;
     ResponseEntity<?> uploadFile(HttpServletRequest request, MultipartFile mFile, String creatorId) throws IOException;
 
@@ -23,9 +23,5 @@ public interface FileService {
 
     ResponseEntity<?> retrieve(String ids);
 
-   /* //创建时保存附件信息
-    List<AttachUrl> saveAttchUrls(List<AttachUrl> request);
-    //更改时保存附件信息
-    List<AttachUrl> updateAttchUrls(List<AttachUrl> attchUrls);*/
 
 }

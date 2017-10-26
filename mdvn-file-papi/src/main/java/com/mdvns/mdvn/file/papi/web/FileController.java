@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.file.papi.web;
 
+import com.mdvns.mdvn.file.papi.domain.AttchInfo;
 import com.mdvns.mdvn.file.papi.domain.UpdateAttchRequest;
 import com.mdvns.mdvn.file.papi.service.FileService;
 import org.hibernate.validator.constraints.NotBlank;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,7 +59,11 @@ public class FileController {
         return this.fileService.retrieve(id);
     }
 
-
+    /**
+     * 根据多个id获取AttchInfo集合
+     * @param ids
+     * @return
+     */
     @PostMapping(value = "/rtrvAttchList/{attchIds}")
     public ResponseEntity<?> retrieve(@PathVariable("attchIds") @NotBlank(message = "id不能为空") String ids  ) {
 
@@ -67,8 +73,7 @@ public class FileController {
 
     /**
      * 更改附件信息
-     *
-     * @param
+     * @param updateAttchRequest
      * @return
      */
     public ResponseEntity<?> update(@RequestBody UpdateAttchRequest updateAttchRequest) {

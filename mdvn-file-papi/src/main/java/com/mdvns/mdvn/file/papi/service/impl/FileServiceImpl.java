@@ -12,9 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,9 +36,6 @@ public class FileServiceImpl implements FileService {
     /*SAPI的URL信息*/
     private WebConfig webConfig;
 
-    /*注入RestTemplate*/
-    private RestTemplate restTemplate;
-
     /*附件保存目录*/
     @Value("${web.upload-path}")
     private String uploadDir;
@@ -47,6 +43,10 @@ public class FileServiceImpl implements FileService {
     @Autowired
     private AttchInfo attchInfo;
 
+    private final RestTemplate restTemplate;
+    public FileServiceImpl(RestTemplateBuilder restTemplateBuilder) {
+        this.restTemplate = restTemplateBuilder.build();
+    }
 
     /**
      * 多文件上传
@@ -113,16 +113,16 @@ public class FileServiceImpl implements FileService {
     /**
      * 删除附件
      *
-     * @param attchId
+     * @param id
      * @return
      */
     @Transactional
     @Override
-    public ResponseEntity<?> delete(Integer attchId) {
-        RestTemplate restTemplate = new RestTemplate();
-        StringBuilder deleteAttchUrl = new StringBuilder("http://localhost:10021/mdvn-file-sapi/files/file");
-        deleteAttchUrl.append(File.separator).append(attchId);
-        restTemplate.put(deleteAttchUrl.toString(), attchId);
+    public ResponseEntity<?> delete(Integer id) {
+
+        String deleteAttchUrl = "http://localhost:10021/mdvn-file-sapi/files/file/"+id;
+
+        restTemplate.put(deleteAttchUrl.toString(), id);
         return RestResponseUtil.successResponseEntity();
     }
 
@@ -133,31 +133,20 @@ public class FileServiceImpl implements FileService {
      */
     @Override
     public ResponseEntity<?> retrieve(Integer id) {
-        RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
-        StringBuilder retrieveUrl = new StringBuilder("http://localhost:10021/mdvn-file-sapi/files/file");
-        retrieveUrl.append(File.separator).append(id);
-        ResponseEntity<AttchInfo> responseEntity = restTemplate.getForEntity(retrieveUrl.toString(), AttchInfo.class);
+        String retrieveUrl = "http://localhost:10021/mdvn-file-sapi/files/file/"+id;
+        LOG.info("URLwei：{}", retrieveUrl);
+        ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(retrieveUrl, RestResponse.class);
         return responseEntity;
     }
 
     @Override
     public ResponseEntity<?> retrieve(String ids) {
-        RestTemplate restTemplate = new RestTemplate();
-
-        HttpHeaders headers = new HttpHeaders();
-
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> requestEntity = new HttpEntity<String>(ids, headers);
-
 
         //构建调用SAPI的Url
-        StringBuilder retrieveAttchsUrl = new StringBuilder("http://localhost:10021/mdvn-file-sapi/files");
-        retrieveAttchsUrl.append(File.separator).append(ids);
+        String retrieveAttchsUrl = "http://localhost:10021/mdvn-file-sapi/files/"+ids;
         LOG.info("获取附件列表的Url：{}", retrieveAttchsUrl);
         //调用SAPI
-        ResponseEntity<RestResponse> responseEntity = restTemplate.exchange(retrieveAttchsUrl.toString(), HttpMethod.GET, requestEntity, RestResponse.class);
-//        ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(retrieveAttchsUrl.toString(), RestResponse.class);
+        ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(retrieveAttchsUrl, RestResponse.class);
 
         return responseEntity;
     }
@@ -187,7 +176,6 @@ public class FileServiceImpl implements FileService {
         //文件上传成功后，生成url
         String url = FileUtil.genUrl(request, fileName);
         //实例化AttchInfo对象
-//        AttchInfo attchInfo = new AttchInfo();
         attchInfo.setOriginName(fileOrigName);
         attchInfo.setCreatorId(creatorId);
         attchInfo.setUrl(url);
@@ -206,7 +194,6 @@ public class FileServiceImpl implements FileService {
         LOG.info("========保存附件信息开始========, URL 为：{}", saveAttchInfoUrl);
         ResponseEntity<RestResponse<AttchInfo>> responseEntity = null;
         try {
-            RestTemplate restTemplate = new RestTemplate();
             ParameterizedTypeReference parameterizedTypeReference = new ParameterizedTypeReference<RestResponse<AttchInfo>>() {
             };
             //调用SAPI保存

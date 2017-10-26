@@ -89,6 +89,7 @@ public class FileServiceImpl implements FileService {
     @Override
     public ResponseEntity<?> retrieve(Integer id) {
         attchInfo = this.attchRepository.findOne(id);
+        LOG.info("查询到的AttchInfo 是： {}", attchInfo.getId());
         return RestResponseUtil.successResponseEntity(attchInfo);
     }
 
