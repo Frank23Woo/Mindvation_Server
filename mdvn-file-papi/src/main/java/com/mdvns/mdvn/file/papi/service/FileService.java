@@ -11,12 +11,17 @@ import java.util.List;
 
 public interface FileService {
 //    ResponseEntity<?> getFiles(String belongTo);
-    ResponseEntity<?> uploadFiles(HttpServletRequest request, String subjectId, List<MultipartFile> mFiles, String creatorId) throws IOException;
-    ResponseEntity<?> uploadFile(HttpServletRequest request, String subjectId, MultipartFile mFile, String creatorId) throws IOException;
+    ResponseEntity<?> uploadFiles(HttpServletRequest request, List<MultipartFile> mFiles, String creatorId) throws IOException;
+    ResponseEntity<?> uploadFile(HttpServletRequest request, MultipartFile mFile, String creatorId) throws IOException;
 
-    ResponseEntity<?> healthCheck(String checkCode);
 
-    ResponseEntity<?> updateAttch(UpdateAttchRequest updateAttchRequest);
+    ResponseEntity<?> update(UpdateAttchRequest updateAttchRequest);
+
+    ResponseEntity<?> delete(Integer attchId);
+
+    ResponseEntity<?> retrieve(Integer id);
+
+    ResponseEntity<?> retrieve(String ids);
 
    /* //创建时保存附件信息
     List<AttachUrl> saveAttchUrls(List<AttachUrl> request);

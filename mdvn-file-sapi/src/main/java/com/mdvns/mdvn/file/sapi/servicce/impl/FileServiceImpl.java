@@ -14,6 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class FileServiceImpl implements FileService {
@@ -30,10 +33,10 @@ public class FileServiceImpl implements FileService {
 
     /**
      * 保存上传成功的附件的信息
-     * @param attchInfo
+     * @param attch
      * @return
      */
-    public ResponseEntity<?> createAttchInfo(AttchInfo attch) {
+    public ResponseEntity<?> create(AttchInfo attch) {
         //附件原名，上传人Id， 附件url 不能为空
         if (StringUtils.isEmpty(attch.getOriginName())||StringUtils.isEmpty(attch.getCreatorId())||StringUtils.isEmpty(attch.getUrl())) {
         }
@@ -50,7 +53,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public ResponseEntity<?> updateAttch(UpdateAttchRequest updateAttchRequest) {
+    public ResponseEntity<?> update(UpdateAttchRequest updateAttchRequest) {
 
         attchInfo = this.attchRepository.findOne(updateAttchRequest.getAttchId());
         if (!(updateAttchRequest.getSubjectid().equals(attchInfo.getSubjectId()))||attchInfo == null) {
@@ -59,5 +62,50 @@ public class FileServiceImpl implements FileService {
         attchInfo.setIsDeleted(1);
         attchInfo = this.attchRepository.saveAndFlush(attchInfo);
         return RestResponseUtil.successResponseEntity(attchInfo);
+    }
+
+    /**
+     *删除附件
+     * @param attchId
+     * @return
+     */
+    @Override
+    public ResponseEntity<?> delete(Integer attchId) {
+        attchInfo = this.attchRepository.findOne(attchId);
+        if(attchInfo==null){
+            LOG.error("删除失败，Id 为：{} 的附件不存在!", attchId);
+        }
+        attchInfo.setIsDeleted(1);
+        attchInfo = this.attchRepository.saveAndFlush(attchInfo);
+        LOG.info("删除后Attch:{} 的状态为： {}", attchInfo.getId(), attchInfo.getIsDeleted());
+        return RestResponseUtil.successResponseEntity();
+    }
+
+    /**
+     * 根据Id获取附件信息
+     * @param id
+     * @return
+     */
+    @Override
+    public ResponseEntity<?> retrieve(Integer id) {
+        attchInfo = this.attchRepository.findOne(id);
+        return RestResponseUtil.successResponseEntity(attchInfo);
+    }
+
+    /**
+     * 根据指定Id集合查询多个附件信息
+     * @param ids
+     * @return
+     */
+    @Override
+    public ResponseEntity<?> retrieve(String ids) {
+        List<Integer> idList = new ArrayList<Integer>();
+        for (String id:ids.split(",")) {
+            idList.add(Integer.valueOf(id));
+        }
+
+        List<AttchInfo> attchs = this.attchRepository.findByIdIn(idList);
+
+        return RestResponseUtil.successResponseEntity(attchs);
     }
 }

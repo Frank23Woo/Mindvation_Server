@@ -6,7 +6,13 @@ import org.springframework.http.ResponseEntity;
 
 public interface FileService {
 
-    ResponseEntity<?> createAttchInfo(AttchInfo attchInfo);
+    ResponseEntity<?> create(AttchInfo attchInfo);
 
-    ResponseEntity<?> updateAttch(UpdateAttchRequest updateAttchRequest);
+    ResponseEntity<?> update(UpdateAttchRequest updateAttchRequest);
+
+    ResponseEntity<?> delete(Integer attchId);
+
+    ResponseEntity<?> retrieve(Integer id);
+
+    ResponseEntity<?> retrieve(String ids);
 }

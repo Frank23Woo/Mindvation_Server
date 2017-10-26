@@ -14,21 +14,46 @@ public class FileController {
     @Autowired
     private FileService fileService;
 
+    /**
+     * 添加附件
+     * @param attchInfo
+     * @return
+     */
     @PostMapping
-    public ResponseEntity<?> createAttchInfo(@RequestBody AttchInfo attchInfo) {
+    public ResponseEntity<?> create(@RequestBody AttchInfo attchInfo) {
 
-        return this.fileService.createAttchInfo(attchInfo);
-    }
-
-    @PutMapping(value = "/file")
-    public ResponseEntity<?> updateAttch(@RequestBody UpdateAttchRequest updateAttchRequest) {
-        return this.fileService.updateAttch(updateAttchRequest);
-    }
-
-    @PostMapping(value = "/healthCheck/{checkCode}")
-    public ResponseEntity<?> healthCheck(@PathVariable String checkCode) {
-        return ResponseEntity.ok(checkCode);
+        return this.fileService.create(attchInfo);
     }
 
 
+    public ResponseEntity<?> update(@RequestBody UpdateAttchRequest updateAttchRequest) {
+        return this.fileService.update(updateAttchRequest);
+    }
+
+    /**
+     * 删除附件
+     * @param id
+     * @return
+     */
+    @PutMapping(value = "/file/{attchId}")
+    public ResponseEntity<?> delete(@PathVariable("attchId") Integer id) {
+        return this.fileService.delete(id);
+    }
+
+
+    /**
+     * 查询指定Id的附件详情
+     * @param id
+     * @return
+     */
+    @GetMapping(value = "/file/{attchId}")
+    public ResponseEntity<?> retrieve(@PathVariable("attchId") Integer id) {
+        return this.fileService.retrieve(id);
+    }
+
+
+    @GetMapping(value = "/{ids}")
+    public ResponseEntity<?> retrieve(@PathVariable String ids) {
+        return this.fileService.retrieve(ids);
+    }
 }
