@@ -23,15 +23,15 @@ public class ProjectDetail {
     private List<Model> models;
     //项目附件（集合）
 //    private List<ProjAttchUrls> attchUrls;
-    private Object attchInfos;
+    private List<AttchInfo> attchInfos;
     //获取requirement列表（外加的）
     private RtrvReqmntListResponse reqmntListResponse;
 
-    public Object getAttchInfos() {
+    public List<AttchInfo> getAttchInfos() {
         return attchInfos;
     }
 
-    public void setAttchInfos(Object attchInfos) {
+    public void setAttchInfos(List<AttchInfo> attchInfos) {
         this.attchInfos = attchInfos;
     }
 

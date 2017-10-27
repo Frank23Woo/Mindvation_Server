@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.story.sapi.service;
 
+import com.mdvns.mdvn.story.sapi.domain.UpdateAttchUrlsRequest;
 import com.mdvns.mdvn.story.sapi.domain.UpdateSMembersRequest;
 import com.mdvns.mdvn.story.sapi.domain.UpdateSTagsRequest;
 import com.mdvns.mdvn.story.sapi.domain.UpdateSTasksRequest;
@@ -16,4 +17,6 @@ public interface IUpdateStoryService {
     List<StoryTag> updateStoryTags(UpdateSTagsRequest list);
 
     List<StoryTask> updateStoryTasks(UpdateSTasksRequest list);
+
+    List<StoryAttchUrl> updateStoryAttchUrls(UpdateAttchUrlsRequest list);
 }

@@ -39,6 +39,16 @@ public class ReqmntConfig {
     //获取reqmnt列表pageSize默认值
     private String storyListPageSize;
 
+    private String rtrvAttchInfoListUrl;
+
+    public String getRtrvAttchInfoListUrl() {
+        return rtrvAttchInfoListUrl;
+    }
+
+    public void setRtrvAttchInfoListUrl(String rtrvAttchInfoListUrl) {
+        this.rtrvAttchInfoListUrl = rtrvAttchInfoListUrl;
+    }
+
     public String getStoryListPage() {
         return storyListPage;
     }

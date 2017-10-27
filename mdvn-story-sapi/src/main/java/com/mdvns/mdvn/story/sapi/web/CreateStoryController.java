@@ -86,6 +86,17 @@ public class CreateStoryController {
     }
 
     /**
+     * 创建story时保存标签信息
+     * @param request
+     * @return
+     */
+    @PostMapping(value="/saveSAttchUrls")
+    public List<StoryAttchUrl> saveSAttchUrls(@RequestBody List<StoryAttchUrl>  request){
+        List<StoryAttchUrl> storyAttchUrls = storyService.saveSAttchUrls(request);
+        return storyAttchUrls;
+    }
+
+    /**
      * 创建story时保存story任务（checkLists）(多了一个保存创建者信息的动作)
      * @param request
      * @return

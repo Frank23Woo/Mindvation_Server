@@ -24,7 +24,15 @@ public class CreateStoryRequest {
 //    //用户故事模型（集合）
 //    private List<StoryModel> sModels;
     //用户故事附件（集合）
-//    private List<AttchUrl> sAttchUrls;
+    private List<StoryAttchUrl> attchUrls;
+
+    public List<StoryAttchUrl> getAttchUrls() {
+        return attchUrls;
+    }
+
+    public void setAttchUrls(List<StoryAttchUrl> attchUrls) {
+        this.attchUrls = attchUrls;
+    }
 
     public SubFunctionLabel getSubFunctionLabel() {
         return subFunctionLabel;

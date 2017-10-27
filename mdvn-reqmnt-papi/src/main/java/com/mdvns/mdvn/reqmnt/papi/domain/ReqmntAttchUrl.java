@@ -5,12 +5,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReqmntAttchUrl {
 
+
+    private Integer uuId;
     //附件Id
     private Integer attachmentId;
     //项目Id
     private String reqmntId;
-    //附件名
-    private String attachmentName;
     //有效标志
     private Integer isDeleted;
     //更新时间
@@ -30,14 +30,6 @@ public class ReqmntAttchUrl {
 
     public void setReqmntId(String reqmntId) {
         this.reqmntId = reqmntId;
-    }
-
-    public String getAttachmentName() {
-        return attachmentName;
-    }
-
-    public void setAttachmentName(String attachmentName) {
-        this.attachmentName = attachmentName;
     }
 
     public Integer getIsDeleted() {
@@ -65,8 +57,6 @@ public class ReqmntAttchUrl {
 
         if (attachmentId != null ? !attachmentId.equals(that.attachmentId) : that.attachmentId != null) return false;
         if (reqmntId != null ? !reqmntId.equals(that.reqmntId) : that.reqmntId != null) return false;
-        if (attachmentName != null ? !attachmentName.equals(that.attachmentName) : that.attachmentName != null)
-            return false;
         if (isDeleted != null ? !isDeleted.equals(that.isDeleted) : that.isDeleted != null) return false;
         return updateTime != null ? updateTime.equals(that.updateTime) : that.updateTime == null;
     }
@@ -75,7 +65,6 @@ public class ReqmntAttchUrl {
     public int hashCode() {
         int result = attachmentId != null ? attachmentId.hashCode() : 0;
         result = 31 * result + (reqmntId != null ? reqmntId.hashCode() : 0);
-        result = 31 * result + (attachmentName != null ? attachmentName.hashCode() : 0);
         result = 31 * result + (isDeleted != null ? isDeleted.hashCode() : 0);
         result = 31 * result + (updateTime != null ? updateTime.hashCode() : 0);
         return result;
@@ -86,7 +75,6 @@ public class ReqmntAttchUrl {
         return "ReqmntAttchUrl{" +
                 "attachmentId=" + attachmentId +
                 ", reqmntId='" + reqmntId + '\'' +
-                ", attachmentName='" + attachmentName + '\'' +
                 ", isDeleted=" + isDeleted +
                 ", updateTime=" + updateTime +
                 '}';
