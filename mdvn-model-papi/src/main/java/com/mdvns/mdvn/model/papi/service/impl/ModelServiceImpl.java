@@ -1,6 +1,7 @@
 package com.mdvns.mdvn.model.papi.service.impl;
 
 import com.mdvns.mdvn.common.beans.RestResponse;
+import com.mdvns.mdvn.common.beans.Staff;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
 import com.mdvns.mdvn.common.utils.RestResponseUtil;
@@ -48,7 +49,20 @@ public class ModelServiceImpl implements ModelService {
         String url = webConfig.getRtrvModelListUrl();
         retrieveModelListResponse = this.restTemplate.postForObject(url, retrieveModelListRequest, RetrieveModelListResponse.class);
 //        restResponse = RestResponseUtil.success(responseEntity.getBody());
-        restResponse.setResponseBody(retrieveModelListResponse);
+        RtrvModelListResponse rtrvModelListResponse = new RtrvModelListResponse();
+        List<ModelAndStaff> models = new ArrayList<>();
+        for (int i = 0; i < retrieveModelListResponse.getModels().size() ; i++) {
+            ModelAndStaff modelAndStaff = new ModelAndStaff();
+            String creatorId = retrieveModelListResponse.getModels().get(i).getCreatorId();
+            Staff staff = this.restTemplate.postForObject(webConfig.getRtrvStaffInfoUrl(),creatorId,Staff.class);
+            modelAndStaff.setCreatorInfo(staff);
+            modelAndStaff.setModel(retrieveModelListResponse.getModels().get(i));
+            models.add(modelAndStaff);
+        }
+        rtrvModelListResponse.setModels(models);
+        rtrvModelListResponse.setTotalNumber(retrieveModelListResponse.getTotalNumber());
+        rtrvModelListResponse.setRemarks(retrieveModelListResponse.getRemarks());
+        restResponse.setResponseBody(rtrvModelListResponse);
         restResponse.setResponseCode("000");
         restResponse.setResponseMsg("请求成功");
         restResponse.setStatusCode("200");
@@ -105,12 +119,22 @@ public class ModelServiceImpl implements ModelService {
     public RestResponse findModelDetailById(RtrvModelByIdRequest request) {
         String findByIdUrl = webConfig.getFindModelDetailByIdUrl();
         CreateModelResponse createModelResponse = new CreateModelResponse();
+        RtrvModelDetailInfoResponse rtrvModelDetailInfoResponse = new RtrvModelDetailInfoResponse();
         try {
             createModelResponse = this.restTemplate.postForObject(findByIdUrl, request, CreateModelResponse.class);
+            String creatorId = createModelResponse.getModel().getCreatorId();
+            Staff staff = this.restTemplate.postForObject(webConfig.getRtrvStaffInfoUrl(),creatorId,Staff.class);
+            rtrvModelDetailInfoResponse.setCreatorInfo(staff);
+            rtrvModelDetailInfoResponse.setFunctionLabels(createModelResponse.getFunctionLabels());
+            rtrvModelDetailInfoResponse.setIterationModels(createModelResponse.getIterationModels());
+            rtrvModelDetailInfoResponse.setModel(createModelResponse.getModel());
+            rtrvModelDetailInfoResponse.setRoles(createModelResponse.getRoles());
+            rtrvModelDetailInfoResponse.setTaskDeliveries(createModelResponse.getTaskDeliveries());
+            rtrvModelDetailInfoResponse.setRemarks(createModelResponse.getRemarks());
         } catch (Exception ex) {
             throw new BusinessException(ExceptionEnum.SAPI_EXCEPTION);
         }
-        restResponse.setResponseBody(createModelResponse);
+        restResponse.setResponseBody(rtrvModelDetailInfoResponse);
         restResponse.setResponseCode("000");
         restResponse.setResponseMsg("请求成功");
         restResponse.setStatusCode("200");

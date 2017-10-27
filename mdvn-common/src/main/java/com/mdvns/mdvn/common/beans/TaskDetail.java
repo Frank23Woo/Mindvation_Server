@@ -32,7 +32,7 @@ public class TaskDetail {
 
     private Staff assignee;
 
-    private List<AttchUrl> attachUrlList;
+//    private List<AttchUrl> attachUrlList;
 
     public TaskDetail() {
     }
@@ -62,13 +62,13 @@ public class TaskDetail {
         this.assignee = assignee;
     }
 
-    public List<AttchUrl> getAttachUrlList() {
-        return attachUrlList;
-    }
-
-    public void setAttachUrlList(List<AttchUrl> attachUrlList) {
-        this.attachUrlList = attachUrlList;
-    }
+//    public List<AttchUrl> getAttachUrlList() {
+//        return attachUrlList;
+//    }
+//
+//    public void setAttachUrlList(List<AttchUrl> attachUrlList) {
+//        this.attachUrlList = attachUrlList;
+//    }
 
     public Integer getUuid() {
         return uuid;

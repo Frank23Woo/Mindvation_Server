@@ -34,8 +34,6 @@ public enum ExceptionEnum {
 	SAPI_EXCEPTION("10001", "SAPI异常"),
 
 
-
-
 	//project
 	//所有的请求参数错误
 	REQUEST_NOT_VALID("1300","请求参数错误"),

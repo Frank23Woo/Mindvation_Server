@@ -21,4 +21,5 @@ config:
   rtrvProjCheckListsUrl: http://localhost:10005/mdvn-project-sapi/projDetail/rtrvProjCheckLists
   rtrvProjAttUrlsUrl: http://localhost:10005/mdvn-project-sapi/projDetail/rtrvProjAttUrls
   rtrvReqmntListUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntList
+  rtrvAttchListUrl: http://localhost:10019/mdvn-file-sapi/files/
 

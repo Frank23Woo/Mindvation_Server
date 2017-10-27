@@ -59,6 +59,16 @@ public class ProjConfig {
 
     private String rtrvReqmntListUrl;
 
+    private String rtrvAttchListUrl;
+
+    public String getRtrvAttchListUrl() {
+        return rtrvAttchListUrl;
+    }
+
+    public void setRtrvAttchListUrl(String rtrvAttchListUrl) {
+        this.rtrvAttchListUrl = rtrvAttchListUrl;
+    }
+
     public String getReqmntListPage() {
         return reqmntListPage;
     }

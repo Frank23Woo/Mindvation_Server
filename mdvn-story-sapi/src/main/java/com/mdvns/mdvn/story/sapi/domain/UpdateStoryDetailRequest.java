@@ -1,6 +1,5 @@
 package com.mdvns.mdvn.story.sapi.domain;
 
-import com.mdvns.mdvn.common.beans.AttchUrl;
 import com.mdvns.mdvn.common.beans.FunctionLabel;
 import com.mdvns.mdvn.story.sapi.domain.entity.Story;
 import com.mdvns.mdvn.story.sapi.domain.entity.StoryRoleMember;
@@ -27,8 +26,8 @@ public class UpdateStoryDetailRequest {
     private List<StoryTask> sTasks;
     //最后一层过程方法模块对象
     private FunctionLabel subFunctionLabel;
-    //用户故事附件（集合）
-    private List<AttchUrl> attchUrls;
+//    //用户故事附件（集合）
+//    private List<AttchUrl> attchUrls;
 
     public String getStaffId() {
         return staffId;
@@ -78,11 +77,11 @@ public class UpdateStoryDetailRequest {
         this.subFunctionLabel = subFunctionLabel;
     }
 
-    public List<AttchUrl> getAttchUrls() {
-        return attchUrls;
-    }
-
-    public void setAttchUrls(List<AttchUrl> attchUrls) {
-        this.attchUrls = attchUrls;
-    }
+//    public List<AttchUrl> getAttchUrls() {
+//        return attchUrls;
+//    }
+//
+//    public void setAttchUrls(List<AttchUrl> attchUrls) {
+//        this.attchUrls = attchUrls;
+//    }
 }

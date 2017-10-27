@@ -1,7 +1,6 @@
 package com.mdvns.mdvn.story.papi.domain;
 
-import com.mdvns.mdvn.common.beans.AttchUrl;
-import com.mdvns.mdvn.common.beans.FunctionLabel;
+
 import com.mdvns.mdvn.common.beans.SubFunctionLabel;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.stereotype.Component;
@@ -25,8 +24,8 @@ public class UpdateStoryDetailRequest {
     private List<StoryTask> sTasks;
     //最后一层过程方法模块对象
     private SubFunctionLabel subFunctionLabel;
-    //用户故事附件（集合）
-    private List<AttchUrl> attchUrls;
+//    //用户故事附件（集合）
+//    private List<AttchUrl> attchUrls;
 
     public String getCreatorId() {
         return creatorId;
@@ -84,11 +83,11 @@ public class UpdateStoryDetailRequest {
         this.subFunctionLabel = subFunctionLabel;
     }
 
-    public List<AttchUrl> getAttchUrls() {
-        return attchUrls;
-    }
-
-    public void setAttchUrls(List<AttchUrl> attchUrls) {
-        this.attchUrls = attchUrls;
-    }
+//    public List<AttchUrl> getAttchUrls() {
+//        return attchUrls;
+//    }
+//
+//    public void setAttchUrls(List<AttchUrl> attchUrls) {
+//        this.attchUrls = attchUrls;
+//    }
 }

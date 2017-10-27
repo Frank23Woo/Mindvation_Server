@@ -6,5 +6,6 @@ url:
   findByNameUrl : http://localhost:10009/mdvn-model-sapi/models/model
   findByIdUrl: http://localhost:10009/mdvn-model-sapi/models/findById
   findModelDetailByIdUrl: http://localhost:10009/mdvn-model-sapi/models/findModelDetailById
+  rtrvStaffInfoUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffInfo
 
 

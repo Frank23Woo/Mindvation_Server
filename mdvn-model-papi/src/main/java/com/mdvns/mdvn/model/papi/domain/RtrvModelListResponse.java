@@ -1,25 +1,19 @@
 package com.mdvns.mdvn.model.papi.domain;
 
+import com.mdvns.mdvn.common.beans.Staff;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class RetrieveModelListResponse {
+public class RtrvModelListResponse {
 
-    private List<Model> models;
+
+    private List<ModelAndStaff> models;
 
     private Long totalNumber;
 
     private List<String> remarks;
-
-    public List<Model> getModels() {
-        return models;
-    }
-
-    public void setModels(List<Model> models) {
-        this.models = models;
-    }
 
     public Long getTotalNumber() {
         return totalNumber;
@@ -27,6 +21,14 @@ public class RetrieveModelListResponse {
 
     public void setTotalNumber(Long totalNumber) {
         this.totalNumber = totalNumber;
+    }
+
+    public List<ModelAndStaff> getModels() {
+        return models;
+    }
+
+    public void setModels(List<ModelAndStaff> models) {
+        this.models = models;
     }
 
     public List<String> getRemarks() {

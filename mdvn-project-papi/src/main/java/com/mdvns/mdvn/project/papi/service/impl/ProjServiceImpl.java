@@ -1,22 +1,24 @@
 package com.mdvns.mdvn.project.papi.service.impl;
 
-import com.mdvns.mdvn.common.beans.RequirementInfo;
+import com.mdvns.mdvn.common.beans.AttchInfo;
 import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
-import com.mdvns.mdvn.common.utils.RestResponseUtil;
+import com.mdvns.mdvn.common.utils.FetchListUtil;
 import com.mdvns.mdvn.project.papi.config.ProjConfig;
 import com.mdvns.mdvn.project.papi.domain.*;
 import com.mdvns.mdvn.project.papi.service.IProjService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -278,8 +280,22 @@ public class ProjServiceImpl implements IProjService {
             updatePAttchUrlsRequest.setAttchUrls(updateProjectDetailRequest.getAttchUrls());
             String updateProjAttchUrlsUrl = config.getUpdateProjAttchUrlsUrl();
             try {
-                List<ProjAttchUrls> pAttchUrls = restTemplate.postForObject(updateProjAttchUrlsUrl, updatePAttchUrlsRequest, List.class);
-                projectDetail.setAttchUrls(pAttchUrls);
+                ParameterizedTypeReference typeReference = new ParameterizedTypeReference<List<ProjAttchUrls>>() {
+                };
+                List<ProjAttchUrls> pAttchUrls = FetchListUtil.fetch(restTemplate, updateProjAttchUrlsUrl, updatePAttchUrlsRequest, typeReference);
+//                List<ProjAttchUrls> pAttchUrls = restTemplate.postForObject(updateProjAttchUrlsUrl, updatePAttchUrlsRequest, List.class);
+                List<String> idList = new ArrayList<String>();
+                for (int i = 0; i < pAttchUrls.size(); i++) {
+                    Integer attachmentId = pAttchUrls.get(i).getAttachmentId();
+                    idList.add(attachmentId.toString());
+                }
+                String attachmentIds = com.sun.deploy.util.StringUtils.join(idList, ",");
+                if (pAttchUrls.size() != 0) {
+                    ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(config.getRtrvAttchListUrl() + attachmentIds, RestResponse.class);
+                    projectDetail.setAttchInfos(responseEntity.getBody().getResponseBody());
+//                projectDetail.setAttchUrls(pAttchUrls);
+                }
+
             } catch (Exception ex) {
                 throw new BusinessException(ExceptionEnum.PROJECT_ATTCHURL_NOT_UPDATE);
             }
@@ -349,8 +365,26 @@ public class ProjServiceImpl implements IProjService {
         //6.获取项目附件信息
         String rtrvProjAttUrlsUrl = config.getRtrvProjAttUrlsUrl();
         try {
-            List<ProjAttchUrls> projAttchUrls = restTemplate.postForObject(rtrvProjAttUrlsUrl, rtrvProjectDetailRequest, List.class);
-            projectDetail.setAttchUrls(projAttchUrls);
+            ParameterizedTypeReference typeReference = new ParameterizedTypeReference<List<ProjAttchUrls>>() {
+            };
+            List<ProjAttchUrls> projAttchUrls = FetchListUtil.fetch(restTemplate, rtrvProjAttUrlsUrl, rtrvProjectDetailRequest, typeReference);
+//            List<ProjAttchUrls> projAttchUrls = restTemplate.postForObject(rtrvProjAttUrlsUrl, rtrvProjectDetailRequest, List.class);
+            List<String> idList = new ArrayList<String>();
+            for (int i = 0; i < projAttchUrls.size(); i++) {
+                Integer attachmentId = projAttchUrls.get(i).getAttachmentId();
+//                List<Integer> idList = new ArrayList<Integer>();
+//                for (String id:ids.split(",")) {
+//                    idList.add(Integer.valueOf(id));
+//                }
+                idList.add(attachmentId.toString());
+            }
+            String attachmentIds = com.sun.deploy.util.StringUtils.join(idList, ",");
+            if (projAttchUrls.size() != 0) {
+                ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(config.getRtrvAttchListUrl() + attachmentIds, RestResponse.class);
+//            List<AttchInfo> attchInfoList = restTemplate.getForObject(config.getRtrvAttchListUrl()+attachmentIds,List.class);
+//            projectDetail.setAttchUrls(projAttchUrls);
+                projectDetail.setAttchInfos(responseEntity.getBody().getResponseBody());
+            }
         } catch (Exception ex) {
             throw new BusinessException(ExceptionEnum.PROJECT_DETAIL_ATTCHURL_NOT_RTRV);
         }

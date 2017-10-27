@@ -11,18 +11,26 @@ import java.sql.Timestamp;
 public class StoryAttchUrl {
     @Id
     @GeneratedValue
+    //uuId
+    private Integer uuId;
     //附件Id
     private Integer attachmentId;
-    //用户故事Id
+    //项目Id
     private String storyId;
-    //附件名
-    private String attachmentName;
     //是否被删除
     @Column(name = "is_deleted", columnDefinition = "INT default 0")
     private Integer isDeleted;
     //更改时间
     @Column(columnDefinition = "timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP", nullable = false)
     private Timestamp updateTime;
+
+    public Integer getUuId() {
+        return uuId;
+    }
+
+    public void setUuId(Integer uuId) {
+        this.uuId = uuId;
+    }
 
     public Integer getAttachmentId() {
         return attachmentId;
@@ -38,14 +46,6 @@ public class StoryAttchUrl {
 
     public void setStoryId(String storyId) {
         this.storyId = storyId;
-    }
-
-    public String getAttachmentName() {
-        return attachmentName;
-    }
-
-    public void setAttachmentName(String attachmentName) {
-        this.attachmentName = attachmentName;
     }
 
     public Integer getIsDeleted() {
