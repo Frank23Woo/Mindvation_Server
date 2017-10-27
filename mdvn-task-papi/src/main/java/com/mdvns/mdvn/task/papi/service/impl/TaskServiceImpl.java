@@ -173,6 +173,45 @@ public class TaskServiceImpl implements TaskService {
         return restResponse;
     }
 
+    @Override
+    public RestResponse addAttachForTask(AddAttachRequest request) {
+        RestResponse restResponse = new RestResponse();
+
+        if (request == null || StringUtils.isEmpty(request.getTaskId())) {
+            restResponse.setResponseCode(ExceptionEnum.PARAMS_EXCEPTION.getErroCode());
+            restResponse.setResponseMsg(ExceptionEnum.PARAMS_EXCEPTION.getErrorMsg());
+            return restResponse;
+        }
+
+
+        TaskDetail result = restTemplate.postForObject(urlConfig.getAddAttachForTaskUrl(), request, TaskDetail.class);
+        if (result == null) {
+            restResponse.setResponseCode(ExceptionEnum.TASK_DOES_NOT_EXIST.getErroCode());
+            restResponse.setResponseMsg(ExceptionEnum.TASK_DOES_NOT_EXIST.getErrorMsg());
+        } else {
+            queryFullTaskDetail(result);
+            restResponse.setResponseCode("000");
+            restResponse.setResponseMsg("ok");
+            restResponse.setResponseBody(result);
+        }
+
+        return restResponse;
+    }
+
+
+    // 查询task的完整信息
+    private void queryFullTaskDetail(TaskDetail detail) {
+        // 查询creator和assinee
+        Staff creator = restTemplate.postForObject(urlConfig.getRtrvStaffInfoUrl(), detail.getCreatorId(), Staff.class);
+        detail.setCreator(creator);
+        Staff assignee = restTemplate.postForObject(urlConfig.getRtrvStaffInfoUrl(), detail.getAssigneeId(), Staff.class);
+        detail.setAssignee(assignee);
+
+        // 查询附件
+        getTaskAttachment(detail);
+    }
+
+
     // query task attachment
     private TaskDetail getTaskAttachment(TaskDetail task) {
         if (task == null) {

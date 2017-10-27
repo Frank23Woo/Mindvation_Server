@@ -37,6 +37,7 @@ public class UrlConfig {
     private String saveTaskUrl;
     private String rtrvTaskListUrl;
     private String updateTaskUrl;
+    private String addAttachForTaskUrl;
 
     // file sapi
     private String getAttachmentListByIdsUrl;
@@ -210,5 +211,13 @@ public class UrlConfig {
 
     public void setGetAttachmentListByIdsUrl(String getAttachmentListByIdsUrl) {
         this.getAttachmentListByIdsUrl = getAttachmentListByIdsUrl;
+    }
+
+    public String getAddAttachForTaskUrl() {
+        return addAttachForTaskUrl;
+    }
+
+    public void setAddAttachForTaskUrl(String addAttachForTaskUrl) {
+        this.addAttachForTaskUrl = addAttachForTaskUrl;
     }
 }

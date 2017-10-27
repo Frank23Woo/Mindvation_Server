@@ -1,6 +1,7 @@
 package com.mdvns.mdvn.task.sapi.service.impl;
 
 
+import com.mdvns.mdvn.task.sapi.domain.AddAttachRequest;
 import com.mdvns.mdvn.task.sapi.domain.CreateTaskRequest;
 import com.mdvns.mdvn.task.sapi.domain.RtrvTaskListRequest;
 import com.mdvns.mdvn.task.sapi.domain.entity.Task;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -187,6 +189,32 @@ public class TaskServiceImpl implements TaskService {
             detail = new TaskDetail(taskOld);
             detail.setDeliver(deliverRepository.findOne(taskOld.getDeliverId()));
         }
+
+        return detail;
+    }
+
+    @Override
+    public TaskDetail addAttachForTask(AddAttachRequest request) {
+        if (request == null || request.getTaskId() == null || request.getAttachmentId() == null) {
+            return null;
+        }
+
+        Task task = taskRepository.findFirstByTaskIdAndIsDeleted(request.getTaskId(), 0);
+        if (task == null) {
+            return null;
+        }
+
+        String ids = task.getAttachmentIds();
+        if (StringUtils.isEmpty(ids)){
+            ids = "";
+        } else {
+            ids = ids + ",";
+        }
+        ids += request.getAttachmentId();
+        task.setAttachmentIds(ids);
+        task = taskRepository.save(task);
+        TaskDetail detail = new TaskDetail(task);
+        detail.setDeliver(deliverRepository.findOne(task.getDeliverId()));
 
         return detail;
     }
