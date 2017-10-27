@@ -1,4 +1,4 @@
-package com.mdvns.mdvn.common.beans;
+/*package com.mdvns.mdvn.common.beans;
 
 import org.springframework.stereotype.Component;
 
@@ -56,3 +56,4 @@ public class AttchUrl {
         this.updateTime = updateTime;
     }
 }
+*/
