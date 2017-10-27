@@ -25,7 +25,7 @@ public class StoryDetail {
     //最后一层过程方法模块对象
     private SubFunctionLabel subFunctionLabel;
     //用户故事附件（集合）
-    private List<AttchInfo> attchUrls;
+    private List<AttchInfo> attchInfos;
     //用户故事task(可以创建完后添加)
     private List<TaskDetail> sTasks;
     private List<String> remarks;
@@ -110,11 +110,11 @@ public class StoryDetail {
         this.remarks = remarks;
     }
 
-    public List<AttchInfo> getAttchUrls() {
-        return attchUrls;
+    public List<AttchInfo> getAttchInfos() {
+        return attchInfos;
     }
 
-    public void setAttchUrls(List<AttchInfo> attchUrls) {
-        this.attchUrls = attchUrls;
+    public void setAttchInfos(List<AttchInfo> attchInfos) {
+        this.attchInfos = attchInfos;
     }
 }

@@ -299,7 +299,7 @@ public class StoryServiceImpl implements IStoryService {
                 String attachmentIds = com.sun.deploy.util.StringUtils.join(idList, ",");
                 if (pAttchUrls.size() != 0) {
                     ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(config.getRtrvAttchListUrl() + attachmentIds, RestResponse.class);
-                    storyDetail.setAttchUrls((List<AttchInfo>)responseEntity.getBody().getResponseBody());
+                    storyDetail.setAttchInfos((List<AttchInfo>)responseEntity.getBody().getResponseBody());
 //                storyectDetail.setAttchUrls(pAttchUrls);
                 }
 
@@ -518,7 +518,7 @@ public class StoryServiceImpl implements IStoryService {
                 ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(config.getRtrvAttchListUrl() + attachmentIds, RestResponse.class);
 //            List<AttchInfo> attchInfoList = restTemplate.getForObject(config.getRtrvAttchListUrl()+attachmentIds,List.class);
 //            storyectDetail.setAttchUrls(storyAttchUrls);
-                storyDetail.setAttchUrls((List<AttchInfo>)responseEntity.getBody().getResponseBody());
+                storyDetail.setAttchInfos((List<AttchInfo>)responseEntity.getBody().getResponseBody());
             }
         } catch (Exception ex) {
             throw new BusinessException(ExceptionEnum.PROJECT_DETAIL_ATTCHURL_NOT_RTRV);
