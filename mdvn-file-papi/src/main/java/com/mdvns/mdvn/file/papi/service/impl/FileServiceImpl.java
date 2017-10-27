@@ -120,7 +120,7 @@ public class FileServiceImpl implements FileService {
     @Override
     public ResponseEntity<?> delete(Integer id) {
 
-        String deleteAttchUrl = "http://localhost:10021/mdvn-file-sapi/files/file/"+id;
+        String deleteAttchUrl = "http://localhost:10019/mdvn-file-sapi/files/file/"+id;
 
         restTemplate.put(deleteAttchUrl.toString(), id);
         return RestResponseUtil.successResponseEntity();
@@ -133,7 +133,7 @@ public class FileServiceImpl implements FileService {
      */
     @Override
     public ResponseEntity<?> retrieve(Integer id) {
-        String retrieveUrl = "http://localhost:10021/mdvn-file-sapi/files/file/"+id;
+        String retrieveUrl = "http://localhost:10019/mdvn-file-sapi/files/file/"+id;
         LOG.info("URLwei：{}", retrieveUrl);
         ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(retrieveUrl, RestResponse.class);
         return responseEntity;
@@ -143,7 +143,7 @@ public class FileServiceImpl implements FileService {
     public ResponseEntity<?> retrieve(String ids) {
 
         //构建调用SAPI的Url
-        String retrieveAttchsUrl = "http://localhost:10021/mdvn-file-sapi/files/"+ids;
+        String retrieveAttchsUrl = "http://localhost:10019/mdvn-file-sapi/files/"+ids;
         LOG.info("获取附件列表的Url：{}", retrieveAttchsUrl);
         //调用SAPI
         ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(retrieveAttchsUrl, RestResponse.class);
@@ -190,7 +190,7 @@ public class FileServiceImpl implements FileService {
      */
     private AttchInfo create(AttchInfo attch) {
 
-        String saveAttchInfoUrl = "http://localhost:10021/mdvn-file-sapi/files";
+        String saveAttchInfoUrl = "http://localhost:10019/mdvn-file-sapi/files";
         LOG.info("========保存附件信息开始========, URL 为：{}", saveAttchInfoUrl);
         ResponseEntity<RestResponse<AttchInfo>> responseEntity = null;
         try {
