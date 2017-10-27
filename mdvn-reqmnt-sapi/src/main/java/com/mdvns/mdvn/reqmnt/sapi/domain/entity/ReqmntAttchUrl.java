@@ -11,12 +11,11 @@ import java.sql.Timestamp;
 public class ReqmntAttchUrl {
     @Id
     @GeneratedValue
+    private Integer uuId;
     //附件Id
     private Integer attachmentId;
     //项目Id
     private String reqmntId;
-    //附件名
-    private String attachmentName;
     //是否被删除
     @Column(name = "is_deleted", columnDefinition = "INT default 0")
     private Integer isDeleted;
@@ -40,13 +39,6 @@ public class ReqmntAttchUrl {
         this.reqmntId = reqmntId;
     }
 
-    public String getAttachmentName() {
-        return attachmentName;
-    }
-
-    public void setAttachmentName(String attachmentName) {
-        this.attachmentName = attachmentName;
-    }
 
     public Integer getIsDeleted() {
         return isDeleted;
@@ -64,6 +56,14 @@ public class ReqmntAttchUrl {
         this.updateTime = updateTime;
     }
 
+    public Integer getUuId() {
+        return uuId;
+    }
+
+    public void setUuId(Integer uuId) {
+        this.uuId = uuId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -71,16 +71,31 @@ public class ReqmntAttchUrl {
 
         ReqmntAttchUrl that = (ReqmntAttchUrl) o;
 
+        if (uuId != null ? !uuId.equals(that.uuId) : that.uuId != null) return false;
         if (attachmentId != null ? !attachmentId.equals(that.attachmentId) : that.attachmentId != null) return false;
         if (reqmntId != null ? !reqmntId.equals(that.reqmntId) : that.reqmntId != null) return false;
-        return attachmentName != null ? attachmentName.equals(that.attachmentName) : that.attachmentName == null;
+        if (isDeleted != null ? !isDeleted.equals(that.isDeleted) : that.isDeleted != null) return false;
+        return updateTime != null ? updateTime.equals(that.updateTime) : that.updateTime == null;
     }
 
     @Override
     public int hashCode() {
-        int result = attachmentId != null ? attachmentId.hashCode() : 0;
+        int result = uuId != null ? uuId.hashCode() : 0;
+        result = 31 * result + (attachmentId != null ? attachmentId.hashCode() : 0);
         result = 31 * result + (reqmntId != null ? reqmntId.hashCode() : 0);
-        result = 31 * result + (attachmentName != null ? attachmentName.hashCode() : 0);
+        result = 31 * result + (isDeleted != null ? isDeleted.hashCode() : 0);
+        result = 31 * result + (updateTime != null ? updateTime.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ReqmntAttchUrl{" +
+                "uuId=" + uuId +
+                ", attachmentId=" + attachmentId +
+                ", reqmntId='" + reqmntId + '\'' +
+                ", isDeleted=" + isDeleted +
+                ", updateTime=" + updateTime +
+                '}';
     }
 }
