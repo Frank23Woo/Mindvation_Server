@@ -175,12 +175,12 @@ public class UpdateProjServiceImpl implements IUpdateProjService {
             throw new NullPointerException("getAttchUrls List is empty");
         }
         String projId = list.getProjId();
-        List<String> AttachmentNameList = new ArrayList();
+        List<Integer> attachmentIdList = new ArrayList();
         //将数据库中没有的插入
         for (int i = 0; i < list.getAttchUrls().size(); i++) {
             ProjAttchUrls projAttchUrls = new ProjAttchUrls();
-            AttachmentNameList.add(list.getAttchUrls().get(i).getAttachmentName());
-            projAttchUrls = this.projAttchUrlsRepository.findByProjIdAndAttachmentName(projId, list.getAttchUrls().get(i).getAttachmentName());
+            attachmentIdList.add(list.getAttchUrls().get(i).getAttachmentId());
+            projAttchUrls = this.projAttchUrlsRepository.findByProjIdAndAttachmentId(projId, list.getAttchUrls().get(i).getAttachmentId());
             //不存在的加上
             if (projAttchUrls == null) {
                 list.getAttchUrls().get(i).setProjId(projId);
@@ -189,7 +189,7 @@ public class UpdateProjServiceImpl implements IUpdateProjService {
             } else {
                 //之前是附件后来改掉，数据库中存在记录，但是is_deleted为1，需要修改成0
                 if (projAttchUrls.getIsDeleted().equals(1)) {
-                    String sql = "UPDATE attachment_proj SET is_deleted= 0 WHERE proj_id=" + "\"" + projId + "\"" + "AND attachment_name =" + "\"" + list.getAttchUrls().get(i).getAttachmentName() + "\"" + "";
+                    String sql = "UPDATE attachment_proj SET is_deleted= 0 WHERE proj_id=" + "\"" + projId + "\"" + "AND attachment_id =" + "\"" + list.getAttchUrls().get(i).getAttachmentId() + "\"" + "";
                     this.jdbcTemplate.update(sql);
                 }
             }
@@ -197,12 +197,12 @@ public class UpdateProjServiceImpl implements IUpdateProjService {
         //将数据库中将要删除的附件信息修改is_deleted状态
         //数组转化为字符串格式
         StringBuffer attchUrls = new StringBuffer();
-        for (int i = 0; i < AttachmentNameList.size(); i++) {
-            attchUrls.append("\"" + AttachmentNameList.get(i) + "\"");
+        for (int i = 0; i < attachmentIdList.size(); i++) {
+            attchUrls.append("\"" + attachmentIdList.get(i) + "\"");
             attchUrls.append(",");
         }
         String pAttchUrls = attchUrls.substring(0, attchUrls.length() - 1);
-        String sql = "UPDATE attachment_proj SET is_deleted= 1 WHERE proj_id= " + "\"" + projId + "\"" + " AND attachment_name NOT IN (" + pAttchUrls + ")";
+        String sql = "UPDATE attachment_proj SET is_deleted= 1 WHERE proj_id= " + "\"" + projId + "\"" + " AND attachment_id NOT IN (" + pAttchUrls + ")";
         this.jdbcTemplate.update(sql);
         //查询数据库中有效的附件
         List<ProjAttchUrls> projAttchUrls = this.projAttchUrlsRepository.findPAttchUrls(projId);

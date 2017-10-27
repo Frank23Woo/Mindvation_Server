@@ -18,8 +18,14 @@ public interface StoryRepository extends JpaRepository<Story, Integer>{
     Story findByStoryIdAndIsDeleted(String storyId, Integer isDelete);
 
     //按reqmntId查询(先按状态排序，再按时间排序，最后按优先级排序)
-    @Query(value="SELECT t.* ,(CASE WHEN STATUS=\"new\" THEN 1 WHEN STATUS=\"going\" THEN 2 WHEN STATUS=\"reopen\" THEN 3 WHEN STATUS=\"finished\" THEN 4 WHEN STATUS=\"pause\" THEN 5 ELSE 6 END) state FROM story t WHERE reqmntId = ?1 ORDER BY state ,create_time DESC , priority DESC LIMIT ?2,?3", nativeQuery = true)
-    List<Story> rtrvStoryInfoList(String reqmntId, Integer m, Integer n);
+    @Query(value="SELECT t.* ,(CASE WHEN STATUS=\"new\" THEN 1 WHEN STATUS=\"going\" THEN 2 WHEN STATUS=\"reopen\" THEN 3 WHEN STATUS=\"finished\" THEN 4 WHEN STATUS=\"pause\" THEN 5 ELSE 6 END) state FROM story t WHERE reqmnt_Id IN ?1 ORDER BY state ,create_time DESC , priority DESC", nativeQuery = true)
+    List<Story> rtrvStoryInfoList(List<String> reqmntIds);
+
+    //按storyIds查询(先按状态排序，再按时间排序，最后按优先级排序)
+    @Query(value="SELECT t.* ,(CASE WHEN STATUS=\"new\" THEN 1 WHEN STATUS=\"going\" THEN 2 WHEN STATUS=\"reopen\" THEN 3 WHEN STATUS=\"finished\" THEN 4 WHEN STATUS=\"pause\" THEN 5 ELSE 6 END) state FROM story t WHERE story_Id IN ?1 ORDER BY state ,create_time DESC , priority DESC", nativeQuery = true)
+    List<Story> rtrvStoryInfoByStoryIdsList(List<String> storyIds);
+
+
     //获取story列表总条数
     @Query(value="  SELECT DISTINCT COUNT(*) FROM (SELECT * FROM story WHERE reqmntId = ?1) t ", nativeQuery = true)
     Long getStoryBaseInfoCount(String reqmntId);

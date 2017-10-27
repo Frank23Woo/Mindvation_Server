@@ -7,16 +7,16 @@ import java.sql.Timestamp;
 
 @Component
 @Entity
-@Table(name = "attachment_proj", uniqueConstraints = {@UniqueConstraint(columnNames="attachmentId")})
+@Table(name = "attachment_proj")
 public class ProjAttchUrls {
     @Id
     @GeneratedValue
+    //uuId
+    private Integer uuId;
     //附件Id
     private Integer attachmentId;
     //项目Id
     private String projId;
-    //附件名
-    private String attachmentName;
     //是否被删除
     @Column(name = "is_deleted", columnDefinition = "INT default 0")
     private Integer isDeleted;
@@ -40,12 +40,12 @@ public class ProjAttchUrls {
         this.projId = projId;
     }
 
-    public String getAttachmentName() {
-        return attachmentName;
+    public Integer getUuId() {
+        return uuId;
     }
 
-    public void setAttachmentName(String attachmentName) {
-        this.attachmentName = attachmentName;
+    public void setUuId(Integer uuId) {
+        this.uuId = uuId;
     }
 
     public Integer getIsDeleted() {

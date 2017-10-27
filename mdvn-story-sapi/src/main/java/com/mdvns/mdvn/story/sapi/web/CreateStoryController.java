@@ -1,9 +1,7 @@
 package com.mdvns.mdvn.story.sapi.web;
 
 import com.mdvns.mdvn.common.beans.RestResponse;
-import com.mdvns.mdvn.story.sapi.domain.CreateStoryRequest;
-import com.mdvns.mdvn.story.sapi.domain.RtrvStoryListRequest;
-import com.mdvns.mdvn.story.sapi.domain.SaveSTasksRequest;
+import com.mdvns.mdvn.story.sapi.domain.*;
 import com.mdvns.mdvn.story.sapi.domain.entity.*;
 import com.mdvns.mdvn.story.sapi.service.ICreateStoryService;
 import org.slf4j.Logger;
@@ -35,6 +33,26 @@ public class CreateStoryController {
     public ResponseEntity<?> rtrvStoryInfoList(@RequestBody RtrvStoryListRequest request) throws SQLException{
         return storyService.rtrvStoryInfoList(request);
     }
+
+    /**
+     * 通过reqmntlist获取story整个列表
+     * @return
+     */
+    @PostMapping(value="/rtrvStoryInfoListByReqmntIds")
+    public ResponseEntity<?> rtrvStoryInfoListByReqmntIds(@RequestBody RtrvStoryListByReqmntIdsRequest request) throws SQLException{
+        return storyService.rtrvStoryInfoListByReqmntIds(request);
+    }
+
+    /**
+     * 通过storyIdlist获取story整个列表
+     * @return
+     */
+    @PostMapping(value="/rtrvStoryInfoListByStoryIds")
+    public ResponseEntity<?> rtrvStoryInfoListByStoryIds(@RequestBody RtrvStoryListByStoryIdsRequest request) throws SQLException{
+        return storyService.rtrvStoryInfoListByStoryIds(request);
+    }
+
+
 
 
     /**

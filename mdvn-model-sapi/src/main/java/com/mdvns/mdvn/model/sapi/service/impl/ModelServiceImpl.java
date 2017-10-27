@@ -19,6 +19,7 @@ import org.springframework.util.StringUtils;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -150,6 +151,7 @@ public class ModelServiceImpl implements ModelService {
                 IterationModel iterationModel = new IterationModel();
                 iterationModel.setModelId(model.getModelId());
                 iterationModel.setIsDeleted(0);
+                iterationModel.setItIndex(i);
                 iterationModel.setCreateTime(createTime);
                 if (!StringUtils.isEmpty(iterationModels.get(i).getName())) {
                     iterationModel.setName(iterationModels.get(i).getName());
@@ -186,7 +188,7 @@ public class ModelServiceImpl implements ModelService {
             }
             createModelResponse.setIterationModels(createItModelResponses);
         }
-        //6.保存TaskDelinery表数据
+        //6.保存TaskDelivery表数据
         if (request.getTaskDeliveries() != null && !request.getTaskDeliveries().isEmpty()) {
             List<TaskDelivery> taskDelivers = request.getTaskDeliveries();
             List<TaskDelivery> taskDeliverlist = new ArrayList<>();
@@ -207,6 +209,64 @@ public class ModelServiceImpl implements ModelService {
         }
         LOG.info("执行结束{} saveModel()方法.", this.CLASS);
         return ResponseEntity.ok(createModelResponse);
+    }
+
+    /**
+     * 根据id查询模块全部详细信息
+     *
+     * @param request 模块Id
+     * @return Model
+     */
+    @Override
+    public CreateModelResponse findModelDetailById(RtrvModelByIdRequest request) {
+        LOG.info("开始执行{} saveModel()方法.", this.CLASS);
+        CreateModelResponse createModelResponse = new CreateModelResponse();
+        //模块
+        model = this.modelRepository.findAllByModelId(request.getModelId());
+        createModelResponse.setModel(model);
+        List<FunctionLabel> functionLabels = new ArrayList<>();
+        List<SubFunctionLabel> functionLabelList = this.functionModelRepository.findByParentId(request.getModelId());
+        for (int i = 0; i <functionLabelList.size() ; i++) {
+            //获取过程方法模块对象
+            SubFunctionLabel functionLabel = functionLabelList.get(i);
+            FunctionLabel funcLabel = new FunctionLabel();
+            funcLabel.setIsDeleted(functionLabel.getIsDeleted());
+            funcLabel.setParentId(functionLabel.getParentId());
+            funcLabel.setModelId(functionLabel.getLabelId());
+            funcLabel.setName(functionLabel.getName());
+            funcLabel.setCreatorId(functionLabel.getCreatorId());
+            funcLabel.setCreateTime(functionLabel.getCreateTime());
+            String lableId = functionLabel.getLabelId();
+            //获取过程方法子模块对象
+            List<SubFunctionLabel> subFunctionLabels = this.functionModelRepository.findByParentId(lableId);
+            funcLabel.setSubFunctionLabels(subFunctionLabels);
+            functionLabels.add(funcLabel);
+        }
+        createModelResponse.setFunctionLabels(functionLabels);
+        //角色
+        List<ModelRole> roles = this.modelRoleRepository.findByModelId(request.getModelId());
+        createModelResponse.setRoles(roles);
+        //迭代模板
+        List<IterationModel> iterationModels = this.itModelRepository.findByModelId(request.getModelId());
+        List<CreateItModelResponse> createItModelResponses = new ArrayList<>();
+        for (int i = 0; i < iterationModels.size() ; i++) {
+            CreateItModelResponse createItModelResponse = new CreateItModelResponse();
+            String labelIds = iterationModels.get(i).getLabelIds();
+            List<String> idList = new ArrayList<String>();
+            for (String id:labelIds.split(",")) {
+                idList.add(String.valueOf(id));
+            }
+            List<SubFunctionLabel> funcLabels = this.functionModelRepository.findByLabelIdIn(idList);
+            createItModelResponse.setIterationModel(iterationModels.get(i));
+            createItModelResponse.setFunctionLabels(funcLabels);
+            createItModelResponses.add(createItModelResponse);
+        }
+        createModelResponse.setIterationModels(createItModelResponses);
+        //交付件
+        List<TaskDelivery> taskDeliveries = this.taskDeliveryRepository.findByModelIdAndIsDeleted(request.getModelId(),0);
+        createModelResponse.setTaskDeliveries(taskDeliveries);
+        LOG.info("执行结束{} saveModel()方法.", this.CLASS);
+        return createModelResponse;
     }
 
     /**
@@ -263,6 +323,39 @@ public class ModelServiceImpl implements ModelService {
     }
 
     /**
+     * 获取模块：分页，排序，由类型选择
+     *
+     * @param retrieveModelListRequest
+     * @return
+     * @throws SQLException
+     */
+    @Override
+    public RetrieveModelListResponse rtrvModelList(RetrieveModelListByTypeRequest retrieveModelListRequest) throws
+            SQLException {
+        Integer page = retrieveModelListRequest.getPage()-1;
+        Integer pageSize = retrieveModelListRequest.getPageSize();
+        String sortBy = retrieveModelListRequest.getSortBy();
+        String modelType = retrieveModelListRequest.getModelType();
+        String creatorId = retrieveModelListRequest.getCreatorId();
+        RetrieveModelListResponse retrieveModelListResponse = new RetrieveModelListResponse();
+        sortBy = (sortBy == null) ? "quoteCnt" : sortBy;
+        PageRequest pageable = new PageRequest(page, pageSize, Sort.Direction.DESC, sortBy);
+        Page<Model> modelPage = null;
+        if (null!=modelType && null==creatorId) {
+            modelPage = this.modelRepository.findAllByModelType(modelType, pageable);
+        }
+        if (null==modelType && null!=creatorId){
+            modelPage = this.modelRepository.findAllByCreatorId(creatorId, pageable);
+        }
+        if (null!=modelType && null!=creatorId){
+            modelPage = this.modelRepository.findAllByCreatorIdAndModelType(creatorId,modelType, pageable);
+        }
+        retrieveModelListResponse.setModels(modelPage.getContent());
+        retrieveModelListResponse.setTotalNumber(modelPage.getTotalElements());
+        return retrieveModelListResponse;
+    }
+
+    /**
      * 通过modelId获取它的过程方法模块对象（List）
      *
      * @param request
@@ -281,6 +374,8 @@ public class ModelServiceImpl implements ModelService {
         LOG.info("执行结束{} findById()方法.", this.CLASS);
         return rtrvModelByIdResponse;
     }
+
+
 
     /**
      * 通过labelId获取它自己的过程方法模块对象（单个）
@@ -309,6 +404,20 @@ public class ModelServiceImpl implements ModelService {
         LOG.info("执行结束{} findById()方法.", this.CLASS);
         return modelRole;
     }
+
+    /**
+     * 查询model对象
+     * @param modelId
+     * @return
+     */
+    @Override
+    public Model findModelById(String modelId) {
+        LOG.info("开始执行{} findModelById()方法.", this.CLASS);
+        model = this.modelRepository.findAllByModelId(modelId);
+        LOG.info("执行结束{} findModelById()方法.", this.CLASS);
+        return model;
+    }
+
 
     /**
      * 判断子模块是否存在数据库里面
@@ -345,6 +454,8 @@ public class ModelServiceImpl implements ModelService {
         List<TaskDelivery> taskDeliveries = this.taskDeliveryRepository.findByModelIdAndIsDeleted(request.getModelId(),0);
         return taskDeliveries;
     }
+
+
 
     /**
      * 获取全部模块

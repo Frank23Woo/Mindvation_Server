@@ -12,7 +12,14 @@ public interface ModelRepository extends JpaRepository<Model, Integer> {
 
     Page<Model> findAll(Pageable pageable);
 
+    Page<Model> findAllByModelType(String modelType,Pageable pageable);
+
+    Page<Model> findAllByCreatorId(String creatorId,Pageable pageable);
+
+    Page<Model> findAllByCreatorIdAndModelType(String creatorId,String modelType,Pageable pageable);
     Model findByModelId(String modelId);
+
+    Model findAllByModelId(String modelId);
 
     @Query(value="  SELECT DISTINCT COUNT(*) FROM model ", nativeQuery = true)
     Long getModelCount();
