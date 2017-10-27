@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -180,8 +181,8 @@ public class TaskServiceImpl implements TaskService {
 
         final String ids = task.getAttachmentIds();
         if (!StringUtils.isEmpty(ids)) {
-            List<AttchInfo> attchInfos = (List<AttchInfo>) restTemplate.getForEntity(urlConfig.getGetAttachmentListByIdsUrl(), List.class, ids);
-            task.setAttachUrlList(attchInfos);
+            ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(urlConfig.getGetAttachmentListByIdsUrl(), RestResponse.class, ids);
+            task.setAttachUrlList((List)responseEntity.getBody().getResponseBody());
         }
 
         return task;
