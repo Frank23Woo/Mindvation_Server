@@ -1,6 +1,6 @@
 package com.mdvns.mdvn.task.sapi.domain;
 
-import com.mdvns.mdvn.common.beans.AttchUrl;
+import com.mdvns.mdvn.common.beans.AttchInfo;
 import com.mdvns.mdvn.common.beans.Staff;
 import com.mdvns.mdvn.task.sapi.domain.entity.Task;
 import com.mdvns.mdvn.task.sapi.domain.entity.TaskDeliver;
@@ -17,7 +17,7 @@ public class TaskDetail extends Task {
 
     private Staff assignee;
 
-    private List<AttchUrl> attchUrlList;
+    private List<AttchInfo> attchUrlList;
 
     public TaskDetail() {
     }
@@ -66,11 +66,11 @@ public class TaskDetail extends Task {
         this.assignee = assignee;
     }
 
-    public List<AttchUrl> getAttchUrlList() {
+    public List<AttchInfo> getAttchUrlList() {
         return attchUrlList;
     }
 
-    public void setAttchUrlList(List<AttchUrl> attchUrlList) {
+    public void setAttchUrlList(List<AttchInfo> attchUrlList) {
         this.attchUrlList = attchUrlList;
     }
 }

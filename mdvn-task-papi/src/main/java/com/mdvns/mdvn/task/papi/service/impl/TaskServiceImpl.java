@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.task.papi.service.impl;
 
+import com.mdvns.mdvn.common.beans.AttchInfo;
 import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.common.beans.Staff;
 import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
@@ -17,6 +18,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import sun.swing.StringUIClientPropertyKey;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -115,7 +117,11 @@ public class TaskServiceImpl implements TaskService {
                 taskList.get(i).setAssignee(assigneeList.get(i));
             }
 
-            //
+            //附件
+            for (TaskDetail detail : taskList) {
+                getTaskAttachment(detail);
+            }
+
             restResponse.setResponseCode("000");
             restResponse.setResponseMsg("ok");
             restResponse.setResponseBody(taskList);
@@ -150,6 +156,9 @@ public class TaskServiceImpl implements TaskService {
                 Staff assignee = restTemplate.postForObject(urlConfig.getRtrvStaffInfoUrl(), result.getAssigneeId(), Staff.class);
                 result.setAssignee(assignee);
 
+                // 查询附件
+                getTaskAttachment(result);
+
                 restResponse.setResponseCode("000");
                 restResponse.setResponseMsg("ok");
                 restResponse.setResponseBody(result);
@@ -162,4 +171,21 @@ public class TaskServiceImpl implements TaskService {
 
         return restResponse;
     }
+
+    // query task attachment
+    private TaskDetail getTaskAttachment(TaskDetail task) {
+        if (task == null) {
+            return null;
+        }
+
+        final String ids = task.getAttachmentIds();
+        if (!StringUtils.isEmpty(ids)) {
+            List<AttchInfo> attchInfos = (List<AttchInfo>) restTemplate.getForEntity(urlConfig.getGetAttachmentListByIdsUrl(), List.class, ids);
+            task.setAttachUrlList(attchInfos);
+        }
+
+        return task;
+    }
+
+
 }

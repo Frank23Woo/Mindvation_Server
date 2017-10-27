@@ -1,7 +1,7 @@
 package com.mdvns.mdvn.task.papi.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.mdvns.mdvn.common.beans.AttchUrl;
+import com.mdvns.mdvn.common.beans.AttchInfo;
 import com.mdvns.mdvn.common.beans.Staff;
 import com.mdvns.mdvn.task.papi.domain.entity.TaskDeliver;
 import org.springframework.stereotype.Component;
@@ -37,7 +37,7 @@ public class TaskDetail {
 
     private Staff assignee;
 
-    private List<AttchUrl> attachUrlList;
+    private List<AttchInfo> attachUrlList;
 
     public TaskDetail() {
     }
@@ -67,11 +67,11 @@ public class TaskDetail {
         this.assignee = assignee;
     }
 
-    public List<AttchUrl> getAttachUrlList() {
+    public List<AttchInfo> getAttachUrlList() {
         return attachUrlList;
     }
 
-    public void setAttachUrlList(List<AttchUrl> attachUrlList) {
+    public void setAttachUrlList(List<AttchInfo> attachUrlList) {
         this.attachUrlList = attachUrlList;
     }
 

@@ -38,6 +38,10 @@ public class UrlConfig {
     private String rtrvTaskListUrl;
     private String updateTaskUrl;
 
+    // file sapi
+    private String getAttachmentListByIdsUrl;
+
+
     public String getRtrvModelRoleByModelIdUrl() {
         return rtrvModelRoleByModelIdUrl;
     }
@@ -198,5 +202,13 @@ public class UrlConfig {
 
     public void setRtrvStaffInfoUrl(String rtrvStaffInfoUrl) {
         this.rtrvStaffInfoUrl = rtrvStaffInfoUrl;
+    }
+
+    public String getGetAttachmentListByIdsUrl() {
+        return getAttachmentListByIdsUrl;
+    }
+
+    public void setGetAttachmentListByIdsUrl(String getAttachmentListByIdsUrl) {
+        this.getAttachmentListByIdsUrl = getAttachmentListByIdsUrl;
     }
 }
