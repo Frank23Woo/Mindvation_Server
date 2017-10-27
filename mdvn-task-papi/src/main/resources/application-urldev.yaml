@@ -31,4 +31,4 @@ config:
   updateTaskUrl: http://localhost:10004/mdvn-task-sapi/updateTask
 
 # attachment sapi urls
-  getAttachmentListByIdsUrl: http://localhost:10004/mdvn-file-sapi/{ids}
+  getAttachmentListByIdsUrl: http://localhost:10019/mdvn-file-sapi/{ids}
