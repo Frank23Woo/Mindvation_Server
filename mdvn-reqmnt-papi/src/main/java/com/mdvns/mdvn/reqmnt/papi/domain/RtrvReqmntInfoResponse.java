@@ -22,7 +22,7 @@ public class RtrvReqmntInfoResponse{
     private List<ReqmntCheckList> checkLists;
 
 //    private List<ReqmntAttchUrl> attchUrls;
-    private List<AttchInfo> attchUrls;
+    private List<AttchInfo> attchInfos;
 
     private RtrvStoryListResponse rtrvStoryListResponse;
 
@@ -75,11 +75,11 @@ public class RtrvReqmntInfoResponse{
         this.rtrvStoryListResponse = rtrvStoryListResponse;
     }
 
-    public List<AttchInfo> getAttchUrls() {
-        return attchUrls;
+    public List<AttchInfo> getAttchInfos() {
+        return attchInfos;
     }
 
-    public void setAttchUrls(List<AttchInfo> attchUrls) {
-        this.attchUrls = attchUrls;
+    public void setAttchInfos(List<AttchInfo> attchInfos) {
+        this.attchInfos = attchInfos;
     }
 }

@@ -37,7 +37,7 @@ config:
 
   rtrvStoryInfoListUrl: http://localhost:10015/mdvn-story-sapi/story/rtrvStoryInfoList
 
-# attchment papi url
-  rtrvAttchInfoListUrl: http://localhost:10020/mdvn-file-papi/files/rtrvAttchList
+# attchment sapi url
+  rtrvAttchInfoListUrl: http://localhost:10019/mdvn-file-sapi/files/
 
 

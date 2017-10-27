@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 
 @Component
 @Entity
-@Table(name = "attachment_reqmnt", uniqueConstraints = {@UniqueConstraint(columnNames="attachmentId")})
+@Table(name = "attachment_reqmnt")
 public class ReqmntAttchUrl {
     @Id
     @GeneratedValue

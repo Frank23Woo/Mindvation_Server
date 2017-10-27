@@ -350,9 +350,10 @@ public class ReqmntServiceImpl implements IReqmntService {
         ParameterizedTypeReference attchInfotTypeReference = new ParameterizedTypeReference<List<AttchInfo>>() {
         };
         String attchInfoUrl = config.getRtrvAttchInfoListUrl();
-        List<AttchInfo> attchInfos = restTemplate.postForObject(attchInfoUrl,ids,List.class);
-        rtrvReqmntInfoResponse.setAttchUrls(attchInfos);
-
+        System.out.println(attchInfoUrl);
+        ResponseEntity<RestResponse> attchInfos = restTemplate.getForEntity(attchInfoUrl + ids, RestResponse.class);
+//        ResponseEntity<List> attchInfos = restTemplate.postForEntity(attchInfoUrl,null,List.class);
+        rtrvReqmntInfoResponse.setAttchInfos((List<AttchInfo>) attchInfos.getBody().getResponseBody());
 
         //查询story列表
         RtrvStoryListRequest rtrvStoryListRequest = new RtrvStoryListRequest();
