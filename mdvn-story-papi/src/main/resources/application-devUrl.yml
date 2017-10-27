@@ -7,7 +7,7 @@ config:
   savePModelsUrl: http://localhost:10015/mdvn-story-sapi/story/savePModels
   saveCheckListsUrl: http://localhost:10015/mdvn-story-sapi/story/savePCheckLists
   checklistsListByUuIdUrl: http://localhost:10015/mdvn-story-sapi/story/checklistsListByUuId
-  savePAttchUrlsUrl: http://localhost:10015/mdvn-story-sapi/story/savePAttchUrls
+  saveSAttchUrlsUrl: http://localhost:10015/mdvn-story-sapi/story/saveSAttchUrls
   savePLeadersUrl: http://localhost:10015/mdvn-story-sapi/story/savePLeaders
   updateStoryBaseInfoUrl: http://localhost:10015/mdvn-story-sapi/updateStory/updateStoryBaseInfo
   updateStoryMembersUrl: http://localhost:10015/mdvn-story-sapi/updateStory/updateStoryMembers
@@ -42,5 +42,7 @@ config:
   findTaskDeliveryByIdUrl: http://localhost:10009/mdvn-model-sapi/models/findTaskDeliveryById
 
   rtrvTaskListByStoryIdUrl: http://localhost:10003/mdvn-task-papi/task/retrieveTaskList
+
+  rtrvAttchListUrl: http://localhost:10019/mdvn-file-sapi/files/
 
 

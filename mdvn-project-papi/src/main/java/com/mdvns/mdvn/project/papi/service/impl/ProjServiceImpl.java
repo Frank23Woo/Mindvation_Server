@@ -292,7 +292,7 @@ public class ProjServiceImpl implements IProjService {
                 String attachmentIds = com.sun.deploy.util.StringUtils.join(idList, ",");
                 if (pAttchUrls.size() != 0) {
                     ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(config.getRtrvAttchListUrl() + attachmentIds, RestResponse.class);
-                    projectDetail.setAttchInfos(responseEntity.getBody().getResponseBody());
+                    projectDetail.setAttchInfos((List<AttchInfo>)responseEntity.getBody().getResponseBody());
 //                projectDetail.setAttchUrls(pAttchUrls);
                 }
 
@@ -381,9 +381,7 @@ public class ProjServiceImpl implements IProjService {
             String attachmentIds = com.sun.deploy.util.StringUtils.join(idList, ",");
             if (projAttchUrls.size() != 0) {
                 ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(config.getRtrvAttchListUrl() + attachmentIds, RestResponse.class);
-//            List<AttchInfo> attchInfoList = restTemplate.getForObject(config.getRtrvAttchListUrl()+attachmentIds,List.class);
-//            projectDetail.setAttchUrls(projAttchUrls);
-                projectDetail.setAttchInfos(responseEntity.getBody().getResponseBody());
+                projectDetail.setAttchInfos((List<AttchInfo>)responseEntity.getBody().getResponseBody());
             }
         } catch (Exception ex) {
             throw new BusinessException(ExceptionEnum.PROJECT_DETAIL_ATTCHURL_NOT_RTRV);

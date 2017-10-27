@@ -2,6 +2,7 @@ package com.mdvns.mdvn.story.sapi.web;
 
 import com.mdvns.mdvn.story.sapi.domain.RtrvMembersByRoleIdRequest;
 import com.mdvns.mdvn.story.sapi.domain.RtrvStoryDetailRequest;
+import com.mdvns.mdvn.story.sapi.domain.entity.StoryAttchUrl;
 import com.mdvns.mdvn.story.sapi.domain.entity.StoryRoleMember;
 import com.mdvns.mdvn.story.sapi.domain.entity.StoryTag;
 import com.mdvns.mdvn.story.sapi.domain.entity.StoryTask;
@@ -68,7 +69,16 @@ public class RtrvStoryDetailController {
         return rtrvStoryDetailService.rtrvStoryTags(request);
     }
 
-
+    /**
+     * 获得某个用户故事附件信息
+     * @param request
+     * @return
+     * @throws SQLException
+     */
+    @PostMapping(value="/rtrvStoryAttUrls")
+    public List<StoryAttchUrl> rtrvStoryAttUrls(@RequestBody RtrvStoryDetailRequest request) throws SQLException {
+        return rtrvStoryDetailService.rtrvStoryAttUrls(request);
+    }
     /**
      * 获得某个用户故事checkList信息
      * @param request

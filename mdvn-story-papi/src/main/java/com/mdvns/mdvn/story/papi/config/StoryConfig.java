@@ -20,7 +20,7 @@ public class StoryConfig {
     //创建story时保存checklists信息
     private String saveCheckListsUrl;
     //创建story时保存AttchUrls信息
-    private String savePAttchUrlsUrl;
+    private String saveSAttchUrlsUrl;
     //查询用户故事新建时过程方法子模块是否存在，如果不存在就添加========
     private String judgeSubLabelIdUrl;
 
@@ -64,6 +64,16 @@ public class StoryConfig {
     private String rtrvTaskListByStoryIdUrl;
 
     private String findTaskDeliveryByIdUrl;
+
+    private String rtrvAttchListUrl;
+
+    public String getRtrvAttchListUrl() {
+        return rtrvAttchListUrl;
+    }
+
+    public void setRtrvAttchListUrl(String rtrvAttchListUrl) {
+        this.rtrvAttchListUrl = rtrvAttchListUrl;
+    }
 
     public String getFindTaskDeliveryByIdUrl() {
         return findTaskDeliveryByIdUrl;
@@ -161,12 +171,12 @@ public class StoryConfig {
         this.saveCheckListsUrl = saveCheckListsUrl;
     }
 
-    public String getSavePAttchUrlsUrl() {
-        return savePAttchUrlsUrl;
+    public String getSaveSAttchUrlsUrl() {
+        return saveSAttchUrlsUrl;
     }
 
-    public void setSavePAttchUrlsUrl(String savePAttchUrlsUrl) {
-        this.savePAttchUrlsUrl = savePAttchUrlsUrl;
+    public void setSaveSAttchUrlsUrl(String saveSAttchUrlsUrl) {
+        this.saveSAttchUrlsUrl = saveSAttchUrlsUrl;
     }
 
     public String getSavePLeadersUrl() {

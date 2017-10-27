@@ -23,6 +23,9 @@ public interface ICreateStoryService {
     List<StoryRoleMember> saveSRoleMembers(List<StoryRoleMember> members);
     //创建story时保存标签信息
     List<StoryTag> saveSTags(List<StoryTag> request);
+
+    List<StoryAttchUrl> saveSAttchUrls(List<StoryAttchUrl> request);
+
     //创建story时保存story任务（checkLists）
     List<StoryTask> saveSTasks(SaveSTasksRequest request);
 

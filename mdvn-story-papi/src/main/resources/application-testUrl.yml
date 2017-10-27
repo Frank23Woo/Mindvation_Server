@@ -6,7 +6,7 @@ config:
   savePModelsUrl: http://localhost:8080/mdvn-story-sapi/story/savePModels
   saveCheckListsUrl: http://localhost:8080/mdvn-story-sapi/story/savePCheckLists
   checklistsListByUuIdUrl: http://localhost:8080/mdvn-story-sapi/story/checklistsListByUuId
-  savePAttchUrlsUrl: http://localhost:8080/mdvn-story-sapi/story/savePAttchUrls
+  saveSAttchUrlsUrl: http://localhost:8080/mdvn-story-sapi/story/saveSAttchUrls
   savePLeadersUrl: http://localhost:8080/mdvn-story-sapi/story/savePLeaders
   updateStoryBaseInfoUrl: http://localhost:8080/mdvn-story-sapi/updateStory/updateStoryBaseInfo
   updateStoryMembersUrl: http://localhost:8080/mdvn-story-sapi/updateStory/updateStoryMembers
@@ -42,3 +42,5 @@ config:
 
   rtrvStoryInfoListUrl: http://localhost:8080/mdvn-story-sapi/story/rtrvStoryInfoList
   rtrvTaskListByStoryIdUrl: http://localhost:8080/mdvn-task-papi/task/retrieveTaskList
+
+  rtrvAttchListUrl: http://localhost:8080/mdvn-file-sapi/files/

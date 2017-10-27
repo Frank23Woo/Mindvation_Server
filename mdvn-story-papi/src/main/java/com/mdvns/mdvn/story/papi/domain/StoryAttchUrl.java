@@ -1,16 +1,11 @@
-package com.mdvns.mdvn.story.sapi.domain.entity;
+package com.mdvns.mdvn.story.papi.domain;
 
 import org.springframework.stereotype.Component;
 
-import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Component
-@Entity
-@Table(name = "attachment_story")
 public class StoryAttchUrl {
-    @Id
-    @GeneratedValue
     //uuId
     private Integer uuId;
     //附件Id
@@ -18,10 +13,8 @@ public class StoryAttchUrl {
     //项目Id
     private String storyId;
     //是否被删除
-    @Column(name = "is_deleted", columnDefinition = "INT default 0")
     private Integer isDeleted;
     //更改时间
-    @Column(columnDefinition = "timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP", nullable = false)
     private Timestamp updateTime;
 
     public Integer getUuId() {

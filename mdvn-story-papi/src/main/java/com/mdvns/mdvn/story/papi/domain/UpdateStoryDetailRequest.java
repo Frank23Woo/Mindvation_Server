@@ -25,7 +25,7 @@ public class UpdateStoryDetailRequest {
     //最后一层过程方法模块对象
     private SubFunctionLabel subFunctionLabel;
 //    //用户故事附件（集合）
-//    private List<AttchUrl> attchUrls;
+    private List<StoryAttchUrl> attchUrls;
 
     public String getCreatorId() {
         return creatorId;
@@ -83,11 +83,11 @@ public class UpdateStoryDetailRequest {
         this.subFunctionLabel = subFunctionLabel;
     }
 
-//    public List<AttchUrl> getAttchUrls() {
-//        return attchUrls;
-//    }
-//
-//    public void setAttchUrls(List<AttchUrl> attchUrls) {
-//        this.attchUrls = attchUrls;
-//    }
+    public List<StoryAttchUrl> getAttchUrls() {
+        return attchUrls;
+    }
+
+    public void setAttchUrls(List<StoryAttchUrl> attchUrls) {
+        this.attchUrls = attchUrls;
+    }
 }

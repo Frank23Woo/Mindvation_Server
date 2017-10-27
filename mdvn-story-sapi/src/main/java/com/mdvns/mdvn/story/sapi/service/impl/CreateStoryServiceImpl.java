@@ -47,6 +47,9 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
     @Autowired
     private StoryTaskRepository storyTaskRepository;
 
+    @Autowired
+    private StoryAttchRepository storyAttchRepository;
+
     /**
      * 获取story整个列表
      *
@@ -194,6 +197,20 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
         }
         List<StoryTag> storyTags = storyTagRepository.save(request);
         return storyTags;
+    }
+    /**
+     * 创建STORY时保存附件信息
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public List<StoryAttchUrl> saveSAttchUrls(List<StoryAttchUrl> request) {
+        for (int i = 0; i < request.size(); i++) {
+            request.get(i).setIsDeleted(0);
+        }
+        List<StoryAttchUrl> storyAttchUrls = this.storyAttchRepository.save(request);
+        return storyAttchUrls;
     }
 
     /**

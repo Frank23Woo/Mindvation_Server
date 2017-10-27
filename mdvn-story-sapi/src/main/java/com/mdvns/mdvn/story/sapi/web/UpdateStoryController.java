@@ -1,6 +1,7 @@
 package com.mdvns.mdvn.story.sapi.web;
 
 
+import com.mdvns.mdvn.story.sapi.domain.UpdateAttchUrlsRequest;
 import com.mdvns.mdvn.story.sapi.domain.UpdateSMembersRequest;
 import com.mdvns.mdvn.story.sapi.domain.UpdateSTagsRequest;
 import com.mdvns.mdvn.story.sapi.domain.UpdateSTasksRequest;
@@ -53,6 +54,15 @@ public class UpdateStoryController {
     @PostMapping(value="/updateStoryTags")
     public List<StoryTag> updateStoryTags(@RequestBody UpdateSTagsRequest tags){
         return this.updateStoryService.updateStoryTags(tags);
+    }
+    /**
+     * 更改用户故事附件信息
+     * @param list
+     * @return
+     */
+    @PostMapping(value="/updateStoryAttchUrls")
+    public List<StoryAttchUrl> updateStoryAttchUrls(@RequestBody UpdateAttchUrlsRequest list){
+        return this.updateStoryService.updateStoryAttchUrls(list);
     }
     /**
      * 更改用户故事checklist信息

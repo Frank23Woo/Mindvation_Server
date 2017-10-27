@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.story.sapi.service.impl;
 
+import com.mdvns.mdvn.story.sapi.domain.UpdateAttchUrlsRequest;
 import com.mdvns.mdvn.story.sapi.domain.UpdateSMembersRequest;
 import com.mdvns.mdvn.story.sapi.domain.UpdateSTagsRequest;
 import com.mdvns.mdvn.story.sapi.domain.UpdateSTasksRequest;
@@ -41,6 +42,9 @@ public class UpdateStoryServiceImpl implements IUpdateStoryService {
 
     @Autowired
     private StoryTaskRepository storyTaskRepository;
+
+    @Autowired
+    private StoryAttchRepository storyAttchRepository;
 
     /**
      * 更改用户故事基本信息
@@ -314,6 +318,53 @@ public class UpdateStoryServiceImpl implements IUpdateStoryService {
         returnList.addAll(storyChecklists);
         LOG.info("finish executing updateStoryTasks()方法.", this.CLASS);
         return returnList;
+    }
+    /**
+     * 更改story附件信息
+     *
+     * @param list
+     * @return
+     */
+    @Override
+    public List<StoryAttchUrl> updateStoryAttchUrls(UpdateAttchUrlsRequest list) {
+        LOG.info("start executing updateStoryAttchUrls()方法.", this.CLASS);
+        if (list == null || list.getAttchUrls().size() <= 0) {
+            throw new NullPointerException("getAttchUrls List is empty");
+        }
+        String storyId = list.getStoryId();
+        List<Integer> attachmentIdList = new ArrayList();
+        //将数据库中没有的插入
+        for (int i = 0; i < list.getAttchUrls().size(); i++) {
+            StoryAttchUrl storyAttchUrl = new StoryAttchUrl();
+            attachmentIdList.add(list.getAttchUrls().get(i).getAttachmentId());
+            storyAttchUrl = this.storyAttchRepository.findAllByStoryIdAndAttachmentId(storyId, list.getAttchUrls().get(i).getAttachmentId());
+            //不存在的加上
+            if (storyAttchUrl == null) {
+                list.getAttchUrls().get(i).setStoryId(storyId);
+                list.getAttchUrls().get(i).setIsDeleted(0);
+                this.storyAttchRepository.saveAndFlush(list.getAttchUrls().get(i));
+            } else {
+                //之前是附件后来改掉，数据库中存在记录，但是is_deleted为1，需要修改成0
+                if (storyAttchUrl.getIsDeleted().equals(1)) {
+                    String sql = "UPDATE attachment_story SET is_deleted= 0 WHERE story_id=" + "\"" + storyId + "\"" + "AND attachment_id =" + "\"" + list.getAttchUrls().get(i).getAttachmentId() + "\"" + "";
+                    this.jdbcTemplate.update(sql);
+                }
+            }
+        }
+        //将数据库中将要删除的附件信息修改is_deleted状态
+        //数组转化为字符串格式
+        StringBuffer attchUrls = new StringBuffer();
+        for (int i = 0; i < attachmentIdList.size(); i++) {
+            attchUrls.append("\"" + attachmentIdList.get(i) + "\"");
+            attchUrls.append(",");
+        }
+        String sAttchUrls = attchUrls.substring(0, attchUrls.length() - 1);
+        String sql = "UPDATE attachment_story SET is_deleted= 1 WHERE story_id= " + "\"" + storyId + "\"" + " AND attachment_id NOT IN (" + sAttchUrls + ")";
+        this.jdbcTemplate.update(sql);
+        //查询数据库中有效的附件
+        List<StoryAttchUrl> storyAttchUrls = this.storyAttchRepository.findSAttchUrls(storyId);
+        LOG.info("finish executing updateStoryAttchUrls()方法.", this.CLASS);
+        return storyAttchUrls;
     }
 
 }
