@@ -16,6 +16,17 @@ public class StaffController {
     private StaffService staffService;
 
     /**
+     * 登录
+     * @param loginRequest
+     * @return
+     */
+    @PostMapping(value = "/login")
+    public ResponseEntity<?> login(@RequestBody LonginRequest loginRequest) {
+        System.out.print(loginRequest);
+        return this.staffService.login(loginRequest);
+    }
+
+    /**
      * 获取staff列表信息
      *
      * @param retrieveStaffListRequest

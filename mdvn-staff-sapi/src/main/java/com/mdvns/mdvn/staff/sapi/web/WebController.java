@@ -78,14 +78,14 @@ public class WebController {
 
 
     /**
-     * 根据指定Id获取Staff信息
-     * @param id
+     * 根据指定account获取Staff信息
+     * @param account
      * @return
      */
-    @GetMapping(value = "/staff/{id}")
-    public RestResponse<?> findById(@PathVariable String id) {
+    @GetMapping(value = "/staff/{account}")
+    public RestResponse<?> findById(@PathVariable String account) {
 
-        return this.staffService.findById(id);
+        return this.staffService.findByAccount(account);
     }
 
 }

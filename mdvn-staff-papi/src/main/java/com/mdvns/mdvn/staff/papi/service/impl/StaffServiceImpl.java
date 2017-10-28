@@ -7,11 +7,11 @@ import com.mdvns.mdvn.common.utils.RestResponseUtil;
 import com.mdvns.mdvn.staff.papi.config.WebConfig;
 import com.mdvns.mdvn.staff.papi.domain.*;
 import com.mdvns.mdvn.staff.papi.service.StaffService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,7 +23,9 @@ import java.util.concurrent.ExecutionException;
 
 
 @Service
-public class StaffServiceImpl implements StaffService{
+public class StaffServiceImpl implements StaffService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(StaffServiceImpl.class);
 
     @Autowired
     private RestTemplate restTemplate;
@@ -58,6 +60,7 @@ public class StaffServiceImpl implements StaffService{
 
     /**
      * 通过staffId的list集合获取staff的对象列表
+     *
      * @param request
      * @return
      */
@@ -77,6 +80,7 @@ public class StaffServiceImpl implements StaffService{
 
     /**
      * 通过staffId获取staff对象信息
+     *
      * @param request
      * @return
      */
@@ -109,6 +113,7 @@ public class StaffServiceImpl implements StaffService{
 
     /**
      * 根据指定Id获取Staff信息
+     *
      * @param id
      * @return
      */
@@ -130,4 +135,51 @@ public class StaffServiceImpl implements StaffService{
         throw new BusinessException(restResponse.getStatusCode());
     }
 
+    /**
+     * 登录
+     *
+     * @param loginRequest
+     * @return
+     */
+    @Override
+    public ResponseEntity<?> login(LonginRequest loginRequest) {
+
+        LOG.info("开始执行StaffPapi Service Login:{}", loginRequest.getAccount());
+        //调用SAPI根据account查询用户
+        Staff staff = getStaffByAccount(loginRequest.getAccount());
+        if (staff == null) {
+            throw new BusinessException(ExceptionEnum.USER_NOT_FOUND);
+        }
+        //登录校验
+        if (!loginRequest.getPassword().equals(staff.getPassword())) {
+            throw new BusinessException(ExceptionEnum.PASSWORD_INCORRECT);
+        }
+        return RestResponseUtil.successResponseEntity(staff);
+    }
+
+
+
+    /**
+     * 调用SAPI根据account查询用户
+     *
+     * @param account
+     * @return
+     */
+    private Staff getStaffByAccount(String account) {
+        String findByAccountUrl = "http://localhost:10013/mdvn-staff-sapi/staff/" + account;
+
+        ResponseEntity<RestResponse<Staff>> responseEntity = null;
+        ParameterizedTypeReference parameterizedTypeReference = new ParameterizedTypeReference<RestResponse<Staff>>() {
+        };
+        try {
+            responseEntity = restTemplate.exchange(findByAccountUrl, HttpMethod.GET, new HttpEntity<>(account), parameterizedTypeReference);
+        } catch (Exception ex) {
+            LOG.error("调用SAPI查询用户：{} 失败: {}", account, ex.getLocalizedMessage());
+        }
+        Staff staff = null;
+        if (responseEntity.getStatusCode().equals(HttpStatus.OK)) {
+            staff = responseEntity.getBody().getResponseBody();
+        }
+        return staff;
+    }
 }

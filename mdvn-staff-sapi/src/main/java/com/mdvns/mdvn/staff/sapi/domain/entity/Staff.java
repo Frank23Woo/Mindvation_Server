@@ -15,6 +15,8 @@ public class Staff {
     @GeneratedValue
     private Integer uuId;
     private String staffId;
+    private String account;
+    private String password;
     private String name;
     //员工头像
     @Column(columnDefinition = "text")
@@ -31,6 +33,22 @@ public class Staff {
     private Double recommendation;
     //工作饱和度
     private Double worksaturation;
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public Integer getUuId() {
         return uuId;
@@ -118,5 +136,67 @@ public class Staff {
 
     public void setWorksaturation(Double worksaturation) {
         this.worksaturation = worksaturation;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Staff)) return false;
+
+        Staff staff = (Staff) o;
+
+        if (getUuId() != null ? !getUuId().equals(staff.getUuId()) : staff.getUuId() != null) return false;
+        if (getStaffId() != null ? !getStaffId().equals(staff.getStaffId()) : staff.getStaffId() != null) return false;
+        if (getPassword() != null ? !getPassword().equals(staff.getPassword()) : staff.getPassword() != null)
+            return false;
+        if (getName() != null ? !getName().equals(staff.getName()) : staff.getName() != null) return false;
+        if (getAvatar() != null ? !getAvatar().equals(staff.getAvatar()) : staff.getAvatar() != null) return false;
+        if (getDeptId() != null ? !getDeptId().equals(staff.getDeptId()) : staff.getDeptId() != null) return false;
+        if (getPositionId() != null ? !getPositionId().equals(staff.getPositionId()) : staff.getPositionId() != null)
+            return false;
+        if (getHiredate() != null ? !getHiredate().equals(staff.getHiredate()) : staff.getHiredate() != null)
+            return false;
+        if (getEffective() != null ? !getEffective().equals(staff.getEffective()) : staff.getEffective() != null)
+            return false;
+        if (getContribution() != null ? !getContribution().equals(staff.getContribution()) : staff.getContribution() != null)
+            return false;
+        if (getRecommendation() != null ? !getRecommendation().equals(staff.getRecommendation()) : staff.getRecommendation() != null)
+            return false;
+        return getWorksaturation() != null ? getWorksaturation().equals(staff.getWorksaturation()) : staff.getWorksaturation() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getUuId() != null ? getUuId().hashCode() : 0;
+        result = 31 * result + (getStaffId() != null ? getStaffId().hashCode() : 0);
+        result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + (getAvatar() != null ? getAvatar().hashCode() : 0);
+        result = 31 * result + (getDeptId() != null ? getDeptId().hashCode() : 0);
+        result = 31 * result + (getPositionId() != null ? getPositionId().hashCode() : 0);
+        result = 31 * result + (getHiredate() != null ? getHiredate().hashCode() : 0);
+        result = 31 * result + (getEffective() != null ? getEffective().hashCode() : 0);
+        result = 31 * result + (getContribution() != null ? getContribution().hashCode() : 0);
+        result = 31 * result + (getRecommendation() != null ? getRecommendation().hashCode() : 0);
+        result = 31 * result + (getWorksaturation() != null ? getWorksaturation().hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Staff{" +
+                "uuId=" + uuId +
+                ", staffId='" + staffId + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", deptId='" + deptId + '\'' +
+                ", positionId='" + positionId + '\'' +
+                ", hiredate=" + hiredate +
+                ", effective=" + effective +
+                ", contribution=" + contribution +
+                ", recommendation=" + recommendation +
+                ", worksaturation=" + worksaturation +
+                '}';
     }
 }

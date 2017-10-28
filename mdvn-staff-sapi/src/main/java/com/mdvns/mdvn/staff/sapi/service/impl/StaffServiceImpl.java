@@ -121,13 +121,13 @@ public class StaffServiceImpl implements StaffService {
     }
 
     /**
-     * 根据指定id查询staff
-     * @param id
+     * 根据指定account查询staff
+     * @param account
      * @return
      */
     @Override
-    public RestResponse<?> findById(String id) {
-        Staff staff = this.staffRepository.findByStaffId(id);
+    public RestResponse<?> findByAccount(String account) {
+        Staff staff = this.staffRepository.findByAccount(account);
         return RestResponseUtil.success(staff);
     }
 

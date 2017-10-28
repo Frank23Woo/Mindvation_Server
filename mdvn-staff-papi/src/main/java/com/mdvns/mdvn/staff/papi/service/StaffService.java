@@ -16,4 +16,6 @@ public interface StaffService {
     ResponseEntity<?> rtrvStaffListByName(RtrvStaffListByNameRequest request);
 
     RestResponse<Staff> retrieve(String id);
+
+    ResponseEntity<?> login(LonginRequest loginRequest);
 }

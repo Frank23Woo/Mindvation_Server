@@ -21,4 +21,6 @@ public interface StaffRepository extends JpaRepository<Staff, Integer> {
     Long getStaffCount();
 
     Page<Staff> findByNameLike(String name ,Pageable pageable);
+
+    Staff findByAccount(String account);
 }
