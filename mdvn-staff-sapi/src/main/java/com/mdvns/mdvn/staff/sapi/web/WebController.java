@@ -1,6 +1,7 @@
 package com.mdvns.mdvn.staff.sapi.web;
 
 
+import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.staff.sapi.domain.RetrieveStaffListResponse;
 import com.mdvns.mdvn.staff.sapi.domain.RtrvStaffListByNameRequest;
@@ -73,6 +74,18 @@ public class WebController {
             throw new IllegalArgumentException("分页参数不正确.");
         }
         return this.staffService.rtrvStaffListByStaffName((page-1), pageSize,request.getName(), request.getSortBy());
+    }
+
+
+    /**
+     * 根据指定Id获取Staff信息
+     * @param id
+     * @return
+     */
+    @GetMapping(value = "/staff/{id}")
+    public RestResponse<?> findById(@PathVariable String id) {
+
+        return this.staffService.findById(id);
     }
 
 }

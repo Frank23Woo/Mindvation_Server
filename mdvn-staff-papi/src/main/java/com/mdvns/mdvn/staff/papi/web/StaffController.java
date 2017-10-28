@@ -1,10 +1,7 @@
 package com.mdvns.mdvn.staff.papi.web;
 
 import com.mdvns.mdvn.common.beans.RestResponse;
-import com.mdvns.mdvn.staff.papi.domain.RetrieveStaffListRequest;
-import com.mdvns.mdvn.staff.papi.domain.RtrvStaffInfoRequest;
-import com.mdvns.mdvn.staff.papi.domain.RtrvStaffListByNameRequest;
-import com.mdvns.mdvn.staff.papi.domain.RtrvStaffListByStaffIbListRequest;
+import com.mdvns.mdvn.staff.papi.domain.*;
 import com.mdvns.mdvn.staff.papi.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController
-@RequestMapping(value= {"/staff", "/v1.0/staff"})
+@RequestMapping(value = {"/staff", "/v1.0/staff"})
 public class StaffController {
 
     @Autowired
@@ -20,6 +17,7 @@ public class StaffController {
 
     /**
      * 获取staff列表信息
+     *
      * @param retrieveStaffListRequest
      * @return
      */
@@ -30,6 +28,7 @@ public class StaffController {
 
     /**
      * 通过staffID的list获取staff对象列表信息
+     *
      * @param request
      * @return
      */
@@ -40,6 +39,7 @@ public class StaffController {
 
     /**
      * 通过staffID获取staff对象信息
+     *
      * @param request
      * @return
      */
@@ -50,6 +50,7 @@ public class StaffController {
 
     /**
      * 模糊查询
+     *
      * @param request
      * @return
      */
@@ -57,5 +58,17 @@ public class StaffController {
     public ResponseEntity<?> rtrvStaffListByName(@RequestBody RtrvStaffListByNameRequest request) {
         return this.staffService.rtrvStaffListByName(request);
     }
+
+    /**
+     * 根据指定Id获取Staff信息
+     * @param id
+     * @return
+     */
+    @PostMapping(value = "/{id}")
+    public RestResponse<Staff> retrieve(@PathVariable String id) {
+        return this.staffService.retrieve(id);
+    }
+
+
 
 }

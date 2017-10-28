@@ -1,8 +1,9 @@
 package com.mdvns.mdvn.staff.sapi.service.impl;
 
+import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
+import com.mdvns.mdvn.common.utils.RestResponseUtil;
 import com.mdvns.mdvn.staff.sapi.domain.RetrieveStaffListResponse;
-import com.mdvns.mdvn.staff.sapi.domain.RtrvStaffListByNameRequest;
 import com.mdvns.mdvn.staff.sapi.domain.RtrvStaffListByNameResponse;
 import com.mdvns.mdvn.staff.sapi.domain.RtrvStaffListByStaffIbListRequest;
 import com.mdvns.mdvn.staff.sapi.domain.entity.Staff;
@@ -15,7 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -31,9 +31,6 @@ public class StaffServiceImpl implements StaffService {
 
     @Autowired
     private StaffRepository staffRepository;
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     private Staff staff;
@@ -91,9 +88,7 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public ResponseEntity<?> rtrvStaffListByStaffName(String name) {
         String flag = "%"+name+"%";
-//        String flag = "%"+name+"%";
-//        String sql = "SELECT *  FROM staff where NAME LIKE"+ "\"" + flag +"\" ";
-//        List<Staff> staffList = this.jdbcTemplate.queryForList(sql, Staff.class);
+
         RtrvStaffListByNameResponse rtrvStaffListByNameResponse = new RtrvStaffListByNameResponse();
         List<Staff> staffList = this.staffRepository.rtrvStaffListByStaffName(flag);
         Long count = this.staffRepository.getStaffCount();
@@ -123,6 +118,17 @@ public class StaffServiceImpl implements StaffService {
         rtrvStaffListByNameResponse.setStaffs(staffPage.getContent());
         rtrvStaffListByNameResponse.setTotalNumber(staffPage.getTotalElements());
         return ResponseEntity.ok(rtrvStaffListByNameResponse);
+    }
+
+    /**
+     * 根据指定id查询staff
+     * @param id
+     * @return
+     */
+    @Override
+    public RestResponse<?> findById(String id) {
+        Staff staff = this.staffRepository.findByStaffId(id);
+        return RestResponseUtil.success(staff);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.mdvns.mdvn.staff.sapi.service;
 
 
+import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.staff.sapi.domain.RetrieveStaffListResponse;
 import com.mdvns.mdvn.staff.sapi.domain.RtrvStaffListByStaffIbListRequest;
 import com.mdvns.mdvn.staff.sapi.domain.entity.Staff;
@@ -20,4 +21,6 @@ public interface StaffService {
     ResponseEntity<?> rtrvStaffListByStaffName(String name);
 
     ResponseEntity<?> rtrvStaffListByStaffName(Integer page, Integer pageSize, String name, String sortBy) throws SQLException;
+
+    RestResponse<?> findById(String id);
 }

@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
         
         RestResponse<Staff> restResponse = this.restTemplate.postForObject(rtrvStaffByIdUrl, null, RestResponse.class);
         if ("000".equals(restResponse.getResponseCode())) {
-            return RestResponseUtil.successResponseEntity(restResponse);
+            return ResponseEntity.ok(restResponse);
         }
         throw new BusinessException(restResponse.getResponseCode());
     }
