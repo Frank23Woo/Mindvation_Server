@@ -1,6 +1,7 @@
 package com.mdvns.mdvn.dashboard.papi.web;
 
 import com.mdvns.mdvn.common.beans.RestResponse;
+import com.mdvns.mdvn.dashboard.papi.domain.AssignStoryListByItRequest;
 import com.mdvns.mdvn.dashboard.papi.domain.RtrvAllStoryListRequest;
 import com.mdvns.mdvn.dashboard.papi.domain.UpdateDashboardRequest;
 import com.mdvns.mdvn.dashboard.papi.service.DashboardService;
@@ -42,7 +43,7 @@ public class DashboardController {
      * @return
      */
     @PostMapping(value = "/assignSprint")
-    public RestResponse assignSprint(@RequestBody UpdateDashboardRequest request) {
+    public RestResponse assignSprint(@RequestBody AssignStoryListByItRequest request) {
         return this.dashboardService.assignSprint(request);
     }
 

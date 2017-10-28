@@ -42,6 +42,15 @@ public class UrlConfig {
     // file sapi
     private String getAttachmentListByIdsUrl;
 
+    private String deleteAttachForTaskUrl;
+
+    public String getDeleteAttachForTaskUrl() {
+        return deleteAttachForTaskUrl;
+    }
+
+    public void setDeleteAttachForTaskUrl(String deleteAttachForTaskUrl) {
+        this.deleteAttachForTaskUrl = deleteAttachForTaskUrl;
+    }
 
     public String getRtrvModelRoleByModelIdUrl() {
         return rtrvModelRoleByModelIdUrl;

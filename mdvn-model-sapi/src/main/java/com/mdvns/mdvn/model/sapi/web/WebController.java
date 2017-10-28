@@ -2,10 +2,7 @@ package com.mdvns.mdvn.model.sapi.web;
 
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.model.sapi.domain.*;
-import com.mdvns.mdvn.model.sapi.domain.entity.Model;
-import com.mdvns.mdvn.model.sapi.domain.entity.ModelRole;
-import com.mdvns.mdvn.model.sapi.domain.entity.SubFunctionLabel;
-import com.mdvns.mdvn.model.sapi.domain.entity.TaskDelivery;
+import com.mdvns.mdvn.model.sapi.domain.entity.*;
 import com.mdvns.mdvn.model.sapi.service.ModelService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -164,6 +161,17 @@ public class WebController {
     @PostMapping(value = "/models/findTaskDeliveryById")
     public List<TaskDelivery> findTaskDeliveryById(@RequestBody RtrvModelByIdRequest request) {
         return this.modelService.findTaskDeliveryById(request);
+    }
+
+    /**
+     * 根据modelId查询模块的迭代计划模板信息
+     *
+     * @param modelId 模块Id
+     * @return Model
+     */
+    @PostMapping(value = "/models/findIterationModelById")
+    public List<IterationModel> findIterationModelById(@RequestBody String modelId) {
+        return this.modelService.findIterationModelById(modelId);
     }
 
 

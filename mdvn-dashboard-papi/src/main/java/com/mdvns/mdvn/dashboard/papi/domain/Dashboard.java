@@ -1,12 +1,15 @@
+/*
 package com.mdvns.mdvn.dashboard.papi.domain;
 
 import org.springframework.stereotype.Component;
 
 
+*/
 /**
  * 项目看板类，映射表Dashboard
  * name不能重复
- */
+ *//*
+
 
 @Component
 public class Dashboard {
@@ -20,13 +23,21 @@ public class Dashboard {
     //当前任务列表（包含的是storyList）
     private String currentSprint;
     private String nextSprint;
-    /* 創建人的編號,即員工編號(staffId) */
+    */
+/* 創建人的編號,即員工編號(staffId) *//*
+
     private String creatorId;
-    /* sprint創建時間*/
+    */
+/* sprint創建時間*//*
+
     private Long createTime;
-    /*更改時間*/
+    */
+/*更改時間*//*
+
     private Long updateTime;
-    /*是否已删除*/
+    */
+/*是否已删除*//*
+
     private Integer isDeleted;
 
     public String getProductBacklogs() {
@@ -121,3 +132,4 @@ public class Dashboard {
         super();
     }
 }
+*/

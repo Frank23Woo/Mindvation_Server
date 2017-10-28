@@ -340,21 +340,22 @@ public class ReqmntServiceImpl implements IReqmntService {
         List<ReqmntAttchUrl> attchUrls = FetchListUtil.fetch(restTemplate, config.getRtrvReqmntAttchsUrl(), requirementInfo.getReqmntId(), typeReference);
         StringBuilder stringBuilder = new StringBuilder("");
 
-        for (int i = 0; i < attchUrls.size(); i++) {
-            stringBuilder.append(attchUrls.get(i).getAttachmentId());
-            stringBuilder.append(",");
-        }
-        String ids = stringBuilder.toString();
-                ids = ids.substring(0,ids.length()-1);
+        if(attchUrls.size()!=0) {
+            for (int i = 0; i < attchUrls.size(); i++) {
+                stringBuilder.append(attchUrls.get(i).getAttachmentId());
+                stringBuilder.append(",");
+            }
+            String ids = stringBuilder.toString();
+            ids = ids.substring(0, ids.length() - 1);
 
-        ParameterizedTypeReference attchInfotTypeReference = new ParameterizedTypeReference<List<AttchInfo>>() {
-        };
-        String attchInfoUrl = config.getRtrvAttchInfoListUrl();
-        System.out.println(attchInfoUrl);
-        ResponseEntity<RestResponse> attchInfos = restTemplate.getForEntity(attchInfoUrl + ids, RestResponse.class);
+            ParameterizedTypeReference attchInfotTypeReference = new ParameterizedTypeReference<List<AttchInfo>>() {
+            };
+            String attchInfoUrl = config.getRtrvAttchInfoListUrl();
+            System.out.println(attchInfoUrl);
+            ResponseEntity<RestResponse> attchInfos = restTemplate.getForEntity(attchInfoUrl + ids, RestResponse.class);
 //        ResponseEntity<List> attchInfos = restTemplate.postForEntity(attchInfoUrl,null,List.class);
-        rtrvReqmntInfoResponse.setAttchInfos((List<AttchInfo>) attchInfos.getBody().getResponseBody());
-
+            rtrvReqmntInfoResponse.setAttchInfos((List<AttchInfo>) attchInfos.getBody().getResponseBody());
+        }
         //查询story列表
         RtrvStoryListRequest rtrvStoryListRequest = new RtrvStoryListRequest();
         //项目需求列表分页信息按默认值处理
@@ -390,7 +391,7 @@ public class ReqmntServiceImpl implements IReqmntService {
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             return rtrvReqmntInfo(new RtrvReqmntInfoRequest(request.getReqmntInfo().getReqmntId()));
         } else {
-            throw new BusinessException(ExceptionEnum.BASE_SAPI_EXCEPTION);
+            throw new BusinessException(ExceptionEnum.SAPI_EXCEPTION);
         }
     }
 

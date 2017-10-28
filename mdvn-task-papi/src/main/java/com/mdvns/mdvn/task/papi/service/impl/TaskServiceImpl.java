@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -128,8 +129,8 @@ public class TaskServiceImpl implements TaskService {
             restResponse.setResponseBody(taskList);
         } catch (RestClientException e) {
             e.printStackTrace();
-            restResponse.setResponseCode(ExceptionEnum.BASE_SAPI_EXCEPTION.getErroCode());
-            restResponse.setResponseMsg(ExceptionEnum.BASE_SAPI_EXCEPTION.getErrorMsg());
+            restResponse.setResponseCode(ExceptionEnum.SAPI_EXCEPTION.getErroCode());
+            restResponse.setResponseMsg(ExceptionEnum.SAPI_EXCEPTION.getErrorMsg());
         }
 
         return restResponse;
@@ -166,8 +167,8 @@ public class TaskServiceImpl implements TaskService {
             }
         } catch (RestClientException e) {
             e.printStackTrace();
-            restResponse.setResponseCode(ExceptionEnum.BASE_SAPI_EXCEPTION.getErroCode());
-            restResponse.setResponseMsg(ExceptionEnum.BASE_SAPI_EXCEPTION.getErrorMsg());
+            restResponse.setResponseCode(ExceptionEnum.SAPI_EXCEPTION.getErroCode());
+            restResponse.setResponseMsg(ExceptionEnum.SAPI_EXCEPTION.getErrorMsg());
         }
 
         return restResponse;
@@ -190,6 +191,31 @@ public class TaskServiceImpl implements TaskService {
             restResponse.setResponseMsg(ExceptionEnum.TASK_DOES_NOT_EXIST.getErrorMsg());
         } else {
             queryFullTaskDetail(result);
+            restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
+            restResponse.setResponseCode("000");
+            restResponse.setResponseMsg("ok");
+            restResponse.setResponseBody(result);
+        }
+
+        return restResponse;
+    }
+
+    @Override
+    public RestResponse deleteAttachForTask(AddAttachRequest request) {
+        RestResponse restResponse = new RestResponse();
+
+        if (request == null || StringUtils.isEmpty(request.getTaskId())) {
+            restResponse.setResponseCode(ExceptionEnum.PARAMS_EXCEPTION.getErroCode());
+            restResponse.setResponseMsg(ExceptionEnum.PARAMS_EXCEPTION.getErrorMsg());
+            return restResponse;
+        }
+        TaskDetail result = restTemplate.postForObject(urlConfig.getDeleteAttachForTaskUrl(), request, TaskDetail.class);
+        if (result == null) {
+            restResponse.setResponseCode(ExceptionEnum.TASK_DOES_NOT_EXIST.getErroCode());
+            restResponse.setResponseMsg(ExceptionEnum.TASK_DOES_NOT_EXIST.getErrorMsg());
+        } else {
+            queryFullTaskDetail(result);
+            restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
             restResponse.setResponseCode("000");
             restResponse.setResponseMsg("ok");
             restResponse.setResponseBody(result);
@@ -220,8 +246,10 @@ public class TaskServiceImpl implements TaskService {
 
         final String ids = task.getAttachmentIds();
         if (!StringUtils.isEmpty(ids)) {
-            ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(urlConfig.getGetAttachmentListByIdsUrl(), RestResponse.class, ids);
-            task.setAttachUrlList((List)responseEntity.getBody().getResponseBody());
+            ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(urlConfig.getGetAttachmentListByIdsUrl() + ids, RestResponse.class);
+            task.setAttachUrlList((List<AttchInfo>)responseEntity.getBody().getResponseBody());
+//            ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(urlConfig.getGetAttachmentListByIdsUrl(), RestResponse.class, ids);
+//            task.setAttachUrlList((List)responseEntity.getBody().getResponseBody());
         }
 
         return task;

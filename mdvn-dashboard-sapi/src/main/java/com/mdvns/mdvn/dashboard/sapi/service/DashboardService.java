@@ -1,11 +1,8 @@
 package com.mdvns.mdvn.dashboard.sapi.service;
 
 import com.mdvns.mdvn.dashboard.sapi.domain.*;
-import com.mdvns.mdvn.dashboard.sapi.domain.entity.Dashboard;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
+import com.mdvns.mdvn.dashboard.sapi.domain.entity.SprintInfo;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -21,15 +18,15 @@ public interface DashboardService {
 //    ResponseEntity<?> rtrvSprint(RtrvSprintRequest request) throws SQLException;
 
     /*根据projId查询dashboard对象(判断是不是新建)*/
-    List<Dashboard> findDashboardInfoById(String projId);
+    List<SprintInfo> findDashboardInfoById(String projId);
 
     /*根据projId和modelId查询dashboard对象(更改时查询)*/
-    Dashboard findDashboardInfoByIds(RtrvDashboardRequest request);
+    List<SprintInfo> findDashboardInfoByIds(RtrvDashboardRequest request);
 
     /*创建看板*/
-    Dashboard createDashboard(CreateDashboardRequest request);
+    SprintInfo createSprintInfo(CreateSprintInfoRequest request);
 
     /*更改看板*/
-    Dashboard updateDashboard(UpdateDashboardRequest request);
+    List<SprintInfo> updateDashboard(UpdateDashboardRequest request);
 
 }

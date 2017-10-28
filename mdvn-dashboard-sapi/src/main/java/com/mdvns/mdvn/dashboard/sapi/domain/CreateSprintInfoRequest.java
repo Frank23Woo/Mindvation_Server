@@ -4,12 +4,14 @@ package com.mdvns.mdvn.dashboard.sapi.domain;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CreateDashboardRequest {
+public class CreateSprintInfoRequest {
 
     private String projId;
     private String creatorId;
     private String modelId;
-    private String productBacklogs;
+    private Integer sprintIndex;
+    private String itemIds;
+    private String name;
 
     public String getProjId() {
         return projId;
@@ -35,11 +37,27 @@ public class CreateDashboardRequest {
         this.modelId = modelId;
     }
 
-    public String getProductBacklogs() {
-        return productBacklogs;
+    public Integer getSprintIndex() {
+        return sprintIndex;
     }
 
-    public void setProductBacklogs(String productBacklogs) {
-        this.productBacklogs = productBacklogs;
+    public void setSprintIndex(Integer sprintIndex) {
+        this.sprintIndex = sprintIndex;
+    }
+
+    public String getItemIds() {
+        return itemIds;
+    }
+
+    public void setItemIds(String itemIds) {
+        this.itemIds = itemIds;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

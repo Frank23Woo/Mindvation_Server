@@ -16,11 +16,21 @@ public class WebConfig {
 
     private String rtrvStoryInfoListByStoryIdsUrl;
 
-    private String createDashboardUrl;
+    private String createSprintInfoUrl;
 
     private String findDashboardInfoByIdsUrl;
 
     private String updateDashboardUrl;
+
+    private String findIterationModelByIdUrl;
+
+    public String getFindIterationModelByIdUrl() {
+        return findIterationModelByIdUrl;
+    }
+
+    public void setFindIterationModelByIdUrl(String findIterationModelByIdUrl) {
+        this.findIterationModelByIdUrl = findIterationModelByIdUrl;
+    }
 
     public String getUpdateDashboardUrl() {
         return updateDashboardUrl;
@@ -78,11 +88,11 @@ public class WebConfig {
         this.rtrvReqmntInfoBymodelIdUrl = rtrvReqmntInfoBymodelIdUrl;
     }
 
-    public String getCreateDashboardUrl() {
-        return createDashboardUrl;
+    public String getCreateSprintInfoUrl() {
+        return createSprintInfoUrl;
     }
 
-    public void setCreateDashboardUrl(String createDashboardUrl) {
-        this.createDashboardUrl = createDashboardUrl;
+    public void setCreateSprintInfoUrl(String createSprintInfoUrl) {
+        this.createSprintInfoUrl = createSprintInfoUrl;
     }
 }

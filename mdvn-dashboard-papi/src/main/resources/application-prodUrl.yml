@@ -6,5 +6,6 @@ url:
  findModelByIdUrl: http://localhost:10009/mdvn-model-sapi/models/findModelById
  rtrvStoryInfoListUrl: http://localhost:10015/mdvn-story-sapi/story/rtrvStoryInfoListByReqmntIds
  rtrvStoryInfoListByStoryIdsUrl: http://localhost:10015/mdvn-story-sapi/story/rtrvStoryInfoListByStoryIds
- createDashboardUrl: http://localhost:10017/mdvn-dashboard-sapi/dashboards/createDashboard
+ createSprintInfoUrl: http://localhost:10017/mdvn-dashboard-sapi/dashboards/createSprintInfo
+ findIterationModelByIdUrl: http://localhost:10009/mdvn-model-sapi/models/findIterationModelById
 

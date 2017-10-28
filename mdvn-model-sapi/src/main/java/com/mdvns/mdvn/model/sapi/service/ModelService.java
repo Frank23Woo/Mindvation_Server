@@ -1,10 +1,7 @@
 package com.mdvns.mdvn.model.sapi.service;
 
 import com.mdvns.mdvn.model.sapi.domain.*;
-import com.mdvns.mdvn.model.sapi.domain.entity.Model;
-import com.mdvns.mdvn.model.sapi.domain.entity.ModelRole;
-import com.mdvns.mdvn.model.sapi.domain.entity.SubFunctionLabel;
-import com.mdvns.mdvn.model.sapi.domain.entity.TaskDelivery;
+import com.mdvns.mdvn.model.sapi.domain.entity.*;
 import org.springframework.http.ResponseEntity;
 
 import java.sql.SQLException;
@@ -37,6 +34,8 @@ public interface ModelService {
     ModelRole findById(String roleId);
 
     Model findModelById(String modelId);
+
+    List<IterationModel> findIterationModelById(String modelId);
 
     SubFunctionLabel judgeSubLabelId(JudgeSubLabelIdRequest request);
 

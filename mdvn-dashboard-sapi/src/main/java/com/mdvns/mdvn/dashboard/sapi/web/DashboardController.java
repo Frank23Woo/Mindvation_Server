@@ -1,7 +1,7 @@
 package com.mdvns.mdvn.dashboard.sapi.web;
 
 import com.mdvns.mdvn.dashboard.sapi.domain.*;
-import com.mdvns.mdvn.dashboard.sapi.domain.entity.Dashboard;
+import com.mdvns.mdvn.dashboard.sapi.domain.entity.SprintInfo;
 import com.mdvns.mdvn.dashboard.sapi.service.DashboardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,44 +26,44 @@ public class DashboardController {
     private DashboardService dashboardService;
 
     /**
-     * 根据projId查询dashboard对象(判断是不是新建)
+     * 根据projId查询SprintInfo对象(判断是不是新建)
      * @param projId
      * @return
      */
     @PostMapping(value = "/dashboardInfos")
-    public List<Dashboard> findDashboardInfoById(@RequestBody String projId) {
+    public List<SprintInfo> findDashboardInfoById(@RequestBody String projId) {
         LOG.info("项目编号："+projId);
         return this.dashboardService.findDashboardInfoById(projId);
     }
 
     /**
-     * 根据projId和modelId查询dashboard对象(更改时查询)
+     * 根据projId和modelId查询SprintInfo对象(更改时查询)
      * @param request
      * @return
      */
     @PostMapping(value = "/dashboardInfo")
-    public Dashboard findDashboardInfoByIds(@RequestBody RtrvDashboardRequest request) {
+    public List<SprintInfo> findDashboardInfoByIds(@RequestBody RtrvDashboardRequest request) {
         LOG.info("findDashboardInfoByIds 开始执行:{}");
         return this.dashboardService.findDashboardInfoByIds(request);
     }
 
     /**
-     * 创建看板
+     * 创建SprintInfo
      * @param request
      * @return
      */
-    @PostMapping(value = "/createDashboard")
-    public Dashboard createDashboard(@RequestBody CreateDashboardRequest request) {
-        return this.dashboardService.createDashboard(request);
+    @PostMapping(value = "/createSprintInfo")
+    public SprintInfo createSprintInfo(@RequestBody CreateSprintInfoRequest request) {
+        return this.dashboardService.createSprintInfo(request);
     }
 
     /**
-     * 更改看板
+     * 更改SprintInfo
      * @param request
      * @return
      */
     @PostMapping(value = "/updateDashboard")
-    public Dashboard updateDashboard(@RequestBody UpdateDashboardRequest request) {
+    public List<SprintInfo> updateDashboard(@RequestBody UpdateDashboardRequest request) {
         return this.dashboardService.updateDashboard(request);
     }
 
