@@ -203,6 +203,74 @@ public class UpdateReqmntServiceImpl implements IUpdateReqmntService {
 
         // attch urls
         changeFlag = false;
+        List<ReqmntAttchUrl> currentAttches = request.getAttchUrls();
+//        List<Tag> currentTags = request.getTags();
+        if(currentAttches!=null &&  currentAttches.size()==0){
+//            List<ReqmntTag> deleteList = tagRepository.findAllByReqmntIdAndIsDeleted(reqmntId,0);
+            List<ReqmntAttchUrl> deleteList = attchUrlsRepository.findAllByReqmntIdAndIsDeleted(reqmntId,0);
+
+            for (int i = 0; i < deleteList.size(); i++) {
+                deleteList.get(i).setIsDeleted(1);
+                deleteList.get(i).setUpdateTime(now);
+            }
+//            tagRepository.save(deleteList);
+            attchUrlsRepository.save(deleteList);
+        }else if(currentAttches!=null &&  currentAttches.size()>0){
+
+            List<ReqmntAttchUrl> oldAttaches = attchUrlsRepository.findAllByReqmntIdAndIsDeleted(reqmntId,0);
+            List<ReqmntAttchUrl> rmvAttchList = oldAttaches;
+            List<ReqmntAttchUrl> addAttchList = currentAttches;
+
+
+            for (int i = 0; i < currentAttches.size(); i++) {
+                for (int j = 0; j < oldAttaches.size(); j++) {
+                    if(oldAttaches.get(j).getAttachmentId().equals(currentAttches.get(i).getAttachmentId())){
+                        rmvAttchList.remove(j);
+                    }
+
+                }
+            }
+
+            if(!rmvAttchList.isEmpty()){
+                for (int i = 0; i < rmvAttchList.size(); i++) {
+                    rmvAttchList.get(i).setIsDeleted(1);
+                    rmvAttchList.get(i).setUpdateTime(now);
+                }
+                attchUrlsRepository.save(rmvAttchList);
+            }
+
+            oldAttaches = attchUrlsRepository.findAllByReqmntIdAndIsDeleted(reqmntId,0);
+            for (int i = 0; i < oldAttaches.size(); i++) {
+                for (int j = 0; j < oldAttaches.size(); j++) {
+                    if(currentAttches.get(i).getAttachmentId().equals(oldAttaches.get(j).getAttachmentId())){
+                        addAttchList.remove(i);
+                    }
+                }
+            }
+
+
+            if(!addAttchList.isEmpty()){
+                List<ReqmntAttchUrl> addReqmentAttchList = new ArrayList<>();
+                for (int i = 0; i < addAttchList.size(); i++) {
+                    ReqmntAttchUrl reqmntAttchUrl = new ReqmntAttchUrl();
+                    reqmntAttchUrl.setReqmntId(reqmntId);
+                    reqmntAttchUrl.setAttachmentId(addAttchList.get(i).getAttachmentId());
+                    reqmntAttchUrl.setIsDeleted(0);
+                    reqmntAttchUrl.setUpdateTime(now);
+                    addReqmentAttchList.add(reqmntAttchUrl);
+                }
+                attchUrlsRepository.save(addReqmentAttchList);
+
+
+            }
+
+
+
+
+
+        }
+
+
 //        List<ReqmntAttchUrl> attchUrls = request.getAttchUrls();
 //        if (attchUrls != null) {
 //            if (attchUrls.size() == 0) {

@@ -32,6 +32,9 @@ public class RtrvStoryDetailServiceImpl implements IRtrvStoryDetailService {
     @Autowired
     private StoryTaskRepository storyTaskRepository;
 
+    @Autowired
+    private StoryAttchRepository storyAttchRepository;
+
     /**
      * 获得某个用户故事基础信息
      *
@@ -91,6 +94,20 @@ public class RtrvStoryDetailServiceImpl implements IRtrvStoryDetailService {
         List<StoryTag> storyTags = this.storyTagRepository.findSTags(request.getStoryId());
         LOG.info("finish executing rtrvStoryTags()方法.", this.CLASS);
         return storyTags;
+    }
+
+    /**
+     * 获得某个用户故事附件信息
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public List<StoryAttchUrl> rtrvStoryAttUrls(RtrvStoryDetailRequest request) {
+        LOG.info("start executing rtrvStoryAttUrls()方法.", this.CLASS);
+        List<StoryAttchUrl> storyAttUrls = this.storyAttchRepository.findSAttchUrls(request.getStoryId());
+        LOG.info("finish executing rtrvStoryAttUrls()方法.", this.CLASS);
+        return storyAttUrls;
     }
 
     /**

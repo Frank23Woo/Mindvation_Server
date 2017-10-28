@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.task.sapi.service;
 
+import com.mdvns.mdvn.task.sapi.domain.AddAttachRequest;
 import com.mdvns.mdvn.task.sapi.domain.CreateTaskRequest;
 import com.mdvns.mdvn.task.sapi.domain.RtrvTaskListRequest;
 import com.mdvns.mdvn.task.sapi.domain.entity.Task;
@@ -17,4 +18,5 @@ public interface TaskService {
 
     TaskDetail updateTask(CreateTaskRequest request) throws Exception;
 
+    TaskDetail addAttachForTask(AddAttachRequest request);
 }

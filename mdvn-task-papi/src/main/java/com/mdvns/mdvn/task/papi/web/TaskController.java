@@ -35,4 +35,10 @@ public class TaskController {
         return taskService.updateTask(request);
     }
 
+    @PostMapping("/addAttachForTask")
+    private RestResponse addAttachForTask(@RequestBody AddAttachRequest request) throws Exception{
+        return taskService.addAttachForTask(request);
+    }
+
+
 }

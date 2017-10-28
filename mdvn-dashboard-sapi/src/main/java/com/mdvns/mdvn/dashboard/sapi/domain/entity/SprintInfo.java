@@ -47,6 +47,14 @@ public class SprintInfo {
 //是否已删除
     private Integer isDeleted;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getSprintId() {
         return sprintId;
     }

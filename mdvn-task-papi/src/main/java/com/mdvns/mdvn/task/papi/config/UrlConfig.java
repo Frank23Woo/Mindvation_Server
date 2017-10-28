@@ -37,6 +37,11 @@ public class UrlConfig {
     private String saveTaskUrl;
     private String rtrvTaskListUrl;
     private String updateTaskUrl;
+    private String addAttachForTaskUrl;
+
+    // file sapi
+    private String getAttachmentListByIdsUrl;
+
 
     public String getRtrvModelRoleByModelIdUrl() {
         return rtrvModelRoleByModelIdUrl;
@@ -198,5 +203,21 @@ public class UrlConfig {
 
     public void setRtrvStaffInfoUrl(String rtrvStaffInfoUrl) {
         this.rtrvStaffInfoUrl = rtrvStaffInfoUrl;
+    }
+
+    public String getGetAttachmentListByIdsUrl() {
+        return getAttachmentListByIdsUrl;
+    }
+
+    public void setGetAttachmentListByIdsUrl(String getAttachmentListByIdsUrl) {
+        this.getAttachmentListByIdsUrl = getAttachmentListByIdsUrl;
+    }
+
+    public String getAddAttachForTaskUrl() {
+        return addAttachForTaskUrl;
+    }
+
+    public void setAddAttachForTaskUrl(String addAttachForTaskUrl) {
+        this.addAttachForTaskUrl = addAttachForTaskUrl;
     }
 }

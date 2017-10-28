@@ -26,6 +26,16 @@ public class WebConfig {
 
     private String rtrvModelListByTypeUrl;
 
+    private String rtrvStaffInfoUrl;
+
+    public String getRtrvStaffInfoUrl() {
+        return rtrvStaffInfoUrl;
+    }
+
+    public void setRtrvStaffInfoUrl(String rtrvStaffInfoUrl) {
+        this.rtrvStaffInfoUrl = rtrvStaffInfoUrl;
+    }
+
     public String getRtrvModelListByTypeUrl() {
         return rtrvModelListByTypeUrl;
     }

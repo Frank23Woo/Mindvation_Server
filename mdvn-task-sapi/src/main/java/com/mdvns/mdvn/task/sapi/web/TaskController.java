@@ -1,5 +1,7 @@
 package com.mdvns.mdvn.task.sapi.web;
 
+import com.mdvns.mdvn.common.beans.RestResponse;
+import com.mdvns.mdvn.task.sapi.domain.AddAttachRequest;
 import com.mdvns.mdvn.task.sapi.domain.CreateTaskRequest;
 import com.mdvns.mdvn.task.sapi.domain.RtrvTaskListRequest;
 import com.mdvns.mdvn.task.sapi.domain.TaskDetail;
@@ -8,7 +10,6 @@ import com.mdvns.mdvn.task.sapi.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -37,6 +38,11 @@ public class TaskController {
     @PostMapping("/updateTask")
     private TaskDetail updateTask(@RequestBody CreateTaskRequest request) throws Exception {
         return taskService.updateTask(request);
+    }
+
+    @PostMapping("/addAttachForTask")
+    private TaskDetail addAttachForTask(@RequestBody AddAttachRequest request) throws Exception{
+        return taskService.addAttachForTask(request);
     }
 
 }

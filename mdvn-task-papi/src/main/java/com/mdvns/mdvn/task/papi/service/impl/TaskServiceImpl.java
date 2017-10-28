@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.task.papi.service.impl;
 
+import com.mdvns.mdvn.common.beans.AttchInfo;
 import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.common.beans.Staff;
 import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
@@ -11,12 +12,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import sun.swing.StringUIClientPropertyKey;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -115,7 +118,11 @@ public class TaskServiceImpl implements TaskService {
                 taskList.get(i).setAssignee(assigneeList.get(i));
             }
 
-            //
+            //附件
+            for (TaskDetail detail : taskList) {
+                getTaskAttachment(detail);
+            }
+
             restResponse.setResponseCode("000");
             restResponse.setResponseMsg("ok");
             restResponse.setResponseBody(taskList);
@@ -150,6 +157,9 @@ public class TaskServiceImpl implements TaskService {
                 Staff assignee = restTemplate.postForObject(urlConfig.getRtrvStaffInfoUrl(), result.getAssigneeId(), Staff.class);
                 result.setAssignee(assignee);
 
+                // 查询附件
+                getTaskAttachment(result);
+
                 restResponse.setResponseCode("000");
                 restResponse.setResponseMsg("ok");
                 restResponse.setResponseBody(result);
@@ -162,4 +172,60 @@ public class TaskServiceImpl implements TaskService {
 
         return restResponse;
     }
+
+    @Override
+    public RestResponse addAttachForTask(AddAttachRequest request) {
+        RestResponse restResponse = new RestResponse();
+
+        if (request == null || StringUtils.isEmpty(request.getTaskId())) {
+            restResponse.setResponseCode(ExceptionEnum.PARAMS_EXCEPTION.getErroCode());
+            restResponse.setResponseMsg(ExceptionEnum.PARAMS_EXCEPTION.getErrorMsg());
+            return restResponse;
+        }
+
+
+        TaskDetail result = restTemplate.postForObject(urlConfig.getAddAttachForTaskUrl(), request, TaskDetail.class);
+        if (result == null) {
+            restResponse.setResponseCode(ExceptionEnum.TASK_DOES_NOT_EXIST.getErroCode());
+            restResponse.setResponseMsg(ExceptionEnum.TASK_DOES_NOT_EXIST.getErrorMsg());
+        } else {
+            queryFullTaskDetail(result);
+            restResponse.setResponseCode("000");
+            restResponse.setResponseMsg("ok");
+            restResponse.setResponseBody(result);
+        }
+
+        return restResponse;
+    }
+
+
+    // 查询task的完整信息
+    private void queryFullTaskDetail(TaskDetail detail) {
+        // 查询creator和assinee
+        Staff creator = restTemplate.postForObject(urlConfig.getRtrvStaffInfoUrl(), detail.getCreatorId(), Staff.class);
+        detail.setCreator(creator);
+        Staff assignee = restTemplate.postForObject(urlConfig.getRtrvStaffInfoUrl(), detail.getAssigneeId(), Staff.class);
+        detail.setAssignee(assignee);
+
+        // 查询附件
+        getTaskAttachment(detail);
+    }
+
+
+    // query task attachment
+    private TaskDetail getTaskAttachment(TaskDetail task) {
+        if (task == null) {
+            return null;
+        }
+
+        final String ids = task.getAttachmentIds();
+        if (!StringUtils.isEmpty(ids)) {
+            ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(urlConfig.getGetAttachmentListByIdsUrl(), RestResponse.class, ids);
+            task.setAttachUrlList((List)responseEntity.getBody().getResponseBody());
+        }
+
+        return task;
+    }
+
+
 }

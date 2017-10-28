@@ -9,4 +9,5 @@ import java.util.List;
 public interface ReqmntAttchUrlsRepository extends JpaRepository<ReqmntAttchUrl,Integer>{
 
     List<ReqmntAttchUrl> findAllByReqmntIdAndIsDeleted(String reqmntId, Integer isDeleted);
+
 }

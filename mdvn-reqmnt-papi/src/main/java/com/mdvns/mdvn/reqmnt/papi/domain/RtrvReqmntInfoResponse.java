@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.reqmnt.papi.domain;
 
+import com.mdvns.mdvn.common.beans.AttchInfo;
 import com.mdvns.mdvn.common.beans.FunctionLabel;
 import com.mdvns.mdvn.common.beans.Story;
 import com.mdvns.mdvn.common.beans.Tag;
@@ -20,7 +21,8 @@ public class RtrvReqmntInfoResponse{
 
     private List<ReqmntCheckList> checkLists;
 
-    private List<ReqmntAttchUrl> attchUrls;
+//    private List<ReqmntAttchUrl> attchUrls;
+    private List<AttchInfo> attchInfos;
 
     private RtrvStoryListResponse rtrvStoryListResponse;
 
@@ -48,13 +50,6 @@ public class RtrvReqmntInfoResponse{
         this.checkLists = checkLists;
     }
 
-    public List<ReqmntAttchUrl> getAttchUrls() {
-        return attchUrls;
-    }
-
-    public void setAttchUrls(List<ReqmntAttchUrl> attchUrls) {
-        this.attchUrls = attchUrls;
-    }
 
     public List<Tag> getTagList() {
         return tagList;
@@ -78,5 +73,13 @@ public class RtrvReqmntInfoResponse{
 
     public void setRtrvStoryListResponse(RtrvStoryListResponse rtrvStoryListResponse) {
         this.rtrvStoryListResponse = rtrvStoryListResponse;
+    }
+
+    public List<AttchInfo> getAttchInfos() {
+        return attchInfos;
+    }
+
+    public void setAttchInfos(List<AttchInfo> attchInfos) {
+        this.attchInfos = attchInfos;
     }
 }

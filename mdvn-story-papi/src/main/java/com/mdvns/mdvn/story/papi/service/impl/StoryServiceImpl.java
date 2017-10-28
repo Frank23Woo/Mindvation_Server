@@ -127,6 +127,19 @@ public class StoryServiceImpl implements IStoryService {
                 throw new BusinessException(ExceptionEnum.STORY_TAG_NOT_CREATE);
             }
         }
+        //6.保存story附件信息
+        if (createStoryRequest.getAttchUrls() != null && !createStoryRequest.getAttchUrls().isEmpty()) {
+            List<StoryAttchUrl> storyAttchUrls = createStoryRequest.getAttchUrls();
+            for (int i = 0; i < storyAttchUrls.size(); i++) {
+                storyAttchUrls.get(i).setStoryId(storyId);
+            }
+            String saveSAttchUrlsUrl = config.getSaveSAttchUrlsUrl();
+            try {
+                List<StoryAttchUrl> sAttchUrl = restTemplate.postForObject(saveSAttchUrlsUrl, storyAttchUrls, List.class);
+            } catch (Exception ex) {
+                throw new BusinessException(ExceptionEnum.STORY_ATTCHURL_NOT_CREATE);
+            }
+        }
         return restResponse;
     }
 
@@ -265,6 +278,33 @@ public class StoryServiceImpl implements IStoryService {
                 storyDetail.setSubFunctionLabel(storyModel);
             } catch (Exception ex) {
                 throw new BusinessException(ExceptionEnum.STORY_DETAIL_MODEL_NOT_RTRV);
+            }
+        }
+        //6.判断是否更改项目附件信息
+        if (updateStoryDetailRequest.getAttchUrls() != null && !updateStoryDetailRequest.getAttchUrls().isEmpty()) {
+            UpdateAttchUrlsRequest updatePAttchUrlsRequest = new UpdateAttchUrlsRequest();
+            updatePAttchUrlsRequest.setStoryId(updateStoryDetailRequest.getStoryInfo().getStoryId());
+            updatePAttchUrlsRequest.setAttchUrls(updateStoryDetailRequest.getAttchUrls());
+            String updateStoryAttchUrlsUrl = config.getUpdateStoryAttchUrlsUrl();
+            try {
+                ParameterizedTypeReference typeReference = new ParameterizedTypeReference<List<StoryAttchUrl>>() {
+                };
+                List<StoryAttchUrl> pAttchUrls = FetchListUtil.fetch(restTemplate, updateStoryAttchUrlsUrl, updatePAttchUrlsRequest, typeReference);
+//                List<StoryAttchUrls> pAttchUrls = restTemplate.postForObject(updateStoryAttchUrlsUrl, updatePAttchUrlsRequest, List.class);
+                List<String> idList = new ArrayList<String>();
+                for (int i = 0; i < pAttchUrls.size(); i++) {
+                    Integer attachmentId = pAttchUrls.get(i).getAttachmentId();
+                    idList.add(attachmentId.toString());
+                }
+                String attachmentIds = com.sun.deploy.util.StringUtils.join(idList, ",");
+                if (pAttchUrls.size() != 0) {
+                    ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(config.getRtrvAttchListUrl() + attachmentIds, RestResponse.class);
+                    storyDetail.setAttchInfos((List<AttchInfo>)responseEntity.getBody().getResponseBody());
+//                storyectDetail.setAttchUrls(pAttchUrls);
+                }
+
+            } catch (Exception ex) {
+                throw new BusinessException(ExceptionEnum.PROJECT_ATTCHURL_NOT_UPDATE);
             }
         }
         updateStoryDetailResponse.setStoryDetail(storyDetail);
@@ -453,6 +493,35 @@ public class StoryServiceImpl implements IStoryService {
             storyDetail.setTaskDeliveries(taskDeliveries);
         }catch (Exception ex) {
             throw new BusinessException(ExceptionEnum.STORY_DETAIL_MODEL_TASKDELIVERY_NOT_RTRV);
+        }
+        //6.获取项目附件信息
+        String rtrvStoryAttUrlsUrl = config.getRtrvStoryAttUrlsUrl();
+        try {
+            ParameterizedTypeReference typeReference = new ParameterizedTypeReference<List<StoryAttchUrl>>() {
+            };
+            List<StoryAttchUrl> storyAttchUrls = FetchListUtil.fetch(restTemplate, rtrvStoryAttUrlsUrl, rtrvStoryDetailRequest, typeReference);
+//            List<StoryAttchUrls> storyAttchUrls = restTemplate.postForObject(rtrvStoryAttUrlsUrl, rtrvStoryectDetailRequest, List.class);
+            List<String> idList = new ArrayList<String>();
+            for (int i = 0; i < storyAttchUrls.size(); i++) {
+                Integer attachmentId = storyAttchUrls.get(i).getAttachmentId();
+//                List<Integer> idList = new ArrayList<Integer>();
+//                for (String id:ids.split(",")) {
+//                    idList.add(Integer.valueOf(id));
+//                }
+                idList.add(attachmentId.toString());
+            }
+            String attachmentIds = com.sun.deploy.util.StringUtils.join(idList, ",");
+            if (storyAttchUrls.size() != 0) {
+//                ParameterizedTypeReference pReference = new ParameterizedTypeReference<List<StoryAttchUrls>>() {
+//                };
+//                List<StoryAttchUrls> storyAttchUrls = FetchListUtil.fetch(restTemplate, rtrvStoryAttUrlsUrl, rtrvStoryectDetailRequest, pReference);
+                ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(config.getRtrvAttchListUrl() + attachmentIds, RestResponse.class);
+//            List<AttchInfo> attchInfoList = restTemplate.getForObject(config.getRtrvAttchListUrl()+attachmentIds,List.class);
+//            storyectDetail.setAttchUrls(storyAttchUrls);
+                storyDetail.setAttchInfos((List<AttchInfo>)responseEntity.getBody().getResponseBody());
+            }
+        } catch (Exception ex) {
+            throw new BusinessException(ExceptionEnum.PROJECT_DETAIL_ATTCHURL_NOT_RTRV);
         }
 
         rtrvStoryDetailResponse.setStoryDetail(storyDetail);

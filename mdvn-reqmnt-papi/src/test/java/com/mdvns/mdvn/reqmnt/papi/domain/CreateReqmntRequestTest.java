@@ -85,7 +85,7 @@ public class CreateReqmntRequestTest {
         List<ReqmntAttchUrl> attchUrls = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             ReqmntAttchUrl url = new ReqmntAttchUrl();
-            url.setAttachmentName("attach" + i);
+            url.setAttachmentId(i);
             url.setUpdateTime(System.currentTimeMillis());
             attchUrls.add(url);
         }

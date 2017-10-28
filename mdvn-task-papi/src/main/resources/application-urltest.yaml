@@ -28,3 +28,7 @@ config:
   saveTaskUrl: http://localhost/mdvn-task-sapi:8080/saveTask
   rtrvTaskListUrl: http://localhost/mdvn-task-sapi:8080/rtrvTaskList
   updateTaskUrl: http://localhost/mdvn-task-sapi:8080/updateTask
+  addAttachForTaskUrl: http://localhost/mdvn-task-sapi/addAttachForTask
+
+# attachment sapi urls
+  getAttachmentListByIdsUrl: http://localhost/mdvn-file-sapi/{ids}

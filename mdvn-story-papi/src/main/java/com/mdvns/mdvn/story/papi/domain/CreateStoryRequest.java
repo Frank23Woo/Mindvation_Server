@@ -1,6 +1,5 @@
 package com.mdvns.mdvn.story.papi.domain;
 
-import com.mdvns.mdvn.common.beans.AttchUrl;
 import com.mdvns.mdvn.common.beans.SubFunctionLabel;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.stereotype.Component;
@@ -25,7 +24,15 @@ public class CreateStoryRequest {
 //    //用户故事模型（集合）
 //    private List<StoryModel> sModels;
     //用户故事附件（集合）
-    private List<AttchUrl> sAttchUrls;
+    private List<StoryAttchUrl> attchUrls;
+
+    public List<StoryAttchUrl> getAttchUrls() {
+        return attchUrls;
+    }
+
+    public void setAttchUrls(List<StoryAttchUrl> attchUrls) {
+        this.attchUrls = attchUrls;
+    }
 
     public SubFunctionLabel getSubFunctionLabel() {
         return subFunctionLabel;
@@ -83,11 +90,11 @@ public class CreateStoryRequest {
 //        this.sModels = sModels;
 //    }
 
-    public List<AttchUrl> getsAttchUrls() {
-        return sAttchUrls;
-    }
-
-    public void setsAttchUrls(List<AttchUrl> sAttchUrls) {
-        this.sAttchUrls = sAttchUrls;
-    }
+//    public List<AttchUrl> getsAttchUrls() {
+//        return sAttchUrls;
+//    }
+//
+//    public void setsAttchUrls(List<AttchUrl> sAttchUrls) {
+//        this.sAttchUrls = sAttchUrls;
+//    }
 }

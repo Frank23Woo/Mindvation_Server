@@ -253,8 +253,10 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
      */
     @Override
     public List<ReqmntAttchUrl> saveRAttchUrl(List<ReqmntAttchUrl> request) {
+        Timestamp now = new Timestamp(System.currentTimeMillis());
         for (int i = 0; i < request.size(); i++) {
             request.get(i).setIsDeleted(0);
+            request.get(i).setUpdateTime(now);
         }
         return reqmntAttchUrlsRepository.save(request);
     }

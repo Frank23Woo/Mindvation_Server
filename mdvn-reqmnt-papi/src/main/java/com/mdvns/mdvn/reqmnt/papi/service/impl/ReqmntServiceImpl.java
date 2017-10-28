@@ -338,7 +338,22 @@ public class ReqmntServiceImpl implements IReqmntService {
         ParameterizedTypeReference typeReference = new ParameterizedTypeReference<List<ReqmntAttchUrl>>() {
         };
         List<ReqmntAttchUrl> attchUrls = FetchListUtil.fetch(restTemplate, config.getRtrvReqmntAttchsUrl(), requirementInfo.getReqmntId(), typeReference);
-        rtrvReqmntInfoResponse.setAttchUrls(attchUrls);
+        StringBuilder stringBuilder = new StringBuilder("");
+
+        for (int i = 0; i < attchUrls.size(); i++) {
+            stringBuilder.append(attchUrls.get(i).getAttachmentId());
+            stringBuilder.append(",");
+        }
+        String ids = stringBuilder.toString();
+                ids = ids.substring(0,ids.length()-1);
+
+        ParameterizedTypeReference attchInfotTypeReference = new ParameterizedTypeReference<List<AttchInfo>>() {
+        };
+        String attchInfoUrl = config.getRtrvAttchInfoListUrl();
+        System.out.println(attchInfoUrl);
+        ResponseEntity<RestResponse> attchInfos = restTemplate.getForEntity(attchInfoUrl + ids, RestResponse.class);
+//        ResponseEntity<List> attchInfos = restTemplate.postForEntity(attchInfoUrl,null,List.class);
+        rtrvReqmntInfoResponse.setAttchInfos((List<AttchInfo>) attchInfos.getBody().getResponseBody());
 
         //查询story列表
         RtrvStoryListRequest rtrvStoryListRequest = new RtrvStoryListRequest();

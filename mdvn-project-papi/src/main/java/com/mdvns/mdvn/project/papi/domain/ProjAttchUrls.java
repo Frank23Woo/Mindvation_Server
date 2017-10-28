@@ -11,8 +11,6 @@ public class ProjAttchUrls {
     private Integer attachmentId;
     //项目Id
     private String projId;
-    //附件名
-    private String attachmentName;
     //是否被删除
     private Integer isDeleted;
     //更新时间
@@ -48,14 +46,6 @@ public class ProjAttchUrls {
 
     public void setProjId(String projId) {
         this.projId = projId;
-    }
-
-    public String getAttachmentName() {
-        return attachmentName;
-    }
-
-    public void setAttachmentName(String attachmentName) {
-        this.attachmentName = attachmentName;
     }
 
     public Integer getIsDeleted() {
