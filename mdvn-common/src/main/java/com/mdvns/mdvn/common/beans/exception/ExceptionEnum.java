@@ -14,10 +14,15 @@ public enum ExceptionEnum {
 	 * 1500~1600 story
 	 * 1600~1700 task
 	 * 1700~1800 dashboard
+	 * 1800 ~2000 user
+	 * 2000~2200 staff
 	 */
+	
+	//通用
 	UNKNOW_EXCEPTION("555","未知错误"),
 	PARAMS_EXCEPTION("556", "参数异常"),
-    BASE_SAPI_EXCEPTION("10001", "SAPI异常"),
+	SAPI_EXCEPTION("10001", "SAPI异常"),
+	//    BASE_SAPI_EXCEPTION("10001", "SAPI异常"),
 
 	//标签
 	TAG_NOT_FOUND("1000", "Tag不存在!"),
@@ -28,10 +33,12 @@ public enum ExceptionEnum {
 	Model_IS_CREATED("1201", "模块已存在!"),
 	functionModel_NOT_FOUND("1202", "过程方法模块不存在!"),
 
-	//用户
-	USER_NOT_FOUND("101", "用户不存在!"),
+	//用户(User)
+	USER_NOT_FOUND("1800", "用户不存在!"),
+	PASSWORD_INCORRECT("1801", "密码错误!"),
 	
-	SAPI_EXCEPTION("10001", "SAPI异常"),
+	
+	
 
 
 
@@ -99,8 +106,6 @@ public enum ExceptionEnum {
 	DASHBOARD_DETAIL_STORY_NOT_RTRV("1702", "调用SAPI获取看板的storylist信息时失败"),
 	DASHBOARD_NOT_CREATE("1703", "调用SAPI创建dashboard时失败"),
 	DASHBOARD_NOT_UPDATE("1704", "调用SAPI更改dashboard时失败");
-
-
 
 		String erroCode;
 		String ErrorMsg;
