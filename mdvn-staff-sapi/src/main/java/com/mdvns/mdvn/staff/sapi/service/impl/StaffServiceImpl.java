@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.staff.sapi.service.impl;
 
+import com.mdvns.mdvn.common.beans.AssignAuthRequest;
 import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.common.utils.RestResponseUtil;
@@ -7,6 +8,8 @@ import com.mdvns.mdvn.staff.sapi.domain.RetrieveStaffListResponse;
 import com.mdvns.mdvn.staff.sapi.domain.RtrvStaffListByNameResponse;
 import com.mdvns.mdvn.staff.sapi.domain.RtrvStaffListByStaffIbListRequest;
 import com.mdvns.mdvn.staff.sapi.domain.entity.Staff;
+import com.mdvns.mdvn.staff.sapi.domain.entity.StaffAuthInfo;
+import com.mdvns.mdvn.staff.sapi.repository.StaffAuthInfoRepository;
 import com.mdvns.mdvn.staff.sapi.repository.StaffRepository;
 import com.mdvns.mdvn.staff.sapi.service.StaffService;
 import org.slf4j.Logger;
@@ -19,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +38,12 @@ public class StaffServiceImpl implements StaffService {
 
     @Autowired
     private Staff staff;
+
+    @Autowired
+    private StaffAuthInfo staffAuthInfo;
+
+    @Autowired
+    private StaffAuthInfoRepository authInfoRepository;
 
     /**
      * 获取全部模块
@@ -130,5 +140,7 @@ public class StaffServiceImpl implements StaffService {
         Staff staff = this.staffRepository.findByAccount(account);
         return RestResponseUtil.success(staff);
     }
+
+
 
 }

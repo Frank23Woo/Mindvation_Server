@@ -80,6 +80,16 @@ public class StaffController {
         return this.staffService.retrieve(id);
     }
 
-
+    /**
+     * 给项目中的某人赋权限
+     * @param projId
+     * @param staffId
+     * @param moduleId
+     * @return
+     */
+    @PostMapping(value = "/assignAuth")
+    public ResponseEntity<?> assignAuth(String projId, String staffId, String moduleId, Integer authCode) {
+        return this.staffService.assignAuth(projId, staffId, moduleId, authCode);
+    }
 
 }

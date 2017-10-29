@@ -1,6 +1,8 @@
 package com.mdvns.mdvn.staff.papi.service.impl;
 
+import com.mdvns.mdvn.common.beans.AssignAuthRequest;
 import com.mdvns.mdvn.common.beans.RestResponse;
+import com.mdvns.mdvn.common.beans.StaffAuthInfo;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
 import com.mdvns.mdvn.common.utils.RestResponseUtil;
@@ -18,7 +20,9 @@ import org.springframework.web.client.RestTemplate;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 

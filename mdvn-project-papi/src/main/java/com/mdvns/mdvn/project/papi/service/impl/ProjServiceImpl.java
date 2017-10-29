@@ -2,6 +2,7 @@ package com.mdvns.mdvn.project.papi.service.impl;
 
 import com.mdvns.mdvn.common.beans.AttchInfo;
 import com.mdvns.mdvn.common.beans.RestResponse;
+import com.mdvns.mdvn.common.beans.StaffAuthInfo;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
 import com.mdvns.mdvn.common.utils.FetchListUtil;
@@ -94,6 +95,9 @@ public class ProjServiceImpl implements IProjService {
             } catch (Exception ex) {
                 throw new BusinessException(ExceptionEnum.PROJECT_STAFF_NOT_CREATE);
             }
+            //7. 给项目创建人赋权限
+            addAuthToCreator(projId, createProjectRequest.getStaffId());
+
         }
         //3.保存项目标签信息
         if (createProjectRequest.getTags() != null && !createProjectRequest.getTags().isEmpty()) {
@@ -152,7 +156,17 @@ public class ProjServiceImpl implements IProjService {
                 throw new BusinessException(ExceptionEnum.PROJECT_ATTCHURL_NOT_CREATE);
             }
         }
+
         return restResponse;
+    }
+
+    /**
+     * 给项目创建者赋权限
+     * @param projId
+     * @param staffId
+     */
+    private void addAuthToCreator(String projId, String staffId) {
+
     }
 
     /**

@@ -1,12 +1,14 @@
 package com.mdvns.mdvn.staff.sapi.web;
 
 
+import com.mdvns.mdvn.common.beans.AssignAuthRequest;
 import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.staff.sapi.domain.RetrieveStaffListResponse;
 import com.mdvns.mdvn.staff.sapi.domain.RtrvStaffListByNameRequest;
 import com.mdvns.mdvn.staff.sapi.domain.RtrvStaffListByStaffIbListRequest;
 import com.mdvns.mdvn.staff.sapi.domain.entity.Staff;
+import com.mdvns.mdvn.staff.sapi.service.AuthService;
 import com.mdvns.mdvn.staff.sapi.service.StaffService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,9 @@ public class WebController {
     private final String CLASS = this.getClass().getName();
     @Autowired
     private StaffService staffService;
+
+    @Autowired
+    private AuthService authService;
 
     /**
      * 获取全部成员
@@ -86,6 +91,17 @@ public class WebController {
     public RestResponse<?> findById(@PathVariable String account) {
 
         return this.staffService.findByAccount(account);
+    }
+
+    /**
+     * 添加权限
+     * @param assignAuthRequest
+     * @return
+     */
+    @PostMapping(value = "/staffAuth")
+    public ResponseEntity<?> assignAuth(@RequestBody AssignAuthRequest assignAuthRequest) {
+
+        return this.authService.assignAuth(assignAuthRequest);
     }
 
 }
