@@ -49,6 +49,9 @@ public class ModelServiceImpl implements ModelService {
     private Model model;
 
     @Autowired
+    private IterationModel iterationModel;
+
+    @Autowired
     private SubFunctionLabel subFunctionLabel;
 
     @Autowired
@@ -151,7 +154,7 @@ public class ModelServiceImpl implements ModelService {
                 IterationModel iterationModel = new IterationModel();
                 iterationModel.setModelId(model.getModelId());
                 iterationModel.setIsDeleted(0);
-                iterationModel.setItIndex(i);
+                iterationModel.setItIndex(i+1);
                 iterationModel.setCreateTime(createTime);
                 if (!StringUtils.isEmpty(iterationModels.get(i).getName())) {
                     iterationModel.setName(iterationModels.get(i).getName());
@@ -416,6 +419,14 @@ public class ModelServiceImpl implements ModelService {
         model = this.modelRepository.findAllByModelId(modelId);
         LOG.info("执行结束{} findModelById()方法.", this.CLASS);
         return model;
+    }
+
+    @Override
+    public List<IterationModel> findIterationModelById(String modelId) {
+        LOG.info("开始执行{} findIterationModelById()方法.", this.CLASS);
+        List<IterationModel> iterationModels = this.itModelRepository.findByModelId(modelId);
+        LOG.info("执行结束{} findIterationModelById()方法.", this.CLASS);
+        return iterationModels;
     }
 
 

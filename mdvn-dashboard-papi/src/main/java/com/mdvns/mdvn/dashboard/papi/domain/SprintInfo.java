@@ -1,31 +1,20 @@
-package com.mdvns.mdvn.dashboard.sapi.domain.entity;
+package com.mdvns.mdvn.dashboard.papi.domain;
 
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import java.sql.Timestamp;
 //
 //*
 // * 任务列表类，映射表SprintInfo
 // * name不能重复
 
-
-@Entity
 @Component
 public class SprintInfo {
 
-    @Id
-    @GeneratedValue
     private Integer uuId;
     //sprint编号
-//    private String sprintId;
+    private String sprintId;
     //迭代计划模板的name
-    @NotBlank(message = "任务列表名称不能为空")
-    @Column(nullable = false)
     private String name;
     //所属项目Id
     private String subjectId;
@@ -37,17 +26,13 @@ public class SprintInfo {
     private String itemIds;
     //所包含的StoryIds/taskIds数量
     private Integer spQty;
-    // 創建sprint人的編號,即員工編號(staffId)
-    @NotBlank(message = "创建者Id不能为空")
-    @Column(name = "creator_id", columnDefinition = "Varchar (50)", nullable = false)
+// 創建sprint人的編號,即員工編號(staffId)
     private String creatorId;
-    // sprint創建時間
-    @Column(name = "create_time",nullable = false)
+// sprint創建時間
     private Timestamp createTime;
-    // sprint更改時間
-    @Column(name = "update_time", columnDefinition = "timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP")
+// sprint更改時間
     private Timestamp updateTime;
-    //是否已删除
+//是否已删除
     private Integer isDeleted;
 
     public String getModelId() {
@@ -66,6 +51,14 @@ public class SprintInfo {
         this.name = name;
     }
 
+    public String getSprintId() {
+        return sprintId;
+    }
+
+    public void setSprintId(String sprintId) {
+        this.sprintId = sprintId;
+    }
+
     public Integer getUuId() {
         return uuId;
     }
@@ -73,6 +66,14 @@ public class SprintInfo {
     public void setUuId(Integer uuId) {
         this.uuId = uuId;
     }
+
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
 
     public String getSubjectId() {
         return subjectId;

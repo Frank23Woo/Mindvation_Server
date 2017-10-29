@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class ProductStoryList {
+public class SprintStoryList {
 
     //总记录数
     private Long totalElements;

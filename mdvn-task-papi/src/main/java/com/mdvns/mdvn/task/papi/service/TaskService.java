@@ -8,4 +8,5 @@ public interface TaskService {
     RestResponse retrieveTaskList(RtrvTaskListRequest request) throws Exception;
     RestResponse updateTask(CreateOrUpdateTaskRequest request) throws Exception;
     RestResponse addAttachForTask(AddAttachRequest request);
+    RestResponse deleteAttachForTask(AddAttachRequest request);
 }

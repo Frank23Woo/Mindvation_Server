@@ -40,5 +40,12 @@ public class TaskController {
         return taskService.addAttachForTask(request);
     }
 
+    @PostMapping("/deleteAttachForTask")
+    private RestResponse deleteAttachForTask(@RequestBody AddAttachRequest request) throws Exception{
+        return taskService.deleteAttachForTask(request);
+    }
+
+
+
 
 }

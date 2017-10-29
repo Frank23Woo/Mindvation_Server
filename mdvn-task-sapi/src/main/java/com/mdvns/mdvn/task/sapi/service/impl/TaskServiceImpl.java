@@ -21,6 +21,7 @@ import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -212,6 +213,37 @@ public class TaskServiceImpl implements TaskService {
         }
         ids += request.getAttachmentId();
         task.setAttachmentIds(ids);
+        task = taskRepository.save(task);
+        TaskDetail detail = new TaskDetail(task);
+        detail.setDeliver(deliverRepository.findOne(task.getDeliverId()));
+
+        return detail;
+    }
+
+    @Override
+    public TaskDetail deleteAttachForTask(AddAttachRequest request) {
+        if (request == null || request.getTaskId() == null || request.getAttachmentId() == null) {
+            return null;
+        }
+
+        Task task = taskRepository.findFirstByTaskIdAndIsDeleted(request.getTaskId(), 0);
+        if (task == null) {
+            return null;
+        }
+
+        String ids = task.getAttachmentIds();
+        String[] cIds = ids.split(",");
+        List<String> cIdList = new ArrayList<>();
+        cIdList = Arrays.asList(cIds);
+        List cList = new ArrayList(cIdList);
+        cList.remove(request.getAttachmentId());
+        String sIds = com.sun.deploy.util.StringUtils.join(cList, ",");
+//        if (StringUtils.isEmpty(ids)){
+//            ids = "";
+//        } else {
+//            ids = ids + ",";
+//        }
+        task.setAttachmentIds(sIds);
         task = taskRepository.save(task);
         TaskDetail detail = new TaskDetail(task);
         detail.setDeliver(deliverRepository.findOne(task.getDeliverId()));

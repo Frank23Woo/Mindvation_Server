@@ -1,15 +1,12 @@
 package com.mdvns.mdvn.dashboard.papi.domain;
 
-
 import org.springframework.stereotype.Component;
 
 @Component
-public class CreateDashboardRequest {
-
+public class AssignStoryListByItRequest {
     private String projId;
-    private String creatorId;
     private String modelId;
-    private String productBacklogs;
+    private String creatorId;
 
     public String getProjId() {
         return projId;
@@ -17,14 +14,6 @@ public class CreateDashboardRequest {
 
     public void setProjId(String projId) {
         this.projId = projId;
-    }
-
-    public String getCreatorId() {
-        return creatorId;
-    }
-
-    public void setCreatorId(String creatorId) {
-        this.creatorId = creatorId;
     }
 
     public String getModelId() {
@@ -35,11 +24,11 @@ public class CreateDashboardRequest {
         this.modelId = modelId;
     }
 
-    public String getProductBacklogs() {
-        return productBacklogs;
+    public String getCreatorId() {
+        return creatorId;
     }
 
-    public void setProductBacklogs(String productBacklogs) {
-        this.productBacklogs = productBacklogs;
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
     }
 }

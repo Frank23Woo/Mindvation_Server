@@ -1,3 +1,4 @@
+/*
 package com.mdvns.mdvn.dashboard.sapi.domain.entity;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -8,10 +9,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.sql.Timestamp;
+*/
 /**
  * 项目看板类，映射表SprintInfo
  * name不能重复
- */
+ *//*
+
 @Entity
 @Component
 public class Dashboard {
@@ -27,17 +30,25 @@ public class Dashboard {
     //当前任务列表（包含的是storyList）
     private String currentSprint;
     private String nextSprint;
-    /* 創建人的編號,即員工編號(staffId) */
+    */
+/* 創建人的編號,即員工編號(staffId) *//*
+
     @NotBlank(message = "创建者Id不能为空")
     @Column(name = "creator_id", columnDefinition = "Varchar (50)", nullable = false)
     private String creatorId;
-    /* sprint創建時間*/
+    */
+/* sprint創建時間*//*
+
     @Column(name = "create_time",nullable = false)
     private Timestamp createTime;
-    /*更改時間*/
+    */
+/*更改時間*//*
+
     @Column(name = "update_time", columnDefinition = "timestamp default current_timestamp")
     private Timestamp updateTime;
-    /*是否已删除*/
+    */
+/*是否已删除*//*
+
     private Integer isDeleted;
 
     public String getProductBacklogs() {
@@ -128,3 +139,4 @@ public class Dashboard {
         this.isDeleted = isDeleted;
     }
 }
+*/

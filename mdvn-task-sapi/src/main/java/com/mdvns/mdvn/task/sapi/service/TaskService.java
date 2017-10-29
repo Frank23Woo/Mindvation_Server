@@ -19,4 +19,5 @@ public interface TaskService {
     TaskDetail updateTask(CreateTaskRequest request) throws Exception;
 
     TaskDetail addAttachForTask(AddAttachRequest request);
+    TaskDetail deleteAttachForTask(AddAttachRequest request);
 }

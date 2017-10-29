@@ -1,7 +1,10 @@
 package com.mdvns.mdvn.dashboard.sapi.domain;
 
 
+import com.mdvns.mdvn.dashboard.sapi.domain.entity.SprintInfo;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class UpdateDashboardRequest {
@@ -9,41 +12,7 @@ public class UpdateDashboardRequest {
     private String projId;
     private String modelId;
     private String creatorId;
-    private String storyId;
-    private Integer beforeMoving;
-    private Integer afterMoving;
-
-    public String getCreatorId() {
-        return creatorId;
-    }
-
-    public void setCreatorId(String creatorId) {
-        this.creatorId = creatorId;
-    }
-
-    public String getStoryId() {
-        return storyId;
-    }
-
-    public void setStoryId(String storyId) {
-        this.storyId = storyId;
-    }
-
-    public Integer getBeforeMoving() {
-        return beforeMoving;
-    }
-
-    public void setBeforeMoving(Integer beforeMoving) {
-        this.beforeMoving = beforeMoving;
-    }
-
-    public Integer getAfterMoving() {
-        return afterMoving;
-    }
-
-    public void setAfterMoving(Integer afterMoving) {
-        this.afterMoving = afterMoving;
-    }
+    private List<SprintInfo> sprintInfos;
 
     public String getProjId() {
         return projId;
@@ -59,5 +28,21 @@ public class UpdateDashboardRequest {
 
     public void setModelId(String modelId) {
         this.modelId = modelId;
+    }
+
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public List<SprintInfo> getSprintInfos() {
+        return sprintInfos;
+    }
+
+    public void setSprintInfos(List<SprintInfo> sprintInfos) {
+        this.sprintInfos = sprintInfos;
     }
 }
