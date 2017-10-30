@@ -7,6 +7,16 @@ public class RtrvTaskInfoRequest {
 
     private String taskId;
 
+    private String staffId;
+
+    public String getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(String staffId) {
+        this.staffId = staffId;
+    }
+
     public String getTaskId() {
         return taskId;
     }

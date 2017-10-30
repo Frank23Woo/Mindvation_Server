@@ -3,6 +3,7 @@ package com.mdvns.mdvn.task.papi.service.impl;
 import com.mdvns.mdvn.common.beans.AttchInfo;
 import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.common.beans.Staff;
+import com.mdvns.mdvn.common.beans.StaffAuthInfo;
 import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
 import com.mdvns.mdvn.common.enums.AuthEnum;
 import com.mdvns.mdvn.common.utils.FetchListUtil;
@@ -174,6 +175,9 @@ public class TaskServiceImpl implements TaskService {
             //附件
             getTaskAttachment(taskDetail);
 
+            //获取权限信息
+            StaffAuthInfo staffAuthInfo = StaffAuthUtil.rtrvStaffAuthInfo(this.restTemplate, taskDetail.getProjId(), taskId, request.getStaffId() );
+            taskDetail.setStaffAuthInfo(staffAuthInfo);
             restResponse.setResponseCode("000");
             restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
             restResponse.setResponseMsg("ok");
@@ -183,6 +187,7 @@ public class TaskServiceImpl implements TaskService {
             restResponse.setResponseCode(ExceptionEnum.SAPI_EXCEPTION.getErroCode());
             restResponse.setResponseMsg(ExceptionEnum.SAPI_EXCEPTION.getErrorMsg());
         }
+
         return restResponse;
     }
 
