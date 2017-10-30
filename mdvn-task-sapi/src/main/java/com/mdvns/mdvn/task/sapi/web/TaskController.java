@@ -1,10 +1,7 @@
 package com.mdvns.mdvn.task.sapi.web;
 
 import com.mdvns.mdvn.common.beans.RestResponse;
-import com.mdvns.mdvn.task.sapi.domain.AddAttachRequest;
-import com.mdvns.mdvn.task.sapi.domain.CreateTaskRequest;
-import com.mdvns.mdvn.task.sapi.domain.RtrvTaskListRequest;
-import com.mdvns.mdvn.task.sapi.domain.TaskDetail;
+import com.mdvns.mdvn.task.sapi.domain.*;
 import com.mdvns.mdvn.task.sapi.domain.entity.Task;
 import com.mdvns.mdvn.task.sapi.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +45,26 @@ public class TaskController {
     private TaskDetail deleteAttachForTask(@RequestBody AddAttachRequest request) throws Exception{
         return taskService.deleteAttachForTask(request);
     }
+
+    /**
+     * 根据projId和staffId查询个人看板信息
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/myDashboardInfos")
+    public RtrvMyDashboardInfoResponse findMyDashboardInfo(@RequestBody RtrvMyDashboardInfoRequest request) {
+        return this.taskService.findMyDashboardInfo(request);
+    }
+    /**
+     * 更改个人看板信息
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/updateMyDashboard")
+    public Task updateMyDashboard(@RequestBody UpdateMyDashboardRequest request) {
+        return this.taskService.updateMyDashboard(request);
+    }
+
 
 
 }

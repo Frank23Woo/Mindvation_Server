@@ -19,7 +19,7 @@ public class MdvnProjectPapiApplicationTests {
 	}
 	@Test
 	public void test() throws ParseException {
-		String dateTime = "2017-12-05 13:30:45";
+		String dateTime = "2017-10-28 10:50:18";
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateTime));
 		System.out.println("日期[?-?-?]对应毫秒：" + calendar.getTimeInMillis());

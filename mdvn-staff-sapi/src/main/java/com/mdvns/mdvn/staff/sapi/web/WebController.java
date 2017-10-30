@@ -28,8 +28,8 @@ public class WebController {
     @Autowired
     private StaffService staffService;
 
-    @Autowired
-    private AuthService authService;
+//    @Autowired
+//    private AuthService authService;
 
     /**
      * 获取全部成员
@@ -99,11 +99,11 @@ public class WebController {
      * @param assignAuthRequest
      * @return
      */
-    @PostMapping(value = "/staffAuth")
-    public ResponseEntity<?> assignAuth(@RequestBody AssignAuthRequest assignAuthRequest) {
-
-        return this.authService.assignAuth(assignAuthRequest);
-    }
+//    @PostMapping(value = "/staffAuth")
+//    public ResponseEntity<?> assignAuth(@RequestBody AssignAuthRequest assignAuthRequest) {
+//
+//        return this.authService.assignAuth(assignAuthRequest);
+//    }
 
     @PostMapping(value = "/rtrvAuth")
     public ResponseEntity<?> assignAuth(@RequestBody RtrvAuthRequest rtrvAuthRequest) {

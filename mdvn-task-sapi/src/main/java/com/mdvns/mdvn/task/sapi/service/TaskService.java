@@ -1,10 +1,7 @@
 package com.mdvns.mdvn.task.sapi.service;
 
-import com.mdvns.mdvn.task.sapi.domain.AddAttachRequest;
-import com.mdvns.mdvn.task.sapi.domain.CreateTaskRequest;
-import com.mdvns.mdvn.task.sapi.domain.RtrvTaskListRequest;
+import com.mdvns.mdvn.task.sapi.domain.*;
 import com.mdvns.mdvn.task.sapi.domain.entity.Task;
-import com.mdvns.mdvn.task.sapi.domain.TaskDetail;
 
 import java.util.List;
 
@@ -20,4 +17,8 @@ public interface TaskService {
 
     TaskDetail addAttachForTask(AddAttachRequest request);
     TaskDetail deleteAttachForTask(AddAttachRequest request);
+
+    RtrvMyDashboardInfoResponse findMyDashboardInfo(RtrvMyDashboardInfoRequest request);
+
+    Task updateMyDashboard(UpdateMyDashboardRequest request);
 }

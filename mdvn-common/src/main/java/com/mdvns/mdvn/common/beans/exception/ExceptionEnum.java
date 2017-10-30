@@ -103,7 +103,8 @@ public enum ExceptionEnum {
 	DASHBOARD_DETAIL_REQMNTINFO_NOT_RTRV("1701", "调用SAPI获取看板前的reqmnt信息时失败"),
 	DASHBOARD_DETAIL_STORY_NOT_RTRV("1702", "调用SAPI获取看板的storylist信息时失败"),
 	DASHBOARD_NOT_CREATE("1703", "调用SAPI创建dashboard时失败"),
-	DASHBOARD_NOT_UPDATE("1704", "调用SAPI更改dashboard时失败");
+	DASHBOARD_NOT_UPDATE("1704", "调用SAPI更改dashboard时失败"),
+	MYDASHBOARD_NOT_UPDATE("1705", "调用SAPI更改个人dashboard时失败");
 
 		String erroCode;
 		String ErrorMsg;

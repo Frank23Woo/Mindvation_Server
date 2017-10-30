@@ -14,6 +14,7 @@ public class Task {
     private Integer uuid;
     private String storyId;
     private String taskId;
+    private String projId;
     @Column(nullable = false)
     private String creatorId;
     @Column(nullable = false)
@@ -24,6 +25,7 @@ public class Task {
     @Column(nullable = false)
     private Timestamp endTime;
     private Integer progress;
+    private String status;
     private String comment;
     private String attachmentIds;
 
@@ -39,6 +41,22 @@ public class Task {
     private String remarks;
 
     public Task() {
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getProjId() {
+        return projId;
+    }
+
+    public void setProjId(String projId) {
+        this.projId = projId;
     }
 
     public Integer getUuid() {

@@ -27,6 +27,8 @@ public interface DashboardService {
     SprintInfo createSprintInfo(CreateSprintInfoRequest request);
 
     /*更改看板*/
-    List<SprintInfo> updateDashboard(UpdateDashboardRequest request);
+    List<SprintInfo> updateDashboard(UpdateSprintRequest request);
+
+    SprintInfo updateSprintInfo(UpdateSprintInfoRequest request);
 
 }

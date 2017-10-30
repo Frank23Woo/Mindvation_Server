@@ -3,6 +3,7 @@ package com.mdvns.mdvn.dashboard.papi.domain;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
+import java.util.List;
 //
 //*
 // * 任务列表类，映射表SprintInfo
@@ -29,11 +30,21 @@ public class SprintInfo {
 // 創建sprint人的編號,即員工編號(staffId)
     private String creatorId;
 // sprint創建時間
-    private Timestamp createTime;
+    private Long createTime;
 // sprint更改時間
-    private Timestamp updateTime;
+    private Long updateTime;
 //是否已删除
     private Integer isDeleted;
+
+    private String labelIds;
+
+    public String getLabelIds() {
+        return labelIds;
+    }
+
+    public void setLabelIds(String labelIds) {
+        this.labelIds = labelIds;
+    }
 
     public String getModelId() {
         return modelId;
@@ -115,12 +126,20 @@ public class SprintInfo {
         this.creatorId = creatorId;
     }
 
-    public Timestamp getCreateTime() {
+    public Long getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Long createTime) {
         this.createTime = createTime;
+    }
+
+    public Long getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Long updateTime) {
+        this.updateTime = updateTime;
     }
 
     public Integer getIsDeleted() {
@@ -129,13 +148,5 @@ public class SprintInfo {
 
     public void setIsDeleted(Integer isDeleted) {
         this.isDeleted = isDeleted;
-    }
-
-    public Timestamp getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Timestamp updateTime) {
-        this.updateTime = updateTime;
     }
 }

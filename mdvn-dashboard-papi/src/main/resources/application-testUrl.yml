@@ -2,12 +2,15 @@ url:
  findDashboardInfoByIdUrl: http://localhost:8080/mdvn-dashboard-sapi/dashboards/dashboardInfos
  findDashboardInfoByIdsUrl: http://localhost:8080/mdvn-dashboard-sapi/dashboards/dashboardInfo
  updateDashboardUrl: http://localhost:8080/mdvn-dashboard-sapi/dashboards/updateDashboard
+ updateSprintInfoUrl: http://localhost:8080/mdvn-dashboard-sapi/dashboards/updateSprintInfo
  rtrvReqmntInfoBymodelIdUrl: http://localhost:8080/mdvn-reqmnt-sapi/rtrvReqmntInfoBymodelId
  findModelByIdUrl: http://localhost:8080/mdvn-model-sapi/models/findModelById
  rtrvStoryInfoListUrl: http://localhost:8080/mdvn-story-sapi/story/rtrvStoryInfoListByReqmntIds
  rtrvStoryInfoListByStoryIdsUrl: http://localhost:8080/mdvn-story-sapi/story/rtrvStoryInfoListByStoryIds
  createSprintInfoUrl: http://localhost:8080/mdvn-dashboard-sapi/dashboards/createSprintInfo
  findIterationModelByIdUrl: http://localhost:8080/mdvn-model-sapi/models/findIterationModelById
+ updateMyDashboardUrl: http://localhost:8080/mdvn-task-sapi/updateMyDashboard
+ myDashboardInfosUrl: http://localhost:8080/mdvn-task-sapi/myDashboardInfos
 
 
 
