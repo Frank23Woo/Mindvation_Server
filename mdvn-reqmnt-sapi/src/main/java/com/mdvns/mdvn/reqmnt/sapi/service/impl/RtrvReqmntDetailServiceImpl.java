@@ -96,4 +96,15 @@ public class RtrvReqmntDetailServiceImpl implements IRtrvReqmntDetailService {
         }
         return list;
     }
+
+    /**
+     * 通过storyId获取reqmntInfo
+     * @param storyId
+     * @return
+     */
+    @Override
+    public RequirementInfo rtrvlabelIdBystoryId(String storyId) {
+        RequirementInfo requirementInfo = this.reqmntRepository.rtrvReqmntInfoByStoryId(storyId);
+        return requirementInfo;
+    }
 }

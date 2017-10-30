@@ -110,4 +110,16 @@ public class DashboardServiceImpl implements DashboardService {
         return sprintInfo;
     }
 
+    @Override
+    public SprintInfo addStory(AddStoryRequest request) {
+        String subjectId = request.getProjId();
+        String storyId = request.getStoryId();
+        sprintInfo = this.sprintInfoRepository.findBySubjectIdAndNameAndIsDeleted(subjectId,"Product Backlogs",0);
+        String storyIds = sprintInfo.getItemIds();
+        storyIds = storyIds+","+storyId;
+        sprintInfo.setItemIds(storyIds);
+        sprintInfo = this.sprintInfoRepository.saveAndFlush(sprintInfo);
+        return sprintInfo;
+    }
+
 }

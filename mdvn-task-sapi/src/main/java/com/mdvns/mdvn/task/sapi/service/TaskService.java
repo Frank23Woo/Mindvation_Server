@@ -21,4 +21,6 @@ public interface TaskService {
     RtrvMyDashboardInfoResponse findMyDashboardInfo(RtrvMyDashboardInfoRequest request);
 
     Task updateMyDashboard(UpdateMyDashboardRequest request);
+
+    TaskDetail rtrvTaskInfo(String taskId);
 }

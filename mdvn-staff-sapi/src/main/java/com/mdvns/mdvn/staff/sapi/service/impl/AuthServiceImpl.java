@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -28,22 +30,38 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public ResponseEntity<?> assignAuth(AssignAuthRequest assignAuthRequest) {
-        staffAuthInfo = new StaffAuthInfo();
+
+        List<String> assignees = assignAuthRequest.getAssignees();
+        String assignerId = assignAuthRequest.getAssignerId();
+        if (assignees.size() == 1 && assignerId.equals(assignees.get(0))) {
+            assignAuth(assignAuthRequest.getProjId(), assignerId, assignees.get(0), assignAuthRequest.getHierarchyId());
+        }
+
+        List<StaffAuthInfo> staffAuthInfos = new ArrayList<StaffAuthInfo>();
+        for (String assigneeId : assignees) {
+            staffAuthInfo = new StaffAuthInfo();
+            staffAuthInfo.setProjId(assignAuthRequest.getProjId());
+            staffAuthInfo.setStaffId(assigneeId);
+            staffAuthInfo.setAuthCode(assignAuthRequest.getAuthCode());
+            staffAuthInfo.setHierarchyId(assignAuthRequest.getHierarchyId());
+            staffAuthInfo.setAssignerId(assignAuthRequest.getAssignerId());
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            staffAuthInfo.setCreateTime(timestamp);
+            staffAuthInfo.setIsDeleted(0);
+            staffAuthInfo = this.authInfoRepository.save(staffAuthInfo);
+            staffAuthInfos.add(staffAuthInfo);
+        }
+
         LOG.info("添加权限的request为：{}", assignAuthRequest.toString());
-        staffAuthInfo.setProjId(assignAuthRequest.getProjId());
-        staffAuthInfo.setStaffId(assignAuthRequest.getAssigneeId());
-        staffAuthInfo.setAuthCode(assignAuthRequest.getAuthCode());
-        staffAuthInfo.setHierarchyId(assignAuthRequest.getHierarchyId());
-        staffAuthInfo.setAssignerId(assignAuthRequest.getAssignerId());
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        staffAuthInfo.setCreateTime(timestamp);
-        staffAuthInfo.setIsDeleted(0);
-        staffAuthInfo = this.authInfoRepository.save(staffAuthInfo);
+
         LOG.info("SAPI添加权限结束：{}", staffAuthInfo.toString());
         LOG.info("SAPI添加权限结束, staffAuthInfo 的值是:{}", staffAuthInfo.toString());
-        return ResponseEntity.ok(staffAuthInfo);
+        return ResponseEntity.ok(staffAuthInfos);
     }
 
+    public void assignAuth(String projId, String assignerId, String assigneeId, String hierarchyId) {
+
+    }
     /**
      * 获取权限信息
      * @param rtrvAuthRequest
@@ -54,8 +72,7 @@ public class AuthServiceImpl implements AuthService {
         String projId = rtrvAuthRequest.getProjId();
         String staffId = rtrvAuthRequest.getStaffId();
         String hierarchyId = rtrvAuthRequest.getHierarchyId();
-
-        StaffAuthInfo staffAuthInfo = this.authInfoRepository.findByProjIdAndStaffIdAndHierarchyId(projId,staffId, hierarchyId);
+        StaffAuthInfo staffAuthInfo = this.authInfoRepository.findByProjIdAndStaffIdAndHierarchyId(projId, staffId, hierarchyId);
 
         return ResponseEntity.ok(staffAuthInfo);
     }

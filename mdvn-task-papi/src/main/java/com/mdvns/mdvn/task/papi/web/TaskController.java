@@ -25,6 +25,11 @@ public class TaskController {
         return taskService.retrieveTaskList(request);
     }
 
+    @PostMapping("/retrieveTaskInfo")
+    private RestResponse getTaskInfo(@RequestBody RtrvTaskInfoRequest request) throws Exception {
+        return taskService.retrieveTaskInfo(request);
+    }
+
 //    @PostMapping("/deleteTask")
 //    private RestResponse deleteTask(@RequestBody DeleteTaskRequest request) throws Exception {
 //        return taskService.deleteTask(request);

@@ -95,7 +95,6 @@ public class StaffController {
     @PostMapping(value = "/assignAuth")
     public ResponseEntity<?> assignAuth(@RequestBody AssignAuthRequest authRequest) {
         ResponseEntity<?> responseEntity = this.authService.assignAuth(authRequest);
-        System.out.print("添加权限成功："+(StaffAuthInfo)responseEntity.getBody());
         return responseEntity;
     }
 

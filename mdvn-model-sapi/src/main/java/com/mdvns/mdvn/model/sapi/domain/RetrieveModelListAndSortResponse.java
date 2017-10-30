@@ -1,25 +1,25 @@
-package com.mdvns.mdvn.model.papi.domain;
+package com.mdvns.mdvn.model.sapi.domain;
 
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class RetrieveModelListResponse {
+public class RetrieveModelListAndSortResponse {
 
-    private List<Model> models;
+//    private List<Model> models;
 
-//    private List<ModelAndSort> models;
+    private List<ModelAndSort> models;
 
     private Long totalNumber;
 
     private List<String> remarks;
 
-    public List<Model> getModels() {
+    public List<ModelAndSort> getModels() {
         return models;
     }
 
-    public void setModels(List<Model> models) {
+    public void setModels(List<ModelAndSort> models) {
         this.models = models;
     }
 

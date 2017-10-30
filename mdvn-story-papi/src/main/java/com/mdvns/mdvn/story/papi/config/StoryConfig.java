@@ -67,6 +67,16 @@ public class StoryConfig {
 
     private String rtrvAttchListUrl;
 
+    private String addStoryUrl;
+
+    public String getAddStoryUrl() {
+        return addStoryUrl;
+    }
+
+    public void setAddStoryUrl(String addStoryUrl) {
+        this.addStoryUrl = addStoryUrl;
+    }
+
     public String getRtrvAttchListUrl() {
         return rtrvAttchListUrl;
     }

@@ -77,6 +77,16 @@ public class DashboardController {
         return this.dashboardService.updateSprintInfo(request);
     }
 
+    /**
+     * 更改SprintInfo（创建story时的一个动作·）
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/addStory")
+    public SprintInfo addStory(@RequestBody AddStoryRequest request) {
+        return this.dashboardService.addStory(request);
+    }
+
 
 
 
