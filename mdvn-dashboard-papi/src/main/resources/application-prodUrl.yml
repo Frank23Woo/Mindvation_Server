@@ -13,4 +13,7 @@ url:
  myDashboardInfosUrl: http://localhost:10004/mdvn-task-sapi/myDashboardInfos
  rtrvStaffInfoUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffInfo
  rtrvlabelIdBystoryIdUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvlabelIdBystoryId
+ updateSprintStartStatusUrl: http://localhost:10017/mdvn-dashboard-sapi/dashboards/updateSprintStartStatus
+ updateSprintCloseStatusUrl: http://localhost:10017/mdvn-dashboard-sapi/dashboards/updateSprintCloseStatus
+ itSprintUrl: http://localhost:10017/mdvn-dashboard-sapi/dashboards/itSprint
 

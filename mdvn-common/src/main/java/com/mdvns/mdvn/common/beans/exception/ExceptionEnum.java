@@ -106,7 +106,11 @@ public enum ExceptionEnum {
 	DASHBOARD_NOT_CREATE("1703", "调用SAPI创建dashboard时失败"),
 	DASHBOARD_NOT_UPDATE("1704", "调用SAPI更改dashboard时失败"),
 	MYDASHBOARD_NOT_RTRV("1705", "调用SAPI获取个人dashboard时失败"),
-	MYDASHBOARD_NOT_UPDATE("1706", "调用SAPI更改个人dashboard时失败");
+	MYDASHBOARD_NOT_UPDATE("1706", "调用SAPI更改个人dashboard时失败"),
+	DASHBOARD_STATUS_START_NOT_UPDATE("1707", "调用SAPI更改SprintInfo(start)时失败"),
+	DASHBOARD_STATUS_CLOSE_NOT_UPDATE("1708", "调用SAPI更改SprintInfo(CLOSE)时失败"),
+	DASHBOARD_NEXT_SPRINT_NOT_RTRV("1709", "调用SAPI获取接下来两个sprint时失败");
+
 
 		String erroCode;
 		String ErrorMsg;

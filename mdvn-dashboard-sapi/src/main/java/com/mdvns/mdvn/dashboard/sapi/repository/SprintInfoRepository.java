@@ -14,4 +14,5 @@ public interface SprintInfoRepository extends JpaRepository<SprintInfo, Integer>
     List<SprintInfo> findBySubjectIdAndModelIdAndIsDeleted(String subjectId ,String modelId, Integer isDeleted);
 
     SprintInfo findBySubjectIdAndNameAndIsDeleted(String subjectId ,String name, Integer isDeleted);
+    SprintInfo findBySubjectIdAndSprintIndex(String subjectId ,Integer sprintIndex);
 }

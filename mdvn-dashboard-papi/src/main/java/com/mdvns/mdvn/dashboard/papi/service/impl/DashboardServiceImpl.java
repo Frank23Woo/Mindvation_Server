@@ -440,4 +440,52 @@ public class DashboardServiceImpl implements DashboardService {
         return restResponse;
     }
 
+    @Override
+    public RestResponse updateSprintStartStatus(UpdateSprintStartStatusRequest request) {
+        SprintInfo sprintInfo = new SprintInfo();
+        try {
+            String url = webConfig.getUpdateSprintStartStatusUrl();
+            sprintInfo = this.restTemplate.postForObject(url, request, SprintInfo.class);
+        } catch (Exception ex) {
+            throw new BusinessException(ExceptionEnum.DASHBOARD_STATUS_START_NOT_UPDATE);
+        }
+        restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
+        restResponse.setResponseMsg("请求成功");
+        restResponse.setResponseCode("000");
+        restResponse.setResponseBody(sprintInfo);
+        return restResponse;
+    }
+
+    @Override
+    public RestResponse updateSprintCloseStatus(UpdateSprintCloseStatusRequest request) {
+        SprintInfo sprintInfo = new SprintInfo();
+        try {
+            String url = webConfig.getUpdateSprintCloseStatusUrl();
+            sprintInfo = this.restTemplate.postForObject(url, request, SprintInfo.class);
+        } catch (Exception ex) {
+            throw new BusinessException(ExceptionEnum.DASHBOARD_STATUS_CLOSE_NOT_UPDATE);
+        }
+        restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
+        restResponse.setResponseMsg("请求成功");
+        restResponse.setResponseCode("000");
+        restResponse.setResponseBody(sprintInfo);
+        return restResponse;
+    }
+
+    @Override
+    public RestResponse itSprints(RtrvItSprintsRequest request) {
+        List<SprintInfo> sprintInfos = new ArrayList<>();
+        try {
+            String url = webConfig.getItSprintUrl();
+            sprintInfos = this.restTemplate.postForObject(url, request.getUuId(), List.class);
+        } catch (Exception ex) {
+            throw new BusinessException(ExceptionEnum.DASHBOARD_NEXT_SPRINT_NOT_RTRV);
+        }
+        restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
+        restResponse.setResponseMsg("请求成功");
+        restResponse.setResponseCode("000");
+        restResponse.setResponseBody(sprintInfos);
+        return restResponse;
+    }
+
 }

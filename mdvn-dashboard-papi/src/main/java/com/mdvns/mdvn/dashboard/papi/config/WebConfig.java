@@ -31,6 +31,36 @@ public class WebConfig {
 
     private String rtrvlabelIdBystoryIdUrl;
 
+    private String updateSprintStartStatusUrl;
+
+    private String updateSprintCloseStatusUrl;
+
+    private String itSprintUrl;
+
+    public String getItSprintUrl() {
+        return itSprintUrl;
+    }
+
+    public void setItSprintUrl(String itSprintUrl) {
+        this.itSprintUrl = itSprintUrl;
+    }
+
+    public String getUpdateSprintStartStatusUrl() {
+        return updateSprintStartStatusUrl;
+    }
+
+    public void setUpdateSprintStartStatusUrl(String updateSprintStartStatusUrl) {
+        this.updateSprintStartStatusUrl = updateSprintStartStatusUrl;
+    }
+
+    public String getUpdateSprintCloseStatusUrl() {
+        return updateSprintCloseStatusUrl;
+    }
+
+    public void setUpdateSprintCloseStatusUrl(String updateSprintCloseStatusUrl) {
+        this.updateSprintCloseStatusUrl = updateSprintCloseStatusUrl;
+    }
+
     public String getRtrvlabelIdBystoryIdUrl() {
         return rtrvlabelIdBystoryIdUrl;
     }
