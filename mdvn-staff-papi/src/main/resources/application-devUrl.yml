@@ -3,5 +3,12 @@ url:
   rtrvStaffListByStaffIdListUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffListByStaffIdList
   rtrvStaffInfoUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffInfo
   rtrvStaffListByNameUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffListByName
+  createStaffUrl: http://localhost:10013/mdvn-staff-sapi/createStaff
+  rtrvStaffDetailUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffDetail
+  rtrvTagsUrl: http://localhost:10002/mdvn-tag-sapi/tags/rtrvTags
+  rtrvStaffTagListUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffTagList
+  updateStaffDetailUrl: http://localhost:10013/mdvn-staff-sapi/updateStaffDetail
+  deleteStaffUrl: http://localhost:10013/mdvn-staff-sapi/deleteStaff
+
 
 

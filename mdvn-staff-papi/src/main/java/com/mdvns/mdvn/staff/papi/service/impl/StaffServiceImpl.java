@@ -3,8 +3,10 @@ package com.mdvns.mdvn.staff.papi.service.impl;
 import com.mdvns.mdvn.common.beans.AssignAuthRequest;
 import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.common.beans.StaffAuthInfo;
+import com.mdvns.mdvn.common.beans.Tag;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
+import com.mdvns.mdvn.common.utils.FetchListUtil;
 import com.mdvns.mdvn.common.utils.RestResponseUtil;
 import com.mdvns.mdvn.staff.papi.config.WebConfig;
 import com.mdvns.mdvn.staff.papi.domain.*;
@@ -161,6 +163,67 @@ public class StaffServiceImpl implements StaffService {
         return RestResponseUtil.successResponseEntity(staff);
     }
 
+    @Override
+    public ResponseEntity<?> createStaff(CreateStaffRequest request) {
+        String url = webConfig.getCreateStaffUrl();
+        CreateStaffResponse response = this.restTemplate.postForObject(url, request, CreateStaffResponse.class);
+        restResponse = RestResponseUtil.success(response);
+        return ResponseEntity.ok(restResponse);
+    }
+
+    @Override
+    public ResponseEntity<?> deleteStaff(String staffId) {
+        String url = webConfig.getDeleteStaffUrl();
+        Boolean flag = this.restTemplate.postForObject(url+"/"+staffId,"",Boolean.class);
+        if(flag){
+            return ResponseEntity.ok(RestResponseUtil.success());
+        }else{
+            return ResponseEntity.ok(RestResponseUtil.error(HttpStatus.NOT_MODIFIED,ExceptionEnum.DELETE_STAFF_FAIL+"","Fail to delete staff"));
+        }
+
+    }
+
+    @Override
+    public ResponseEntity<?> rtrvStaffDetail(String staffId) {
+        String url = webConfig.getRtrvStaffInfoUrl();
+        RtrvStaffDetailResponse response = new RtrvStaffDetailResponse();
+        Staff staff = this.restTemplate.postForObject(url,staffId,Staff.class);
+        response.setStaffInfo(staff);
+
+        String staffTagUrl = webConfig.getRtrvStaffTagListUrl();
+//        List<StaffTag> staffTagList = this.restTemplate.postForObject(staffTagUrl,staffId,List.class);
+        ParameterizedTypeReference<List<StaffTag>> parameterizedTypeReference = new ParameterizedTypeReference<List<StaffTag>>(){};
+        List<StaffTag> staffTagList = FetchListUtil.fetch(this.restTemplate,staffTagUrl,staffId,parameterizedTypeReference);
+
+        List<String> tagIds= new ArrayList<>();
+        for (int i = 0; i < staffTagList.size(); i++) {
+            tagIds.add(staffTagList.get(i).getTagId());
+        }
+        String tagUrl = webConfig.getRtrvTagsUrl();
+
+        RtrvTagsRequest rtrvTagsRequest = new RtrvTagsRequest();
+        rtrvTagsRequest.setTagIds(tagIds);
+
+//        List<Tag> tagList = this.restTemplate.postForObject(tagUrl,params, List.class);
+        ParameterizedTypeReference<List<Tag>> tagRefer = new ParameterizedTypeReference<List<Tag>>() {};
+        List<Tag> tagList = FetchListUtil.fetch(this.restTemplate,tagUrl,rtrvTagsRequest,tagRefer);
+        response.setTags(tagList);
+        return ResponseEntity.ok(RestResponseUtil.success(response));
+    }
+
+    @Override
+    public ResponseEntity<?> updateStaffDetail(UpdateStaffDetailRequest request) {
+        Boolean flag = this.restTemplate.postForObject(webConfig.getUpdateStaffDetailUrl(), request, Boolean.class);
+        if(flag){
+            return rtrvStaffDetail(request.getStaffInfo().getStaffId());
+        }else{
+            return  ResponseEntity.ok(RestResponseUtil.error(HttpStatus.NOT_MODIFIED,ExceptionEnum.UPDATE_STAFF_FAIL+"","Fail to update staff info"));
+        }
+
+
+    }
+
+
 
 
     /**
@@ -186,4 +249,6 @@ public class StaffServiceImpl implements StaffService {
         }
         return staff;
     }
+
+
 }
