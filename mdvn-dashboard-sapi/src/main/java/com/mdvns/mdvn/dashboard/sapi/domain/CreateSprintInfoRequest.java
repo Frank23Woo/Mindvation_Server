@@ -12,6 +12,15 @@ public class CreateSprintInfoRequest {
     private Integer sprintIndex;
     private String itemIds;
     private String name;
+    private String labelIds;
+
+    public String getLabelIds() {
+        return labelIds;
+    }
+
+    public void setLabelIds(String labelIds) {
+        this.labelIds = labelIds;
+    }
 
     public String getProjId() {
         return projId;

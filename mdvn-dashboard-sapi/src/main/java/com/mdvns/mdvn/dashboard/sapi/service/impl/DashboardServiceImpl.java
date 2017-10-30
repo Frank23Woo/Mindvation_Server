@@ -5,6 +5,7 @@ import com.mdvns.mdvn.dashboard.sapi.domain.*;
 import com.mdvns.mdvn.dashboard.sapi.domain.entity.SprintInfo;
 import com.mdvns.mdvn.dashboard.sapi.repository.SprintInfoRepository;
 import com.mdvns.mdvn.dashboard.sapi.service.DashboardService;
+import com.sun.deploy.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,7 @@ public class DashboardServiceImpl implements DashboardService {
         sprintInfo.setCreatorId(request.getCreatorId());
         sprintInfo.setSubjectId(request.getProjId());
         sprintInfo.setModelId(request.getModelId());
+        sprintInfo.setLabelIds(request.getLabelIds());
         sprintInfo.setName(request.getName());
         sprintInfo.setIsDeleted(0);
         sprintInfo.setSprintIndex(request.getSprintIndex());
@@ -79,7 +81,7 @@ public class DashboardServiceImpl implements DashboardService {
      * @return
      */
     @Override
-    public List<SprintInfo> updateDashboard(UpdateDashboardRequest request) {
+    public List<SprintInfo> updateDashboard(UpdateSprintRequest request) {
         LOG.info("开始执行{} updateDashboard()方法.", this.CLASS);
         List<SprintInfo> sprintInfos = new ArrayList<>();
         for (int i = 0; i <request.getSprintInfos().size() ; i++) {
@@ -89,64 +91,18 @@ public class DashboardServiceImpl implements DashboardService {
             sprintInfo = this.sprintInfoRepository.saveAndFlush(sprintInfo);
             sprintInfos.add(sprintInfo);
         }
-//        SprintInfo dashboard = this.dashboardRepository.findBySubjectIdAndModelIdAndIsDeleted(request.getProjId(),request.getModelId(),0);
-//        String productBacklogs = dashboard.getProductBacklogs();
-//        String currentSprint = dashboard.getCurrentSprint();
-//        String nextSprint = dashboard.getNextSprint();
-//        List<String> productStoryIdList = new ArrayList<>();
-//        List<String> currentStoryIdList = new ArrayList<>();
-//        List<String> nextStoryIdList = new ArrayList<>();
-//        List productArrList = new ArrayList();
-//        List currentArrList = new ArrayList();
-//        List nextArrList = new ArrayList();
-//        if (productBacklogs !=null){
-//            String[] productStoryIds = productBacklogs.split(",");
-//            productStoryIdList = Arrays.asList(productStoryIds);
-//            productArrList = new ArrayList(productStoryIdList);
-//        }
-//        if (currentSprint !=null){
-//            String[] currentStoryIds = currentSprint.split(",");
-//            currentStoryIdList = Arrays.asList(currentStoryIds);
-//            currentArrList = new ArrayList(currentStoryIdList);
-//        }
-//        if (nextSprint !=null){
-//            String[] nextStoryIds = nextSprint.split(",");
-//            nextStoryIdList = Arrays.asList(nextStoryIds);
-//            nextArrList = new ArrayList(nextStoryIdList);
-//        }
-//        String storyId = request.getStoryId();
-//        Integer beforeMoving = request.getBeforeMoving();
-//        Integer afterMoving = request.getAfterMoving();
-//        if(beforeMoving.equals(0)){
-//            productArrList.remove(storyId);
-//        }
-//        if(beforeMoving.equals(1)){
-//            currentArrList.remove(storyId);
-//        }
-//        if(beforeMoving.equals(2)){
-//            nextArrList.remove(storyId);
-//        }
-//        if(afterMoving.equals(0)){
-//            productArrList.add(storyId);
-//        }
-//        if(afterMoving.equals(1)){
-//            currentArrList.add(storyId);
-//        }
-//        if(afterMoving.equals(2)){
-//            nextArrList.add(storyId);
-//        }
-//        String pStoryIds = StringUtils.join(productArrList, ",");
-//        String cStoryIds = StringUtils.join(currentArrList, ",");
-//        String nStoryIds = StringUtils.join(nextArrList, ",");
-//        dashboard.setProductBacklogs(pStoryIds);
-//        dashboard.setCurrentSprint(cStoryIds);
-//        dashboard.setNextSprint(nStoryIds);
-//        Timestamp createTime = new Timestamp(System.currentTimeMillis());
-//        dashboard.setUpdateTime(createTime);
-//        dashboard = this.dashboardRepository.saveAndFlush(dashboard);
         LOG.info("执行结束{} updateDashboard()方法.", this.CLASS);
         return sprintInfos;
     }
 
+    @Override
+    public SprintInfo updateSprintInfo(UpdateSprintInfoRequest request) {
+        Integer uuId = request.getUuId();
+        sprintInfo = this.sprintInfoRepository.findOne(uuId);
+        String storyIds = StringUtils.join(request.getStories(), ",");
+        sprintInfo.setItemIds(storyIds);
+        sprintInfo = this.sprintInfoRepository.saveAndFlush(sprintInfo);
+        return sprintInfo;
+    }
 
 }

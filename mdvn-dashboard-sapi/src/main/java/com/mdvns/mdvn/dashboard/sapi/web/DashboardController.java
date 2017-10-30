@@ -63,35 +63,21 @@ public class DashboardController {
      * @return
      */
     @PostMapping(value = "/updateDashboard")
-    public List<SprintInfo> updateDashboard(@RequestBody UpdateDashboardRequest request) {
+    public List<SprintInfo> updateDashboard(@RequestBody UpdateSprintRequest request) {
         return this.dashboardService.updateDashboard(request);
     }
 
+    /**
+     * 更改SprintInfo
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/updateSprintInfo")
+    public SprintInfo updateSprintInfo(@RequestBody UpdateSprintInfoRequest request) {
+        return this.dashboardService.updateSprintInfo(request);
+    }
 
 
-
-//    /**
-//     * 获取sprint
-//     *
-//     * @param request
-//     * @return
-//     */
-//    @PostMapping("/rtrvSprint")
-//    public ResponseEntity<?> rtrvSprint(@RequestBody RtrvSprintRequest request) throws SQLException {
-//        LOG.info("开始执行 updateSprint 方法.");
-//        return this.dashboardService.rtrvSprint(request);
-//    }
-//    /**
-//     * 更改sprint
-//     *
-//     * @param request
-//     * @return
-//     */
-//    @PostMapping("/updateSprint")
-//    public ResponseEntity<?> updateSprint(@RequestBody UpdateSprintRequest request) throws SQLException {
-//        LOG.info("开始执行 updateSprint 方法.");
-//        return this.dashboardService.updateSprint(request);
-//    }
 
 
 

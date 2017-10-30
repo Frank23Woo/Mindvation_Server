@@ -15,6 +15,7 @@ public class TaskDetail {
     private Integer uuid;
     private String storyId;
     private String taskId;
+    private String projId;
     private String creatorId;
     private String assigneeId;
     private String description;
@@ -40,6 +41,14 @@ public class TaskDetail {
     private List<AttchInfo> attachUrlList;
 
     public TaskDetail() {
+    }
+
+    public String getProjId() {
+        return projId;
+    }
+
+    public void setProjId(String projId) {
+        this.projId = projId;
     }
 
     public TaskDeliver getDeliver() {

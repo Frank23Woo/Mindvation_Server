@@ -14,6 +14,7 @@ public class Task {
     private Integer uuid;
     private String storyId;
     private String taskId;
+    private String projId;
     @Column(nullable = false)
     private String creatorId;
     @Column(nullable = false)
@@ -39,6 +40,14 @@ public class Task {
     private String remarks;
 
     public Task() {
+    }
+
+    public String getProjId() {
+        return projId;
+    }
+
+    public void setProjId(String projId) {
+        this.projId = projId;
     }
 
     public Integer getUuid() {

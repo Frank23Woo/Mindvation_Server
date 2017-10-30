@@ -24,6 +24,16 @@ public class WebConfig {
 
     private String findIterationModelByIdUrl;
 
+    private String updateSprintInfoUrl;
+
+    public String getUpdateSprintInfoUrl() {
+        return updateSprintInfoUrl;
+    }
+
+    public void setUpdateSprintInfoUrl(String updateSprintInfoUrl) {
+        this.updateSprintInfoUrl = updateSprintInfoUrl;
+    }
+
     public String getFindIterationModelByIdUrl() {
         return findIterationModelByIdUrl;
     }

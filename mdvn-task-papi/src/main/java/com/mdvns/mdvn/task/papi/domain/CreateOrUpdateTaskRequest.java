@@ -8,6 +8,7 @@ import java.util.List;
 @Component
 public class CreateOrUpdateTaskRequest {
 
+    private String projId;
     private String storyId;
     private String taskId;
     private String creatorId;
@@ -30,6 +31,13 @@ public class CreateOrUpdateTaskRequest {
     // 备注
     private String remarks;
 
+    public String getProjId() {
+        return projId;
+    }
+
+    public void setProjId(String projId) {
+        this.projId = projId;
+    }
 
     public String getStoryId() {
         return storyId;

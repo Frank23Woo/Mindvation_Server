@@ -1,15 +1,34 @@
 package com.mdvns.mdvn.dashboard.sapi.domain;
 
+
+import com.mdvns.mdvn.dashboard.sapi.domain.entity.SprintInfo;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class UpdateSprintRequest {
 
+    private String projId;
+    private String modelId;
     private String creatorId;
-    private String sprintId;
-    private String sprintIndex;
-    private String storyId;
-    private String reqmntId;
+    private List<SprintInfo> sprintInfos;
+
+    public String getProjId() {
+        return projId;
+    }
+
+    public void setProjId(String projId) {
+        this.projId = projId;
+    }
+
+    public String getModelId() {
+        return modelId;
+    }
+
+    public void setModelId(String modelId) {
+        this.modelId = modelId;
+    }
 
     public String getCreatorId() {
         return creatorId;
@@ -19,35 +38,11 @@ public class UpdateSprintRequest {
         this.creatorId = creatorId;
     }
 
-    public String getSprintId() {
-        return sprintId;
+    public List<SprintInfo> getSprintInfos() {
+        return sprintInfos;
     }
 
-    public void setSprintId(String sprintId) {
-        this.sprintId = sprintId;
-    }
-
-    public String getSprintIndex() {
-        return sprintIndex;
-    }
-
-    public void setSprintIndex(String sprintIndex) {
-        this.sprintIndex = sprintIndex;
-    }
-
-    public String getStoryId() {
-        return storyId;
-    }
-
-    public void setStoryId(String storyId) {
-        this.storyId = storyId;
-    }
-
-    public String getReqmntId() {
-        return reqmntId;
-    }
-
-    public void setReqmntId(String reqmntId) {
-        this.reqmntId = reqmntId;
+    public void setSprintInfos(List<SprintInfo> sprintInfos) {
+        this.sprintInfos = sprintInfos;
     }
 }

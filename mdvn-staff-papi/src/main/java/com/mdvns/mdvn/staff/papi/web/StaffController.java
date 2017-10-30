@@ -87,9 +87,9 @@ public class StaffController {
      * @param moduleId
      * @return
      */
-    @PostMapping(value = "/assignAuth")
-    public ResponseEntity<?> assignAuth(String projId, String staffId, String moduleId, Integer authCode) {
-        return this.staffService.assignAuth(projId, staffId, moduleId, authCode);
-    }
+//    @PostMapping(value = "/assignAuth")
+//    public ResponseEntity<?> assignAuth(String projId, String staffId, String moduleId, Integer authCode) {
+//        return this.staffService.assignAuth(projId, staffId, moduleId, authCode);
+//    }
 
 }

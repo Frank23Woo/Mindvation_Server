@@ -1,12 +1,9 @@
 package com.mdvns.mdvn.task.sapi.service.impl;
 
 
-import com.mdvns.mdvn.task.sapi.domain.AddAttachRequest;
-import com.mdvns.mdvn.task.sapi.domain.CreateTaskRequest;
-import com.mdvns.mdvn.task.sapi.domain.RtrvTaskListRequest;
+import com.mdvns.mdvn.task.sapi.domain.*;
 import com.mdvns.mdvn.task.sapi.domain.entity.Task;
 import com.mdvns.mdvn.task.sapi.domain.entity.TaskDeliver;
-import com.mdvns.mdvn.task.sapi.domain.TaskDetail;
 import com.mdvns.mdvn.task.sapi.repository.TaskDeliverRepository;
 import com.mdvns.mdvn.task.sapi.repository.TaskRepository;
 import com.mdvns.mdvn.task.sapi.service.TaskService;
@@ -72,6 +69,7 @@ public class TaskServiceImpl implements TaskService {
         deliverRepository.save(deliver);
 
         Task task = new Task();
+        task.setProjId(request.getProjId());
         task.setStoryId(request.getStoryId());
         task.setCreatorId(request.getCreatorId());
         task.setAssigneeId(request.getAssigneeId());
@@ -249,5 +247,24 @@ public class TaskServiceImpl implements TaskService {
         detail.setDeliver(deliverRepository.findOne(task.getDeliverId()));
 
         return detail;
+    }
+
+    /**
+     * 根据projId和staffId查询个人看板信息
+     * @param request
+     * @return
+     */
+    @Override
+    public RtrvMyDashboardInfoResponse findMyDashboardInfo(RtrvMyDashboardInfoRequest request) {
+        RtrvMyDashboardInfoResponse rtrvMyDashboardInfoResponse = new RtrvMyDashboardInfoResponse();
+        String projId = request.getProjId();
+        String creatorId = request.getCreatorId();
+        List<Task> toDoTasks = taskRepository.findAllByProjIdAndCreatorIdAndProgressAndIsDeleted(projId,creatorId,0,0);
+        List<Task> InProgressTasks = taskRepository.findAllByProjIdAndCreatorIdAndProgressIsNotInAndProgressIsNotInAndIsDeleted(projId,creatorId,0,100,0);
+        List<Task> doneTasks = taskRepository.findAllByProjIdAndCreatorIdAndProgressAndIsDeleted(projId,creatorId,100,0);
+        rtrvMyDashboardInfoResponse.setToDo(toDoTasks);
+        rtrvMyDashboardInfoResponse.setInProgress(InProgressTasks);
+        rtrvMyDashboardInfoResponse.setDone(doneTasks);
+        return rtrvMyDashboardInfoResponse;
     }
 }

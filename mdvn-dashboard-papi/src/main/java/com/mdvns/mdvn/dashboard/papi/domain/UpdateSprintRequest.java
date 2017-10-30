@@ -1,13 +1,12 @@
-package com.mdvns.mdvn.dashboard.sapi.domain;
+package com.mdvns.mdvn.dashboard.papi.domain;
 
 
-import com.mdvns.mdvn.dashboard.sapi.domain.entity.SprintInfo;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class UpdateDashboardRequest {
+public class UpdateSprintRequest {
 
     private String projId;
     private String modelId;
