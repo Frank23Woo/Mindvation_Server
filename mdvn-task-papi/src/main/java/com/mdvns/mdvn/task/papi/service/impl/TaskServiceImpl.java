@@ -48,7 +48,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public RestResponse createTask(CreateOrUpdateTaskRequest request) throws Exception {
-        if (request == null || StringUtils.isEmpty(request.getCreatorId()) ||
+        if (request == null || StringUtils.isEmpty(request.getProjId()) || StringUtils.isEmpty(request.getCreatorId()) ||
                 StringUtils.isEmpty(request.getStoryId()) || StringUtils.isEmpty(request.getAssigneeId()) ||
                 StringUtils.isEmpty(request.getDescription()) || request.getDeliver() == null ||
                 StringUtils.isEmpty(request.getDeliver().getModelId()) || StringUtils.isEmpty(request.getDeliver().getName()) ||

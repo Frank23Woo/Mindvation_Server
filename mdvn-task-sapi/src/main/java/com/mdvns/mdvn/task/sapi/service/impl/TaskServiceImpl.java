@@ -1,12 +1,9 @@
 package com.mdvns.mdvn.task.sapi.service.impl;
 
 
-import com.mdvns.mdvn.task.sapi.domain.AddAttachRequest;
-import com.mdvns.mdvn.task.sapi.domain.CreateTaskRequest;
-import com.mdvns.mdvn.task.sapi.domain.RtrvTaskListRequest;
+import com.mdvns.mdvn.task.sapi.domain.*;
 import com.mdvns.mdvn.task.sapi.domain.entity.Task;
 import com.mdvns.mdvn.task.sapi.domain.entity.TaskDeliver;
-import com.mdvns.mdvn.task.sapi.domain.TaskDetail;
 import com.mdvns.mdvn.task.sapi.repository.TaskDeliverRepository;
 import com.mdvns.mdvn.task.sapi.repository.TaskRepository;
 import com.mdvns.mdvn.task.sapi.service.TaskService;
@@ -72,6 +69,7 @@ public class TaskServiceImpl implements TaskService {
         deliverRepository.save(deliver);
 
         Task task = new Task();
+        task.setProjId(request.getProjId());
         task.setStoryId(request.getStoryId());
         task.setCreatorId(request.getCreatorId());
         task.setAssigneeId(request.getAssigneeId());
@@ -82,6 +80,7 @@ public class TaskServiceImpl implements TaskService {
         task.setCreateTime(now);
         task.setLastUpdateTime(now);
         task.setProgress(0);
+        task.setStatus("new");
         task.setComment("");
         task.setAttachmentIds("");
         task.setDeliverId(deliver.getId());
@@ -143,6 +142,12 @@ public class TaskServiceImpl implements TaskService {
             }
 
             if (request.getProgress() != null && request.getProgress() != taskOld.getProgress()) {
+                if (request.getProgress() == 100){
+                    taskOld.setStatus("done");
+                }
+                if ( request.getProgress().intValue() < 100 && request.getProgress().intValue()>0){
+                    taskOld.setStatus("inProgress");
+                }
                 taskOld.setProgress(request.getProgress());
                 changed = true;
             }
@@ -250,4 +255,44 @@ public class TaskServiceImpl implements TaskService {
 
         return detail;
     }
+
+    /**
+     * 根据projId和staffId查询个人看板信息
+     * @param request
+     * @return
+     */
+    @Override
+    public RtrvMyDashboardInfoResponse findMyDashboardInfo(RtrvMyDashboardInfoRequest request) {
+        RtrvMyDashboardInfoResponse rtrvMyDashboardInfoResponse = new RtrvMyDashboardInfoResponse();
+        String projId = request.getProjId();
+        String creatorId = request.getCreatorId();
+        List<Task> toDoTasks = taskRepository.findAllByProjIdAndCreatorIdAndProgressAndIsDeleted(projId,creatorId,0,0);
+        List<Task> InProgressTasks = taskRepository.findAllByProjIdAndCreatorIdAndProgressIsNotInAndProgressIsNotInAndIsDeleted(projId,creatorId,0,100,0);
+        List<Task> doneTasks = taskRepository.findAllByProjIdAndCreatorIdAndProgressAndIsDeleted(projId,creatorId,100,0);
+        rtrvMyDashboardInfoResponse.setToDo(toDoTasks);
+        rtrvMyDashboardInfoResponse.setInProgress(InProgressTasks);
+        rtrvMyDashboardInfoResponse.setDone(doneTasks);
+        return rtrvMyDashboardInfoResponse;
+    }
+
+    /**
+     * 更改个人看板
+     * @param request
+     * @return
+     */
+    @Override
+    public Task updateMyDashboard(UpdateMyDashboardRequest request) {
+        String taskId = request.getTaskId();
+        String status = request.getStatus();
+        Task task = taskRepository.findByTaskId(taskId);
+        if (status.equals("inProgress")){
+            task.setStatus("inProgress");
+        }else{
+            task.setStatus("done");
+        }
+        task = taskRepository.saveAndFlush(task);
+        return task;
+    }
+
+
 }

@@ -1,9 +1,7 @@
 package com.mdvns.mdvn.dashboard.papi.web;
 
 import com.mdvns.mdvn.common.beans.RestResponse;
-import com.mdvns.mdvn.dashboard.papi.domain.AssignStoryListByItRequest;
-import com.mdvns.mdvn.dashboard.papi.domain.RtrvAllStoryListRequest;
-import com.mdvns.mdvn.dashboard.papi.domain.UpdateDashboardRequest;
+import com.mdvns.mdvn.dashboard.papi.domain.*;
 import com.mdvns.mdvn.dashboard.papi.service.DashboardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +36,25 @@ public class DashboardController {
     }
 
     /**
+     * 更改个人dashboard
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/updateMyDashboard")
+    public RestResponse updateMyDashboard(@RequestBody UpdateMyDashboardRequest request) {
+        return this.dashboardService.updateMyDashboard(request);
+    }
+    /**
+     * 获取个人dashboard
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/getMyDashboardInfos")
+    public RestResponse getMyDashboardInfos(@RequestBody RtrvMyDashboardInfoRequest request) {
+        return this.dashboardService.getMyDashboardInfos(request);
+    }
+
+    /**
      * 进入dashboard,点击按钮，按迭代计划模板分storylist
      * @param request
      * @return
@@ -47,7 +64,6 @@ public class DashboardController {
         return this.dashboardService.assignSprint(request);
     }
 
-
     /**
      * 根据Id删除Dashboard
      *
@@ -56,7 +72,6 @@ public class DashboardController {
      */
     @PostMapping(value = "/deleteDashboard")
     public Integer deleteDashboard(String dashboardId) {
-
         return null;
     }
 

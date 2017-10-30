@@ -8,12 +8,31 @@ import java.util.List;
 @Component
 public class SprintStoryList {
 
-    //总记录数
+    private List<String> labelIds;
+
+    private SprintInfo sprintInfo;
+
     private Long totalElements;
 
     private List<Story> stories;
 
     private List<String> remarks;
+
+    public List<String> getLabelIds() {
+        return labelIds;
+    }
+
+    public void setLabelIds(List<String> labelIds) {
+        this.labelIds = labelIds;
+    }
+
+    public SprintInfo getSprintInfo() {
+        return sprintInfo;
+    }
+
+    public void setSprintInfo(SprintInfo sprintInfo) {
+        this.sprintInfo = sprintInfo;
+    }
 
     public Long getTotalElements() {
         return totalElements;

@@ -1,7 +1,11 @@
 package com.mdvns.mdvn.staff.papi.web;
 
+import com.mdvns.mdvn.common.beans.AssignAuthRequest;
 import com.mdvns.mdvn.common.beans.RestResponse;
+import com.mdvns.mdvn.common.beans.RtrvAuthRequest;
+import com.mdvns.mdvn.common.beans.StaffAuthInfo;
 import com.mdvns.mdvn.staff.papi.domain.*;
+import com.mdvns.mdvn.staff.papi.service.AuthService;
 import com.mdvns.mdvn.staff.papi.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +18,9 @@ public class StaffController {
 
     @Autowired
     private StaffService staffService;
+
+    @Autowired
+    private AuthService authService;
 
     /**
      * 登录
@@ -81,15 +88,21 @@ public class StaffController {
     }
 
     /**
-     * 给项目中的某人赋权限
-     * @param projId
-     * @param staffId
-     * @param moduleId
+     * 给项目相关员工添加权限
+     * @param authRequest
      * @return
      */
     @PostMapping(value = "/assignAuth")
-    public ResponseEntity<?> assignAuth(String projId, String staffId, String moduleId, Integer authCode) {
-        return this.staffService.assignAuth(projId, staffId, moduleId, authCode);
+    public ResponseEntity<?> assignAuth(@RequestBody AssignAuthRequest authRequest) {
+        ResponseEntity<?> responseEntity = this.authService.assignAuth(authRequest);
+        System.out.print("添加权限成功："+(StaffAuthInfo)responseEntity.getBody());
+        return responseEntity;
     }
 
+
+    @PostMapping(value = "/rtrvAuth")
+    public ResponseEntity<?> rtrvAuth(@RequestBody RtrvAuthRequest rtrvAuthRequest) {
+
+        return this.authService.rtrvAuth(rtrvAuthRequest);
+    }
 }

@@ -50,6 +50,16 @@ public class SprintInfo {
     //是否已删除
     private Integer isDeleted;
 
+    private String labelIds;
+
+    public String getLabelIds() {
+        return labelIds;
+    }
+
+    public void setLabelIds(String labelIds) {
+        this.labelIds = labelIds;
+    }
+
     public String getModelId() {
         return modelId;
     }
