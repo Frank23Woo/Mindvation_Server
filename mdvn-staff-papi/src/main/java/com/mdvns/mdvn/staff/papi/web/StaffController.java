@@ -66,6 +66,16 @@ public class StaffController {
         return this.staffService.rtrvStaffInfo(request);
     }
 
+    @PostMapping(value = "/rtrvStaffDetail/{staffId}")
+    public ResponseEntity<?> rtrvStaffDetail(@PathVariable String staffId) {
+        return this.staffService.rtrvStaffDetail(staffId);
+    }
+
+    @PostMapping(value = "/updateStaffDetail")
+    public ResponseEntity<?> updateStaffDetail(@RequestBody UpdateStaffDetailRequest request) {
+        return this.staffService.updateStaffDetail(request);
+    }
+
     /**
      * 模糊查询
      *
@@ -104,5 +114,15 @@ public class StaffController {
     public ResponseEntity<?> rtrvAuth(@RequestBody RtrvAuthRequest rtrvAuthRequest) {
 
         return this.authService.rtrvAuth(rtrvAuthRequest);
+    }
+
+    @PostMapping(value = "/createStaff")
+    public ResponseEntity<?> createStaff(@RequestBody CreateStaffRequest request) {
+        return this.staffService.createStaff(request);
+    }
+
+    @PostMapping(value = "/deleteStaff/{staffId}")
+    public ResponseEntity<?> deleteStaff(@PathVariable String staffId) {
+        return this.staffService.deleteStaff(staffId);
     }
 }

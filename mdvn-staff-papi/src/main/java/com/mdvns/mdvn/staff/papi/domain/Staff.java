@@ -29,6 +29,20 @@ public class Staff {
     //工作饱和度
     private Double worksaturation;
 
+    private String gender;
+
+    /*who create this staff*/
+    private String creatorId;
+
+    private String positionLvl;
+
+    private String emailAddr;
+
+    private String phoneNum;
+
+    private String status;
+
+
     public Staff() {
         super();
     }
@@ -135,6 +149,54 @@ public class Staff {
 
     public void setAccount(String account) {
         this.account = account;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public String getPositionLvl() {
+        return positionLvl;
+    }
+
+    public void setPositionLvl(String positionLvl) {
+        this.positionLvl = positionLvl;
+    }
+
+    public String getEmailAddr() {
+        return emailAddr;
+    }
+
+    public void setEmailAddr(String emailAddr) {
+        this.emailAddr = emailAddr;
+    }
+
+    public String getPhoneNum() {
+        return phoneNum;
+    }
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override

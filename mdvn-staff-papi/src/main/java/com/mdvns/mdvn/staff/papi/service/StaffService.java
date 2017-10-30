@@ -19,5 +19,14 @@ public interface StaffService {
 
     ResponseEntity<?> login(LonginRequest loginRequest);
 
+    ResponseEntity<?> createStaff(CreateStaffRequest request);
+
+    ResponseEntity<?> rtrvStaffDetail(String staffId);
+
+    ResponseEntity<?> updateStaffDetail(UpdateStaffDetailRequest request);
+
+    ResponseEntity<?> deleteStaff(String staffId);
+
+
 
 }

@@ -33,6 +33,10 @@ public enum ExceptionEnum {
 	Model_IS_CREATED("1201", "模块已存在!"),
 	functionModel_NOT_FOUND("1202", "过程方法模块不存在!"),
 
+	//Staff
+	UPDATE_STAFF_FAIL("1900", "Fail to Update Staff Information "),
+	DELETE_STAFF_FAIL("1901", "Fail to delete staff"),
+
 	//用户(User)
 	USER_NOT_FOUND("1800", "用户不存在!"),
 	PASSWORD_INCORRECT("1801", "密码错误!"),

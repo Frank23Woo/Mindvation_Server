@@ -2,9 +2,9 @@ package com.mdvns.mdvn.staff.sapi.service;
 
 
 import com.mdvns.mdvn.common.beans.RestResponse;
-import com.mdvns.mdvn.staff.sapi.domain.RetrieveStaffListResponse;
-import com.mdvns.mdvn.staff.sapi.domain.RtrvStaffListByStaffIbListRequest;
+import com.mdvns.mdvn.staff.sapi.domain.*;
 import com.mdvns.mdvn.staff.sapi.domain.entity.Staff;
+import com.mdvns.mdvn.staff.sapi.domain.entity.StaffTag;
 import org.springframework.http.ResponseEntity;
 
 import java.sql.SQLException;
@@ -23,6 +23,15 @@ public interface StaffService {
     ResponseEntity<?> rtrvStaffListByStaffName(Integer page, Integer pageSize, String name, String sortBy) throws SQLException;
 
     RestResponse<?> findByAccount(String account);
+
+    CreateStaffResponse createStaff(CreateStaffRequest request);
+
+    List<StaffTag> rtrvStaffTagList(String staffId);
+
+    Boolean updateStaffDetail(UpdateStaffDetailRequest request);
+    Boolean deleteStaff(String staffId);
+
+
 
 
 }

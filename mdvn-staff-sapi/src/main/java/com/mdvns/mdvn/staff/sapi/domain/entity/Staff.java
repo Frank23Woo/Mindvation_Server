@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Component
@@ -14,6 +15,7 @@ public class Staff {
     @Id
     @GeneratedValue
     private Integer uuId;
+
     private String staffId;
     private String account;
     private String password;
@@ -33,6 +35,68 @@ public class Staff {
     private Double recommendation;
     //工作饱和度
     private Double worksaturation;
+
+
+    /*who create this staff*/
+    private String creatorId;
+
+    private String positionLvl;
+
+    private String emailAddr;
+
+    private String phoneNum;
+
+    private String status; // active, inactive, unregistered
+
+    private String gender;
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public String getPositionLvl() {
+        return positionLvl;
+    }
+
+    public void setPositionLvl(String positionLvl) {
+        this.positionLvl = positionLvl;
+    }
+
+    public String getEmailAddr() {
+        return emailAddr;
+    }
+
+    public void setEmailAddr(String emailAddr) {
+        this.emailAddr = emailAddr;
+    }
+
+    public String getPhoneNum() {
+        return phoneNum;
+    }
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getAccount() {
         return account;
@@ -141,44 +205,52 @@ public class Staff {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Staff)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Staff staff = (Staff) o;
 
-        if (getUuId() != null ? !getUuId().equals(staff.getUuId()) : staff.getUuId() != null) return false;
-        if (getStaffId() != null ? !getStaffId().equals(staff.getStaffId()) : staff.getStaffId() != null) return false;
-        if (getPassword() != null ? !getPassword().equals(staff.getPassword()) : staff.getPassword() != null)
+        if (uuId != null ? !uuId.equals(staff.uuId) : staff.uuId != null) return false;
+        if (staffId != null ? !staffId.equals(staff.staffId) : staff.staffId != null) return false;
+        if (account != null ? !account.equals(staff.account) : staff.account != null) return false;
+        if (password != null ? !password.equals(staff.password) : staff.password != null) return false;
+        if (name != null ? !name.equals(staff.name) : staff.name != null) return false;
+        if (avatar != null ? !avatar.equals(staff.avatar) : staff.avatar != null) return false;
+        if (deptId != null ? !deptId.equals(staff.deptId) : staff.deptId != null) return false;
+        if (positionId != null ? !positionId.equals(staff.positionId) : staff.positionId != null) return false;
+        if (hiredate != null ? !hiredate.equals(staff.hiredate) : staff.hiredate != null) return false;
+        if (effective != null ? !effective.equals(staff.effective) : staff.effective != null) return false;
+        if (contribution != null ? !contribution.equals(staff.contribution) : staff.contribution != null) return false;
+        if (recommendation != null ? !recommendation.equals(staff.recommendation) : staff.recommendation != null)
             return false;
-        if (getName() != null ? !getName().equals(staff.getName()) : staff.getName() != null) return false;
-        if (getAvatar() != null ? !getAvatar().equals(staff.getAvatar()) : staff.getAvatar() != null) return false;
-        if (getDeptId() != null ? !getDeptId().equals(staff.getDeptId()) : staff.getDeptId() != null) return false;
-        if (getPositionId() != null ? !getPositionId().equals(staff.getPositionId()) : staff.getPositionId() != null)
+        if (worksaturation != null ? !worksaturation.equals(staff.worksaturation) : staff.worksaturation != null)
             return false;
-        if (getHiredate() != null ? !getHiredate().equals(staff.getHiredate()) : staff.getHiredate() != null)
-            return false;
-        if (getEffective() != null ? !getEffective().equals(staff.getEffective()) : staff.getEffective() != null)
-            return false;
-        if (getContribution() != null ? !getContribution().equals(staff.getContribution()) : staff.getContribution() != null)
-            return false;
-        if (getRecommendation() != null ? !getRecommendation().equals(staff.getRecommendation()) : staff.getRecommendation() != null)
-            return false;
-        return getWorksaturation() != null ? getWorksaturation().equals(staff.getWorksaturation()) : staff.getWorksaturation() == null;
+        if (creatorId != null ? !creatorId.equals(staff.creatorId) : staff.creatorId != null) return false;
+        if (positionLvl != null ? !positionLvl.equals(staff.positionLvl) : staff.positionLvl != null) return false;
+        if (emailAddr != null ? !emailAddr.equals(staff.emailAddr) : staff.emailAddr != null) return false;
+        if (phoneNum != null ? !phoneNum.equals(staff.phoneNum) : staff.phoneNum != null) return false;
+        return status != null ? status.equals(staff.status) : staff.status == null;
     }
 
     @Override
     public int hashCode() {
-        int result = getUuId() != null ? getUuId().hashCode() : 0;
-        result = 31 * result + (getStaffId() != null ? getStaffId().hashCode() : 0);
-        result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
-        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-        result = 31 * result + (getAvatar() != null ? getAvatar().hashCode() : 0);
-        result = 31 * result + (getDeptId() != null ? getDeptId().hashCode() : 0);
-        result = 31 * result + (getPositionId() != null ? getPositionId().hashCode() : 0);
-        result = 31 * result + (getHiredate() != null ? getHiredate().hashCode() : 0);
-        result = 31 * result + (getEffective() != null ? getEffective().hashCode() : 0);
-        result = 31 * result + (getContribution() != null ? getContribution().hashCode() : 0);
-        result = 31 * result + (getRecommendation() != null ? getRecommendation().hashCode() : 0);
-        result = 31 * result + (getWorksaturation() != null ? getWorksaturation().hashCode() : 0);
+        int result = uuId != null ? uuId.hashCode() : 0;
+        result = 31 * result + (staffId != null ? staffId.hashCode() : 0);
+        result = 31 * result + (account != null ? account.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (avatar != null ? avatar.hashCode() : 0);
+        result = 31 * result + (deptId != null ? deptId.hashCode() : 0);
+        result = 31 * result + (positionId != null ? positionId.hashCode() : 0);
+        result = 31 * result + (hiredate != null ? hiredate.hashCode() : 0);
+        result = 31 * result + (effective != null ? effective.hashCode() : 0);
+        result = 31 * result + (contribution != null ? contribution.hashCode() : 0);
+        result = 31 * result + (recommendation != null ? recommendation.hashCode() : 0);
+        result = 31 * result + (worksaturation != null ? worksaturation.hashCode() : 0);
+        result = 31 * result + (creatorId != null ? creatorId.hashCode() : 0);
+        result = 31 * result + (positionLvl != null ? positionLvl.hashCode() : 0);
+        result = 31 * result + (emailAddr != null ? emailAddr.hashCode() : 0);
+        result = 31 * result + (phoneNum != null ? phoneNum.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
     }
 
@@ -187,6 +259,7 @@ public class Staff {
         return "Staff{" +
                 "uuId=" + uuId +
                 ", staffId='" + staffId + '\'' +
+                ", account='" + account + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", avatar='" + avatar + '\'' +
@@ -197,6 +270,11 @@ public class Staff {
                 ", contribution=" + contribution +
                 ", recommendation=" + recommendation +
                 ", worksaturation=" + worksaturation +
+                ", creatorId='" + creatorId + '\'' +
+                ", positionLvl='" + positionLvl + '\'' +
+                ", emailAddr='" + emailAddr + '\'' +
+                ", phoneNum='" + phoneNum + '\'' +
+                ", status='" + status + '\'' +
                 '}';
     }
 }
