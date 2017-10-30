@@ -1,14 +1,21 @@
 package com.mdvns.mdvn.project.papi.domain;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.mdvns.mdvn.common.beans.StaffAuthInfo;
 import org.springframework.stereotype.Component;
 
 @Component
 public class RtrvProjectDetailResponse {
     private ProjectDetail projectDetail;
 
-    @Autowired
     private StaffAuthInfo staffAuthInfo;
+
+    public StaffAuthInfo getStaffAuthInfo() {
+        return staffAuthInfo;
+    }
+
+    public void setStaffAuthInfo(StaffAuthInfo staffAuthInfo) {
+        this.staffAuthInfo = staffAuthInfo;
+    }
 
     public ProjectDetail getProjectDetail() {
         return projectDetail;
