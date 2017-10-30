@@ -22,5 +22,5 @@ public interface StaffRepository extends JpaRepository<Staff, Integer> {
 
     Page<Staff> findByNameLike(String name ,Pageable pageable);
 
-    Staff findByAccount(String account);
+    Staff findByAccountAndPassword(String account, String password);
 }

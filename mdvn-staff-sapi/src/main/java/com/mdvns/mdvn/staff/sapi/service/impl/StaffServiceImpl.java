@@ -256,9 +256,9 @@ public class StaffServiceImpl implements StaffService {
      * @return
      */
     @Override
-    public RestResponse<?> findByAccount(String account) {
-        Staff staff = this.staffRepository.findByAccount(account);
-        return RestResponseUtil.success(staff);
+    public ResponseEntity<?> findByAccountAndPassword(String account, String password) {
+        Staff staff = this.staffRepository.findByAccountAndPassword(account, password);
+        return ResponseEntity.ok(staff);
     }
 
 

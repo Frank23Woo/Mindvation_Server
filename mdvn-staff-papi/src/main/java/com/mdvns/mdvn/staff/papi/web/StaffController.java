@@ -1,6 +1,7 @@
 package com.mdvns.mdvn.staff.papi.web;
 
 import com.mdvns.mdvn.common.beans.*;
+import com.mdvns.mdvn.common.beans.LoginRequest;
 import com.mdvns.mdvn.staff.papi.domain.*;
 import com.mdvns.mdvn.staff.papi.domain.Staff;
 import com.mdvns.mdvn.staff.papi.service.AuthService;
@@ -26,7 +27,7 @@ public class StaffController {
      * @return
      */
     @PostMapping(value = "/login")
-    public ResponseEntity<?> login(@RequestBody LonginRequest loginRequest) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         System.out.print(loginRequest);
         return this.staffService.login(loginRequest);
     }

@@ -1,8 +1,8 @@
-package com.mdvns.mdvn.staff.papi.domain;
+package com.mdvns.mdvn.common.beans;
 
 import java.util.List;
 
-public class LonginRequest {
+public class LoginRequest {
 
     private String account;
 
@@ -10,7 +10,7 @@ public class LonginRequest {
 
     private List<String> remarks;
 
-    public LonginRequest() {
+    public LoginRequest() {
         super();
     }
 
@@ -41,9 +41,9 @@ public class LonginRequest {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof LonginRequest)) return false;
+        if (!(o instanceof LoginRequest)) return false;
 
-        LonginRequest that = (LonginRequest) o;
+        LoginRequest that = (LoginRequest) o;
 
         if (getAccount() != null ? !getAccount().equals(that.getAccount()) : that.getAccount() != null) return false;
         if (getPassword() != null ? !getPassword().equals(that.getPassword()) : that.getPassword() != null)
@@ -61,7 +61,7 @@ public class LonginRequest {
 
     @Override
     public String toString() {
-        return "LonginRequest{" +
+        return "LoginRequest{" +
                 "account='" + account + '\'' +
                 ", password='" + password + '\'' +
                 ", remarks=" + remarks +

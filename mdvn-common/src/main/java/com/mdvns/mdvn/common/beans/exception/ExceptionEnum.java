@@ -40,7 +40,7 @@ public enum ExceptionEnum {
 
 	//用户(User)
 	USER_NOT_FOUND("1800", "用户不存在!"),
-	PASSWORD_INCORRECT("1801", "密码错误!"),
+	ACCOUNT_OR_PASSWORD_INCORRECT("1801", "账号或密码错误!"),
 	
 	
 	
