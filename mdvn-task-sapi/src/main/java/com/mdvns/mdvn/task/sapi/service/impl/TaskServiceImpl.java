@@ -289,6 +289,7 @@ public class TaskServiceImpl implements TaskService {
             task.setStatus("inProgress");
         }else{
             task.setStatus("done");
+            task.setProgress(100);
         }
         task = taskRepository.saveAndFlush(task);
         return task;

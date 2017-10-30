@@ -106,6 +106,7 @@ public class DashboardServiceImpl implements DashboardService {
             }
             restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
             restResponse.setResponseCode("000");
+            restResponse.setResponseMsg("请求成功");
             restResponse.setResponseBody(rtrvDashboardResponses);
             return restResponse;
         }
@@ -257,6 +258,7 @@ public class DashboardServiceImpl implements DashboardService {
         }
         restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
         restResponse.setResponseCode("000");
+        restResponse.setResponseMsg("请求成功");
 //        restResponse.setResponseBody(storyListResponses);
         restResponse.setResponseBody(rtrvDashboardResponses);
         return restResponse;
@@ -314,6 +316,7 @@ public class DashboardServiceImpl implements DashboardService {
         }
         rtrvDashboardResponse.setSprintStoryLists(sprintStoryLists);
         restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
+        restResponse.setResponseMsg("请求成功");
         restResponse.setResponseCode("000");
         restResponse.setResponseBody(rtrvDashboardResponse);
         return restResponse;
@@ -345,7 +348,7 @@ public class DashboardServiceImpl implements DashboardService {
             String url = webConfig.getMyDashboardInfosUrl();
             response= this.restTemplate.postForObject(url, rtrvMyDashboardInfoRequest, RtrvMyDashboardInfoResponse.class);
         } catch (Exception ex) {
-            throw new BusinessException(ExceptionEnum.MYDASHBOARD_NOT_UPDATE);
+            throw new BusinessException(ExceptionEnum.MYDASHBOARD_NOT_RTRV);
         }
         restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
         restResponse.setResponseMsg("请求成功");
@@ -382,7 +385,7 @@ public class DashboardServiceImpl implements DashboardService {
             String url = webConfig.getMyDashboardInfosUrl();
             response= this.restTemplate.postForObject(url, request, RtrvMyDashboardInfoResponse.class);
         } catch (Exception ex) {
-            throw new BusinessException(ExceptionEnum.MYDASHBOARD_NOT_UPDATE);
+            throw new BusinessException(ExceptionEnum.MYDASHBOARD_NOT_RTRV);
         }
         restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
         restResponse.setResponseMsg("请求成功");
