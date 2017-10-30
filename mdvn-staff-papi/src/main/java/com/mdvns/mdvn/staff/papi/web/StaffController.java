@@ -92,19 +92,12 @@ public class StaffController {
      * @param authRequest
      * @return
      */
-<<<<<<< HEAD
     @PostMapping(value = "/assignAuth")
     public ResponseEntity<?> assignAuth(@RequestBody AssignAuthRequest authRequest) {
         ResponseEntity<?> responseEntity = this.authService.assignAuth(authRequest);
         System.out.print("添加权限成功："+(StaffAuthInfo)responseEntity.getBody());
         return responseEntity;
     }
-=======
-//    @PostMapping(value = "/assignAuth")
-//    public ResponseEntity<?> assignAuth(String projId, String staffId, String moduleId, Integer authCode) {
-//        return this.staffService.assignAuth(projId, staffId, moduleId, authCode);
-//    }
->>>>>>> 65552d65e4fc5b74d658576816ceee439898294c
 
 
     @PostMapping(value = "/rtrvAuth")
