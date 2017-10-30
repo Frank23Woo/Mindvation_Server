@@ -1,6 +1,7 @@
 url:
   saveModelUrl: http://localhost:10009/mdvn-model-sapi/models/saveModel
-  rtrvModelListUrl: http://localhost:10009/mdvn-model-sapi/models
+#  rtrvModelListUrl: http://localhost:10009/mdvn-model-sapi/models
+  rtrvModelListUrl: http://localhost:10009/mdvn-model-sapi/modelsAndSort
   rtrvModelListByTypeUrl: http://localhost:10009/mdvn-model-sapi/modelsByType
   updateQuoteCntUrl: http://localhost:10009/mdvn-model-sapi/models
   findByNameUrl : http://localhost:10009/mdvn-model-sapi/models/model

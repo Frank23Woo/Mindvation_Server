@@ -44,19 +44,21 @@ public class ModelServiceImpl implements ModelService {
      * @return
      */
     public RestResponse rtrvModelList(RetrieveModelListByTypeRequest retrieveModelListRequest) {
-        RetrieveModelListResponse retrieveModelListResponse = new RetrieveModelListResponse();
+//        RetrieveModelListResponse retrieveModelListResponse = new RetrieveModelListResponse();
+        RetrieveModelListAndSortResponse retrieveModelListResponse = new RetrieveModelListAndSortResponse();
         ResponseEntity<Object> responseEntity;
         String url = webConfig.getRtrvModelListUrl();
-        retrieveModelListResponse = this.restTemplate.postForObject(url, retrieveModelListRequest, RetrieveModelListResponse.class);
+        retrieveModelListResponse = this.restTemplate.postForObject(url, retrieveModelListRequest, RetrieveModelListAndSortResponse.class);
 //        restResponse = RestResponseUtil.success(responseEntity.getBody());
         RtrvModelListResponse rtrvModelListResponse = new RtrvModelListResponse();
         List<ModelAndStaff> models = new ArrayList<>();
         for (int i = 0; i < retrieveModelListResponse.getModels().size() ; i++) {
             ModelAndStaff modelAndStaff = new ModelAndStaff();
-            String creatorId = retrieveModelListResponse.getModels().get(i).getCreatorId();
+            String creatorId = retrieveModelListResponse.getModels().get(i).getModel().getCreatorId();
             Staff staff = this.restTemplate.postForObject(webConfig.getRtrvStaffInfoUrl(),creatorId,Staff.class);
             modelAndStaff.setCreatorInfo(staff);
-            modelAndStaff.setModel(retrieveModelListResponse.getModels().get(i));
+            modelAndStaff.setModel(retrieveModelListResponse.getModels().get(i).getModel());
+            modelAndStaff.setSort(retrieveModelListResponse.getModels().get(i).getSort());
             models.add(modelAndStaff);
         }
         rtrvModelListResponse.setModels(models);

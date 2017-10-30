@@ -390,6 +390,9 @@ public class ModelServiceImpl implements ModelService {
         if (null != modelType && null != creatorId) {
             models = this.modelRepository.rtrvModelInfoList(modelType, creatorId);
         }
+        if (null == modelType && null == creatorId){
+            models = this.modelRepository.findAll();
+        }
 
         List<ModelAndSort> modelAndSorts = new ArrayList<>();
         for (int i = 0; i < models.size(); i++) {
@@ -549,6 +552,29 @@ public class ModelServiceImpl implements ModelService {
         List<Model> modelList = this.modelRepository.findAll();
         Long count = this.modelRepository.getModelCount();
         retrieveModelListResponse.setModels(modelList);
+        retrieveModelListResponse.setTotalNumber(count);
+        return retrieveModelListResponse;
+    }
+
+    /**
+     * 获取全部模块
+     *
+     * @return
+     */
+    @Override
+    public RetrieveModelListAndSortResponse rtrvModelListAndSort() {
+        RetrieveModelListAndSortResponse retrieveModelListResponse = new RetrieveModelListAndSortResponse();
+
+        List<Model> modelList = this.modelRepository.findAll();
+        List<ModelAndSort> modelAndSorts = new ArrayList<>();
+        for (int i = 0; i < modelList.size(); i++) {
+            ModelAndSort modelAndSort = new ModelAndSort();
+            modelAndSort.setSort(i + 1);
+            modelAndSort.setModel(modelList.get(i));
+            modelAndSorts.add(modelAndSort);
+        }
+        Long count = this.modelRepository.getModelCount();
+        retrieveModelListResponse.setModels(modelAndSorts);
         retrieveModelListResponse.setTotalNumber(count);
         return retrieveModelListResponse;
     }

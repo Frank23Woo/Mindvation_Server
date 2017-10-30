@@ -54,12 +54,12 @@ public class WebController {
         Integer pageSize = retrieveModelListRequest.getPageSize();
         String modelType = retrieveModelListRequest.getModelType();
         String creatorId = retrieveModelListRequest.getCreatorId();
-        if (null==page||pageSize==null) {
+        if (null == page || pageSize == null) {
             return this.modelService.rtrvModelList();
         }
-        if (null==modelType && null==creatorId){
-            return this.modelService.rtrvModelList((page-1), pageSize, retrieveModelListRequest.getSortBy());
-        }else{
+        if (null == modelType && null == creatorId) {
+            return this.modelService.rtrvModelList((page - 1), pageSize, retrieveModelListRequest.getSortBy());
+        } else {
             return this.modelService.rtrvModelList(retrieveModelListRequest);
         }
     }
@@ -71,16 +71,11 @@ public class WebController {
     public RetrieveModelListAndSortResponse rtrvModelAndSortList(@RequestBody RetrieveModelListByTypeRequest retrieveModelListRequest) throws SQLException, BusinessException {
         Integer page = retrieveModelListRequest.getPage();
         Integer pageSize = retrieveModelListRequest.getPageSize();
-        String modelType = retrieveModelListRequest.getModelType();
-        String creatorId = retrieveModelListRequest.getCreatorId();
-//        if (null==page||pageSize==null) {
-//            return this.modelService.rtrvModelList();
-//        }
-//        if (null==modelType && null==creatorId){
-//            return this.modelService.rtrvModelList((page-1), pageSize, retrieveModelListRequest.getSortBy());
-//        }else{
+        if (null == page || pageSize == null) {
+            return this.modelService.rtrvModelListAndSort();
+        } else {
             return this.modelService.rtrvModelAndSortList(retrieveModelListRequest);
-//        }
+        }
     }
 
 
@@ -116,6 +111,7 @@ public class WebController {
     public RtrvModelByIdResponse findById(@RequestBody RtrvModelByIdRequest request) {
         return this.modelService.findById(request);
     }
+
     /**
      * 根据id查询模块全部详细信息
      *
@@ -150,6 +146,7 @@ public class WebController {
     public SubFunctionLabel findById(@RequestBody RtrvSubFunctionLabelById request) {
         return this.modelService.findById(request);
     }
+
     /**
      * 根据角色id查询角色对象
      *
@@ -193,7 +190,6 @@ public class WebController {
     public List<IterationModel> findIterationModelById(@RequestBody String modelId) {
         return this.modelService.findIterationModelById(modelId);
     }
-
 
 
 }

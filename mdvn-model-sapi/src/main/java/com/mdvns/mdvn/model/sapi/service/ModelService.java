@@ -15,6 +15,8 @@ public interface ModelService {
     /*根据名称查询模型*/
     ResponseEntity<Model> findByName(String name);
 
+    RetrieveModelListAndSortResponse rtrvModelListAndSort();
+
     RetrieveModelListResponse rtrvModelList();
 
     /*更新模型引用次数*/

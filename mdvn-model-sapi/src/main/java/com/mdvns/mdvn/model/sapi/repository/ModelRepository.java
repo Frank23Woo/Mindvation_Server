@@ -22,6 +22,8 @@ public interface ModelRepository extends JpaRepository<Model, Integer> {
 
     Model findAllByModelId(String modelId);
 
+    List<Model> findAll();
+
     @Query(value="  SELECT DISTINCT COUNT(*) FROM model ", nativeQuery = true)
     Long getModelCount();
 
