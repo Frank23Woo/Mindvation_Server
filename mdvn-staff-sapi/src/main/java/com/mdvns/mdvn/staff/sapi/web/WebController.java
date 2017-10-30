@@ -3,7 +3,7 @@ package com.mdvns.mdvn.staff.sapi.web;
 
 import com.mdvns.mdvn.common.beans.AssignAuthRequest;
 import com.mdvns.mdvn.common.beans.RestResponse;
-import com.mdvns.mdvn.common.beans.RtrvAuthRequest;
+import com.mdvns.mdvn.common.beans.RtrvStaffAuthInfoRequest;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.staff.sapi.domain.RetrieveStaffListResponse;
 import com.mdvns.mdvn.staff.sapi.domain.RtrvStaffListByNameRequest;
@@ -106,7 +106,7 @@ public class WebController {
     }
 
     @PostMapping(value = "/rtrvAuth")
-    public ResponseEntity<?> assignAuth(@RequestBody RtrvAuthRequest rtrvAuthRequest) {
+    public ResponseEntity<?> assignAuth(@RequestBody RtrvStaffAuthInfoRequest rtrvAuthRequest) {
 
         return this.authService.rtrvAuth(rtrvAuthRequest);
     }

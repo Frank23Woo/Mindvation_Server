@@ -1,10 +1,12 @@
 package com.mdvns.mdvn.staff.papi.service.impl;
 
 import com.mdvns.mdvn.common.beans.AssignAuthRequest;
-import com.mdvns.mdvn.common.beans.RtrvAuthRequest;
+import com.mdvns.mdvn.common.beans.RemoveAuthRequest;
+import com.mdvns.mdvn.common.beans.RtrvStaffAuthInfoRequest;
 import com.mdvns.mdvn.common.beans.StaffAuthInfo;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
+import com.mdvns.mdvn.staff.papi.config.WebConfig;
 import com.mdvns.mdvn.staff.papi.service.AuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +24,9 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private WebConfig webConfig;
+
     /**
      * 添加权限
      * @param assignAuthRequest
@@ -29,8 +34,7 @@ public class AuthServiceImpl implements AuthService {
      */
     @Override
     public ResponseEntity<?> assignAuth(AssignAuthRequest assignAuthRequest) {
-        String assignAuthUrl = "http://localhost:10013/mdvn-staff-sapi/staffAuth";
-
+        String assignAuthUrl = webConfig.getAssignAuthUrl();
         ResponseEntity<StaffAuthInfo[]> responseEntity = this.restTemplate.postForEntity(assignAuthUrl, assignAuthRequest, StaffAuthInfo[].class);
         LOG.info("调用SAPI结束....{}", responseEntity.getStatusCode());
         if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
@@ -47,9 +51,8 @@ public class AuthServiceImpl implements AuthService {
      * @return
      */
     @Override
-    public ResponseEntity<?> rtrvAuth(RtrvAuthRequest rtrvAuthRequest) {
-        String rtrvAuthUrl = "http://localhost:10013/mdvn-staff-sapi/rtrvAuth";
-
+    public ResponseEntity<?> rtrvAuth(RtrvStaffAuthInfoRequest rtrvAuthRequest) {
+        String rtrvAuthUrl = webConfig.getRtrvAuthUrl();
         ResponseEntity<StaffAuthInfo> responseEntity = this.restTemplate.postForEntity(rtrvAuthUrl, rtrvAuthRequest, StaffAuthInfo.class);
         LOG.info("调用SAPI结束....{}", responseEntity.getStatusCode());
         if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
@@ -57,5 +60,18 @@ public class AuthServiceImpl implements AuthService {
         }
         LOG.error("调用SAPI添加权限失败！");
         throw new BusinessException(ExceptionEnum.SAPI_EXCEPTION);
+    }
+
+    @Override
+    public ResponseEntity<?> removeAuth(RemoveAuthRequest removeAuthRequest) {
+        String rtrvAuthUrl = "http://localhost:10013/mdvn-staff-sapi/rtrvAuth";
+        RtrvStaffAuthInfoRequest rtrvAuthRequest = new RtrvStaffAuthInfoRequest();
+        rtrvAuthRequest.setProjId(removeAuthRequest.getProjId());
+        rtrvAuthRequest.setStaffId(removeAuthRequest.getStaffId());
+        rtrvAuthRequest.setHierarchyId(removeAuthRequest.getHierarchyId());
+        ResponseEntity<StaffAuthInfo> responseEntity = this.restTemplate.postForEntity(rtrvAuthUrl, rtrvAuthRequest, StaffAuthInfo.class);
+        StaffAuthInfo staffAuthInfo = responseEntity.getBody();
+
+        return null;
     }
 }

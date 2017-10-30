@@ -124,7 +124,7 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public RestResponse<Staff> retrieve(String id) {
         //1.初始化URL
-        String findByIdUrl = "http://localhost:10013/mdvn-staff-sapi/staff/" + id;
+        String findByIdUrl = webConfig.getFindByIdUrl()+"/" + id;
         RestResponse<Staff> restResponse = null;
         try {
             restResponse = this.restTemplate.getForObject(findByIdUrl, RestResponse.class);

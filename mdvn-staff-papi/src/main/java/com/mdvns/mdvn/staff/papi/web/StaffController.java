@@ -1,10 +1,8 @@
 package com.mdvns.mdvn.staff.papi.web;
 
-import com.mdvns.mdvn.common.beans.AssignAuthRequest;
-import com.mdvns.mdvn.common.beans.RestResponse;
-import com.mdvns.mdvn.common.beans.RtrvAuthRequest;
-import com.mdvns.mdvn.common.beans.StaffAuthInfo;
+import com.mdvns.mdvn.common.beans.*;
 import com.mdvns.mdvn.staff.papi.domain.*;
+import com.mdvns.mdvn.staff.papi.domain.Staff;
 import com.mdvns.mdvn.staff.papi.service.AuthService;
 import com.mdvns.mdvn.staff.papi.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,8 +98,14 @@ public class StaffController {
 
 
     @PostMapping(value = "/rtrvAuth")
-    public ResponseEntity<?> rtrvAuth(@RequestBody RtrvAuthRequest rtrvAuthRequest) {
+    public ResponseEntity<?> rtrvAuth(@RequestBody RtrvStaffAuthInfoRequest rtrvAuthRequest) {
 
         return this.authService.rtrvAuth(rtrvAuthRequest);
     }
+
+    @PostMapping(value = "/removeAuth")
+    public ResponseEntity<?> removeAuth(@RequestBody RemoveAuthRequest removeAuthRequest) {
+        return this.authService.removeAuth(removeAuthRequest);
+    }
+
 }

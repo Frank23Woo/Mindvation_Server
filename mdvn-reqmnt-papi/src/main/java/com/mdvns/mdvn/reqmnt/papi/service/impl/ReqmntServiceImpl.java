@@ -3,13 +3,14 @@ package com.mdvns.mdvn.reqmnt.papi.service.impl;
 import com.mdvns.mdvn.common.beans.*;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
+import com.mdvns.mdvn.common.enums.AuthEnum;
 import com.mdvns.mdvn.common.utils.FetchListUtil;
+import com.mdvns.mdvn.common.utils.StaffAuthUtil;
 import com.mdvns.mdvn.reqmnt.papi.config.ReqmntConfig;
 import com.mdvns.mdvn.reqmnt.papi.domain.*;
 import com.mdvns.mdvn.reqmnt.papi.domain.ReqmntMember;
 import com.mdvns.mdvn.reqmnt.papi.domain.RequirementInfo;
 import com.mdvns.mdvn.reqmnt.papi.service.IReqmntService;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,12 +105,22 @@ public class ReqmntServiceImpl implements IReqmntService {
         restResponse.setResponseCode("000");
         requirementInfo = responseEntity.getBody();
 
+        //1.1 给需求创建者分配权限
+        AssignAuthRequest assignAuthRequest = new AssignAuthRequest();
+        assignAuthRequest.setProjId(createReqmntRequest.getProjId());
+        List<String> assignees = new ArrayList<String>();
+        assignAuthRequest.setAssignees(assignees);
+        assignAuthRequest.setHierarchyId(requirementInfo.getReqmntId());
+        assignAuthRequest.setAuthCode(AuthEnum.Leader.getCode());
+        StaffAuthUtil.assignAuth(this.restTemplate, assignAuthRequest);
+
 
         //2.保存requirement member信息
         if (createReqmntRequest.getMembers() != null && !createReqmntRequest.getMembers().isEmpty()) {
             List<RoleMember> roleMembers = createReqmntRequest.getMembers();
             List<ReqmntMember> reqmntMembers = new ArrayList<>();
             ReqmntMember reqmntMember = null;
+
             String roleId = "";
             for (int i = 0; i < roleMembers.size(); i++) {
                 roleId = roleMembers.get(i).getRoleId();
@@ -129,6 +140,15 @@ public class ReqmntServiceImpl implements IReqmntService {
             } catch (Exception ex) {
                 throw new RuntimeException("调用SAPI获取项目负责人信息保存数据失败.");
             }
+
+            //2.1 给需求中的Member分配权限
+            List<String> members = new ArrayList<String>();
+            for (int i = 0; i <roleMembers.size() ; i++) {
+                members.addAll(roleMembers.get(i).getMemberIds());
+            }
+
+            StaffAuthUtil.assignAuth(this.restTemplate, new AssignAuthRequest(createReqmntRequest.getProjId(), createReqmntRequest.getCreatorId(), members, requirementInfo.getReqmntId(), AuthEnum.RMEMBER.getCode()));
+            LOG.info("新建需求：{}并给成员分配权限成功!", requirementInfo.getReqmntId());
         }
 
 
@@ -228,7 +248,6 @@ public class ReqmntServiceImpl implements IReqmntService {
             for (int i = 0; i < reqmntTags.size(); i++) {
                 tagIdList.add(reqmntTags.get(i).getTagId());
             }
-
         }
 
 
@@ -374,6 +393,10 @@ public class ReqmntServiceImpl implements IReqmntService {
         } catch (Exception ex) {
             throw new BusinessException(ExceptionEnum.PROJECT_DETAIL_STORY_NOT_RTRV);
         }
+
+        //获取用户权限信息
+        StaffAuthInfo staffAuthInfo = StaffAuthUtil.rtrvStaffAuthInfo(this.restTemplate, requirementInfo.getProjId(), requirementInfo.getReqmntId(), request.getStaffId());
+        rtrvReqmntInfoResponse.setStaffAuthInfo(staffAuthInfo);
         restResponse.setResponseBody(rtrvReqmntInfoResponse);
 
         return restResponse;

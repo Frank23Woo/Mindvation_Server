@@ -17,6 +17,14 @@ public class WebConfig {
     /*模糊查询*/
     private String rtrvStaffListByNameUrl;
 
+    /*分配权限Url*/
+    private String assignAuthUrl;
+
+    /*获取员工权限信息Url*/
+    private String rtrvAuthUrl;
+
+    private String findByIdUrl;
+
     public String getRtrvStaffListUrl() {
         return rtrvStaffListUrl;
     }
@@ -45,5 +53,29 @@ public class WebConfig {
 
     public void setRtrvStaffListByNameUrl(String rtrvStaffListByNameUrl) {
         this.rtrvStaffListByNameUrl = rtrvStaffListByNameUrl;
+    }
+
+    public String getAssignAuthUrl() {
+        return assignAuthUrl;
+    }
+
+    public void setAssignAuthUrl(String assignAuthUrl) {
+        this.assignAuthUrl = assignAuthUrl;
+    }
+
+    public String getRtrvAuthUrl() {
+        return rtrvAuthUrl;
+    }
+
+    public void setRtrvAuthUrl(String rtrvAuthUrl) {
+        this.rtrvAuthUrl = rtrvAuthUrl;
+    }
+
+    public String getFindByIdUrl() {
+        return findByIdUrl;
+    }
+
+    public void setFindByIdUrl(String findByIdUrl) {
+        this.findByIdUrl = findByIdUrl;
     }
 }

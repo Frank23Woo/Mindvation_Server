@@ -10,7 +10,17 @@ public class RtrvStoryDetailRequest {
     @NotBlank(message = "请求参数错误，storyId不能为空")
     private String storyId;
 
+    private String staffId;
+
     private List<String> remarks;
+
+    public String getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(String staffId) {
+        this.staffId = staffId;
+    }
 
     public String getStoryId() {
         return storyId;

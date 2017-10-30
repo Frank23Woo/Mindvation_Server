@@ -1,7 +1,7 @@
 package com.mdvns.mdvn.staff.sapi.service.impl;
 
 import com.mdvns.mdvn.common.beans.AssignAuthRequest;
-import com.mdvns.mdvn.common.beans.RtrvAuthRequest;
+import com.mdvns.mdvn.common.beans.RtrvStaffAuthInfoRequest;
 import com.mdvns.mdvn.staff.sapi.domain.entity.StaffAuthInfo;
 import com.mdvns.mdvn.staff.sapi.repository.StaffAuthInfoRepository;
 import com.mdvns.mdvn.staff.sapi.service.AuthService;
@@ -26,16 +26,11 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private StaffAuthInfo staffAuthInfo;
 
-
-
     @Override
     public ResponseEntity<?> assignAuth(AssignAuthRequest assignAuthRequest) {
 
         List<String> assignees = assignAuthRequest.getAssignees();
         String assignerId = assignAuthRequest.getAssignerId();
-        if (assignees.size() == 1 && assignerId.equals(assignees.get(0))) {
-            assignAuth(assignAuthRequest.getProjId(), assignerId, assignees.get(0), assignAuthRequest.getHierarchyId());
-        }
 
         List<StaffAuthInfo> staffAuthInfos = new ArrayList<StaffAuthInfo>();
         for (String assigneeId : assignees) {
@@ -55,20 +50,16 @@ public class AuthServiceImpl implements AuthService {
         LOG.info("添加权限的request为：{}", assignAuthRequest.toString());
 
         LOG.info("SAPI添加权限结束：{}", staffAuthInfo.toString());
-        LOG.info("SAPI添加权限结束, staffAuthInfo 的值是:{}", staffAuthInfo.toString());
         return ResponseEntity.ok(staffAuthInfos);
     }
 
-    public void assignAuth(String projId, String assignerId, String assigneeId, String hierarchyId) {
-
-    }
     /**
      * 获取权限信息
      * @param rtrvAuthRequest
      * @return
      */
     @Override
-    public ResponseEntity<?> rtrvAuth(RtrvAuthRequest rtrvAuthRequest) {
+    public ResponseEntity<?> rtrvAuth(RtrvStaffAuthInfoRequest rtrvAuthRequest) {
         String projId = rtrvAuthRequest.getProjId();
         String staffId = rtrvAuthRequest.getStaffId();
         String hierarchyId = rtrvAuthRequest.getHierarchyId();

@@ -3,7 +3,9 @@ package com.mdvns.mdvn.story.papi.service.impl;
 import com.mdvns.mdvn.common.beans.*;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
+import com.mdvns.mdvn.common.enums.AuthEnum;
 import com.mdvns.mdvn.common.utils.FetchListUtil;
+import com.mdvns.mdvn.common.utils.StaffAuthUtil;
 import com.mdvns.mdvn.story.papi.config.StoryConfig;
 import com.mdvns.mdvn.story.papi.domain.*;
 import com.mdvns.mdvn.story.papi.domain.Story;
@@ -90,6 +92,12 @@ public class StoryServiceImpl implements IStoryService {
         restResponse.setResponseCode("000");
         story = responseEntity.getBody();
         String storyId = story.getStoryId();
+
+        //1.1 给创建人分配权限
+        StaffAuthUtil.assignAuthForCreator(this.restTemplate, createStoryRequest.getStoryInfo().getProjId(), createStoryRequest.getCreatorId(), storyId, AuthEnum.SMEMBER.getCode());
+        LOG.info("给创建人分配权限成功!");
+
+
         //2.保存用户故事成员信息
         if (createStoryRequest.getMembers() != null && !createStoryRequest.getMembers().isEmpty()) {
             List<RoleMember> members = createStoryRequest.getMembers();
@@ -113,6 +121,15 @@ public class StoryServiceImpl implements IStoryService {
             } catch (Exception ex) {
                 throw new BusinessException(ExceptionEnum.STORY_STAFF_NOT_CREATE);
             }
+
+            //给成员分配权限
+            List<String> assignees = new ArrayList<String>();
+            for (int i = 0; i <members.size() ; i++) {
+                assignees.addAll(members.get(i).getMemberIds());
+            }
+            StaffAuthUtil.assignAuth(this.restTemplate, new AssignAuthRequest(createStoryRequest.getStoryInfo().getProjId(), createStoryRequest.getCreatorId(), assignees, storyId, AuthEnum.SMEMBER.getCode()));
+            LOG.info("新建Story：{}并给成员分配权限成功!", createStoryRequest.getStoryInfo().getStoryId());
+
         }
         //3.保存用户故事标签信息
         if (createStoryRequest.getsTags() != null && !createStoryRequest.getsTags().isEmpty()) {
@@ -524,6 +541,9 @@ public class StoryServiceImpl implements IStoryService {
             throw new BusinessException(ExceptionEnum.PROJECT_DETAIL_ATTCHURL_NOT_RTRV);
         }
 
+        //获取用户权限信息
+        StaffAuthInfo staffAuthInfo = StaffAuthUtil.rtrvStaffAuthInfo(this.restTemplate, story.getProjId(), story.getReqmntId(), rtrvStoryDetailRequest.getStaffId());
+        rtrvStoryDetailResponse.setStaffAuthInfo(staffAuthInfo);
         rtrvStoryDetailResponse.setStoryDetail(storyDetail);
         restResponse.setResponseBody(rtrvStoryDetailResponse);
         restResponse.setStatusCode("200");

@@ -4,7 +4,9 @@ import com.mdvns.mdvn.common.beans.AttchInfo;
 import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.common.beans.Staff;
 import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
+import com.mdvns.mdvn.common.enums.AuthEnum;
 import com.mdvns.mdvn.common.utils.FetchListUtil;
+import com.mdvns.mdvn.common.utils.StaffAuthUtil;
 import com.mdvns.mdvn.task.papi.config.UrlConfig;
 import com.mdvns.mdvn.task.papi.domain.*;
 import com.mdvns.mdvn.task.papi.service.TaskService;
@@ -57,8 +59,9 @@ public class TaskServiceImpl implements TaskService {
         }
 
         RestResponse response = new RestResponse();
+        TaskDetail task = null;
         try {
-            TaskDetail task = restTemplate.postForObject(urlConfig.getSaveTaskUrl(), request, TaskDetail.class);
+            task = restTemplate.postForObject(urlConfig.getSaveTaskUrl(), request, TaskDetail.class);
 
             // 查询creator和assinee
             Staff creator = restTemplate.postForObject(urlConfig.getRtrvStaffInfoUrl(), task.getCreatorId(), Staff.class);
@@ -77,7 +80,9 @@ public class TaskServiceImpl implements TaskService {
             response.setResponseCode(ExceptionEnum.TASK_SAVE_FAILED.getErroCode());
             response.setResponseMsg(ExceptionEnum.TASK_SAVE_FAILED.getErrorMsg());
         }
-
+        //分配权限
+        StaffAuthUtil.assignAuthForCreator(restTemplate, request.getProjId(), task.getCreatorId(), task.getTaskId(), AuthEnum.TMEMBER.getCode());
+        LOG.info("新建Task，分配权限成功!");
         return response;
     }
 

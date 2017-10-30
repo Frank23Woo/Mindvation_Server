@@ -1,9 +1,6 @@
 package com.mdvns.mdvn.reqmnt.papi.domain;
 
-import com.mdvns.mdvn.common.beans.AttchInfo;
-import com.mdvns.mdvn.common.beans.FunctionLabel;
-import com.mdvns.mdvn.common.beans.Story;
-import com.mdvns.mdvn.common.beans.Tag;
+import com.mdvns.mdvn.common.beans.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -25,6 +22,17 @@ public class RtrvReqmntInfoResponse{
     private List<AttchInfo> attchInfos;
 
     private RtrvStoryListResponse rtrvStoryListResponse;
+
+
+    private StaffAuthInfo staffAuthInfo;
+
+    public StaffAuthInfo getStaffAuthInfo() {
+        return staffAuthInfo;
+    }
+
+    public void setStaffAuthInfo(StaffAuthInfo staffAuthInfo) {
+        this.staffAuthInfo = staffAuthInfo;
+    }
 
     public void setReqmntInfo(RequirementInfo reqmntInfo) {
         this.reqmntInfo = reqmntInfo;

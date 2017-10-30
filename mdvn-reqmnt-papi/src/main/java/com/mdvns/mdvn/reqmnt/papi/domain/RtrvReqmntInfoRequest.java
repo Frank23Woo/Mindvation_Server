@@ -7,6 +7,7 @@ import java.util.List;
 @Component
 public class RtrvReqmntInfoRequest {
 
+    private String staffId;
     private String reqmntId;
     private List<String> remarks;
 
@@ -15,6 +16,19 @@ public class RtrvReqmntInfoRequest {
     }
 
     public RtrvReqmntInfoRequest(String reqmntId) {
+        this.reqmntId = reqmntId;
+    }
+
+    public String getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(String staffId) {
+        this.staffId = staffId;
+    }
+
+    public RtrvReqmntInfoRequest(String staffId, String reqmntId) {
+        this.staffId = staffId;
         this.reqmntId = reqmntId;
     }
 

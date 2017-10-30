@@ -5,6 +5,7 @@ import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
 import com.mdvns.mdvn.common.enums.AuthEnum;
 import com.mdvns.mdvn.common.utils.FetchListUtil;
+import com.mdvns.mdvn.common.utils.StaffAuthUtil;
 import com.mdvns.mdvn.project.papi.config.ProjConfig;
 import com.mdvns.mdvn.project.papi.domain.*;
 import com.mdvns.mdvn.project.papi.domain.Model;
@@ -19,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -44,7 +46,7 @@ public class ProjServiceImpl implements IProjService {
 
 
     /**
-     * 获取project列表详细信息
+     * 获取project列表信息
      *
      * @param rtrvProjectListRequest
      * @return
@@ -60,6 +62,7 @@ public class ProjServiceImpl implements IProjService {
         responseEntity = new ResponseEntity<RestResponse>(restResponse, HttpStatus.OK);
         return responseEntity;
     }
+
 
     /**
      * 调用sapi创建project
@@ -91,8 +94,8 @@ public class ProjServiceImpl implements IProjService {
         List<String> asignee = new ArrayList<String>();
         asignee.add(creatorId);
 
+        StaffAuthUtil.assignAuth(this.restTemplate,new AssignAuthRequest(projId, creatorId, asignee, projId, AuthEnum.BOSS.getCode()));
 
-        assignAuth(new AssignAuthRequest(projId, creatorId, asignee, projId, AuthEnum.BOSS.getCode()));
 
         //2.保存项目负责人信息
         if (createProjectRequest.getLeaders() != null && !createProjectRequest.getLeaders().isEmpty()) {
@@ -112,9 +115,8 @@ public class ProjServiceImpl implements IProjService {
             for (int i = 0; i <projLeaders.size() ; i++) {
                 leaders.add(projLeaders.get(i).getStaffId());
             }
-
-            assignAuth(new AssignAuthRequest(projId, createProjectRequest.getStaffId(), leaders, projId, AuthEnum.Leader.getCode()));
-
+            StaffAuthUtil.assignAuth(this.restTemplate, new AssignAuthRequest(projId, createProjectRequest.getStaffId(), leaders, projId, AuthEnum.Leader.getCode()));
+            LOG.info("创建项目，给leader分配权限成功!");
         }
         //3.保存项目标签信息
         if (createProjectRequest.getTags() != null && !createProjectRequest.getTags().isEmpty()) {
@@ -181,7 +183,7 @@ public class ProjServiceImpl implements IProjService {
      * 分配权限
      * @param assignAuthRequest
      */
-    private void assignAuth(AssignAuthRequest assignAuthRequest) {
+   /* private void assignAuth(AssignAuthRequest assignAuthRequest) {
         String assignAuthUrl = "http://localhost:10014/mdvn-staff-papi/staff/assignAuth";
         ResponseEntity<StaffAuthInfo[]> responseEntity = null;
         try {
@@ -193,7 +195,7 @@ public class ProjServiceImpl implements IProjService {
 
         LOG.info("添加权限完成：{}",responseEntity.getBody().toString());
 
-    }
+    }*/
 
     /**
      * 调用sapi更改project
@@ -447,7 +449,9 @@ public class ProjServiceImpl implements IProjService {
 
 
         //获取用户在项目中的权限信息
-        StaffAuthInfo staffAuthInfo = rtrvStaffAuthInfo(rtrvProjectDetailRequest.getProjId(), rtrvProjectDetailRequest.getStaffId());
+        RtrvStaffAuthInfoRequest rtrvAuthInfoRequest = new RtrvStaffAuthInfoRequest();
+        String projId = rtrvProjectDetailRequest.getProjId();
+        StaffAuthInfo staffAuthInfo = StaffAuthUtil.rtrvStaffAuthInfo(this.restTemplate, projId, projId, rtrvProjectDetailRequest.getStaffId());
         rtrvProjectDetailResponse.setStaffAuthInfo(staffAuthInfo);
 
         rtrvProjectDetailResponse.setProjectDetail(projectDetail);
@@ -461,11 +465,12 @@ public class ProjServiceImpl implements IProjService {
 
     /**
      * 获取用户在项目中的权限
+     *
      * @param projId
      * @param staffId
      * @return
      */
-    private StaffAuthInfo rtrvStaffAuthInfo(String projId, String staffId) {
+    /*private StaffAuthInfo rtrvStaffAuthInfo(String projId, String staffId) {
 
         String rtrvStaffAuthUrl = "http://localhost:10014/mdvn-staff-papi/staff/rtrvAuth";
         RtrvAuthRequest rtrvAuthRequest = new RtrvAuthRequest();
@@ -479,5 +484,6 @@ public class ProjServiceImpl implements IProjService {
             staffAuthInfo = responseEntity.getBody();
         }
         return staffAuthInfo;
-    }
+    }*/
+
 }

@@ -2,7 +2,6 @@ package com.mdvns.mdvn.project.sapi.service.impl;
 
 import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
-import com.mdvns.mdvn.common.beans.exception.ReturnFormat;
 import com.mdvns.mdvn.common.utils.RestResponseUtil;
 import com.mdvns.mdvn.project.sapi.domain.*;
 import com.mdvns.mdvn.project.sapi.domain.entity.*;
@@ -11,6 +10,9 @@ import com.mdvns.mdvn.project.sapi.service.ICreateProjService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -61,10 +63,17 @@ public class CreateProjServiceImpl implements ICreateProjService {
         Integer pageSize = request.getPageSize();
         Integer m = page * pageSize;
         Integer n = pageSize;
-        List<Project> pageList = this.projectRepository.rtrvProjInfoList(request.getStaffId(), m, n);
-        Long totalElements = this.projectRepository.getProjBaseInfoCount(request.getStaffId());
+//        List<Project> pageList = this.projectRepository.rtrvProjInfoList(request.getStaffId(), m, n);
+
+
+        String sortBy = (request.getSortBy() == null) ? "uuId" : request.getSortBy();
+
+        PageRequest pageable = new PageRequest(m, n, Sort.Direction.DESC, sortBy);
+        Page<Project> pageList = this.projectRepository.findAll(pageable);
+//        Long totalElements = this.projectRepository.getProjBaseInfoCount(request.getStaffId());
+
         rtrvProjectListResponse.setProjects(pageList);
-        rtrvProjectListResponse.setTotalElements(totalElements);
+        rtrvProjectListResponse.setTotalElements(pageList.getTotalElements());
 
         LOG.info("查询结果为：{}", rtrvProjectListResponse);
         return RestResponseUtil.success(rtrvProjectListResponse);
