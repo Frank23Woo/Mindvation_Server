@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -46,6 +47,9 @@ public class ModelServiceImpl implements ModelService {
 
     @Autowired
     private Model model;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     private IterationModel iterationModel;
@@ -153,7 +157,7 @@ public class ModelServiceImpl implements ModelService {
                 IterationModel iterationModel = new IterationModel();
                 iterationModel.setModelId(model.getModelId());
                 iterationModel.setIsDeleted(0);
-                iterationModel.setItIndex(i+1);
+                iterationModel.setItIndex(i + 1);
                 iterationModel.setCreateTime(createTime);
                 if (!StringUtils.isEmpty(iterationModels.get(i).getName())) {
                     iterationModel.setName(iterationModels.get(i).getName());
@@ -228,7 +232,7 @@ public class ModelServiceImpl implements ModelService {
         createModelResponse.setModel(model);
         List<FunctionLabel> functionLabels = new ArrayList<>();
         List<SubFunctionLabel> functionLabelList = this.functionModelRepository.findByParentId(request.getModelId());
-        for (int i = 0; i <functionLabelList.size() ; i++) {
+        for (int i = 0; i < functionLabelList.size(); i++) {
             //获取过程方法模块对象
             SubFunctionLabel functionLabel = functionLabelList.get(i);
             FunctionLabel funcLabel = new FunctionLabel();
@@ -251,11 +255,11 @@ public class ModelServiceImpl implements ModelService {
         //迭代模板
         List<IterationModel> iterationModels = this.itModelRepository.findByModelId(request.getModelId());
         List<CreateItModelResponse> createItModelResponses = new ArrayList<>();
-        for (int i = 0; i < iterationModels.size() ; i++) {
+        for (int i = 0; i < iterationModels.size(); i++) {
             CreateItModelResponse createItModelResponse = new CreateItModelResponse();
             String labelIds = iterationModels.get(i).getLabelIds();
             List<String> idList = new ArrayList<String>();
-            for (String id:labelIds.split(",")) {
+            for (String id : labelIds.split(",")) {
                 idList.add(String.valueOf(id));
             }
             List<SubFunctionLabel> funcLabels = this.functionModelRepository.findByLabelIdIn(idList);
@@ -265,7 +269,7 @@ public class ModelServiceImpl implements ModelService {
         }
         createModelResponse.setIterationModels(createItModelResponses);
         //交付件
-        List<TaskDelivery> taskDeliveries = this.taskDeliveryRepository.findByModelIdAndIsDeleted(request.getModelId(),0);
+        List<TaskDelivery> taskDeliveries = this.taskDeliveryRepository.findByModelIdAndIsDeleted(request.getModelId(), 0);
         createModelResponse.setTaskDeliveries(taskDeliveries);
         LOG.info("执行结束{} saveModel()方法.", this.CLASS);
         return createModelResponse;
@@ -334,7 +338,7 @@ public class ModelServiceImpl implements ModelService {
     @Override
     public RetrieveModelListResponse rtrvModelList(RetrieveModelListByTypeRequest retrieveModelListRequest) throws
             SQLException {
-        Integer page = retrieveModelListRequest.getPage()-1;
+        Integer page = retrieveModelListRequest.getPage() - 1;
         Integer pageSize = retrieveModelListRequest.getPageSize();
         String sortBy = retrieveModelListRequest.getSortBy();
         String modelType = retrieveModelListRequest.getModelType();
@@ -343,14 +347,14 @@ public class ModelServiceImpl implements ModelService {
         sortBy = (sortBy == null) ? "quoteCnt" : sortBy;
         PageRequest pageable = new PageRequest(page, pageSize, Sort.Direction.DESC, sortBy);
         Page<Model> modelPage = null;
-        if (null!=modelType && null==creatorId) {
+        if (null != modelType && null == creatorId) {
             modelPage = this.modelRepository.findAllByModelType(modelType, pageable);
         }
-        if (null==modelType && null!=creatorId){
+        if (null == modelType && null != creatorId) {
             modelPage = this.modelRepository.findAllByCreatorId(creatorId, pageable);
         }
-        if (null!=modelType && null!=creatorId){
-            modelPage = this.modelRepository.findAllByCreatorIdAndModelType(creatorId,modelType, pageable);
+        if (null != modelType && null != creatorId) {
+            modelPage = this.modelRepository.findAllByCreatorIdAndModelType(creatorId, modelType, pageable);
         }
         retrieveModelListResponse.setModels(modelPage.getContent());
         retrieveModelListResponse.setTotalNumber(modelPage.getTotalElements());
@@ -359,6 +363,7 @@ public class ModelServiceImpl implements ModelService {
 
     /**
      * 先排序再分页
+     *
      * @param retrieveModelListRequest
      * @return
      * @throws SQLException
@@ -366,7 +371,7 @@ public class ModelServiceImpl implements ModelService {
     @Override
     public RetrieveModelListAndSortResponse rtrvModelAndSortList(RetrieveModelListByTypeRequest retrieveModelListRequest) throws
             SQLException {
-        Integer page = retrieveModelListRequest.getPage()-1;
+        Integer page = retrieveModelListRequest.getPage();
         Integer pageSize = retrieveModelListRequest.getPageSize();
         Integer m = page * pageSize;
         Integer n = pageSize;
@@ -375,27 +380,53 @@ public class ModelServiceImpl implements ModelService {
         String creatorId = retrieveModelListRequest.getCreatorId();
         RetrieveModelListAndSortResponse retrieveModelListAndSortResponse = new RetrieveModelListAndSortResponse();
         List<Model> models = new ArrayList<>();
-        if (null!=modelType && null==creatorId) {
-            models = this.modelRepository.rtrvModelInfoListByModelType(modelType,m,n);
+        List courseList = new ArrayList();
+        if (null != modelType && null == creatorId) {
+            models = this.modelRepository.rtrvModelInfoListByModelType(modelType);
         }
-        if (null==modelType && null!=creatorId){
-            models = this.modelRepository.rtrvModelInfoListByCreatorId(creatorId, m,n);
+        if (null == modelType && null != creatorId) {
+            models = this.modelRepository.rtrvModelInfoListByCreatorId(creatorId);
         }
-        if (null!=modelType && null!=creatorId){
-            models = this.modelRepository.rtrvModelInfoList(modelType,creatorId,m,n);
+        if (null != modelType && null != creatorId) {
+            models = this.modelRepository.rtrvModelInfoList(modelType, creatorId);
         }
+
         List<ModelAndSort> modelAndSorts = new ArrayList<>();
-        for (int i = 0; i < models.size() ; i++) {
+        for (int i = 0; i < models.size(); i++) {
             ModelAndSort modelAndSort = new ModelAndSort();
-            modelAndSort.setSort(i+1);
+            modelAndSort.setSort(i + 1);
             modelAndSort.setModel(models.get(i));
             modelAndSorts.add(modelAndSort);
         }
-        retrieveModelListAndSortResponse.setModels(modelAndSorts);
+        /**
+         * 排序完再分页
+         */
+        List clist = modelAndSorts;//将查询结果存放在List集合里
+        PageBean pagebean = new PageBean();
+        pagebean.setPageSize(pageSize);
+        pagebean = new PageBean(clist.size());//初始化PageBean对象
+        //设置当前页
+        pagebean.setCurPage(page); //这里page是从页面上获取的一个参数，代表页数
+        //获得分页大小
+        int pagesize = pageSize;
+//        int pagesize = pagebean.getPageSize();
+        //获得分页数据在list集合中的索引
+        int firstIndex = (page-1) * pagesize;
+        int toIndex = page * pagesize;
+        if (toIndex > clist.size()) {
+            toIndex = clist.size();
+        }
+        if (firstIndex > toIndex) {
+            firstIndex = 0;
+            pagebean.setCurPage(1);
+        }
+        //截取数据集合，获得分页数据
+        courseList = clist.subList(firstIndex, toIndex);
+
+        retrieveModelListAndSortResponse.setModels(courseList);
         retrieveModelListAndSortResponse.setTotalNumber((long) models.size());
         return retrieveModelListAndSortResponse;
     }
-
 
 
     /**
@@ -417,7 +448,6 @@ public class ModelServiceImpl implements ModelService {
         LOG.info("执行结束{} findById()方法.", this.CLASS);
         return rtrvModelByIdResponse;
     }
-
 
 
     /**
@@ -450,6 +480,7 @@ public class ModelServiceImpl implements ModelService {
 
     /**
      * 查询model对象
+     *
      * @param modelId
      * @return
      */
@@ -502,10 +533,9 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     public List<TaskDelivery> findTaskDeliveryById(RtrvModelByIdRequest request) {
-        List<TaskDelivery> taskDeliveries = this.taskDeliveryRepository.findByModelIdAndIsDeleted(request.getModelId(),0);
+        List<TaskDelivery> taskDeliveries = this.taskDeliveryRepository.findByModelIdAndIsDeleted(request.getModelId(), 0);
         return taskDeliveries;
     }
-
 
 
     /**
