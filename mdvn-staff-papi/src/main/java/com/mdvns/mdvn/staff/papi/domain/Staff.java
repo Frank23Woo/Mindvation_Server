@@ -10,8 +10,6 @@ public class Staff {
     private String staffId;
 
     private String account;
-    /*登录密码*/
-    private String password;
 
     private String name;
     //员工头像
@@ -56,13 +54,6 @@ public class Staff {
         super();
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public Integer getUuId() {
         return uuId;
@@ -217,8 +208,6 @@ public class Staff {
 
         if (getUuId() != null ? !getUuId().equals(staff.getUuId()) : staff.getUuId() != null) return false;
         if (getStaffId() != null ? !getStaffId().equals(staff.getStaffId()) : staff.getStaffId() != null) return false;
-        if (getPassword() != null ? !getPassword().equals(staff.getPassword()) : staff.getPassword() != null)
-            return false;
         if (getName() != null ? !getName().equals(staff.getName()) : staff.getName() != null) return false;
         if (getAvatar() != null ? !getAvatar().equals(staff.getAvatar()) : staff.getAvatar() != null) return false;
         if (getDeptId() != null ? !getDeptId().equals(staff.getDeptId()) : staff.getDeptId() != null) return false;
@@ -239,7 +228,6 @@ public class Staff {
     public int hashCode() {
         int result = getUuId() != null ? getUuId().hashCode() : 0;
         result = 31 * result + (getStaffId() != null ? getStaffId().hashCode() : 0);
-        result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
         result = 31 * result + (getName() != null ? getName().hashCode() : 0);
         result = 31 * result + (getAvatar() != null ? getAvatar().hashCode() : 0);
         result = 31 * result + (getDeptId() != null ? getDeptId().hashCode() : 0);
@@ -257,7 +245,6 @@ public class Staff {
         return "Staff{" +
                 "uuId=" + uuId +
                 ", staffId='" + staffId + '\'' +
-                ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", avatar='" + avatar + '\'' +
                 ", deptId='" + deptId + '\'' +
