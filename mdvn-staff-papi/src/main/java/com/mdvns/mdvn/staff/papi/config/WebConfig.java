@@ -37,6 +37,24 @@ public class WebConfig {
 
     private String deleteStaffUrl;
 
+    private String rtrvPostionDetailUrl;
+    private String rtrvDepartmentDetailUrl;
+
+    public String getRtrvPostionDetailUrl() {
+        return rtrvPostionDetailUrl;
+    }
+
+    public void setRtrvPostionDetailUrl(String rtrvPostionDetailUrl) {
+        this.rtrvPostionDetailUrl = rtrvPostionDetailUrl;
+    }
+
+    public String getRtrvDepartmentDetailUrl() {
+        return rtrvDepartmentDetailUrl;
+    }
+
+    public void setRtrvDepartmentDetailUrl(String rtrvDepartmentDetailUrl) {
+        this.rtrvDepartmentDetailUrl = rtrvDepartmentDetailUrl;
+    }
 
     public String getRtrvStaffListUrl() {
         return rtrvStaffListUrl;

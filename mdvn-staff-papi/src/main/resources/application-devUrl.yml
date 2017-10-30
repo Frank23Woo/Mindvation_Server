@@ -15,6 +15,9 @@ url:
   updateStaffDetailUrl: http://localhost:10013/mdvn-staff-sapi/updateStaffDetail
   deleteStaffUrl: http://localhost:10013/mdvn-staff-sapi/deleteStaff
 
+  rtrvPostionDetailUrl: http://localhost:10023/mdvn-department-sapi/findPositionById
+  rtrvDepartmentDetailUrl: http://localhost:10023/mdvn-department-sapi/findDepartmentById
+
 
 
 

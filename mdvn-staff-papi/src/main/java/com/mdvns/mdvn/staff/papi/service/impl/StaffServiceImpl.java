@@ -1,5 +1,7 @@
 package com.mdvns.mdvn.staff.papi.service.impl;
 
+import com.mdvns.mdvn.common.beans.DepartmentDetail;
+import com.mdvns.mdvn.common.beans.Position;
 import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.common.beans.Tag;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
@@ -160,6 +162,16 @@ public class StaffServiceImpl implements StaffService {
     public ResponseEntity<?> createStaff(CreateStaffRequest request) {
         String url = webConfig.getCreateStaffUrl();
         CreateStaffResponse response = this.restTemplate.postForObject(url, request, CreateStaffResponse.class);
+//        String positionUrl = webConfig.getRtrvPostionDetailUrl();
+//        Position position = this.restTemplate.postForObject(positionUrl+"/"+request.getPositionId(), "", Position.class);
+//        if(position!=null){
+//            response.setPositionDetail(position);
+//        }
+//        String deptUrl = webConfig.getRtrvDepartmentDetailUrl();
+//        DepartmentDetail departmentDetail = this.restTemplate.postForObject(deptUrl+"/"+request.getDeptId(), "", DepartmentDetail.class);
+//        if(departmentDetail!=null){
+//            response.setDeptDetail(departmentDetail);
+//        }
         restResponse = RestResponseUtil.success(response);
         return ResponseEntity.ok(restResponse);
     }

@@ -14,4 +14,5 @@ url:
   updateStaffDetailUrl: http://localhost:8080/mdvn-staff-sapi/updateStaffDetail
   rtrvTagsUrl: http://localhost:8080/mdvn-tag-sapi/tags/rtrvTags
 
-
+  rtrvPostionDetailUrl: http://localhost:8080/mdvn-department-sapi/findPositionById
+  rtrvDepartmentDetailUrl: http://localhost:8080/mdvn-department-sapi/findDepartmentById

@@ -108,4 +108,24 @@ public class StaffController {
         return this.authService.removeAuth(removeAuthRequest);
     }
 
+    @PostMapping(value = "/createStaff")
+    public ResponseEntity<?> createStaff(@RequestBody CreateStaffRequest request) {
+        return this.staffService.createStaff(request);
+    }
+
+    @PostMapping(value = "/deleteStaff/{staffId}")
+    public ResponseEntity<?> deleteStaff(@PathVariable String staffId) {
+        return this.staffService.deleteStaff(staffId);
+    }
+
+    @PostMapping(value = "/rtrvStaffDetail/{staffId}")
+    public ResponseEntity<?> rtrvStaffDetail(@PathVariable String staffId) {
+        return this.staffService.rtrvStaffDetail(staffId);
+    }
+
+    @PostMapping(value = "/updateStaffDetail")
+    public ResponseEntity<?> updateStaffDetail(@RequestBody UpdateStaffDetailRequest request) {
+        return this.staffService.updateStaffDetail(request);
+    }
+
 }

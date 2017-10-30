@@ -21,6 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -112,25 +113,25 @@ public class StaffServiceImpl implements StaffService {
             if(!updateStaff.getDeptId().equals(staff.getDeptId())){
                 staff.setDeptId(updateStaff.getDeptId());
             }
-            if(!updateStaff.getPassword().equals(staff.getPassword())){
+            if(!StringUtils.isEmpty(updateStaff.getPassword()) && !updateStaff.getPassword().equals(staff.getPassword())){
                 staff.setPassword(updateStaff.getPassword());
             }
-            if(!updateStaff.getGender().equals(staff.getGender())){
+            if(!StringUtils.isEmpty(updateStaff.getGender()) &&!updateStaff.getGender().equals(staff.getGender())){
                 staff.setGender(updateStaff.getGender());
             }
-            if(!updateStaff.getPositionId().equals(staff.getPositionId())){
+            if(!StringUtils.isEmpty(updateStaff.getPositionId()) && !updateStaff.getPositionId().equals(staff.getPositionId())){
                 staff.setPositionId(updateStaff.getPositionId());
             }
-            if(!updateStaff.getPositionLvl().equals(staff.getPositionLvl())){
+            if(!StringUtils.isEmpty(updateStaff.getPositionLvl()) && !updateStaff.getPositionLvl().equals(staff.getPositionLvl())){
                 staff.setPositionLvl(updateStaff.getPositionLvl());
             }
-            if(!updateStaff.getEmailAddr().equals(staff.getEmailAddr())){
+            if(!StringUtils.isEmpty(updateStaff.getEmailAddr()) && !updateStaff.getEmailAddr().equals(staff.getEmailAddr())){
                 staff.setEmailAddr(updateStaff.getEmailAddr());
             }
-            if(!updateStaff.getPhoneNum().equals(staff.getPhoneNum())){
+            if(!StringUtils.isEmpty(updateStaff.getPhoneNum()) && !updateStaff.getPhoneNum().equals(staff.getPhoneNum())){
                 staff.setPhoneNum(updateStaff.getPhoneNum());
             }
-            if(!updateStaff.getStatus().equals(staff.getStatus())){
+            if(!StringUtils.isEmpty(updateStaff.getStatus()) && !updateStaff.getStatus().equals(staff.getStatus())){
                 staff.setStatus(updateStaff.getStatus());
             }
 
