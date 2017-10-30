@@ -47,12 +47,26 @@ public class StaffServiceImpl implements StaffService {
      * @return
      */
     public RestResponse rtrvStaffList(RetrieveStaffListRequest retrieveStaffListRequest) {
+        RetrieveStaffListAndTagCntResponse retrieveStaffListAndTagCntResponse = new RetrieveStaffListAndTagCntResponse();
         RetrieveStaffListResponse retrieveStaffListResponse = new RetrieveStaffListResponse();
         ResponseEntity<Object> responseEntity;
         String url = webConfig.getRtrvStaffListUrl();
         retrieveStaffListResponse = this.restTemplate.postForObject(url, retrieveStaffListRequest, RetrieveStaffListResponse.class);
 //        restResponse = RestResponseUtil.success(responseEntity.getBody());
-        restResponse.setResponseBody(retrieveStaffListResponse);
+        List<StaffAndTagCount> staffAndTagCounts = new ArrayList<>();
+        for (int i = 0; i < retrieveStaffListResponse.getStaffs().size(); i++) {
+            StaffAndTagCount staffAndTagCount = new StaffAndTagCount();
+            staffAndTagCount.setStaff(retrieveStaffListResponse.getStaffs().get(i));
+            String staffId = retrieveStaffListResponse.getStaffs().get(i).getStaffId();
+            String staffTagUrl = webConfig.getRtrvStaffTagListUrl();
+            ParameterizedTypeReference<List<StaffTag>> parameterizedTypeReference = new ParameterizedTypeReference<List<StaffTag>>(){};
+            List<StaffTag> staffTagList = FetchListUtil.fetch(this.restTemplate,staffTagUrl,staffId,parameterizedTypeReference);
+            staffAndTagCount.setTagCnt(staffTagList.size());
+            staffAndTagCounts.add(staffAndTagCount);
+        }
+        retrieveStaffListAndTagCntResponse.setStaffs(staffAndTagCounts);
+        retrieveStaffListAndTagCntResponse.setTotalNumber(retrieveStaffListResponse.getTotalNumber());
+        restResponse.setResponseBody(retrieveStaffListAndTagCntResponse);
         restResponse.setResponseCode("000");
         restResponse.setResponseMsg("请求成功");
         restResponse.setStatusCode("200");

@@ -5,10 +5,10 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class RetrieveStaffListResponse {
+public class RetrieveStaffListAndTagCntResponse {
 
-    private List<Staff> staffs;
-//    private List<StaffAndTagCount> staffs;
+//    private List<Staff> staffs;
+    private List<StaffAndTagCount> staffs;
 
     private Integer totalNumber;
 
@@ -22,11 +22,11 @@ public class RetrieveStaffListResponse {
         this.totalNumber = totalNumber;
     }
 
-    public List<Staff> getStaffs() {
+    public List<StaffAndTagCount> getStaffs() {
         return staffs;
     }
 
-    public void setStaffs(List<Staff> staffs) {
+    public void setStaffs(List<StaffAndTagCount> staffs) {
         this.staffs = staffs;
     }
 
