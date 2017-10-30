@@ -38,6 +38,26 @@ public class SprintInfo {
 
     private String labelIds;
 
+    private String status;
+    //迭代周期
+    private Integer iterationCycle;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Integer getIterationCycle() {
+        return iterationCycle;
+    }
+
+    public void setIterationCycle(Integer iterationCycle) {
+        this.iterationCycle = iterationCycle;
+    }
+
     public String getLabelIds() {
         return labelIds;
     }

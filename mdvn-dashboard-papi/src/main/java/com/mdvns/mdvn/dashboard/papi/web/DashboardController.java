@@ -75,4 +75,36 @@ public class DashboardController {
         return null;
     }
 
+    /**
+     * 更改SprintInfo(start)
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/updateSprintStartStatus")
+    public RestResponse updateSprintStartStatus(@RequestBody UpdateSprintStartStatusRequest request) {
+        return this.dashboardService.updateSprintStartStatus(request);
+    }
+
+    /**
+     * 更改SprintInfo(CLOSE)
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/updateSprintCloseStatus")
+    public RestResponse updateSprintCloseStatus(@RequestBody UpdateSprintCloseStatusRequest request) {
+        return this.dashboardService.updateSprintCloseStatus(request);
+    }
+
+
+    /**
+     * 获取下两个SprintInfo
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/itSprints")
+    public RestResponse itSprints(@RequestBody RtrvItSprintsRequest request) {
+        return this.dashboardService.itSprints(request);
+    }
+
+
 }

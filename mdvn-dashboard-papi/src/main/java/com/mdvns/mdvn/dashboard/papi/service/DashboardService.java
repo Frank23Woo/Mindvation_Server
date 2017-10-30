@@ -14,6 +14,9 @@ public interface DashboardService {
 
     RestResponse assignSprint(AssignStoryListByItRequest request);
     RestResponse getMyDashboardInfos(RtrvMyDashboardInfoRequest request);
+    RestResponse updateSprintStartStatus(UpdateSprintStartStatusRequest request);
+    RestResponse updateSprintCloseStatus(UpdateSprintCloseStatusRequest request);
+    RestResponse itSprints(RtrvItSprintsRequest request);
 
 //    ResponseEntity<?> createDashboard(CreateDashboardRequest request);
 //

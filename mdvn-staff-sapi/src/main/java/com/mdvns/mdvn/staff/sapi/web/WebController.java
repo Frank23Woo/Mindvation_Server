@@ -5,10 +5,9 @@ import com.mdvns.mdvn.common.beans.AssignAuthRequest;
 import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.common.beans.RtrvStaffAuthInfoRequest;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
-import com.mdvns.mdvn.staff.sapi.domain.RetrieveStaffListResponse;
-import com.mdvns.mdvn.staff.sapi.domain.RtrvStaffListByNameRequest;
-import com.mdvns.mdvn.staff.sapi.domain.RtrvStaffListByStaffIbListRequest;
+import com.mdvns.mdvn.staff.sapi.domain.*;
 import com.mdvns.mdvn.staff.sapi.domain.entity.Staff;
+import com.mdvns.mdvn.staff.sapi.domain.entity.StaffTag;
 import com.mdvns.mdvn.staff.sapi.service.AuthService;
 import com.mdvns.mdvn.staff.sapi.service.StaffService;
 import org.slf4j.Logger;
@@ -109,5 +108,27 @@ public class WebController {
     public ResponseEntity<?> assignAuth(@RequestBody RtrvStaffAuthInfoRequest rtrvAuthRequest) {
 
         return this.authService.rtrvAuth(rtrvAuthRequest);
+    }
+
+    @PostMapping(value = "/createStaff")
+    public CreateStaffResponse createStaff(@RequestBody CreateStaffRequest request) {
+        return this.staffService.createStaff(request);
+    }
+
+
+    @PostMapping(value = "/rtrvStaffTagList")
+    public List<StaffTag> rtrvStaffTagList(@RequestBody String staffId) {
+        return this.staffService.rtrvStaffTagList(staffId);
+    }
+
+
+    @PostMapping(value = "/updateStaffDetail")
+    public Boolean updateStaffDetail(@RequestBody UpdateStaffDetailRequest request) {
+        return this.staffService.updateStaffDetail(request);
+    }
+
+    @PostMapping(value = "/deleteStaff/{staffId}")
+    public Boolean deleteStaff(@PathVariable String staffId) {
+        return this.staffService.deleteStaff(staffId);
     }
 }

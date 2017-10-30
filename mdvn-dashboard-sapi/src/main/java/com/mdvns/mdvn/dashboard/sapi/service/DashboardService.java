@@ -31,4 +31,12 @@ public interface DashboardService {
 
     SprintInfo updateSprintInfo(UpdateSprintInfoRequest request);
 
+    SprintInfo addStory(AddStoryRequest request);
+
+    SprintInfo updateSprintStartStatus(UpdateSprintStartStatusRequest request);
+
+    SprintInfo updateSprintCloseStatus(UpdateSprintCloseStatusRequest request);
+
+    List<SprintInfo> itSprint(Integer uuId);
+
 }

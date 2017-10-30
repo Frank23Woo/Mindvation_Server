@@ -6,6 +6,7 @@ import com.mdvns.mdvn.task.papi.domain.*;
 public interface TaskService {
     RestResponse createTask(CreateOrUpdateTaskRequest request) throws Exception;
     RestResponse retrieveTaskList(RtrvTaskListRequest request) throws Exception;
+    RestResponse retrieveTaskInfo(RtrvTaskInfoRequest request) throws Exception;
     RestResponse updateTask(CreateOrUpdateTaskRequest request) throws Exception;
     RestResponse addAttachForTask(AddAttachRequest request);
     RestResponse deleteAttachForTask(AddAttachRequest request);

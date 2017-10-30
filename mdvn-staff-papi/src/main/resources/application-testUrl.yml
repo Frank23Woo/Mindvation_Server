@@ -3,6 +3,15 @@ url:
   rtrvStaffListByStaffIdListUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffListByStaffIdList
   rtrvStaffInfoUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffInfo
   rtrvStaffListByNameUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffListByName
+<<<<<<< HEAD
   assignAuthUrl : http://localhost:8080/mdvn-staff-sapi/staffAuth
   rtrvAuthUrl : http://localhost:8080/mdvn-staff-sapi/rtrvAuth
   findByIdUrl : http://localhost:8080/mdvn-staff-sapi/staff
+=======
+  createStaffUrl: http://localhost:8080/mdvn-staff-sapi/createStaff
+  rtrvStaffDetailUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffDetail
+  rtrvStaffTagListUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffTagList
+  updateStaffDetailUrl: http://localhost:8080/mdvn-staff-sapi/updateStaffDetail
+  rtrvTagsUrl: http://localhost:8080/mdvn-tag-sapi/tags/rtrvTags
+
+>>>>>>> 02032cc46be60f31b668c8b41786eea6d8917a4a

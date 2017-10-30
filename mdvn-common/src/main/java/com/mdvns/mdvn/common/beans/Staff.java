@@ -24,6 +24,17 @@ public class Staff {
     //工作饱和度
     private Double Worksaturation;
 
+    /*who create this staff*/
+    private String creatorId;
+
+    private String positionLvl;
+
+    private String emailAddr;
+
+    private String phoneNum;
+
+    private String status;
+
     public Integer getUuId() {
         return uuId;
     }

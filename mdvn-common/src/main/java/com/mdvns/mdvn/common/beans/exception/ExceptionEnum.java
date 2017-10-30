@@ -34,6 +34,10 @@ public enum ExceptionEnum {
 	Model_IS_CREATED("1201", "模块已存在!"),
 	functionModel_NOT_FOUND("1202", "过程方法模块不存在!"),
 
+	//Staff
+	UPDATE_STAFF_FAIL("1900", "Fail to Update Staff Information "),
+	DELETE_STAFF_FAIL("1901", "Fail to delete staff"),
+
 	//用户(User)
 	USER_NOT_FOUND("1800", "用户不存在!"),
 	PASSWORD_INCORRECT("1801", "密码错误!"),
@@ -105,7 +109,12 @@ public enum ExceptionEnum {
 	DASHBOARD_DETAIL_STORY_NOT_RTRV("1702", "调用SAPI获取看板的storylist信息时失败"),
 	DASHBOARD_NOT_CREATE("1703", "调用SAPI创建dashboard时失败"),
 	DASHBOARD_NOT_UPDATE("1704", "调用SAPI更改dashboard时失败"),
-	MYDASHBOARD_NOT_UPDATE("1705", "调用SAPI更改个人dashboard时失败");
+	MYDASHBOARD_NOT_RTRV("1705", "调用SAPI获取个人dashboard时失败"),
+	MYDASHBOARD_NOT_UPDATE("1706", "调用SAPI更改个人dashboard时失败"),
+	DASHBOARD_STATUS_START_NOT_UPDATE("1707", "调用SAPI更改SprintInfo(start)时失败"),
+	DASHBOARD_STATUS_CLOSE_NOT_UPDATE("1708", "调用SAPI更改SprintInfo(CLOSE)时失败"),
+	DASHBOARD_NEXT_SPRINT_NOT_RTRV("1709", "调用SAPI获取接下来两个sprint时失败");
+
 
 		String erroCode;
 		String ErrorMsg;

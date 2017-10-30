@@ -1,11 +1,11 @@
 package com.mdvns.mdvn.department.sapi.web;
 
 import com.mdvns.mdvn.department.sapi.domain.*;
+import com.mdvns.mdvn.department.sapi.domain.entity.Department;
+import com.mdvns.mdvn.department.sapi.domain.entity.Position;
 import com.mdvns.mdvn.department.sapi.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -40,4 +40,18 @@ public class DepartmentController {
         return departmentService.updateDepartment(request);
     }
 
+    @PostMapping(value = "/findDepartmentListByIds")
+    private List<Department> findDepartmentListByIds(@RequestBody String ids){
+        return departmentService.findDepartmentListByIds(ids);
+    }
+
+    @PostMapping(value = "/findPositionListByIds")
+    private List<Position> findPositionListByIds(@RequestBody String ids) {
+        return departmentService.findPositionListByIds(ids);
+    }
+
+//    @PostMapping(value = "/findPositionListByIds")
+//    private List<Position> findPositionListByIds(@RequestBody String ids) {
+//        return departmentService.findPositionListByIds(ids);
+//    }
 }

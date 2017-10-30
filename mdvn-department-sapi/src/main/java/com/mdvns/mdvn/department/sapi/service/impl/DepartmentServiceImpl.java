@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -135,7 +136,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             }
 
             List<Position> positionsForAdd = new ArrayList<>();
-            for (Position position: positionList) {
+            for (Position position : positionList) {
                 if (StringUtils.isEmpty(position.getId())) {
                     position.setIsDeleted(0);
                     position.setDepartmentId(request.getId());
@@ -164,6 +165,65 @@ public class DepartmentServiceImpl implements DepartmentService {
         return createDepartmentDetail(department, positionRepository.findAllByDepartmentIdAndIsDeleted(department.getId(), 0));
     }
 
+    @Override
+    public List<Department> findDepartmentListByIds(String ids) {
+        if (StringUtils.isEmpty(ids)) {
+            return new ArrayList<>();
+        }
+
+        String[] idArray = ids.split(",");
+
+        List<Department> departmentList = departmentRepository.findAllByIdIn(Arrays.asList(idArray));
+        if (departmentList.size() == idArray.length) {
+            return departmentList;
+        } else {
+            // 传入参数包含重复id
+            ArrayList<Department> result = new ArrayList<>();
+
+            boolean find = false;
+            for (String id : idArray) {
+                find = false;
+                for (Department department : departmentList) {
+                    if (department.getId().equals(id)) {
+                        result.add(department);
+                        find = true;
+                        break;
+                    }
+                }
+            }
+            return result;
+        }
+    }
+
+    @Override
+    public List<Position> findPositionListByIds(String ids) {
+        if (StringUtils.isEmpty(ids)) {
+            return new ArrayList<>();
+        }
+
+        String[] idArray = ids.split(",");
+        List<Position> positionList = positionRepository.findAllByIdIn(convertStringListToIntegerList(Arrays.asList(idArray)));
+        if (positionList.size() == idArray.length) {
+            return positionList;
+        } else {
+            // 传入参数包含重复id
+            ArrayList<Position> result = new ArrayList<>();
+
+            boolean find = false;
+            for (String id : idArray) {
+                find = false;
+                for (Position position : positionList) {
+                    if (position.getId().toString().equals(id)){
+                        result.add(position);
+                        find = true;
+                        break;
+                    }
+                }
+            }
+            return result;
+        }
+    }
+
     // 公共方法
     private DepartmentDetail createDepartmentDetail(Department department, List<Position> positionList) {
         DepartmentDetail departmentDetail = new DepartmentDetail();
@@ -174,5 +234,17 @@ public class DepartmentServiceImpl implements DepartmentService {
         departmentDetail.setCreateTime(department.getCreateTime());
         departmentDetail.setPositions(positionList);
         return departmentDetail;
+    }
+
+    private List<Integer> convertStringListToIntegerList(List<String> list) {
+        List<Integer> intList = new ArrayList<>();
+        for (String str : list) {
+            try {
+                intList.add(Integer.parseInt(str));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        return intList;
     }
 }
