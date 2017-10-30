@@ -55,6 +55,18 @@ public class RtrvReqmntController {
         return service.rtrvReqmntInfoBymodelId(request);
     }
 
+    /**
+     * 看板那里，获取story对应的reqmnt的labelId
+     * @param storyId
+     * @return
+     */
+    @PostMapping(value = "/rtrvlabelIdBystoryId")
+    private RequirementInfo rtrvlabelIdBystoryId(@RequestBody String storyId){
+        return service.rtrvlabelIdBystoryId(storyId);
+    }
+
+
+
 
 
 }

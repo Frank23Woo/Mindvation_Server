@@ -447,8 +447,8 @@ public class ProjServiceImpl implements IProjService {
 
 
         //获取用户在项目中的权限信息
-        StaffAuthInfo staffAuthInfo = rtrvStaffAuthInfo(rtrvProjectDetailRequest.getProjId(), rtrvProjectDetailRequest.getStaffId());
-        rtrvProjectDetailResponse.setStaffAuthInfo(staffAuthInfo);
+//        StaffAuthInfo staffAuthInfo = rtrvStaffAuthInfo(rtrvProjectDetailRequest.getProjId(), rtrvProjectDetailRequest.getStaffId());
+//        rtrvProjectDetailResponse.setStaffAuthInfo(staffAuthInfo);
 
         rtrvProjectDetailResponse.setProjectDetail(projectDetail);
         restResponse.setResponseBody(rtrvProjectDetailResponse);

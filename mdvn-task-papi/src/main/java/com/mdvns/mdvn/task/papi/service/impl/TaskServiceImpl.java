@@ -136,6 +136,51 @@ public class TaskServiceImpl implements TaskService {
         return restResponse;
     }
 
+    /**
+     * 获取单个task信息
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public RestResponse retrieveTaskInfo(RtrvTaskInfoRequest request) throws Exception {
+        RestResponse restResponse = new RestResponse();
+
+        // 参数检查
+        if (request == null || request.getTaskId() == null) {
+            restResponse.setResponseCode(ExceptionEnum.PARAMS_EXCEPTION.getErroCode());
+            restResponse.setResponseMsg(ExceptionEnum.PARAMS_EXCEPTION.getErrorMsg());
+            return restResponse;
+        }
+
+        try {
+            // 查询task sapi
+            ParameterizedTypeReference typeReference = new ParameterizedTypeReference<TaskDetail>() {
+            };
+            String taskId = request.getTaskId();
+            TaskDetail taskDetail = restTemplate.postForObject(urlConfig.getRtrvTaskInfoUrl(),taskId,TaskDetail.class);
+            // 查询creator和assignee
+            String creatorId = taskDetail.getCreatorId();
+            Staff creatorInfo = this.restTemplate.postForObject(urlConfig.getRtrvStaffInfoUrl(),creatorId,Staff.class);
+            String assigneeId = taskDetail.getAssigneeId();
+            Staff assigneeInfo = this.restTemplate.postForObject(urlConfig.getRtrvStaffInfoUrl(),assigneeId,Staff.class);
+            taskDetail.setAssignee(assigneeInfo);
+            taskDetail.setCreator(creatorInfo);
+            //附件
+            getTaskAttachment(taskDetail);
+
+            restResponse.setResponseCode("000");
+            restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
+            restResponse.setResponseMsg("ok");
+            restResponse.setResponseBody(taskDetail);
+        } catch (RestClientException e) {
+            e.printStackTrace();
+            restResponse.setResponseCode(ExceptionEnum.SAPI_EXCEPTION.getErroCode());
+            restResponse.setResponseMsg(ExceptionEnum.SAPI_EXCEPTION.getErrorMsg());
+        }
+        return restResponse;
+    }
+
     @Override
     public RestResponse updateTask(CreateOrUpdateTaskRequest request) throws Exception {
         RestResponse restResponse = new RestResponse();

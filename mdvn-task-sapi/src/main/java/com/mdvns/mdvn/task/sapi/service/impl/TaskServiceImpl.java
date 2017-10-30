@@ -59,6 +59,19 @@ public class TaskServiceImpl implements TaskService {
         return taskDetails;
     }
 
+    /**
+     * 获取单独task详细信息
+     * @param taskId
+     * @return
+     */
+    @Override
+    public TaskDetail rtrvTaskInfo(String taskId) {
+        Task task = taskRepository.findByTaskId(taskId);
+        TaskDetail detail = new TaskDetail(task);
+        detail.setDeliver(deliverRepository.getOne(task.getDeliverId()));
+        return detail;
+    }
+
     @Override
     public TaskDetail createTask(CreateTaskRequest request) throws Exception {
         LOG.info("开始执行{} createTask()方法." + request.toString(), CLASS);
@@ -266,9 +279,9 @@ public class TaskServiceImpl implements TaskService {
         RtrvMyDashboardInfoResponse rtrvMyDashboardInfoResponse = new RtrvMyDashboardInfoResponse();
         String projId = request.getProjId();
         String creatorId = request.getCreatorId();
-        List<Task> toDoTasks = taskRepository.findAllByProjIdAndCreatorIdAndProgressAndIsDeleted(projId,creatorId,0,0);
-        List<Task> InProgressTasks = taskRepository.findAllByProjIdAndCreatorIdAndProgressIsNotInAndProgressIsNotInAndIsDeleted(projId,creatorId,0,100,0);
-        List<Task> doneTasks = taskRepository.findAllByProjIdAndCreatorIdAndProgressAndIsDeleted(projId,creatorId,100,0);
+        List<Task> toDoTasks = taskRepository.findAllByProjIdAndCreatorIdAndStatusAndIsDeleted(projId,creatorId,"new",0);
+        List<Task> InProgressTasks = taskRepository.findAllByProjIdAndCreatorIdAndStatusAndIsDeleted(projId,creatorId,"inProgress",0);
+        List<Task> doneTasks = taskRepository.findAllByProjIdAndCreatorIdAndStatusAndIsDeleted(projId,creatorId,"done",0);
         rtrvMyDashboardInfoResponse.setToDo(toDoTasks);
         rtrvMyDashboardInfoResponse.setInProgress(InProgressTasks);
         rtrvMyDashboardInfoResponse.setDone(doneTasks);
@@ -294,6 +307,8 @@ public class TaskServiceImpl implements TaskService {
         task = taskRepository.saveAndFlush(task);
         return task;
     }
+
+
 
 
 }

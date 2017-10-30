@@ -22,6 +22,17 @@ public class TaskController {
         return taskService.rtrvTaskList(request);
     }
 
+    /**
+     * 获取单个task详细信息
+     * @param taskId
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/rtrvTaskInfo")
+    private TaskDetail rtrvTaskInfo(@RequestBody String taskId) throws Exception {
+        return taskService.rtrvTaskInfo(taskId);
+    }
+
     @PostMapping("/saveTask")
     private TaskDetail createTask(@RequestBody CreateTaskRequest task) throws Exception {
         return taskService.createTask(task);

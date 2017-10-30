@@ -48,6 +48,12 @@ public class StoryServiceImpl implements IStoryService {
         ResponseEntity<RtrvStoryListResponse> rtrvStoryListResponse = this.restTemplate.postForEntity(storyInfoListUrl, rtrvStoryListRequest, RtrvStoryListResponse.class);
         restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
         restResponse.setResponseCode("000");
+        Integer storyPoint = null;
+        for (int i = 0; i <rtrvStoryListResponse.getBody().getStories().size() ; i++) {
+            storyPoint = rtrvStoryListResponse.getBody().getStories().get(i).getStoryPoint();
+            storyPoint +=storyPoint;
+        }
+        System.out.println(storyPoint);
         restResponse.setResponseBody(rtrvStoryListResponse.getBody());
         return restResponse;
     }
@@ -139,6 +145,16 @@ public class StoryServiceImpl implements IStoryService {
             } catch (Exception ex) {
                 throw new BusinessException(ExceptionEnum.STORY_ATTCHURL_NOT_CREATE);
             }
+        }
+        //7.创建story时sprint表里要在backlogs里面加一条story(看板)
+        AddStoryRequest addStoryRequest = new AddStoryRequest();
+        addStoryRequest.setProjId(createStoryRequest.getStoryInfo().getProjId());
+        addStoryRequest.setStoryId(storyId);
+        String addStoryUrl = config.getAddStoryUrl();
+        try {
+            SprintInfo sprintInfo = restTemplate.postForObject(addStoryUrl, addStoryRequest, SprintInfo.class);
+        } catch (Exception ex) {
+            throw new BusinessException(ExceptionEnum.STORY_ATTCHURL_NOT_CREATE);
         }
         return restResponse;
     }

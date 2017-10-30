@@ -38,4 +38,7 @@ public interface ReqmntRepository extends JpaRepository<RequirementInfo, Integer
 
     @Query(value = "SELECT * from project WHERE proj_id=?1", nativeQuery = true)
     RequirementInfo rtrvProjBaseInfo(String projId);
+
+    @Query(value = "SELECT * from requirement_info WHERE reqmnt_id= (select reqmnt_id from story where story_id = ?1)", nativeQuery = true)
+    RequirementInfo rtrvReqmntInfoByStoryId(String storyId);
 }
