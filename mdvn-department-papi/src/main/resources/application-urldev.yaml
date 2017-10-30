@@ -1,0 +1,44 @@
+config:
+  saveReqmntUrl: http://localhost:10012/mdvn-reqmnt-sapi/saveReqmnt
+  saveRMembersUrl: http://localhost:10012/mdvn-reqmnt-sapi/saveRMembers
+  saveRTagsUrl: http://localhost:10012/mdvn-reqmnt-sapi/saveRTags
+  saveRCheckListUrl: http://localhost:10012/mdvn-reqmnt-sapi/saveRCheckLists
+  saveRAttchUrl: http://localhost:10012/mdvn-reqmnt-sapi/saveRAttchUrls
+
+  rtrvReqmntInfoUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntInfo
+  rtrvReqmntListUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntList
+  rtrvReqmntTagsUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntTags
+  rtrvReqmntMembersUrl : http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntMembers
+  rtrvReqmntCheckListUrl : http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntCheckList
+  rtrvReqmntAttchsUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntAttUrls
+  updateReqmntInfoUrl: http://localhost:10012/mdvn-reqmnt-sapi/updateReqmntInfo
+
+
+# staff sapi urls
+  rtrvStaffsByIdsUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffListByStaffIdList
+  rtrvStaffInfoUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffInfo
+
+# tag sapi urls
+  rtrvTagsByIdsUrl: http://localhost:10002/mdvn-tag-s/tags/rtrvTags
+
+# model sapi urls
+  rtrvFuncLabelUrl: http://localhost:10009/mdvn-model-s/models/findFuncById
+  rtrvModelRoleByModelIdUrl: http://localhost:10009/mdvn-model-s/models/findById
+
+# task sapi urls
+  saveTaskUrl: http://localhost:10004/mdvn-task-sapi/saveTask
+  rtrvTaskListUrl: http://localhost:10004/mdvn-task-sapi/rtrvTaskList
+  updateTaskUrl: http://localhost:10004/mdvn-task-sapi/updateTask
+  addAttachForTaskUrl: http://localhost:10004/mdvn-task-sapi/addAttachForTask
+  deleteAttachForTaskUrl: http://localhost:10004/mdvn-task-sapi/deleteAttachForTask
+# attachment sapi urls
+  getAttachmentListByIdsUrl: http://localhost:10019/mdvn-file-sapi/files/
+
+
+# department sapi urls
+  createDepartmentUrl: http://localhost:10023/mdvn-department-sapi/createDepartment
+  deleteDepartmentUrl: http://localhost:10023/mdvn-department-sapi/deleteDepartment
+  rtrvDepartmentUrl: http://localhost:10023/mdvn-department-sapi/rtrvDepartment
+  rtrvDepartmentListUrl: http://localhost:10023/mdvn-department-sapi/rtrvDepartmentList
+  updateDepartmentUrl: http://localhost:10023/mdvn-department-sapi/updateDepartment
+

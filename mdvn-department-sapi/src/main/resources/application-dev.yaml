@@ -1,0 +1,8 @@
+server:
+  port: 10023
+  context-path: /mdvn-department-sapi
+spring:
+  datasource:
+    url: jdbc:mysql://192.168.0.254/db_mdvn_dev?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: tom
+    password: tom
