@@ -25,7 +25,7 @@ public class StaffAuthInfo {
     private Integer authCode;
 
     /*项目模块Id*/
-    private String moduleId;
+    private String hierarchyId;
 
     /*权限添加人Id*/
     private String assignerId;
@@ -37,12 +37,12 @@ public class StaffAuthInfo {
 
     private Integer isDeleted;
 
-    public String getModuleId() {
-        return moduleId;
+    public String getHierarchyId() {
+        return hierarchyId;
     }
 
-    public void setModuleId(String moduleId) {
-        this.moduleId = moduleId;
+    public void setHierarchyId(String hierarchyId) {
+        this.hierarchyId = hierarchyId;
     }
 
     public StaffAuthInfo() {
@@ -105,7 +105,6 @@ public class StaffAuthInfo {
         this.isDeleted = isDeleted;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -118,7 +117,7 @@ public class StaffAuthInfo {
         if (getStaffId() != null ? !getStaffId().equals(that.getStaffId()) : that.getStaffId() != null) return false;
         if (getAuthCode() != null ? !getAuthCode().equals(that.getAuthCode()) : that.getAuthCode() != null)
             return false;
-        if (getModuleId() != null ? !getModuleId().equals(that.getModuleId()) : that.getModuleId() != null)
+        if (getHierarchyId() != null ? !getHierarchyId().equals(that.getHierarchyId()) : that.getHierarchyId() != null)
             return false;
         if (getAssignerId() != null ? !getAssignerId().equals(that.getAssignerId()) : that.getAssignerId() != null)
             return false;
@@ -133,7 +132,7 @@ public class StaffAuthInfo {
         result = 31 * result + (getProjId() != null ? getProjId().hashCode() : 0);
         result = 31 * result + (getStaffId() != null ? getStaffId().hashCode() : 0);
         result = 31 * result + (getAuthCode() != null ? getAuthCode().hashCode() : 0);
-        result = 31 * result + (getModuleId() != null ? getModuleId().hashCode() : 0);
+        result = 31 * result + (getHierarchyId() != null ? getHierarchyId().hashCode() : 0);
         result = 31 * result + (getAssignerId() != null ? getAssignerId().hashCode() : 0);
         result = 31 * result + (getCreateTime() != null ? getCreateTime().hashCode() : 0);
         result = 31 * result + (getIsDeleted() != null ? getIsDeleted().hashCode() : 0);
@@ -147,7 +146,7 @@ public class StaffAuthInfo {
                 ", projId='" + projId + '\'' +
                 ", staffId='" + staffId + '\'' +
                 ", authCode=" + authCode +
-                ", moduleId='" + moduleId + '\'' +
+                ", hierarchyId='" + hierarchyId + '\'' +
                 ", assignerId='" + assignerId + '\'' +
                 ", createTime=" + createTime +
                 ", isDeleted=" + isDeleted +

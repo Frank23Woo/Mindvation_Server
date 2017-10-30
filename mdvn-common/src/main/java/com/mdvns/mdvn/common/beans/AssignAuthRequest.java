@@ -13,7 +13,7 @@ public class AssignAuthRequest {
 
     private  String assignerId;
     
-    private String moduleId;
+    private String hierarchyId;
 
 	public String getProjId() {
 		return projId;
@@ -47,12 +47,12 @@ public class AssignAuthRequest {
 		this.assignerId = assignerId;
 	}
 
-	public String getModuleId() {
-		return moduleId;
+	public String getHierarchyId() {
+		return hierarchyId;
 	}
 
-	public void setModuleId(String moduleId) {
-		this.moduleId = moduleId;
+	public void setHierarchyId(String hierarchyId) {
+		this.hierarchyId = hierarchyId;
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class AssignAuthRequest {
 		result = prime * result + ((assigneeId == null) ? 0 : assigneeId.hashCode());
 		result = prime * result + ((assignerId == null) ? 0 : assignerId.hashCode());
 		result = prime * result + ((authCode == null) ? 0 : authCode.hashCode());
-		result = prime * result + ((moduleId == null) ? 0 : moduleId.hashCode());
+		result = prime * result + ((hierarchyId == null) ? 0 : hierarchyId.hashCode());
 		result = prime * result + ((projId == null) ? 0 : projId.hashCode());
 		return result;
 	}
@@ -91,10 +91,10 @@ public class AssignAuthRequest {
 				return false;
 		} else if (!authCode.equals(other.authCode))
 			return false;
-		if (moduleId == null) {
-			if (other.moduleId != null)
+		if (hierarchyId == null) {
+			if (other.hierarchyId != null)
 				return false;
-		} else if (!moduleId.equals(other.moduleId))
+		} else if (!hierarchyId.equals(other.hierarchyId))
 			return false;
 		if (projId == null) {
 			if (other.projId != null)
@@ -107,8 +107,7 @@ public class AssignAuthRequest {
 	@Override
 	public String toString() {
 		return "AssignAuthRequest [projId=" + projId + ", assigneeId=" + assigneeId + ", authCode=" + authCode
-				+ ", assignerId=" + assignerId + ", moduleId=" + moduleId + "]";
+				+ ", assignerId=" + assignerId + ", hierarchyId=" + hierarchyId + "]";
 	}
-    
-    
+
 }
