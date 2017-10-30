@@ -44,3 +44,5 @@ config:
   rtrvTaskListByStoryIdUrl: http://localhost:10003/mdvn-task-papi/task/retrieveTaskList
 
   rtrvAttchListUrl: http://localhost:10019/mdvn-file-sapi/files/
+
+  addStoryUrl: http://localhost:10017/mdvn-dashboard-sapi/dashboards/addStory

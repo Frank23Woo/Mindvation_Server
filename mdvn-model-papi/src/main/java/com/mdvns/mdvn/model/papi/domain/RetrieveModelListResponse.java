@@ -9,6 +9,8 @@ public class RetrieveModelListResponse {
 
     private List<Model> models;
 
+//    private List<ModelAndSort> models;
+
     private Long totalNumber;
 
     private List<String> remarks;

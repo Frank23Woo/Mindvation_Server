@@ -61,10 +61,11 @@ public class CreateProjServiceImpl implements ICreateProjService {
         Integer pageSize = request.getPageSize();
         Integer m = page * pageSize;
         Integer n = pageSize;
-        List<Project> pageList = this.projectRepository.rtrvProjInfoList(request.getStaffId(), m, n);
-        Long totalElements = this.projectRepository.getProjBaseInfoCount(request.getStaffId());
+//        List<Project> pageList = this.projectRepository.rtrvProjInfoList(request.getStaffId(), m, n);
+        List<Project> pageList = this.projectRepository.rtrvProjInfoList(m, n);
+//        Long totalElements = this.projectRepository.getProjBaseInfoCount(request.getStaffId());
         rtrvProjectListResponse.setProjects(pageList);
-        rtrvProjectListResponse.setTotalElements(totalElements);
+        rtrvProjectListResponse.setTotalElements((long) pageList.size());
 
         LOG.info("查询结果为：{}", rtrvProjectListResponse);
         return RestResponseUtil.success(rtrvProjectListResponse);

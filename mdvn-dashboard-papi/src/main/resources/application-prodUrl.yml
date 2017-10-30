@@ -11,4 +11,6 @@ url:
  findIterationModelByIdUrl: http://localhost:10009/mdvn-model-sapi/models/findIterationModelById
  updateMyDashboardUrl: http://localhost:10004/mdvn-task-sapi/updateMyDashboard
  myDashboardInfosUrl: http://localhost:10004/mdvn-task-sapi/myDashboardInfos
+ rtrvStaffInfoUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffInfo
+ rtrvlabelIdBystoryIdUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvlabelIdBystoryId
 

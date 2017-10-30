@@ -27,6 +27,25 @@ public class WebConfig {
     private String updateSprintInfoUrl;
     private String updateMyDashboardUrl;
     private String myDashboardInfosUrl;
+    private String rtrvStaffInfoUrl;
+
+    private String rtrvlabelIdBystoryIdUrl;
+
+    public String getRtrvlabelIdBystoryIdUrl() {
+        return rtrvlabelIdBystoryIdUrl;
+    }
+
+    public void setRtrvlabelIdBystoryIdUrl(String rtrvlabelIdBystoryIdUrl) {
+        this.rtrvlabelIdBystoryIdUrl = rtrvlabelIdBystoryIdUrl;
+    }
+
+    public String getRtrvStaffInfoUrl() {
+        return rtrvStaffInfoUrl;
+    }
+
+    public void setRtrvStaffInfoUrl(String rtrvStaffInfoUrl) {
+        this.rtrvStaffInfoUrl = rtrvStaffInfoUrl;
+    }
 
     public String getMyDashboardInfosUrl() {
         return myDashboardInfosUrl;

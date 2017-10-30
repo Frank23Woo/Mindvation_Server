@@ -65,6 +65,26 @@ public class WebController {
     }
 
     /**
+     * 获取Model列表，分页/排序,由类型选择
+     */
+    @PostMapping(value = "/modelsAndSort")
+    public RetrieveModelListAndSortResponse rtrvModelAndSortList(@RequestBody RetrieveModelListByTypeRequest retrieveModelListRequest) throws SQLException, BusinessException {
+        Integer page = retrieveModelListRequest.getPage();
+        Integer pageSize = retrieveModelListRequest.getPageSize();
+        String modelType = retrieveModelListRequest.getModelType();
+        String creatorId = retrieveModelListRequest.getCreatorId();
+//        if (null==page||pageSize==null) {
+//            return this.modelService.rtrvModelList();
+//        }
+//        if (null==modelType && null==creatorId){
+//            return this.modelService.rtrvModelList((page-1), pageSize, retrieveModelListRequest.getSortBy());
+//        }else{
+            return this.modelService.rtrvModelAndSortList(retrieveModelListRequest);
+//        }
+    }
+
+
+    /**
      * 根据名称查询模型
      *
      * @param name 模型名称

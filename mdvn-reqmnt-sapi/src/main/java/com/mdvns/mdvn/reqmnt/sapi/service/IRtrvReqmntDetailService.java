@@ -26,4 +26,6 @@ public interface IRtrvReqmntDetailService {
 
     List<RtrvReqmntInfoByModelIdResponse> rtrvReqmntInfoBymodelId(RtrvReqmntInfoByModelRequest request);
 
+    RequirementInfo rtrvlabelIdBystoryId(String storyId);
+
 }

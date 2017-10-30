@@ -31,4 +31,6 @@ public interface DashboardService {
 
     SprintInfo updateSprintInfo(UpdateSprintInfoRequest request);
 
+    SprintInfo addStory(AddStoryRequest request);
+
 }

@@ -6,9 +6,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class ModelAndStaff {
 
+    private Integer sort;
+
     private Staff creatorInfo;
 
     private Model model;
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
 
     public Staff getCreatorInfo() {
         return creatorInfo;

@@ -19,7 +19,6 @@ import org.springframework.util.StringUtils;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -357,6 +356,47 @@ public class ModelServiceImpl implements ModelService {
         retrieveModelListResponse.setTotalNumber(modelPage.getTotalElements());
         return retrieveModelListResponse;
     }
+
+    /**
+     * 先排序再分页
+     * @param retrieveModelListRequest
+     * @return
+     * @throws SQLException
+     */
+    @Override
+    public RetrieveModelListAndSortResponse rtrvModelAndSortList(RetrieveModelListByTypeRequest retrieveModelListRequest) throws
+            SQLException {
+        Integer page = retrieveModelListRequest.getPage()-1;
+        Integer pageSize = retrieveModelListRequest.getPageSize();
+        Integer m = page * pageSize;
+        Integer n = pageSize;
+        String sortBy = retrieveModelListRequest.getSortBy();
+        String modelType = retrieveModelListRequest.getModelType();
+        String creatorId = retrieveModelListRequest.getCreatorId();
+        RetrieveModelListAndSortResponse retrieveModelListAndSortResponse = new RetrieveModelListAndSortResponse();
+        List<Model> models = new ArrayList<>();
+        if (null!=modelType && null==creatorId) {
+            models = this.modelRepository.rtrvModelInfoListByModelType(modelType,m,n);
+        }
+        if (null==modelType && null!=creatorId){
+            models = this.modelRepository.rtrvModelInfoListByCreatorId(creatorId, m,n);
+        }
+        if (null!=modelType && null!=creatorId){
+            models = this.modelRepository.rtrvModelInfoList(modelType,creatorId,m,n);
+        }
+        List<ModelAndSort> modelAndSorts = new ArrayList<>();
+        for (int i = 0; i < models.size() ; i++) {
+            ModelAndSort modelAndSort = new ModelAndSort();
+            modelAndSort.setSort(i+1);
+            modelAndSort.setModel(models.get(i));
+            modelAndSorts.add(modelAndSort);
+        }
+        retrieveModelListAndSortResponse.setModels(modelAndSorts);
+        retrieveModelListAndSortResponse.setTotalNumber((long) models.size());
+        return retrieveModelListAndSortResponse;
+    }
+
+
 
     /**
      * 通过modelId获取它的过程方法模块对象（List）

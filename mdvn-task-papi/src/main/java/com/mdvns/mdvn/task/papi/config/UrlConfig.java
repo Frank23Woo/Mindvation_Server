@@ -38,11 +38,20 @@ public class UrlConfig {
     private String rtrvTaskListUrl;
     private String updateTaskUrl;
     private String addAttachForTaskUrl;
+    private String rtrvTaskInfoUrl;
 
     // file sapi
     private String getAttachmentListByIdsUrl;
 
     private String deleteAttachForTaskUrl;
+
+    public String getRtrvTaskInfoUrl() {
+        return rtrvTaskInfoUrl;
+    }
+
+    public void setRtrvTaskInfoUrl(String rtrvTaskInfoUrl) {
+        this.rtrvTaskInfoUrl = rtrvTaskInfoUrl;
+    }
 
     public String getDeleteAttachForTaskUrl() {
         return deleteAttachForTaskUrl;
