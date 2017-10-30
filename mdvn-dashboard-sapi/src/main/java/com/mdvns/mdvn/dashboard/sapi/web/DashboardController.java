@@ -58,7 +58,7 @@ public class DashboardController {
     }
 
     /**
-     * 更改SprintInfo
+     * 更改List<SprintInfo>
      * @param request
      * @return
      */

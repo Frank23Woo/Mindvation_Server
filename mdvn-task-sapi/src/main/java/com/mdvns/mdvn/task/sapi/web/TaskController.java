@@ -55,6 +55,16 @@ public class TaskController {
     public RtrvMyDashboardInfoResponse findMyDashboardInfo(@RequestBody RtrvMyDashboardInfoRequest request) {
         return this.taskService.findMyDashboardInfo(request);
     }
+    /**
+     * 更改个人看板信息
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/updateMyDashboard")
+    public Task updateMyDashboard(@RequestBody UpdateMyDashboardRequest request) {
+        return this.taskService.updateMyDashboard(request);
+    }
+
 
 
 }

@@ -19,4 +19,6 @@ public interface TaskService {
     TaskDetail deleteAttachForTask(AddAttachRequest request);
 
     RtrvMyDashboardInfoResponse findMyDashboardInfo(RtrvMyDashboardInfoRequest request);
+
+    Task updateMyDashboard(UpdateMyDashboardRequest request);
 }

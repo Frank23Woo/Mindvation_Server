@@ -25,6 +25,24 @@ public class WebConfig {
     private String findIterationModelByIdUrl;
 
     private String updateSprintInfoUrl;
+    private String updateMyDashboardUrl;
+    private String myDashboardInfosUrl;
+
+    public String getMyDashboardInfosUrl() {
+        return myDashboardInfosUrl;
+    }
+
+    public void setMyDashboardInfosUrl(String myDashboardInfosUrl) {
+        this.myDashboardInfosUrl = myDashboardInfosUrl;
+    }
+
+    public String getUpdateMyDashboardUrl() {
+        return updateMyDashboardUrl;
+    }
+
+    public void setUpdateMyDashboardUrl(String updateMyDashboardUrl) {
+        this.updateMyDashboardUrl = updateMyDashboardUrl;
+    }
 
     public String getUpdateSprintInfoUrl() {
         return updateSprintInfoUrl;

@@ -80,6 +80,7 @@ public class TaskServiceImpl implements TaskService {
         task.setCreateTime(now);
         task.setLastUpdateTime(now);
         task.setProgress(0);
+        task.setStatus("new");
         task.setComment("");
         task.setAttachmentIds("");
         task.setDeliverId(deliver.getId());
@@ -141,6 +142,12 @@ public class TaskServiceImpl implements TaskService {
             }
 
             if (request.getProgress() != null && request.getProgress() != taskOld.getProgress()) {
+                if (request.getProgress() == 100){
+                    taskOld.setStatus("done");
+                }
+                if ( request.getProgress().intValue() < 100 && request.getProgress().intValue()>0){
+                    taskOld.setStatus("inProgress");
+                }
                 taskOld.setProgress(request.getProgress());
                 changed = true;
             }
@@ -267,4 +274,25 @@ public class TaskServiceImpl implements TaskService {
         rtrvMyDashboardInfoResponse.setDone(doneTasks);
         return rtrvMyDashboardInfoResponse;
     }
+
+    /**
+     * 更改个人看板
+     * @param request
+     * @return
+     */
+    @Override
+    public Task updateMyDashboard(UpdateMyDashboardRequest request) {
+        String taskId = request.getTaskId();
+        String status = request.getStatus();
+        Task task = taskRepository.findByTaskId(taskId);
+        if (status.equals("inProgress")){
+            task.setStatus("inProgress");
+        }else{
+            task.setStatus("done");
+        }
+        task = taskRepository.saveAndFlush(task);
+        return task;
+    }
+
+
 }

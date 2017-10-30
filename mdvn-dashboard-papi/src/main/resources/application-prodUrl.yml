@@ -9,4 +9,6 @@ url:
  rtrvStoryInfoListByStoryIdsUrl: http://localhost:10015/mdvn-story-sapi/story/rtrvStoryInfoListByStoryIds
  createSprintInfoUrl: http://localhost:10017/mdvn-dashboard-sapi/dashboards/createSprintInfo
  findIterationModelByIdUrl: http://localhost:10009/mdvn-model-sapi/models/findIterationModelById
+ updateMyDashboardUrl: http://localhost:10004/mdvn-task-sapi/updateMyDashboard
+ myDashboardInfosUrl: http://localhost:10004/mdvn-task-sapi/myDashboardInfos
 

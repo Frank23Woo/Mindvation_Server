@@ -1,16 +1,11 @@
-package com.mdvns.mdvn.task.papi.domain;
+package com.mdvns.mdvn.common.beans;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.mdvns.mdvn.common.beans.AttchInfo;
-import com.mdvns.mdvn.common.beans.Staff;
-import com.mdvns.mdvn.task.papi.domain.entity.TaskDeliver;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.sql.Timestamp;
 
 @Component
-@JsonIgnoreProperties(value={"uuid", "deliverId", "isDeleted"})
-public class TaskDetail {
+public class Task {
 
     private Integer uuid;
     private String storyId;
@@ -19,8 +14,8 @@ public class TaskDetail {
     private String creatorId;
     private String assigneeId;
     private String description;
-    private Long startTime;
-    private Long endTime;
+    private Timestamp startTime;
+    private Timestamp endTime;
     private Integer progress;
     private String status;
     private String comment;
@@ -28,20 +23,14 @@ public class TaskDetail {
 
     // 交附件
     private Integer deliverId;
-    private Long createTime;
-    private Long lastUpdateTime;
+    private Timestamp createTime;
+    private Timestamp lastUpdateTime;
+
     private Integer isDeleted = 0;
+
     private String remarks;
 
-    private TaskDeliver deliver;
-
-    private Staff creator;
-
-    private Staff assignee;
-
-    private List<AttchInfo> attachUrlList;
-
-    public TaskDetail() {
+    public Task() {
     }
 
     public String getStatus() {
@@ -58,39 +47,6 @@ public class TaskDetail {
 
     public void setProjId(String projId) {
         this.projId = projId;
-    }
-
-    public TaskDeliver getDeliver() {
-        return deliver;
-    }
-
-    public void setDeliver(TaskDeliver deliver) {
-        this.deliver = deliver;
-    }
-
-    public Staff getCreator() {
-        return creator;
-    }
-
-    public void setCreator(Staff creator) {
-        this.creator = creator;
-    }
-
-
-    public Staff getAssignee() {
-        return assignee;
-    }
-
-    public void setAssignee(Staff assignee) {
-        this.assignee = assignee;
-    }
-
-    public List<AttchInfo> getAttachUrlList() {
-        return attachUrlList;
-    }
-
-    public void setAttachUrlList(List<AttchInfo> attachUrlList) {
-        this.attachUrlList = attachUrlList;
     }
 
     public Integer getUuid() {
@@ -141,19 +97,19 @@ public class TaskDetail {
         this.description = description;
     }
 
-    public Long getStartTime() {
+    public Timestamp getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Long startTime) {
+    public void setStartTime(Timestamp startTime) {
         this.startTime = startTime;
     }
 
-    public Long getEndTime() {
+    public Timestamp getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Long endTime) {
+    public void setEndTime(Timestamp endTime) {
         this.endTime = endTime;
     }
 
@@ -173,14 +129,6 @@ public class TaskDetail {
         this.comment = comment;
     }
 
-    public String getAttachmentIds() {
-        return attachmentIds;
-    }
-
-    public void setAttachmentIds(String attachmentIds) {
-        this.attachmentIds = attachmentIds;
-    }
-
     public Integer getDeliverId() {
         return deliverId;
     }
@@ -189,21 +137,38 @@ public class TaskDetail {
         this.deliverId = deliverId;
     }
 
-    public Long getCreateTime() {
+    public Timestamp getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Long createTime) {
+    public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
 
-    public Long getLastUpdateTime() {
+    public Timestamp getLastUpdateTime() {
         return lastUpdateTime;
     }
 
-    public void setLastUpdateTime(Long lastUpdateTime) {
+    public void setLastUpdateTime(Timestamp lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
     }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public String getAttachmentIds() {
+        return attachmentIds;
+    }
+
+    public void setAttachmentIds(String attachmentIds) {
+        this.attachmentIds = attachmentIds;
+    }
+
 
     public Integer getIsDeleted() {
         return isDeleted;
@@ -213,11 +178,24 @@ public class TaskDetail {
         this.isDeleted = isDeleted;
     }
 
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
+    @Override
+    public String toString() {
+        return "Task{" +
+                "uuid=" + uuid +
+                ", storyId='" + storyId + '\'' +
+                ", taskId='" + taskId + '\'' +
+                ", creatorId='" + creatorId + '\'' +
+                ", assigneeId='" + assigneeId + '\'' +
+                ", description='" + description + '\'' +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", progress=" + progress +
+                ", comment='" + comment + '\'' +
+                ", attachmentIds='" + attachmentIds + '\'' +
+                ", deliverId=" + deliverId +
+                ", createTime=" + createTime +
+                ", lastUpdateTime=" + lastUpdateTime +
+                ", remarks='" + remarks + '\'' +
+                '}';
     }
 }

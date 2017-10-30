@@ -2,10 +2,7 @@ package com.mdvns.mdvn.dashboard.papi.service;
 
 
 import com.mdvns.mdvn.common.beans.RestResponse;
-import com.mdvns.mdvn.dashboard.papi.domain.AssignStoryListByItRequest;
-import com.mdvns.mdvn.dashboard.papi.domain.RtrvAllStoryListRequest;
-import com.mdvns.mdvn.dashboard.papi.domain.UpdateDashboardRequest;
-import org.springframework.http.ResponseEntity;
+import com.mdvns.mdvn.dashboard.papi.domain.*;
 
 public interface DashboardService {
 
@@ -13,7 +10,10 @@ public interface DashboardService {
 
     RestResponse updateDashboard(UpdateDashboardRequest request);
 
+    RestResponse updateMyDashboard(UpdateMyDashboardRequest request);
+
     RestResponse assignSprint(AssignStoryListByItRequest request);
+    RestResponse getMyDashboardInfos(RtrvMyDashboardInfoRequest request);
 
 //    ResponseEntity<?> createDashboard(CreateDashboardRequest request);
 //

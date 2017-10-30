@@ -14,6 +14,8 @@ public interface TaskRepository extends JpaRepository<Task, Integer>{
 
     Task findFirstByTaskIdAndIsDeleted(String taskId, Integer isDeleted);
 
+    Task findByTaskId(String taskId);
+
     List<Task> findAllByProjIdAndCreatorIdAndProgressAndIsDeleted(String projId,String creatorId,Integer progress, Integer isDeleted);
 
     List<Task> findAllByProjIdAndCreatorIdAndProgressIsNotInAndProgressIsNotInAndIsDeleted(String projId,String creatorId,Integer press,Integer progress, Integer isDeleted);

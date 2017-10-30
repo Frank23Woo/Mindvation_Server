@@ -25,6 +25,7 @@ public class Task {
     @Column(nullable = false)
     private Timestamp endTime;
     private Integer progress;
+    private String status;
     private String comment;
     private String attachmentIds;
 
@@ -40,6 +41,14 @@ public class Task {
     private String remarks;
 
     public Task() {
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getProjId() {

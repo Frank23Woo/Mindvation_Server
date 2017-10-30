@@ -76,7 +76,7 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     /**
-     * 更改dashboard
+     * 更改List<SprintInfo>
      * @param request
      * @return
      */
@@ -95,6 +95,11 @@ public class DashboardServiceImpl implements DashboardService {
         return sprintInfos;
     }
 
+    /**
+     * 通过uuId更改sprint
+     * @param request uuId
+     * @return
+     */
     @Override
     public SprintInfo updateSprintInfo(UpdateSprintInfoRequest request) {
         Integer uuId = request.getUuId();

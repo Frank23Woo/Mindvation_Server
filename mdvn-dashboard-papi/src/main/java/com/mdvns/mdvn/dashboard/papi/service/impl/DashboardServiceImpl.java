@@ -1,9 +1,6 @@
 package com.mdvns.mdvn.dashboard.papi.service.impl;
 
-import com.mdvns.mdvn.common.beans.IterationModel;
-import com.mdvns.mdvn.common.beans.Model;
-import com.mdvns.mdvn.common.beans.RequirementInfo;
-import com.mdvns.mdvn.common.beans.RestResponse;
+import com.mdvns.mdvn.common.beans.*;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
 import com.mdvns.mdvn.common.utils.FetchListUtil;
@@ -322,6 +319,41 @@ public class DashboardServiceImpl implements DashboardService {
         return restResponse;
     }
 
+    /**
+     * 更改个人看板
+     * @param request
+     * @return
+     */
+    @Override
+    public RestResponse updateMyDashboard(UpdateMyDashboardRequest request) {
+        //更改
+        Task task = new Task();
+        try {
+            String url = webConfig.getUpdateMyDashboardUrl();
+            task= this.restTemplate.postForObject(url, request, Task.class);
+        } catch (Exception ex) {
+            throw new BusinessException(ExceptionEnum.MYDASHBOARD_NOT_UPDATE);
+        }
+        String projId = task.getProjId();
+        String creatorId = task.getCreatorId();
+        //查询
+        RtrvMyDashboardInfoRequest rtrvMyDashboardInfoRequest = new RtrvMyDashboardInfoRequest();
+        RtrvMyDashboardInfoResponse response = new RtrvMyDashboardInfoResponse();
+        rtrvMyDashboardInfoRequest.setProjId(projId);
+        rtrvMyDashboardInfoRequest.setCreatorId(creatorId);
+        try {
+            String url = webConfig.getMyDashboardInfosUrl();
+            response= this.restTemplate.postForObject(url, rtrvMyDashboardInfoRequest, RtrvMyDashboardInfoResponse.class);
+        } catch (Exception ex) {
+            throw new BusinessException(ExceptionEnum.MYDASHBOARD_NOT_UPDATE);
+        }
+        restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
+        restResponse.setResponseMsg("请求成功");
+        restResponse.setResponseCode("000");
+        restResponse.setResponseBody(response);
+        return restResponse;
+    }
+
     @Override
     public RestResponse assignSprint(AssignStoryListByItRequest request) {
         String modelId = request.getModelId();
@@ -335,6 +367,28 @@ public class DashboardServiceImpl implements DashboardService {
             Integer itIndex = iterationModels.get(j).getItIndex();
         }
         return null;
+    }
+
+    /**
+     * 获取个人看板
+     * @param request
+     * @return
+     */
+    @Override
+    public RestResponse getMyDashboardInfos(RtrvMyDashboardInfoRequest request) {
+        //查询
+        RtrvMyDashboardInfoResponse response = new RtrvMyDashboardInfoResponse();
+        try {
+            String url = webConfig.getMyDashboardInfosUrl();
+            response= this.restTemplate.postForObject(url, request, RtrvMyDashboardInfoResponse.class);
+        } catch (Exception ex) {
+            throw new BusinessException(ExceptionEnum.MYDASHBOARD_NOT_UPDATE);
+        }
+        restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
+        restResponse.setResponseMsg("请求成功");
+        restResponse.setResponseCode("000");
+        restResponse.setResponseBody(response);
+        return restResponse;
     }
 
 }
