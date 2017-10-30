@@ -42,6 +42,11 @@ public class DepartmentController {
         return departmentService.getAllDepartment(request);
     }
 
+    @PostMapping(value = "/getAllDepartment")
+    private RestResponse<List<DepartmentDetail>> queryAll(){
+        return departmentService.getAllDepartment();
+    }
+
     @PostMapping(value = "/updateDepartment")
     private RestResponse<DepartmentDetail> updateDepartment(@RequestBody CreateOrUpdateDepartmentRequest request) {
         return departmentService.updateDepartment(request);

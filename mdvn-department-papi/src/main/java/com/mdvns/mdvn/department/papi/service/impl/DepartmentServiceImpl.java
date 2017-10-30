@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
@@ -96,5 +98,14 @@ public class DepartmentServiceImpl implements DepartmentService {
         } else {
             return RestResponseUtil.success(departmentDetail);
         }
+    }
+
+    @Override
+    public RestResponse<List<DepartmentDetail>> getAllDepartment() {
+        RtrvDepartmentListRequest request = new RtrvDepartmentListRequest();
+        request.setPage(0);
+        request.setPageSize(Integer.MAX_VALUE);
+        RtrvDepartmentListResponse result = restTemplate.postForObject(urlConfig.getRtrvDepartmentListUrl(), request, RtrvDepartmentListResponse.class);
+        return RestResponseUtil.success(result.getDepartmentList());
     }
 }
