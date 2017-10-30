@@ -64,16 +64,6 @@ public class StaffController {
         return this.staffService.rtrvStaffInfo(request);
     }
 
-    @PostMapping(value = "/rtrvStaffDetail/{staffId}")
-    public ResponseEntity<?> rtrvStaffDetail(@PathVariable String staffId) {
-        return this.staffService.rtrvStaffDetail(staffId);
-    }
-
-    @PostMapping(value = "/updateStaffDetail")
-    public ResponseEntity<?> updateStaffDetail(@RequestBody UpdateStaffDetailRequest request) {
-        return this.staffService.updateStaffDetail(request);
-    }
-
     /**
      * 模糊查询
      *
@@ -113,21 +103,9 @@ public class StaffController {
         return this.authService.rtrvAuth(rtrvAuthRequest);
     }
 
-<<<<<<< HEAD
     @PostMapping(value = "/removeAuth")
     public ResponseEntity<?> removeAuth(@RequestBody RemoveAuthRequest removeAuthRequest) {
         return this.authService.removeAuth(removeAuthRequest);
     }
 
-=======
-    @PostMapping(value = "/createStaff")
-    public ResponseEntity<?> createStaff(@RequestBody CreateStaffRequest request) {
-        return this.staffService.createStaff(request);
-    }
-
-    @PostMapping(value = "/deleteStaff/{staffId}")
-    public ResponseEntity<?> deleteStaff(@PathVariable String staffId) {
-        return this.staffService.deleteStaff(staffId);
-    }
->>>>>>> 02032cc46be60f31b668c8b41786eea6d8917a4a
 }

@@ -17,7 +17,6 @@ public class WebConfig {
     /*模糊查询*/
     private String rtrvStaffListByNameUrl;
 
-<<<<<<< HEAD
     /*分配权限Url*/
     private String assignAuthUrl;
 
@@ -25,63 +24,19 @@ public class WebConfig {
     private String rtrvAuthUrl;
 
     private String findByIdUrl;
-=======
+
     private String createStaffUrl;
 
-    public String getRtrvStaffDetailUrl() {
-        return rtrvStaffDetailUrl;
-    }
-
-    public void setRtrvStaffDetailUrl(String rtrvStaffDetailUrl) {
-        this.rtrvStaffDetailUrl = rtrvStaffDetailUrl;
-    }
-
     private String rtrvStaffDetailUrl;
+
     private String rtrvTagsUrl;
+
     private String rtrvStaffTagListUrl;
+
     private String updateStaffDetailUrl;
+
     private String deleteStaffUrl;
 
-    public String getDeleteStaffUrl() {
-        return deleteStaffUrl;
-    }
-
-    public void setDeleteStaffUrl(String deleteStaffUrl) {
-        this.deleteStaffUrl = deleteStaffUrl;
-    }
-
-    public String getUpdateStaffDetailUrl() {
-        return updateStaffDetailUrl;
-    }
-
-    public void setUpdateStaffDetailUrl(String updateStaffDetailUrl) {
-        this.updateStaffDetailUrl = updateStaffDetailUrl;
-    }
-
-    public String getRtrvStaffTagListUrl() {
-        return rtrvStaffTagListUrl;
-    }
-
-    public void setRtrvStaffTagListUrl(String rtrvStaffTagListUrl) {
-        this.rtrvStaffTagListUrl = rtrvStaffTagListUrl;
-    }
-
-    public String getRtrvTagsUrl() {
-        return rtrvTagsUrl;
-    }
-
-    public void setRtrvTagsUrl(String rtrvTagsUrl) {
-        this.rtrvTagsUrl = rtrvTagsUrl;
-    }
-
-    public String getCreateStaffUrl() {
-        return createStaffUrl;
-    }
-
-    public void setCreateStaffUrl(String createStaffUrl) {
-        this.createStaffUrl = createStaffUrl;
-    }
->>>>>>> 02032cc46be60f31b668c8b41786eea6d8917a4a
 
     public String getRtrvStaffListUrl() {
         return rtrvStaffListUrl;
@@ -135,5 +90,53 @@ public class WebConfig {
 
     public void setFindByIdUrl(String findByIdUrl) {
         this.findByIdUrl = findByIdUrl;
+    }
+
+    public String getCreateStaffUrl() {
+        return createStaffUrl;
+    }
+
+    public void setCreateStaffUrl(String createStaffUrl) {
+        this.createStaffUrl = createStaffUrl;
+    }
+
+    public String getRtrvStaffDetailUrl() {
+        return rtrvStaffDetailUrl;
+    }
+
+    public void setRtrvStaffDetailUrl(String rtrvStaffDetailUrl) {
+        this.rtrvStaffDetailUrl = rtrvStaffDetailUrl;
+    }
+
+    public String getRtrvTagsUrl() {
+        return rtrvTagsUrl;
+    }
+
+    public void setRtrvTagsUrl(String rtrvTagsUrl) {
+        this.rtrvTagsUrl = rtrvTagsUrl;
+    }
+
+    public String getRtrvStaffTagListUrl() {
+        return rtrvStaffTagListUrl;
+    }
+
+    public void setRtrvStaffTagListUrl(String rtrvStaffTagListUrl) {
+        this.rtrvStaffTagListUrl = rtrvStaffTagListUrl;
+    }
+
+    public String getUpdateStaffDetailUrl() {
+        return updateStaffDetailUrl;
+    }
+
+    public void setUpdateStaffDetailUrl(String updateStaffDetailUrl) {
+        this.updateStaffDetailUrl = updateStaffDetailUrl;
+    }
+
+    public String getDeleteStaffUrl() {
+        return deleteStaffUrl;
+    }
+
+    public void setDeleteStaffUrl(String deleteStaffUrl) {
+        this.deleteStaffUrl = deleteStaffUrl;
     }
 }
