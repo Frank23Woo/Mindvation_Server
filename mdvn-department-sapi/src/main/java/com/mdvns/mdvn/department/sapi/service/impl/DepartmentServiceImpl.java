@@ -234,6 +234,16 @@ public class DepartmentServiceImpl implements DepartmentService {
         return position;
     }
 
+    @Override
+    public DepartmentDetail findDepartmentById(String departmentId) {
+        Department department = departmentRepository.findFirstByIdAndIsDeleted(departmentId, 0);
+        if (department == null) {
+            return null;
+        }
+
+        return createDepartmentDetail(department, null);
+    }
+
     // 公共方法
     private DepartmentDetail createDepartmentDetail(Department department, List<Position> positionList) {
         DepartmentDetail departmentDetail = new DepartmentDetail();

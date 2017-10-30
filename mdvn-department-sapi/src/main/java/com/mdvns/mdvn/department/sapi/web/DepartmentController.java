@@ -56,6 +56,11 @@ public class DepartmentController {
         return departmentService.findPositionById(id);
     }
 
+    @PostMapping(value = "/findDepartmentById/{id}")
+    private DepartmentDetail findDepartmentById(@PathVariable String departmentId){
+        return departmentService.findDepartmentById(departmentId);
+    }
+
 //    @PostMapping(value = "/findPositionListByIds")
 //    private List<Position> findPositionListByIds(@RequestBody String ids) {
 //        return departmentService.findPositionListByIds(ids);

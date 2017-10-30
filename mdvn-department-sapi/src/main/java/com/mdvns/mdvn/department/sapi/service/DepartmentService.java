@@ -23,4 +23,6 @@ public interface DepartmentService {
     List<Position> findPositionListByIds(String ids);
 
     Position findPositionById(Integer id);
+
+    DepartmentDetail findDepartmentById(String departmentId);
 }
