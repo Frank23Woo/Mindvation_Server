@@ -42,6 +42,15 @@ public class Staff {
 
     private String status;
 
+    private Integer tagCnt;
+
+    public Integer getTagCnt() {
+        return tagCnt;
+    }
+
+    public void setTagCnt(Integer tagCnt) {
+        this.tagCnt = tagCnt;
+    }
 
     public Staff() {
         super();

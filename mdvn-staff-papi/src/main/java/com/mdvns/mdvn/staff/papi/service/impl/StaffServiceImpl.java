@@ -47,26 +47,31 @@ public class StaffServiceImpl implements StaffService {
      * @return
      */
     public RestResponse rtrvStaffList(RetrieveStaffListRequest retrieveStaffListRequest) {
-        RetrieveStaffListAndTagCntResponse retrieveStaffListAndTagCntResponse = new RetrieveStaffListAndTagCntResponse();
+//        RetrieveStaffListAndTagCntResponse retrieveStaffListAndTagCntResponse = new RetrieveStaffListAndTagCntResponse();
         RetrieveStaffListResponse retrieveStaffListResponse = new RetrieveStaffListResponse();
         ResponseEntity<Object> responseEntity;
         String url = webConfig.getRtrvStaffListUrl();
         retrieveStaffListResponse = this.restTemplate.postForObject(url, retrieveStaffListRequest, RetrieveStaffListResponse.class);
 //        restResponse = RestResponseUtil.success(responseEntity.getBody());
         List<StaffAndTagCount> staffAndTagCounts = new ArrayList<>();
+        List<Staff> staffs = new ArrayList<>();
         for (int i = 0; i < retrieveStaffListResponse.getStaffs().size(); i++) {
-            StaffAndTagCount staffAndTagCount = new StaffAndTagCount();
-            staffAndTagCount.setStaff(retrieveStaffListResponse.getStaffs().get(i));
+            Staff staff = retrieveStaffListResponse.getStaffs().get(i);
+//            StaffAndTagCount staffAndTagCount = new StaffAndTagCount();
+//            staffAndTagCount.setStaff(retrieveStaffListResponse.getStaffs().get(i));
             String staffId = retrieveStaffListResponse.getStaffs().get(i).getStaffId();
             String staffTagUrl = webConfig.getRtrvStaffTagListUrl();
             ParameterizedTypeReference<List<StaffTag>> parameterizedTypeReference = new ParameterizedTypeReference<List<StaffTag>>(){};
             List<StaffTag> staffTagList = FetchListUtil.fetch(this.restTemplate,staffTagUrl,staffId,parameterizedTypeReference);
-            staffAndTagCount.setTagCnt(staffTagList.size());
-            staffAndTagCounts.add(staffAndTagCount);
+            staff.setTagCnt(staffTagList.size());
+//            staffAndTagCount.setTagCnt(staffTagList.size());
+//            staffAndTagCounts.add(staffAndTagCount);
+            staffs.add(staff);
         }
-        retrieveStaffListAndTagCntResponse.setStaffs(staffAndTagCounts);
-        retrieveStaffListAndTagCntResponse.setTotalNumber(retrieveStaffListResponse.getTotalNumber());
-        restResponse.setResponseBody(retrieveStaffListAndTagCntResponse);
+        retrieveStaffListResponse.setStaffs(staffs);
+//        retrieveStaffListAndTagCntResponse.setStaffs(staffAndTagCounts);
+//        retrieveStaffListAndTagCntResponse.setTotalNumber(retrieveStaffListResponse.getTotalNumber());
+        restResponse.setResponseBody(retrieveStaffListResponse);
         restResponse.setResponseCode("000");
         restResponse.setResponseMsg("请求成功");
         restResponse.setStatusCode("200");
