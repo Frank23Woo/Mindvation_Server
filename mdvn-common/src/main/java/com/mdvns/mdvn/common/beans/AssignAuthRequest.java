@@ -1,113 +1,116 @@
 package com.mdvns.mdvn.common.beans;
 
+import java.util.List;
+
 public class AssignAuthRequest {
 
-	/*项目Id*/
     private String projId;
 
-    /*员工Id*/
-    private String assigneeId;
+    private String assignerId;
 
-    /*权限编号*/
-    private Integer authCode;
+    private List<String> assignees;
 
-    private  String assignerId;
-    
     private String hierarchyId;
 
-	public String getProjId() {
-		return projId;
-	}
+    private Integer authCode;
 
-	public void setProjId(String projId) {
+    public AssignAuthRequest() {
+        super();
+    }
+
+    public AssignAuthRequest(String projId, String assignerId, List<String> assignees, String hierarchyId) {
+        this.projId = projId;
+        this.assignerId = assignerId;
+        this.assignees = assignees;
+        this.hierarchyId = hierarchyId;
+    }
+
+    
+    public AssignAuthRequest(String projId, String assignerId, List<String> assignees, String hierarchyId,
+			Integer authCode) {
+		super();
 		this.projId = projId;
-	}
-
-	public String getAssigneeId() {
-		return assigneeId;
-	}
-
-	public void setAssigneeId(String assigneeId) {
-		this.assigneeId = assigneeId;
-	}
-
-	public Integer getAuthCode() {
-		return authCode;
-	}
-
-	public void setAuthCode(Integer authCode) {
+		this.assignerId = assignerId;
+		this.assignees = assignees;
+		this.hierarchyId = hierarchyId;
 		this.authCode = authCode;
 	}
 
-	public String getAssignerId() {
-		return assignerId;
-	}
+	public Integer getAuthCode() {
+        return authCode;
+    }
 
-	public void setAssignerId(String assignerId) {
-		this.assignerId = assignerId;
-	}
+    public void setAuthCode(Integer authCode) {
+        this.authCode = authCode;
+    }
 
-	public String getHierarchyId() {
-		return hierarchyId;
-	}
+    public String getProjId() {
+        return projId;
+    }
 
-	public void setHierarchyId(String hierarchyId) {
-		this.hierarchyId = hierarchyId;
-	}
+    public void setProjId(String projId) {
+        this.projId = projId;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((assigneeId == null) ? 0 : assigneeId.hashCode());
-		result = prime * result + ((assignerId == null) ? 0 : assignerId.hashCode());
-		result = prime * result + ((authCode == null) ? 0 : authCode.hashCode());
-		result = prime * result + ((hierarchyId == null) ? 0 : hierarchyId.hashCode());
-		result = prime * result + ((projId == null) ? 0 : projId.hashCode());
-		return result;
-	}
+    public String getAssignerId() {
+        return assignerId;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		AssignAuthRequest other = (AssignAuthRequest) obj;
-		if (assigneeId == null) {
-			if (other.assigneeId != null)
-				return false;
-		} else if (!assigneeId.equals(other.assigneeId))
-			return false;
-		if (assignerId == null) {
-			if (other.assignerId != null)
-				return false;
-		} else if (!assignerId.equals(other.assignerId))
-			return false;
-		if (authCode == null) {
-			if (other.authCode != null)
-				return false;
-		} else if (!authCode.equals(other.authCode))
-			return false;
-		if (hierarchyId == null) {
-			if (other.hierarchyId != null)
-				return false;
-		} else if (!hierarchyId.equals(other.hierarchyId))
-			return false;
-		if (projId == null) {
-			if (other.projId != null)
-				return false;
-		} else if (!projId.equals(other.projId))
-			return false;
-		return true;
-	}
+    public void setAssignerId(String assignerId) {
+        this.assignerId = assignerId;
+    }
 
-	@Override
-	public String toString() {
-		return "AssignAuthRequest [projId=" + projId + ", assigneeId=" + assigneeId + ", authCode=" + authCode
-				+ ", assignerId=" + assignerId + ", hierarchyId=" + hierarchyId + "]";
-	}
+    public List<String> getAssignees() {
+        return assignees;
+    }
 
+    public void setAssignees(List<String> assignees) {
+        this.assignees = assignees;
+    }
+
+    public String getHierarchyId() {
+        return hierarchyId;
+    }
+
+    public void setHierarchyId(String hierarchyId) {
+        this.hierarchyId = hierarchyId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AssignAuthRequest)) return false;
+
+        AssignAuthRequest that = (AssignAuthRequest) o;
+
+        if (getProjId() != null ? !getProjId().equals(that.getProjId()) : that.getProjId() != null) return false;
+        if (getAssignerId() != null ? !getAssignerId().equals(that.getAssignerId()) : that.getAssignerId() != null)
+            return false;
+        if (getAssignees() != null ? !getAssignees().equals(that.getAssignees()) : that.getAssignees() != null)
+            return false;
+        if (getHierarchyId() != null ? !getHierarchyId().equals(that.getHierarchyId()) : that.getHierarchyId() != null)
+            return false;
+        return getAuthCode() != null ? getAuthCode().equals(that.getAuthCode()) : that.getAuthCode() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getProjId() != null ? getProjId().hashCode() : 0;
+        result = 31 * result + (getAssignerId() != null ? getAssignerId().hashCode() : 0);
+        result = 31 * result + (getAssignees() != null ? getAssignees().hashCode() : 0);
+        result = 31 * result + (getHierarchyId() != null ? getHierarchyId().hashCode() : 0);
+        result = 31 * result + (getAuthCode() != null ? getAuthCode().hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AssignAuthRequest{" +
+                "projId='" + projId + '\'' +
+                ", assignerId='" + assignerId + '\'' +
+                ", assigneeId=" + assignees +
+                ", hierarchyId='" + hierarchyId + '\'' +
+                ", authCode=" + authCode +
+                '}';
+    }
 }

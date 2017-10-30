@@ -22,6 +22,7 @@ public enum ExceptionEnum {
 	UNKNOW_EXCEPTION("555","未知错误"),
 	PARAMS_EXCEPTION("556", "参数异常"),
 	SAPI_EXCEPTION("10001", "SAPI异常"),
+	OBJECT_DOES_NOT_EXIST("557", "对象不存在"),
 	//    BASE_SAPI_EXCEPTION("10001", "SAPI异常"),
 
 	//标签

@@ -1,0 +1,6 @@
+server:
+  port: 80
+  context-path: /mdvn-department-papi
+spring:
+  profiles:
+    include: urlprod

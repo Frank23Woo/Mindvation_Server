@@ -31,10 +31,10 @@ public class AuthServiceImpl implements AuthService {
     public ResponseEntity<?> assignAuth(AssignAuthRequest assignAuthRequest) {
         String assignAuthUrl = "http://localhost:10013/mdvn-staff-sapi/staffAuth";
 
-        ResponseEntity<StaffAuthInfo> responseEntity = this.restTemplate.postForEntity(assignAuthUrl, assignAuthRequest, StaffAuthInfo.class);
+        ResponseEntity<StaffAuthInfo[]> responseEntity = this.restTemplate.postForEntity(assignAuthUrl, assignAuthRequest, StaffAuthInfo[].class);
         LOG.info("调用SAPI结束....{}", responseEntity.getStatusCode());
         if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
-            LOG.info("添加权限response是：{}", responseEntity.getBody().getHierarchyId());
+            LOG.info("添加权限response是：{}", responseEntity.getBody().toString());
             return responseEntity;
         }
         LOG.error("调用SAPI添加权限失败！");
@@ -48,12 +48,11 @@ public class AuthServiceImpl implements AuthService {
      */
     @Override
     public ResponseEntity<?> rtrvAuth(RtrvAuthRequest rtrvAuthRequest) {
-        String rtrvAuthUrl = "http://localhost:10013/mdvn-staff-sapi/staffAuth";
+        String rtrvAuthUrl = "http://localhost:10013/mdvn-staff-sapi/rtrvAuth";
 
         ResponseEntity<StaffAuthInfo> responseEntity = this.restTemplate.postForEntity(rtrvAuthUrl, rtrvAuthRequest, StaffAuthInfo.class);
         LOG.info("调用SAPI结束....{}", responseEntity.getStatusCode());
-        if ("200".equals(responseEntity.getStatusCode())) {
-            LOG.info("添加权限response是：{}", responseEntity.getBody().getHierarchyId());
+        if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
             return responseEntity;
         }
         LOG.error("调用SAPI添加权限失败！");
