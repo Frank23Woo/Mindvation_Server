@@ -64,7 +64,6 @@ public class CreateProjServiceImpl implements ICreateProjService {
         Integer m = page * pageSize;
         Integer n = pageSize;
 //        List<Project> pageList = this.projectRepository.rtrvProjInfoList(request.getStaffId(), m, n);
-<<<<<<< HEAD
 
 
         String sortBy = (request.getSortBy() == null) ? "uuId" : request.getSortBy();
@@ -75,12 +74,6 @@ public class CreateProjServiceImpl implements ICreateProjService {
 
         rtrvProjectListResponse.setProjects(pageList);
         rtrvProjectListResponse.setTotalElements(pageList.getTotalElements());
-=======
-        List<Project> pageList = this.projectRepository.rtrvProjInfoList(m, n);
-//        Long totalElements = this.projectRepository.getProjBaseInfoCount(request.getStaffId());
-        rtrvProjectListResponse.setProjects(pageList);
-        rtrvProjectListResponse.setTotalElements((long) pageList.size());
->>>>>>> 02032cc46be60f31b668c8b41786eea6d8917a4a
 
         LOG.info("查询结果为：{}", rtrvProjectListResponse);
         return RestResponseUtil.success(rtrvProjectListResponse);
