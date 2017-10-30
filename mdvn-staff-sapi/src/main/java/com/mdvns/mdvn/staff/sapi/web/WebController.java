@@ -2,6 +2,7 @@ package com.mdvns.mdvn.staff.sapi.web;
 
 
 import com.mdvns.mdvn.common.beans.AssignAuthRequest;
+import com.mdvns.mdvn.common.beans.LoginRequest;
 import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.common.beans.RtrvStaffAuthInfoRequest;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
@@ -84,13 +85,14 @@ public class WebController {
 
     /**
      * 根据指定account获取Staff信息
-     * @param account
+     *
+     * @param loginRequest
      * @return
      */
-    @GetMapping(value = "/staff/{account}")
-    public RestResponse<?> findById(@PathVariable String account) {
+    @PostMapping(value = "/staff")
+    public ResponseEntity<?> findByAccountAndPassword(@RequestBody LoginRequest loginRequest) {
 
-        return this.staffService.findByAccount(account);
+        return this.staffService.findByAccountAndPassword(loginRequest.getAccount(), loginRequest.getPassword());
     }
 
     /**

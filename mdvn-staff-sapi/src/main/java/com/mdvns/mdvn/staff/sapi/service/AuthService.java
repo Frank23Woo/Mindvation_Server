@@ -8,4 +8,6 @@ public interface AuthService {
     ResponseEntity<?> assignAuth(AssignAuthRequest assignAuthRequest);
 
     ResponseEntity<?> rtrvAuth(RtrvStaffAuthInfoRequest rtrvAuthRequest);
+
+
 }

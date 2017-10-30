@@ -22,7 +22,6 @@ public interface StaffService {
 
     ResponseEntity<?> rtrvStaffListByStaffName(Integer page, Integer pageSize, String name, String sortBy) throws SQLException;
 
-    RestResponse<?> findByAccount(String account);
 
     CreateStaffResponse createStaff(CreateStaffRequest request);
 
@@ -32,6 +31,5 @@ public interface StaffService {
     Boolean deleteStaff(String staffId);
 
 
-
-
+    ResponseEntity<?> findByAccountAndPassword(String account, String password);
 }

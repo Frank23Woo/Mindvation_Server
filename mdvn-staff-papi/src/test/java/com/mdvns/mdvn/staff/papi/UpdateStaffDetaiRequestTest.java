@@ -22,7 +22,7 @@ public class UpdateStaffDetaiRequestTest {
 
         staffInfo.setAccount("Test_Update");
 
-        staffInfo.setPassword("321321_Update");
+//        staffInfo.setPassword("321321_Update");
 
         staffInfo.setGender("F");
 
