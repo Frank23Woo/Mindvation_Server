@@ -26,7 +26,7 @@ public class CreateStaffRequestTest {
 
         createStaffRequest.setDeptId("D1");
 
-        createStaffRequest.setPositionId("p1");
+        createStaffRequest.setPositionId(15);
 
         createStaffRequest.setPositionLvl("Junior");
 

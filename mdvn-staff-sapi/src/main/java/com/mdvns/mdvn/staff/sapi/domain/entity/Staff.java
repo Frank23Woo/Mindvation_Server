@@ -24,7 +24,7 @@ public class Staff {
     @Column(columnDefinition = "text")
     private String avatar;
     private String deptId;
-    private String positionId;
+    private Integer positionId;
     //员工入职时间
     private Timestamp hiredate;
     //员工效率值
@@ -154,11 +154,11 @@ public class Staff {
         this.deptId = deptId;
     }
 
-    public String getPositionId() {
+    public Integer getPositionId() {
         return positionId;
     }
 
-    public void setPositionId(String positionId) {
+    public void setPositionId(Integer positionId) {
         this.positionId = positionId;
     }
 

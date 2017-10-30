@@ -28,7 +28,7 @@ public class UpdateStaffDetaiRequestTest {
 
         staffInfo.setDeptId("D1_");
 
-        staffInfo.setPositionId("p1_");
+        staffInfo.setPositionId(16);
 
         staffInfo.setPositionLvl("Junior_");
 

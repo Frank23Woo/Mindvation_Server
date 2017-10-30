@@ -21,7 +21,7 @@ public class CreateStaffRequest {
 
     private String deptId;
 
-    private String positionId;
+    private Integer positionId;
 
     private String positionLvl;
 
@@ -79,11 +79,11 @@ public class CreateStaffRequest {
         this.deptId = deptId;
     }
 
-    public String getPositionId() {
+    public Integer getPositionId() {
         return positionId;
     }
 
-    public void setPositionId(String positionId) {
+    public void setPositionId(Integer positionId) {
         this.positionId = positionId;
     }
 
