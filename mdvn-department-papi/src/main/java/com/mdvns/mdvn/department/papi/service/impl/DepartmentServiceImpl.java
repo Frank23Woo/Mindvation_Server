@@ -64,6 +64,21 @@ public class DepartmentServiceImpl implements DepartmentService {
             restResponse.setResponseMsg("need request body");
             return restResponse;
         }
+
+        if (request.getPage() == null) {
+            request.setPage(0);
+        }
+
+        if (request.getPageSize() == null) {
+            request.setPageSize(10);
+        }
+
+        int page = request.getPage() - 1;
+        if (page < 0) {
+            page = 0;
+        }
+        request.setPage(page);
+
         RtrvDepartmentListResponse result = restTemplate.postForObject(urlConfig.getRtrvDepartmentListUrl(), request, RtrvDepartmentListResponse.class);
         return RestResponseUtil.success(result);
     }

@@ -213,7 +213,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             for (String id : idArray) {
                 find = false;
                 for (Position position : positionList) {
-                    if (position.getId().toString().equals(id)){
+                    if (position.getId().toString().equals(id)) {
                         result.add(position);
                         find = true;
                         break;
@@ -222,6 +222,16 @@ public class DepartmentServiceImpl implements DepartmentService {
             }
             return result;
         }
+    }
+
+    @Override
+    public Position findPositionById(Integer id) {
+        if (StringUtils.isEmpty(id)) {
+            return null;
+        }
+
+        Position position = positionRepository.getOne(id);
+        return position;
     }
 
     // 公共方法
