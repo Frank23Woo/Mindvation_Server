@@ -1,6 +1,7 @@
 package com.mdvns.mdvn.task.sapi.service.impl;
 
 
+import com.mdvns.mdvn.common.utils.MdvnStringUtil;
 import com.mdvns.mdvn.task.sapi.domain.*;
 import com.mdvns.mdvn.task.sapi.domain.entity.Task;
 import com.mdvns.mdvn.task.sapi.domain.entity.TaskDeliver;
@@ -255,7 +256,7 @@ public class TaskServiceImpl implements TaskService {
         cIdList = Arrays.asList(cIds);
         List cList = new ArrayList(cIdList);
         cList.remove(request.getAttachmentId());
-        String sIds = com.sun.deploy.util.StringUtils.join(cList, ",");
+        String sIds = MdvnStringUtil.join(cList, ",");
 //        if (StringUtils.isEmpty(ids)){
 //            ids = "";
 //        } else {

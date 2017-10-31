@@ -5,7 +5,6 @@ import com.mdvns.mdvn.dashboard.sapi.domain.*;
 import com.mdvns.mdvn.dashboard.sapi.domain.entity.SprintInfo;
 import com.mdvns.mdvn.dashboard.sapi.repository.SprintInfoRepository;
 import com.mdvns.mdvn.dashboard.sapi.service.DashboardService;
-import com.sun.deploy.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,7 +109,7 @@ public class DashboardServiceImpl implements DashboardService {
     public SprintInfo updateSprintInfo(UpdateSprintInfoRequest request) {
         Integer uuId = request.getUuId();
         sprintInfo = this.sprintInfoRepository.findOne(uuId);
-        String storyIds = StringUtils.join(request.getStories(), ",");
+        String storyIds = MdvnStringUtil.join(request.getStories(), ",");
         sprintInfo.setItemIds(storyIds);
         sprintInfo = this.sprintInfoRepository.saveAndFlush(sprintInfo);
         return sprintInfo;
@@ -143,7 +142,7 @@ public class DashboardServiceImpl implements DashboardService {
     @Override
     public SprintInfo updateSprintCloseStatus(UpdateSprintCloseStatusRequest request) {
         if (request.getStories().size() > 0) {
-            String storyIds = StringUtils.join(request.getStories(), ",");
+            String storyIds = MdvnStringUtil.join(request.getStories(), ",");
             String[] sprintStoryIds = storyIds.split(",");
             List<String> sprintStoryIdList = Arrays.asList(sprintStoryIds);
 
@@ -158,7 +157,7 @@ public class DashboardServiceImpl implements DashboardService {
             for (int j = 0; j < sprintStoryIdList.size(); j++) {
                 arrayList.remove(sprintStoryIdList.get(j));
             }
-            beforeStoryIds = StringUtils.join(arrayList, ",");
+            beforeStoryIds = MdvnStringUtil.join(arrayList, ",");
             beforSprintInfo.setItemIds(beforeStoryIds);
             beforSprintInfo = this.sprintInfoRepository.saveAndFlush(beforSprintInfo);
 

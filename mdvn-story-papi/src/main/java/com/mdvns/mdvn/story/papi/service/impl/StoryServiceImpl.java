@@ -5,6 +5,7 @@ import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
 import com.mdvns.mdvn.common.enums.AuthEnum;
 import com.mdvns.mdvn.common.utils.FetchListUtil;
+import com.mdvns.mdvn.common.utils.MdvnStringUtil;
 import com.mdvns.mdvn.common.utils.StaffAuthUtil;
 import com.mdvns.mdvn.story.papi.config.StoryConfig;
 import com.mdvns.mdvn.story.papi.domain.*;
@@ -329,7 +330,7 @@ public class StoryServiceImpl implements IStoryService {
                     Integer attachmentId = pAttchUrls.get(i).getAttachmentId();
                     idList.add(attachmentId.toString());
                 }
-                String attachmentIds = com.sun.deploy.util.StringUtils.join(idList, ",");
+                String attachmentIds = MdvnStringUtil.join(idList, ",");
                 if (pAttchUrls.size() != 0) {
                     ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(config.getRtrvAttchListUrl() + attachmentIds, RestResponse.class);
                     storyDetail.setAttchInfos((List<AttchInfo>)responseEntity.getBody().getResponseBody());
@@ -545,7 +546,7 @@ public class StoryServiceImpl implements IStoryService {
 //                }
                 idList.add(attachmentId.toString());
             }
-            String attachmentIds = com.sun.deploy.util.StringUtils.join(idList, ",");
+            String attachmentIds = MdvnStringUtil.join(idList, ",");
             if (storyAttchUrls.size() != 0) {
 //                ParameterizedTypeReference pReference = new ParameterizedTypeReference<List<StoryAttchUrls>>() {
 //                };

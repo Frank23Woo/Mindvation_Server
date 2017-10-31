@@ -10,7 +10,6 @@ import com.mdvns.mdvn.dashboard.papi.domain.SprintInfo;
 import com.mdvns.mdvn.dashboard.papi.service.DashboardService;
 import com.mdvns.mdvn.dashboard.papi.utils.LogUtil;
 
-import com.sun.deploy.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
@@ -259,7 +258,7 @@ public class DashboardServiceImpl implements DashboardService {
                         String storyId = response.getBody().getStories().get(k).getStoryId();
                         storyIds.add(storyId);
                     }
-                    stoIds = StringUtils.join(storyIds, ",");
+                    stoIds = MdvnStringUtil.join(storyIds, ",");
                     rtrvAllStoryListResponse.setStories(response.getBody().getStories());
                     rtrvAllStoryListResponse.setTotalElements(response.getBody().getTotalElements());
                     rtrvAllStoryListResponse.setRemarks(response.getBody().getRemarks());
@@ -292,7 +291,7 @@ public class DashboardServiceImpl implements DashboardService {
                         String storyId = response.getBody().getStories().get(n).getStoryId();
                         storyIds.add(storyId);
                     }
-                    sIds = StringUtils.join(storyIds, ",");
+                    sIds = MdvnStringUtil.join(storyIds, ",");
                 }
                 //通过labelIds查询他们下面的storyIds
                 CreateSprintInfoRequest createSprintInfoRequest = new CreateSprintInfoRequest();
