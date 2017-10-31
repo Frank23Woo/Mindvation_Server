@@ -253,8 +253,7 @@ public class StaffServiceImpl implements StaffService {
      * @return
      */
     private Staff getStaffByAccountAndPassword(LoginRequest loginRequest) {
-//        String findByAccountUrl = "http://localhost:10013/mdvn-staff-sapi/staff/" + loginRequest.getAccount()+"/"+loginRequest.getPassword();
-        String findByAccounAndPasswordtUrl = "http://localhost:10013/mdvn-staff-sapi/staff";
+        String findByAccounAndPasswordtUrl = webConfig.getFindByAccounAndPasswordtUrl();
         ResponseEntity<Staff> responseEntity = null;
         ParameterizedTypeReference parameterizedTypeReference = new ParameterizedTypeReference<RestResponse<Staff>>() {
         };
