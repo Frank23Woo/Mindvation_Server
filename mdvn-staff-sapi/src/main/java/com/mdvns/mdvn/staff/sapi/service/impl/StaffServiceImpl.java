@@ -57,13 +57,26 @@ public class StaffServiceImpl implements StaffService {
      * @return
      */
     @Override
-    public RetrieveStaffListResponse rtrvStaffList() {
-        RetrieveStaffListResponse retrieveStaffListResponse =new RetrieveStaffListResponse();
-        List<Staff> staffList = this.staffRepository.findAll();
-        Long count = this.staffRepository.getStaffCount();
-        retrieveStaffListResponse.setStaffs(staffList);
-        retrieveStaffListResponse.setTotalNumber(count);
-        return retrieveStaffListResponse;
+    public RetrieveStaffListResponse rtrvStaffList(RetrieveStaffListRequest request) {
+        RetrieveStaffListResponse retrieveStaffListResponse = new RetrieveStaffListResponse();
+        if(request.getPage()==null || request.getPageSize() ==null){
+            List<Staff> list = this.staffRepository.findAll();
+            retrieveStaffListResponse.setStaffs(list);
+            retrieveStaffListResponse.setTotalNumber(Long.valueOf(list.size()));
+            return retrieveStaffListResponse;
+        }else {
+            String sortBy = request.getSortBy();
+            Integer page = request.getPage()-1;
+            Integer pageSize = request.getPageSize();
+            sortBy = (sortBy == null) ? "staffId" : sortBy;
+            PageRequest pageable = new PageRequest(page, pageSize, Sort.Direction.DESC, sortBy);
+            Page<Staff> staffPage = null;
+            staffPage = this.staffRepository.findAll(pageable);
+            Long count = this.staffRepository.getStaffCount();
+            retrieveStaffListResponse.setStaffs(staffPage.getContent());
+            retrieveStaffListResponse.setTotalNumber(staffPage.getTotalElements());
+            return retrieveStaffListResponse;
+        }
     }
 
     /**
