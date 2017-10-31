@@ -1,6 +1,7 @@
 package com.mdvns.mdvn.common.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -29,11 +30,10 @@ public class StaffAuthUtil {
 	 * 分配权限
 	 * 
 	 * @param restTemplate
-	 * @param assignAuthUrl
 	 * @param assignAuthRequest
 	 * @return
 	 */
-	public static ResponseEntity<?> assignAuth(RestTemplate restTemplate, AssignAuthRequest assignAuthRequest) {
+	public static List<StaffAuthInfo> assignAuth(RestTemplate restTemplate, AssignAuthRequest assignAuthRequest) {
 		ResponseEntity<StaffAuthInfo[]> responseEntity = null;
 		String assignAuthUrl = "http://localhost:10014/mdvn-staff-papi/staff/assignAuth";
 		try {
@@ -43,15 +43,16 @@ public class StaffAuthUtil {
 			throw new BusinessException(ExceptionEnum.UNKNOW_EXCEPTION);
 		}
 		LOG.info("添加权限完成：{}", responseEntity.getBody().toString());
-		return responseEntity;
+		return Arrays.asList(responseEntity.getBody());
 	}
 
 	/**
 	 * 获取员工在项目中的权限信息
 	 * 
 	 * @param restTemplate
-	 * @param rtrvStaffAuthUrl
-	 * @param rtrvAuthRequest
+	 * @param projId
+	 * @param hierarchyId
+	 * @param staffId
 	 * @return
 	 */
 	public static StaffAuthInfo rtrvStaffAuthInfo(RestTemplate restTemplate, String projId, String hierarchyId,
@@ -98,8 +99,8 @@ public class StaffAuthUtil {
 	 * @param authCode
 	 * @return
 	 */
-	public static ResponseEntity<?> assignAuthForCreator(RestTemplate restTemplate, String projId, String creatorId,
-			String hierarchyId, Integer authCode) {
+	public static List<StaffAuthInfo> assignAuthForCreator(RestTemplate restTemplate, String projId,
+			String hierarchyId, String creatorId,Integer authCode) {
 		AssignAuthRequest assignAuthRequest = new AssignAuthRequest();
 		assignAuthRequest.setProjId(projId);
 		assignAuthRequest.setAssignerId(creatorId);

@@ -106,14 +106,8 @@ public class ReqmntServiceImpl implements IReqmntService {
         requirementInfo = responseEntity.getBody();
 
         //1.1 给需求创建者分配权限
-        AssignAuthRequest assignAuthRequest = new AssignAuthRequest();
-        assignAuthRequest.setProjId(createReqmntRequest.getProjId());
-        List<String> assignees = new ArrayList<String>();
-        assignAuthRequest.setAssignees(assignees);
-        assignAuthRequest.setHierarchyId(requirementInfo.getReqmntId());
-        assignAuthRequest.setAuthCode(AuthEnum.Leader.getCode());
-        StaffAuthUtil.assignAuth(this.restTemplate, assignAuthRequest);
-
+        StaffAuthUtil.assignAuthForCreator(this.restTemplate, createReqmntRequest.getProjId(), requirementInfo.getReqmntId(), createReqmntRequest.getCreatorId(), AuthEnum.Leader.getCode() );
+        LOG.info("给创建需求者：{}，分配权限：{}成功", createReqmntRequest.getCreatorId(), AuthEnum.Leader.getCode());
 
         //2.保存requirement member信息
         if (createReqmntRequest.getMembers() != null && !createReqmntRequest.getMembers().isEmpty()) {
@@ -143,10 +137,11 @@ public class ReqmntServiceImpl implements IReqmntService {
 
             //2.1 给需求中的Member分配权限
             List<String> members = new ArrayList<String>();
-            for (int i = 0; i <roleMembers.size() ; i++) {
+            for (int i = 0; i < roleMembers.size(); i++) {
                 members.addAll(roleMembers.get(i).getMemberIds());
-            }
 
+            }
+            LOG.info("需求中将要被分配的memberIds:" + members.toString());
             StaffAuthUtil.assignAuth(this.restTemplate, new AssignAuthRequest(createReqmntRequest.getProjId(), createReqmntRequest.getCreatorId(), members, requirementInfo.getReqmntId(), AuthEnum.RMEMBER.getCode()));
             LOG.info("新建需求：{}并给成员分配权限成功!", requirementInfo.getReqmntId());
         }
@@ -359,7 +354,7 @@ public class ReqmntServiceImpl implements IReqmntService {
         List<ReqmntAttchUrl> attchUrls = FetchListUtil.fetch(restTemplate, config.getRtrvReqmntAttchsUrl(), requirementInfo.getReqmntId(), typeReference);
         StringBuilder stringBuilder = new StringBuilder("");
 
-        if(attchUrls.size()!=0) {
+        if (attchUrls.size() != 0) {
             for (int i = 0; i < attchUrls.size(); i++) {
                 stringBuilder.append(attchUrls.get(i).getAttachmentId());
                 stringBuilder.append(",");
@@ -397,6 +392,7 @@ public class ReqmntServiceImpl implements IReqmntService {
         //获取用户权限信息
         StaffAuthInfo staffAuthInfo = StaffAuthUtil.rtrvStaffAuthInfo(this.restTemplate, requirementInfo.getProjId(), requirementInfo.getReqmntId(), request.getStaffId());
         rtrvReqmntInfoResponse.setStaffAuthInfo(staffAuthInfo);
+        LOG.info("获取需求中用户权限成功" + "projId:" + requirementInfo.getProjId() + "reqmntId:" + requirementInfo.getReqmntId() + "staffId:" + request.getStaffId());
         restResponse.setResponseBody(rtrvReqmntInfoResponse);
 
         return restResponse;

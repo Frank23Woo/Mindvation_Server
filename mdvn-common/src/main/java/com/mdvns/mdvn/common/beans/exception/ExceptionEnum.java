@@ -99,6 +99,7 @@ public enum ExceptionEnum {
 	STORY_DETAIL_TASK_NOT_RTRV("1519", "调用SAPI获取用户故事detail Task信息时失败"),
 	STORY_DETAIL_ATTCHURL_NOT_RTRV("1520", "调用SAPI获取用户故事detail附件信息时失败"),
 	STORY_DETAIL_MODEL_TASKDELIVERY_NOT_RTRV("1521", "调用SAPI获取模型下的交付件信息时失败"),
+	STORY_DASHBOARD_NOT_CREATE("15022", "调用SAPI保存用户故事看板sprint数据失败"),
 
 	// TASK
 	TASK_SAVE_FAILED("1601", "保存task失败"),

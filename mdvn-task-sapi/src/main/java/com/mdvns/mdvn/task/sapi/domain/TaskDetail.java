@@ -25,6 +25,7 @@ public class TaskDetail extends Task {
     public TaskDetail(Task task) {
         this.setUuid(task.getUuid());
         this.setAssigneeId(task.getAssigneeId());
+        this.setProjId(task.getProjId());
         this.setCreatorId(task.getCreatorId());
         this.setDescription(task.getDescription());
         this.setStartTime(task.getStartTime());

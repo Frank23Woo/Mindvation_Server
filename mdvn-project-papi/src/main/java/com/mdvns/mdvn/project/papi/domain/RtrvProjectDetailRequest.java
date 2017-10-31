@@ -9,6 +9,7 @@ public class RtrvProjectDetailRequest {
     private String projId;
 
     /*staffId(获取用户在项目中的权限)*/
+    @NotBlank(message = "请求参数错误，staffId不能为空")
     private String staffId;
 
     public String getStaffId() {

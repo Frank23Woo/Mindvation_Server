@@ -60,7 +60,7 @@ public class CreateProjServiceImpl implements ICreateProjService {
     public RestResponse rtrvProjInfoList(RtrvProjectListRequest request) throws SQLException {
         RtrvProjectListResponse rtrvProjectListResponse = new RtrvProjectListResponse();
         //获取多张表数据联合查询然后分页
-        Integer page = request.getPage()-1;
+        Integer page = request.getPage();
         Integer pageSize = request.getPageSize();
         Integer m = page * pageSize;
         Integer n = pageSize;
