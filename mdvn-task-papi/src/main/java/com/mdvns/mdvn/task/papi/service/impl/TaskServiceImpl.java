@@ -52,7 +52,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public RestResponse createTask(CreateOrUpdateTaskRequest request) throws Exception {
         if (request == null || StringUtils.isEmpty(request.getProjId()) || StringUtils.isEmpty(request.getCreatorId()) ||
-                StringUtils.isEmpty(request.getStoryId()) || StringUtils.isEmpty(request.getAssigneeId()) ||
+                StringUtils.isEmpty(request.getStoryId()) ||
                 StringUtils.isEmpty(request.getDescription()) || request.getDeliver() == null ||
                 StringUtils.isEmpty(request.getDeliver().getModelId()) || StringUtils.isEmpty(request.getDeliver().getName()) ||
                 request.getStartTime() == null || request.getEndTime() == null) {
@@ -62,6 +62,7 @@ public class TaskServiceImpl implements TaskService {
         RestResponse response = new RestResponse();
         TaskDetail task = null;
         try {
+            request.setAssigneeId(request.getCreatorId());
             task = restTemplate.postForObject(urlConfig.getSaveTaskUrl(), request, TaskDetail.class);
 
             // 查询creator和assinee
@@ -73,17 +74,20 @@ public class TaskServiceImpl implements TaskService {
 
             // todo 查询附件
 
-            response.setResponseBody(task);
-            response.setResponseCode("000");
-            response.setResponseMsg("ok");
+
         } catch (RestClientException e) {
             e.printStackTrace();
             response.setResponseCode(ExceptionEnum.TASK_SAVE_FAILED.getErroCode());
             response.setResponseMsg(ExceptionEnum.TASK_SAVE_FAILED.getErrorMsg());
         }
         //分配权限
-        StaffAuthUtil.assignAuthForCreator(restTemplate, request.getProjId(), task.getCreatorId(), task.getTaskId(), AuthEnum.TMEMBER.getCode());
+        System.out.println(request.getProjId()+task.getTaskId()+request.getCreatorId()+ AuthEnum.TMEMBER.getCode());
+        List<StaffAuthInfo> staffAuthInfos = StaffAuthUtil.assignAuthForCreator(restTemplate, request.getProjId(), task.getTaskId(),request.getCreatorId(), AuthEnum.TMEMBER.getCode());
+        task.setStaffAuthInfo(staffAuthInfos.get(0));
         LOG.info("新建Task，分配权限成功!");
+        response.setResponseBody(task);
+        response.setResponseCode("000");
+        response.setResponseMsg("ok");
         return response;
     }
 
@@ -104,10 +108,20 @@ public class TaskServiceImpl implements TaskService {
             };
             List<TaskDetail> taskList = FetchListUtil.fetch(restTemplate, urlConfig.getRtrvTaskListUrl(), request, typeReference);
 
+            for (int i = 0; i < taskList.size(); i++) {
+                //获取权限信息
+                LOG.info("projId:"+taskList.get(i).getProjId());
+                LOG.info("taskId:"+ taskList.get(i).getTaskId());
+                LOG.info("staffId:"+request.getStaffId());
+                StaffAuthInfo staffAuthInfo = StaffAuthUtil.rtrvStaffAuthInfo(this.restTemplate, taskList.get(i).getProjId(), taskList.get(i).getTaskId(), request.getStaffId() );
+                taskList.get(i).setStaffAuthInfo(staffAuthInfo);
+            }
+
             // 查询creator和assignee
             List<String> creatorIds = new ArrayList<>();
             List<String> assigneeIds = new ArrayList<>();
             for (TaskDetail task : taskList) {
+
                 creatorIds.add(task.getCreatorId());
                 assigneeIds.add(task.getAssigneeId());
             }
@@ -123,6 +137,8 @@ public class TaskServiceImpl implements TaskService {
             for (int i = 0; i < taskList.size(); i++) {
                 taskList.get(i).setCreator(creatorList.get(i));
                 taskList.get(i).setAssignee(assigneeList.get(i));
+
+
             }
 
             //附件
@@ -130,6 +146,8 @@ public class TaskServiceImpl implements TaskService {
                 getTaskAttachment(detail);
             }
 
+
+            restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
             restResponse.setResponseCode("000");
             restResponse.setResponseMsg("ok");
             restResponse.setResponseBody(taskList);
@@ -178,6 +196,7 @@ public class TaskServiceImpl implements TaskService {
             //获取权限信息
             StaffAuthInfo staffAuthInfo = StaffAuthUtil.rtrvStaffAuthInfo(this.restTemplate, taskDetail.getProjId(), taskId, request.getStaffId() );
             taskDetail.setStaffAuthInfo(staffAuthInfo);
+            LOG.info("获取task权限"+staffAuthInfo.toString());
             restResponse.setResponseCode("000");
             restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
             restResponse.setResponseMsg("ok");

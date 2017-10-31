@@ -100,7 +100,7 @@ public class StoryServiceImpl implements IStoryService {
         String storyId = story.getStoryId();
 
         //1.1 给创建人分配权限
-        StaffAuthUtil.assignAuthForCreator(this.restTemplate, createStoryRequest.getStoryInfo().getProjId(), createStoryRequest.getCreatorId(), storyId, AuthEnum.SMEMBER.getCode());
+        StaffAuthUtil.assignAuthForCreator(this.restTemplate, createStoryRequest.getStoryInfo().getProjId(),storyId,createStoryRequest.getCreatorId(), AuthEnum.RMEMBER.getCode());
         LOG.info("给创建人分配权限成功!");
 
 
@@ -171,7 +171,7 @@ public class StoryServiceImpl implements IStoryService {
         try {
             SprintInfo sprintInfo = restTemplate.postForObject(addStoryUrl, addStoryRequest, SprintInfo.class);
         } catch (Exception ex) {
-            throw new BusinessException(ExceptionEnum.STORY_ATTCHURL_NOT_CREATE);
+            throw new BusinessException(ExceptionEnum.STORY_DASHBOARD_NOT_CREATE);
         }
         return restResponse;
     }
@@ -513,6 +513,8 @@ public class StoryServiceImpl implements IStoryService {
         String url = config.getRtrvTaskListByStoryIdUrl();
         RtrvTaskListRequest rtrvTaskListRequest = new RtrvTaskListRequest();
         rtrvTaskListRequest.setPage(0);
+        rtrvTaskListRequest.setStaffId(rtrvStoryDetailRequest.getStaffId());
+        LOG.info("staffId:"+rtrvStoryDetailRequest.getStaffId());
         rtrvTaskListRequest.setPageSize(Integer.MAX_VALUE);
         rtrvTaskListRequest.setStoryId(rtrvStoryDetailRequest.getStoryId());
         RestResponse<List<TaskDetail>> response = restTemplate.postForObject(url, rtrvTaskListRequest, RestResponse.class);
@@ -558,7 +560,7 @@ public class StoryServiceImpl implements IStoryService {
         }
 
         //获取用户权限信息
-        StaffAuthInfo staffAuthInfo = StaffAuthUtil.rtrvStaffAuthInfo(this.restTemplate, story.getProjId(), story.getReqmntId(), rtrvStoryDetailRequest.getStaffId());
+        StaffAuthInfo staffAuthInfo = StaffAuthUtil.rtrvStaffAuthInfo(this.restTemplate, story.getProjId(), story.getStoryId(), rtrvStoryDetailRequest.getStaffId());
         rtrvStoryDetailResponse.setStaffAuthInfo(staffAuthInfo);
         rtrvStoryDetailResponse.setStoryDetail(storyDetail);
         restResponse.setResponseBody(rtrvStoryDetailResponse);

@@ -121,10 +121,12 @@ public class DashboardServiceImpl implements DashboardService {
         String subjectId = request.getProjId();
         String storyId = request.getStoryId();
         sprintInfo = this.sprintInfoRepository.findBySubjectIdAndNameAndIsDeleted(subjectId, "Product Backlogs", 0);
-        String storyIds = sprintInfo.getItemIds();
-        storyIds = storyIds + "," + storyId;
-        sprintInfo.setItemIds(storyIds);
-        sprintInfo = this.sprintInfoRepository.saveAndFlush(sprintInfo);
+        if (sprintInfo != null){
+            String storyIds = sprintInfo.getItemIds();
+            storyIds = storyIds + "," + storyId;
+            sprintInfo.setItemIds(storyIds);
+            sprintInfo = this.sprintInfoRepository.saveAndFlush(sprintInfo);
+        }
         return sprintInfo;
     }
 
@@ -186,7 +188,9 @@ public class DashboardServiceImpl implements DashboardService {
         SprintInfo sInfo = this.sprintInfoRepository.findBySubjectIdAndSprintIndex(subjectId,sprintIndex+1);
         SprintInfo spInfo = this.sprintInfoRepository.findBySubjectIdAndSprintIndex(subjectId,sprintIndex+2);
         sprintInfos.add(sInfo);
-        sprintInfos.add(spInfo);
+        if (spInfo != null) {
+            sprintInfos.add(spInfo);
+        }
         return sprintInfos;
     }
 

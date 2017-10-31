@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface StaffService {
 
-    RetrieveStaffListResponse rtrvStaffList();
+    RetrieveStaffListResponse rtrvStaffList(RetrieveStaffListRequest request);
 
     List<Staff> rtrvStaffListByStaffIdList(RtrvStaffListByStaffIbListRequest request);
 

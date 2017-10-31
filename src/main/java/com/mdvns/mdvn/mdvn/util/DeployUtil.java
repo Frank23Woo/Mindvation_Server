@@ -15,7 +15,7 @@ import java.util.Properties;
 public class DeployUtil {
     public static void main(String[] args) {
 
-//        makeWarPackage();
+        makeWarPackage();
 //        localhostIntegration();
     }
 
@@ -101,6 +101,12 @@ public class DeployUtil {
         packageList.add("mdvn-tag-sapi");
         packageList.add("mdvn-task-papi");
         packageList.add("mdvn-task-sapi");
+        packageList.add("mdvn-dashboard-papi");
+        packageList.add("mdvn-dashboard-sapi");
+        packageList.add("mdvn-department-papi");
+        packageList.add("mdvn-department-sapi");
+        packageList.add("mdvn-file-papi");
+        packageList.add("mdvn-file-sapi");
         return packageList;
     }
 

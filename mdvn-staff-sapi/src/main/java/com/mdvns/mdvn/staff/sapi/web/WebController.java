@@ -36,8 +36,8 @@ public class WebController {
      * @return
      */
     @PostMapping(value = "/staffList")
-    public RetrieveStaffListResponse  rtrvStaffList() {
-        return this.staffService.rtrvStaffList();
+    public RetrieveStaffListResponse  rtrvStaffList(@RequestBody RetrieveStaffListRequest request) {
+        return this.staffService.rtrvStaffList(request);
     }
 
     /**

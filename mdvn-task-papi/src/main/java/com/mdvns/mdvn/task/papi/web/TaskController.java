@@ -4,6 +4,7 @@ import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.task.papi.domain.*;
 import com.mdvns.mdvn.task.papi.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -21,7 +22,7 @@ public class TaskController {
     }
 
     @PostMapping("/retrieveTaskList")
-    private RestResponse getTaskList(@RequestBody RtrvTaskListRequest request) throws Exception {
+    private RestResponse getTaskList(@RequestBody @Validated RtrvTaskListRequest request) throws Exception {
         return taskService.retrieveTaskList(request);
     }
 

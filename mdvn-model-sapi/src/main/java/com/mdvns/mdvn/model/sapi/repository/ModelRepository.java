@@ -33,6 +33,6 @@ public interface ModelRepository extends JpaRepository<Model, Integer> {
     @Query(value="select * from model where creator_id=?1", nativeQuery = true)
     List<Model> rtrvModelInfoListByCreatorId(String creatorId);
 
-    @Query(value="select * from model wheremodel_type=?1 AND creator_id=?2", nativeQuery = true)
+    @Query(value="select * from model where model_type=?1 AND creator_id=?2", nativeQuery = true)
     List<Model> rtrvModelInfoList(String modelType, String creatorId);
 }
