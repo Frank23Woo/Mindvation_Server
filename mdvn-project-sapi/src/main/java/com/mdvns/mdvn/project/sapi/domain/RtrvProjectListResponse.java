@@ -1,7 +1,6 @@
 package com.mdvns.mdvn.project.sapi.domain;
 
 import com.mdvns.mdvn.project.sapi.domain.entity.Project;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -11,15 +10,15 @@ public class RtrvProjectListResponse {
     //总记录数
     private Long totalElements;
 
-    private Page<Project> projects;
+    private List<Project> projects;
 
     private List<String> remarks;
 
-    public Page<Project> getProjects() {
+    public List<Project> getProjects() {
         return projects;
     }
 
-    public void setProjects(Page<Project> projects) {
+    public void setProjects(List<Project> projects) {
         this.projects = projects;
     }
 

@@ -2,6 +2,7 @@ package com.mdvns.mdvn.project.sapi.service.impl;
 
 import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
+import com.mdvns.mdvn.common.beans.exception.ReturnFormat;
 import com.mdvns.mdvn.common.utils.RestResponseUtil;
 import com.mdvns.mdvn.project.sapi.domain.*;
 import com.mdvns.mdvn.project.sapi.domain.entity.*;
@@ -59,20 +60,16 @@ public class CreateProjServiceImpl implements ICreateProjService {
     public RestResponse rtrvProjInfoList(RtrvProjectListRequest request) throws SQLException {
         RtrvProjectListResponse rtrvProjectListResponse = new RtrvProjectListResponse();
         //获取多张表数据联合查询然后分页
-        Integer page = request.getPage();
+        Integer page = request.getPage()-1;
         Integer pageSize = request.getPageSize();
         Integer m = page * pageSize;
         Integer n = pageSize;
 //        List<Project> pageList = this.projectRepository.rtrvProjInfoList(request.getStaffId(), m, n);
-
-
         String sortBy = (request.getSortBy() == null) ? "uuId" : request.getSortBy();
-
         PageRequest pageable = new PageRequest(m, n, Sort.Direction.DESC, sortBy);
         Page<Project> pageList = this.projectRepository.findAll(pageable);
 //        Long totalElements = this.projectRepository.getProjBaseInfoCount(request.getStaffId());
-
-        rtrvProjectListResponse.setProjects(pageList);
+        rtrvProjectListResponse.setProjects(pageList.getContent());
         rtrvProjectListResponse.setTotalElements(pageList.getTotalElements());
 
         LOG.info("查询结果为：{}", rtrvProjectListResponse);
