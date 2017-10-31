@@ -37,6 +37,9 @@ public class AttchInfo {
     /*附件更新时间*/
     private Timestamp updateTime;
 
+    /*文件图标url*/
+    private String iconUrl;
+
     public Integer getId() {
         return id;
     }
@@ -99,5 +102,13 @@ public class AttchInfo {
 
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
+    }
+
+    public String getIconUrl() {
+        return iconUrl;
+    }
+
+    public void setIconUrl(String iconUrl) {
+        this.iconUrl = iconUrl;
     }
 }

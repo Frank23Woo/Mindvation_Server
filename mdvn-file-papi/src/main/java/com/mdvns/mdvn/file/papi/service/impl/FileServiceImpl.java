@@ -34,6 +34,7 @@ public class FileServiceImpl implements FileService {
     private static final Logger LOG = LoggerFactory.getLogger(FileServiceImpl.class);
 
     /*SAPI的URL信息*/
+    @Autowired
     private WebConfig webConfig;
 
     /*附件保存目录*/
@@ -120,7 +121,7 @@ public class FileServiceImpl implements FileService {
     @Override
     public ResponseEntity<?> delete(Integer id) {
 
-        String deleteAttchUrl = "http://localhost:10019/mdvn-file-sapi/files/file/"+id;
+        String deleteAttchUrl = webConfig.getDeleteAttchUrl()+id;
 
         restTemplate.put(deleteAttchUrl.toString(), id);
         return RestResponseUtil.successResponseEntity();
@@ -133,7 +134,7 @@ public class FileServiceImpl implements FileService {
      */
     @Override
     public ResponseEntity<?> retrieve(Integer id) {
-        String retrieveUrl = "http://localhost:10019/mdvn-file-sapi/files/file/"+id;
+        String retrieveUrl = webConfig.getRetrieveUrl()+id;
         LOG.info("URLwei：{}", retrieveUrl);
         ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(retrieveUrl, RestResponse.class);
         return responseEntity;
@@ -143,7 +144,7 @@ public class FileServiceImpl implements FileService {
     public ResponseEntity<?> retrieve(String ids) {
 
         //构建调用SAPI的Url
-        String retrieveAttchsUrl = "http://localhost:10019/mdvn-file-sapi/files/"+ids;
+        String retrieveAttchsUrl = webConfig.getRetrieveAttchsUrl()+ids;
         LOG.info("获取附件列表的Url：{}", retrieveAttchsUrl);
         //调用SAPI
         ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(retrieveAttchsUrl, RestResponse.class);
@@ -164,6 +165,8 @@ public class FileServiceImpl implements FileService {
         if (!dir.exists()) {
             dir.mkdir();
         }
+        String contentType = mFile.getContentType();
+        LOG.info("文件类型：{}",contentType);
         //原文件名
         String fileOrigName = mFile.getOriginalFilename();
         //文件后缀名
@@ -190,13 +193,14 @@ public class FileServiceImpl implements FileService {
      */
     private AttchInfo create(AttchInfo attch) {
 
-        String saveAttchInfoUrl = "http://localhost:10019/mdvn-file-sapi/files";
+        String saveAttchInfoUrl = webConfig.getSaveAttchInfoUrl();
         LOG.info("========保存附件信息开始========, URL 为：{}", saveAttchInfoUrl);
         ResponseEntity<RestResponse<AttchInfo>> responseEntity = null;
         try {
             ParameterizedTypeReference parameterizedTypeReference = new ParameterizedTypeReference<RestResponse<AttchInfo>>() {
             };
             //调用SAPI保存
+            LOG.info("保存附件的URL："+saveAttchInfoUrl);
             responseEntity = restTemplate.exchange(saveAttchInfoUrl, HttpMethod.POST, new HttpEntity<>(attch), parameterizedTypeReference);
         } catch (Exception ex) {
             LOG.error("保存信息失败:{}", ex.getLocalizedMessage());

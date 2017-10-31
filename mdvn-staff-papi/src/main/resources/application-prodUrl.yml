@@ -16,6 +16,6 @@ url:
 
   rtrvPostionDetailUrl: http://localhost:10023/mdvn-department-sapi/findPositionById
   rtrvDepartmentDetailUrl: http://localhost:10023/mdvn-department-sapi/findDepartmentById
-
+  findByAccounAndPasswordtUrl : http://localhost:10013/mdvn-staff-sapi/staff
 
 

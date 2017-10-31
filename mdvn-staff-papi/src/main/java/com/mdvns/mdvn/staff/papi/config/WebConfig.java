@@ -40,6 +40,16 @@ public class WebConfig {
     private String rtrvPostionDetailUrl;
     private String rtrvDepartmentDetailUrl;
 
+    private String findByAccounAndPasswordtUrl;
+
+    public String getFindByAccounAndPasswordtUrl() {
+        return findByAccounAndPasswordtUrl;
+    }
+
+    public void setFindByAccounAndPasswordtUrl(String findByAccounAndPasswordtUrl) {
+        this.findByAccounAndPasswordtUrl = findByAccounAndPasswordtUrl;
+    }
+
     public String getRtrvPostionDetailUrl() {
         return rtrvPostionDetailUrl;
     }

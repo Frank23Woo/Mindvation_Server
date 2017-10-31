@@ -64,12 +64,12 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public ResponseEntity<?> removeAuth(RemoveAuthRequest removeAuthRequest) {
-        String rtrvAuthUrl = "http://localhost:10013/mdvn-staff-sapi/rtrvAuth";
+        String removeAuthUrl = "http://localhost:10013/mdvn-staff-sapi/rtrvAuth";
         RtrvStaffAuthInfoRequest rtrvAuthRequest = new RtrvStaffAuthInfoRequest();
         rtrvAuthRequest.setProjId(removeAuthRequest.getProjId());
         rtrvAuthRequest.setStaffId(removeAuthRequest.getStaffId());
         rtrvAuthRequest.setHierarchyId(removeAuthRequest.getHierarchyId());
-        ResponseEntity<StaffAuthInfo> responseEntity = this.restTemplate.postForEntity(rtrvAuthUrl, rtrvAuthRequest, StaffAuthInfo.class);
+        ResponseEntity<StaffAuthInfo> responseEntity = this.restTemplate.postForEntity(removeAuthUrl, rtrvAuthRequest, StaffAuthInfo.class);
         StaffAuthInfo staffAuthInfo = responseEntity.getBody();
 
         return null;
