@@ -68,8 +68,8 @@ public class StaffServiceImpl implements StaffService {
             String sortBy = request.getSortBy();
             Integer page = request.getPage()-1;
             Integer pageSize = request.getPageSize();
-            sortBy = (sortBy == null) ? "staffId" : sortBy;
-            PageRequest pageable = new PageRequest(page, pageSize, Sort.Direction.DESC, sortBy);
+            sortBy = (sortBy == null) ? "uuId" : sortBy;
+            PageRequest pageable = new PageRequest(page, pageSize, Sort.Direction.ASC, sortBy);
             Page<Staff> staffPage = null;
             staffPage = this.staffRepository.findAll(pageable);
             Long count = this.staffRepository.getStaffCount();
