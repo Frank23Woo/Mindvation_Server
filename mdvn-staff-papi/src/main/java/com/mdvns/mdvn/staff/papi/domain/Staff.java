@@ -40,14 +40,14 @@ public class Staff {
 
     private String status;
 
-    private Integer tagCnt;
+    private Integer tagsCnt;
 
-    public Integer getTagCnt() {
-        return tagCnt;
+    public Integer getTagsCnt() {
+        return tagsCnt;
     }
 
-    public void setTagCnt(Integer tagCnt) {
-        this.tagCnt = tagCnt;
+    public void setTagsCnt(Integer tagsCnt) {
+        this.tagsCnt = tagsCnt;
     }
 
     public Staff() {

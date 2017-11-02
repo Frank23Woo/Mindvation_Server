@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
         //登录校验
         Boolean passed = userCheck(user, loginRequest.getPassword());
         if (!passed) {
-            throw new BusinessException(ExceptionEnum.PASSWORD_INCORRECT);
+            throw new BusinessException(ExceptionEnum.ACCOUNT_OR_PASSWORD_INCORRECT);
         }
         //调用SAPI获取staff信息
         return getStaffById(user.getStaffId());

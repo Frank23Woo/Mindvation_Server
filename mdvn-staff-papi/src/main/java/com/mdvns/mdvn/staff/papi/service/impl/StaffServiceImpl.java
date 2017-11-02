@@ -61,7 +61,7 @@ public class StaffServiceImpl implements StaffService {
             String staffTagUrl = webConfig.getRtrvStaffTagListUrl();
             ParameterizedTypeReference<List<StaffTag>> parameterizedTypeReference = new ParameterizedTypeReference<List<StaffTag>>(){};
             List<StaffTag> staffTagList = FetchListUtil.fetch(this.restTemplate,staffTagUrl,staffId,parameterizedTypeReference);
-            staff.setTagCnt(staffTagList.size());
+            staff.setTagsCnt(staffTagList.size());
 //            staffAndTagCount.setTagCnt(staffTagList.size());
 //            staffAndTagCounts.add(staffAndTagCount);
             staffs.add(staff);
@@ -225,7 +225,7 @@ public class StaffServiceImpl implements StaffService {
 //        List<Tag> tagList = this.restTemplate.postForObject(tagUrl,params, List.class);
         ParameterizedTypeReference<List<Tag>> tagRefer = new ParameterizedTypeReference<List<Tag>>() {};
         List<Tag> tagList = FetchListUtil.fetch(this.restTemplate,tagUrl,rtrvTagsRequest,tagRefer);
-        staff.setTagCnt(tagList.size());
+        staff.setTagsCnt(tagList.size());
         response.setStaffInfo(staff);
         response.setTags(tagList);
         return ResponseEntity.ok(RestResponseUtil.success(response));
