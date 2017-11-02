@@ -37,6 +37,8 @@ public enum ExceptionEnum {
 	//Staff
 	UPDATE_STAFF_FAIL("1900", "Fail to Update Staff Information "),
 	DELETE_STAFF_FAIL("1901", "Fail to delete staff"),
+	USER_NAME_EXISTS("1902", "User name already exists"),
+	USER_ACCT_EXISTS("1903", "User account already exists"),
 
 	//用户(User)
 	USER_NOT_FOUND("1800", "用户不存在!"),

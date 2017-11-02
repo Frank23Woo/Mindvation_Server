@@ -4,6 +4,7 @@ import com.mdvns.mdvn.common.beans.AssignAuthRequest;
 import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.common.beans.Tag;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
+import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
 import com.mdvns.mdvn.common.utils.RestResponseUtil;
 import com.mdvns.mdvn.staff.sapi.domain.*;
 import com.mdvns.mdvn.staff.sapi.domain.entity.Staff;
@@ -60,7 +61,8 @@ public class StaffServiceImpl implements StaffService {
     public RetrieveStaffListResponse rtrvStaffList(RetrieveStaffListRequest request) {
         RetrieveStaffListResponse retrieveStaffListResponse = new RetrieveStaffListResponse();
         if(request.getPage()==null || request.getPageSize() ==null){
-            List<Staff> list = this.staffRepository.findAll();
+//            List<Staff> list = this.staffRepository.findAll();
+            List<Staff> list = this.staffRepository.findAllByAccountIsNot("admin");
             retrieveStaffListResponse.setStaffs(list);
             retrieveStaffListResponse.setTotalNumber(Long.valueOf(list.size()));
             return retrieveStaffListResponse;
@@ -71,8 +73,9 @@ public class StaffServiceImpl implements StaffService {
             sortBy = (sortBy == null) ? "uuId" : sortBy;
             PageRequest pageable = new PageRequest(page, pageSize, Sort.Direction.ASC, sortBy);
             Page<Staff> staffPage = null;
-            staffPage = this.staffRepository.findAll(pageable);
-            Long count = this.staffRepository.getStaffCount();
+//            staffPage = this.staffRepository.findAll(pageable);
+            staffPage = this.staffRepository.findAllByAccountIsNot("admin",pageable);
+//            Long count = this.staffRepository.getStaffCount();
             retrieveStaffListResponse.setStaffs(staffPage.getContent());
             retrieveStaffListResponse.setTotalNumber(staffPage.getTotalElements());
             return retrieveStaffListResponse;
@@ -277,6 +280,15 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     public CreateStaffResponse createStaff(CreateStaffRequest request) {
+        Staff existStaff = staffRepository.findFirstByName(request.getName());
+        if(existStaff!=null){
+            throw new BusinessException(ExceptionEnum.USER_NAME_EXISTS);
+        }
+        existStaff = staffRepository.findFirstByAccount(request.getAccount());
+        if(existStaff!=null){
+            throw new BusinessException(ExceptionEnum.USER_ACCT_EXISTS);
+        }
+
         Staff staff = new Staff();
         staff.setPassword(request.getPassword());
         staff.setDeptId(request.getDeptId());

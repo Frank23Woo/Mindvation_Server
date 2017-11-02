@@ -24,4 +24,11 @@ public interface StaffRepository extends JpaRepository<Staff, Integer> {
 
 
     Staff findByAccountAndPassword(String account, String password);
+
+    Staff findFirstByName(String name);
+    Staff findFirstByAccount(String account);
+
+    List<Staff> findAllByAccountIsNot(String account);
+
+    Page<Staff> findAllByAccountIsNot(String account,Pageable pageable);
 }
