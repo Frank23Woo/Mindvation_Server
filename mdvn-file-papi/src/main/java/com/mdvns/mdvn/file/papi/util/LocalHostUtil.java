@@ -23,7 +23,7 @@ public class LocalHostUtil implements ApplicationListener<EmbeddedServletContain
         LocalHostUtil.event = event;
     }
 
-    public static int getPort() {
+    public static Integer getPort() {
         int port = event.getEmbeddedServletContainer().getPort();
         Assert.state(port != -1, "端口号获取失败!");
         LOG.info("端口号为：{}", port);

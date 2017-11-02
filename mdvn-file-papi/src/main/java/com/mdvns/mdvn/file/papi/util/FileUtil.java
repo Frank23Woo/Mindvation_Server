@@ -36,9 +36,11 @@ public class FileUtil {
      */
     public static String genUrl(HttpServletRequest request, String fileName) throws UnknownHostException {
         StringBuilder url = new StringBuilder(accessType);
+        String ip = (null==LocalHostUtil.getIp())?request.getLocalAddr():LocalHostUtil.getIp();
+        Integer port = (null==LocalHostUtil.getPort())?request.getServerPort():LocalHostUtil.getPort();
 
-        url.append(LocalHostUtil.getIp()).append(":").append(LocalHostUtil.getPort())
-                .append(request.getContextPath()).append(File.separator).append(fileName);
+        url.append(ip).append(":").append(port)
+                .append(request.getContextPath()).append("/").append(fileName);
         LOG.info("该附件上传后的URL为：{}", url);
         return url.toString();
     }
