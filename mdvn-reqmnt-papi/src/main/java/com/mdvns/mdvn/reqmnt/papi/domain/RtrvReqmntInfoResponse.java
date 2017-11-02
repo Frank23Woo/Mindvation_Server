@@ -24,14 +24,14 @@ public class RtrvReqmntInfoResponse{
     private RtrvStoryListResponse rtrvStoryListResponse;
 
 
-    private List<StaffAuthInfo> staffAuthInfos;
+    private List<StaffAuthInfo> staffAuthInfo;
 
-    public List<StaffAuthInfo> getStaffAuthInfos() {
-        return staffAuthInfos;
+    public List<StaffAuthInfo> getStaffAuthInfo() {
+        return staffAuthInfo;
     }
 
-    public void setStaffAuthInfos(List<StaffAuthInfo> staffAuthInfos) {
-        this.staffAuthInfos = staffAuthInfos;
+    public void setStaffAuthInfo(List<StaffAuthInfo> staffAuthInfo) {
+        this.staffAuthInfo = staffAuthInfo;
     }
 
     public void setReqmntInfo(RequirementInfo reqmntInfo) {
@@ -110,7 +110,7 @@ public class RtrvReqmntInfoResponse{
             return false;
         if (getRtrvStoryListResponse() != null ? !getRtrvStoryListResponse().equals(that.getRtrvStoryListResponse()) : that.getRtrvStoryListResponse() != null)
             return false;
-        return getStaffAuthInfos() != null ? getStaffAuthInfos().equals(that.getStaffAuthInfos()) : that.getStaffAuthInfos() == null;
+        return getStaffAuthInfo() != null ? getStaffAuthInfo().equals(that.getStaffAuthInfo()) : that.getStaffAuthInfo() == null;
     }
 
     @Override
@@ -122,7 +122,7 @@ public class RtrvReqmntInfoResponse{
         result = 31 * result + (getCheckLists() != null ? getCheckLists().hashCode() : 0);
         result = 31 * result + (getAttchInfos() != null ? getAttchInfos().hashCode() : 0);
         result = 31 * result + (getRtrvStoryListResponse() != null ? getRtrvStoryListResponse().hashCode() : 0);
-        result = 31 * result + (getStaffAuthInfos() != null ? getStaffAuthInfos().hashCode() : 0);
+        result = 31 * result + (getStaffAuthInfo() != null ? getStaffAuthInfo().hashCode() : 0);
         return result;
     }
 
@@ -136,7 +136,7 @@ public class RtrvReqmntInfoResponse{
                 ", checkLists=" + checkLists +
                 ", attchInfos=" + attchInfos +
                 ", rtrvStoryListResponse=" + rtrvStoryListResponse +
-                ", staffAuthInfos=" + staffAuthInfos +
+                ", staffAuthInfo=" + staffAuthInfo +
                 '}';
     }
 }

@@ -391,7 +391,7 @@ public class ReqmntServiceImpl implements IReqmntService {
 
         //获取用户权限信息
         List<StaffAuthInfo> staffAuthInfos = StaffAuthUtil.rtrvStaffAuthInfo(this.restTemplate, requirementInfo.getProjId(), requirementInfo.getReqmntId(), request.getStaffId());
-        rtrvReqmntInfoResponse.setStaffAuthInfos(staffAuthInfos);
+        rtrvReqmntInfoResponse.setStaffAuthInfo(staffAuthInfos);
         LOG.info("获取需求中用户权限成功" + "projId:" + requirementInfo.getProjId() + "reqmntId:" + requirementInfo.getReqmntId() + "staffId:" + request.getStaffId());
         restResponse.setResponseBody(rtrvReqmntInfoResponse);
 

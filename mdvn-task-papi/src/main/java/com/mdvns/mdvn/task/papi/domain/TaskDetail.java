@@ -42,16 +42,16 @@ public class TaskDetail {
 
     private List<AttchInfo> attachUrlList;
 
-    private StaffAuthInfo staffAuthInfo;
+    private List<StaffAuthInfo> staffAuthInfo;
 
     public TaskDetail() {
     }
 
-    public StaffAuthInfo getStaffAuthInfo() {
+    public List<StaffAuthInfo> getStaffAuthInfo() {
         return staffAuthInfo;
     }
 
-    public void setStaffAuthInfo(StaffAuthInfo staffAuthInfo) {
+    public void setStaffAuthInfo(List<StaffAuthInfo> staffAuthInfo) {
         this.staffAuthInfo = staffAuthInfo;
     }
 
@@ -230,5 +230,106 @@ public class TaskDetail {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TaskDetail)) return false;
+
+        TaskDetail that = (TaskDetail) o;
+
+        if (getUuid() != null ? !getUuid().equals(that.getUuid()) : that.getUuid() != null) return false;
+        if (getStoryId() != null ? !getStoryId().equals(that.getStoryId()) : that.getStoryId() != null) return false;
+        if (getTaskId() != null ? !getTaskId().equals(that.getTaskId()) : that.getTaskId() != null) return false;
+        if (getProjId() != null ? !getProjId().equals(that.getProjId()) : that.getProjId() != null) return false;
+        if (getCreatorId() != null ? !getCreatorId().equals(that.getCreatorId()) : that.getCreatorId() != null)
+            return false;
+        if (getAssigneeId() != null ? !getAssigneeId().equals(that.getAssigneeId()) : that.getAssigneeId() != null)
+            return false;
+        if (getDescription() != null ? !getDescription().equals(that.getDescription()) : that.getDescription() != null)
+            return false;
+        if (getStartTime() != null ? !getStartTime().equals(that.getStartTime()) : that.getStartTime() != null)
+            return false;
+        if (getEndTime() != null ? !getEndTime().equals(that.getEndTime()) : that.getEndTime() != null) return false;
+        if (getProgress() != null ? !getProgress().equals(that.getProgress()) : that.getProgress() != null)
+            return false;
+        if (getStatus() != null ? !getStatus().equals(that.getStatus()) : that.getStatus() != null) return false;
+        if (getComment() != null ? !getComment().equals(that.getComment()) : that.getComment() != null) return false;
+        if (getAttachmentIds() != null ? !getAttachmentIds().equals(that.getAttachmentIds()) : that.getAttachmentIds() != null)
+            return false;
+        if (getDeliverId() != null ? !getDeliverId().equals(that.getDeliverId()) : that.getDeliverId() != null)
+            return false;
+        if (getCreateTime() != null ? !getCreateTime().equals(that.getCreateTime()) : that.getCreateTime() != null)
+            return false;
+        if (getLastUpdateTime() != null ? !getLastUpdateTime().equals(that.getLastUpdateTime()) : that.getLastUpdateTime() != null)
+            return false;
+        if (getIsDeleted() != null ? !getIsDeleted().equals(that.getIsDeleted()) : that.getIsDeleted() != null)
+            return false;
+        if (getRemarks() != null ? !getRemarks().equals(that.getRemarks()) : that.getRemarks() != null) return false;
+        if (getDeliver() != null ? !getDeliver().equals(that.getDeliver()) : that.getDeliver() != null) return false;
+        if (getCreator() != null ? !getCreator().equals(that.getCreator()) : that.getCreator() != null) return false;
+        if (getAssignee() != null ? !getAssignee().equals(that.getAssignee()) : that.getAssignee() != null)
+            return false;
+        if (getAttachUrlList() != null ? !getAttachUrlList().equals(that.getAttachUrlList()) : that.getAttachUrlList() != null)
+            return false;
+        return getStaffAuthInfo() != null ? getStaffAuthInfo().equals(that.getStaffAuthInfo()) : that.getStaffAuthInfo() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getUuid() != null ? getUuid().hashCode() : 0;
+        result = 31 * result + (getStoryId() != null ? getStoryId().hashCode() : 0);
+        result = 31 * result + (getTaskId() != null ? getTaskId().hashCode() : 0);
+        result = 31 * result + (getProjId() != null ? getProjId().hashCode() : 0);
+        result = 31 * result + (getCreatorId() != null ? getCreatorId().hashCode() : 0);
+        result = 31 * result + (getAssigneeId() != null ? getAssigneeId().hashCode() : 0);
+        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
+        result = 31 * result + (getStartTime() != null ? getStartTime().hashCode() : 0);
+        result = 31 * result + (getEndTime() != null ? getEndTime().hashCode() : 0);
+        result = 31 * result + (getProgress() != null ? getProgress().hashCode() : 0);
+        result = 31 * result + (getStatus() != null ? getStatus().hashCode() : 0);
+        result = 31 * result + (getComment() != null ? getComment().hashCode() : 0);
+        result = 31 * result + (getAttachmentIds() != null ? getAttachmentIds().hashCode() : 0);
+        result = 31 * result + (getDeliverId() != null ? getDeliverId().hashCode() : 0);
+        result = 31 * result + (getCreateTime() != null ? getCreateTime().hashCode() : 0);
+        result = 31 * result + (getLastUpdateTime() != null ? getLastUpdateTime().hashCode() : 0);
+        result = 31 * result + (getIsDeleted() != null ? getIsDeleted().hashCode() : 0);
+        result = 31 * result + (getRemarks() != null ? getRemarks().hashCode() : 0);
+        result = 31 * result + (getDeliver() != null ? getDeliver().hashCode() : 0);
+        result = 31 * result + (getCreator() != null ? getCreator().hashCode() : 0);
+        result = 31 * result + (getAssignee() != null ? getAssignee().hashCode() : 0);
+        result = 31 * result + (getAttachUrlList() != null ? getAttachUrlList().hashCode() : 0);
+        result = 31 * result + (getStaffAuthInfo() != null ? getStaffAuthInfo().hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TaskDetail{" +
+                "uuid=" + uuid +
+                ", storyId='" + storyId + '\'' +
+                ", taskId='" + taskId + '\'' +
+                ", projId='" + projId + '\'' +
+                ", creatorId='" + creatorId + '\'' +
+                ", assigneeId='" + assigneeId + '\'' +
+                ", description='" + description + '\'' +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", progress=" + progress +
+                ", status='" + status + '\'' +
+                ", comment='" + comment + '\'' +
+                ", attachmentIds='" + attachmentIds + '\'' +
+                ", deliverId=" + deliverId +
+                ", createTime=" + createTime +
+                ", lastUpdateTime=" + lastUpdateTime +
+                ", isDeleted=" + isDeleted +
+                ", remarks='" + remarks + '\'' +
+                ", deliver=" + deliver +
+                ", creator=" + creator +
+                ", assignee=" + assignee +
+                ", attachUrlList=" + attachUrlList +
+                ", staffAuthInfo=" + staffAuthInfo +
+                '}';
     }
 }
