@@ -53,7 +53,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public ResponseEntity<?> rtrvAuth(RtrvStaffAuthInfoRequest rtrvAuthRequest) {
         String rtrvAuthUrl = webConfig.getRtrvAuthUrl();
-        ResponseEntity<StaffAuthInfo> responseEntity = this.restTemplate.postForEntity(rtrvAuthUrl, rtrvAuthRequest, StaffAuthInfo.class);
+        ResponseEntity<StaffAuthInfo[]> responseEntity = this.restTemplate.postForEntity(rtrvAuthUrl, rtrvAuthRequest, StaffAuthInfo[].class);
         LOG.info("调用SAPI结束....{}", responseEntity.getStatusCode());
         if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
             return responseEntity;

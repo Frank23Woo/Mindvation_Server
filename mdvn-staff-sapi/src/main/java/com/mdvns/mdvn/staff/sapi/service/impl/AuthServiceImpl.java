@@ -60,11 +60,12 @@ public class AuthServiceImpl implements AuthService {
      */
     @Override
     public ResponseEntity<?> rtrvAuth(RtrvStaffAuthInfoRequest rtrvAuthRequest) {
+        LOG.info("获取权限Request：{}", rtrvAuthRequest.toString());
         String projId = rtrvAuthRequest.getProjId();
         String staffId = rtrvAuthRequest.getStaffId();
         String hierarchyId = rtrvAuthRequest.getHierarchyId();
-        StaffAuthInfo staffAuthInfo = this.authInfoRepository.findByProjIdAndStaffIdAndHierarchyId(projId, staffId, hierarchyId);
+        List<StaffAuthInfo> staffAuthInfos =  this.authInfoRepository.findByProjIdAndStaffIdAndHierarchyId(projId, staffId, hierarchyId);
 
-        return ResponseEntity.ok(staffAuthInfo);
+        return ResponseEntity.ok(staffAuthInfos);
     }
 }

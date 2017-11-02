@@ -55,21 +55,21 @@ public class StaffAuthUtil {
 	 * @param staffId
 	 * @return
 	 */
-	public static StaffAuthInfo rtrvStaffAuthInfo(RestTemplate restTemplate, String projId, String hierarchyId,
+	public static List<StaffAuthInfo> rtrvStaffAuthInfo(RestTemplate restTemplate, String projId, String hierarchyId,
 			String staffId) {
 		String rtrvStaffAuthUrl = "http://localhost:10014/mdvn-staff-papi/staff/rtrvAuth";
 		RtrvStaffAuthInfoRequest rtrvStaffAuthInfoRequest = new RtrvStaffAuthInfoRequest();
 		rtrvStaffAuthInfoRequest.setProjId(projId);
 		rtrvStaffAuthInfoRequest.setStaffId(staffId);
 		rtrvStaffAuthInfoRequest.setHierarchyId(hierarchyId);
-		ResponseEntity<StaffAuthInfo> responseEntity = restTemplate.postForEntity(rtrvStaffAuthUrl,
-				rtrvStaffAuthInfoRequest, StaffAuthInfo.class);
+		ResponseEntity<StaffAuthInfo[]> responseEntity = restTemplate.postForEntity(rtrvStaffAuthUrl,
+				rtrvStaffAuthInfoRequest, StaffAuthInfo[].class);
 
-		StaffAuthInfo staffAuthInfo = null;
+		StaffAuthInfo[] staffAuthInfos = null;
 		if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
-			staffAuthInfo = responseEntity.getBody();
+			staffAuthInfos = responseEntity.getBody();
 		}
-		return staffAuthInfo;
+		return Arrays.asList(staffAuthInfos);
 	}
 
 	/**

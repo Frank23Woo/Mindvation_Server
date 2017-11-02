@@ -37,7 +37,7 @@ public class Staff {
     private Double worksaturation;
 
 
-    /*who create this staff*/
+    /*who addes this staff*/
     private String creatorId;
 
     private String positionLvl;

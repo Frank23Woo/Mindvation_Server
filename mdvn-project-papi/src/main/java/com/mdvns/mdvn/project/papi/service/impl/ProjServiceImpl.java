@@ -24,6 +24,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -452,8 +453,8 @@ public class ProjServiceImpl implements IProjService {
         //获取用户在项目中的权限信息
         RtrvStaffAuthInfoRequest rtrvAuthInfoRequest = new RtrvStaffAuthInfoRequest();
         String projId = rtrvProjectDetailRequest.getProjId();
-        StaffAuthInfo staffAuthInfo = StaffAuthUtil.rtrvStaffAuthInfo(this.restTemplate, projId, projId, rtrvProjectDetailRequest.getStaffId());
-        rtrvProjectDetailResponse.setStaffAuthInfo(staffAuthInfo);
+        List<StaffAuthInfo> staffAuthInfos = StaffAuthUtil.rtrvStaffAuthInfo(this.restTemplate, projId, projId, rtrvProjectDetailRequest.getStaffId());
+        rtrvProjectDetailResponse.setStaffAuthInfo(staffAuthInfos);
 
         rtrvProjectDetailResponse.setProjectDetail(projectDetail);
         restResponse.setResponseBody(rtrvProjectDetailResponse);
@@ -464,27 +465,5 @@ public class ProjServiceImpl implements IProjService {
         return restResponse;
     }
 
-    /**
-     * 获取用户在项目中的权限
-     *
-     * @param projId
-     * @param staffId
-     * @return
-     */
-    /*private StaffAuthInfo rtrvStaffAuthInfo(String projId, String staffId) {
-
-        String rtrvStaffAuthUrl = "http://localhost:10014/mdvn-staff-papi/staff/rtrvAuth";
-        RtrvAuthRequest rtrvAuthRequest = new RtrvAuthRequest();
-        rtrvAuthRequest.setProjId(projId);
-        rtrvAuthRequest.setStaffId(staffId);
-        rtrvAuthRequest.setHierarchyId(projId);
-        ResponseEntity<StaffAuthInfo> responseEntity = this.restTemplate.postForEntity(rtrvStaffAuthUrl, rtrvAuthRequest, StaffAuthInfo.class);
-
-        StaffAuthInfo staffAuthInfo = null;
-        if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
-            staffAuthInfo = responseEntity.getBody();
-        }
-        return staffAuthInfo;
-    }*/
 
 }
