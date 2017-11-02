@@ -113,8 +113,8 @@ public class TaskServiceImpl implements TaskService {
                 LOG.info("projId:"+taskList.get(i).getProjId());
                 LOG.info("taskId:"+ taskList.get(i).getTaskId());
                 LOG.info("staffId:"+request.getStaffId());
-                StaffAuthInfo staffAuthInfo = StaffAuthUtil.rtrvStaffAuthInfo(this.restTemplate, taskList.get(i).getProjId(), taskList.get(i).getTaskId(), request.getStaffId() );
-                taskList.get(i).setStaffAuthInfo(staffAuthInfo);
+                List<StaffAuthInfo> staffAuthInfos = StaffAuthUtil.rtrvStaffAuthInfo(this.restTemplate, taskList.get(i).getProjId(), taskList.get(i).getTaskId(), request.getStaffId() );
+                taskList.get(i).setStaffAuthInfo(staffAuthInfos.get(0));
             }
 
             // 查询creator和assignee
@@ -194,9 +194,9 @@ public class TaskServiceImpl implements TaskService {
             getTaskAttachment(taskDetail);
 
             //获取权限信息
-            StaffAuthInfo staffAuthInfo = StaffAuthUtil.rtrvStaffAuthInfo(this.restTemplate, taskDetail.getProjId(), taskId, request.getStaffId() );
-            taskDetail.setStaffAuthInfo(staffAuthInfo);
-            LOG.info("获取task权限"+staffAuthInfo.toString());
+            List<StaffAuthInfo> staffAuthInfos = StaffAuthUtil.rtrvStaffAuthInfo(this.restTemplate, taskDetail.getProjId(), taskId, request.getStaffId() );
+            taskDetail.setStaffAuthInfo(staffAuthInfos.get(0));
+            LOG.info("获取task权限"+staffAuthInfos.toString());
             restResponse.setResponseCode("000");
             restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
             restResponse.setResponseMsg("ok");

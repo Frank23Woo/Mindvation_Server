@@ -561,8 +561,8 @@ public class StoryServiceImpl implements IStoryService {
         }
 
         //获取用户权限信息
-        StaffAuthInfo staffAuthInfo = StaffAuthUtil.rtrvStaffAuthInfo(this.restTemplate, story.getProjId(), story.getStoryId(), rtrvStoryDetailRequest.getStaffId());
-        rtrvStoryDetailResponse.setStaffAuthInfo(staffAuthInfo);
+        List<StaffAuthInfo> staffAuthInfos = StaffAuthUtil.rtrvStaffAuthInfo(this.restTemplate, story.getProjId(), story.getStoryId(), rtrvStoryDetailRequest.getStaffId());
+        rtrvStoryDetailResponse.setStaffAuthInfo(staffAuthInfos);
         rtrvStoryDetailResponse.setStoryDetail(storyDetail);
         restResponse.setResponseBody(rtrvStoryDetailResponse);
         restResponse.setStatusCode("200");

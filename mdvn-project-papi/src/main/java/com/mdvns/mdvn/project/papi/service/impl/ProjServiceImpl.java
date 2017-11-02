@@ -386,6 +386,7 @@ public class ProjServiceImpl implements IProjService {
             List<ProjChecklistsDetail> projChecklists = restTemplate.postForObject(rtrvProjCheckListsUrl, rtrvProjectDetailRequest, List.class);
             projectDetail.setCheckLists(projChecklists);
         } catch (Exception ex) {
+            LOG.error("获取项目 CheckList信息失败");
             throw new BusinessException(ExceptionEnum.PROJECT_DETAIL_CHECKLIST_NOT_RTRV);
         }
         //6.获取项目附件信息
@@ -411,6 +412,7 @@ public class ProjServiceImpl implements IProjService {
                 projectDetail.setAttchInfos((List<AttchInfo>)responseEntity.getBody().getResponseBody());
             }
         } catch (Exception ex) {
+            LOG.error("获取项目标签信息失败");
             throw new BusinessException(ExceptionEnum.PROJECT_DETAIL_ATTCHURL_NOT_RTRV);
         }
         //7.获取requirment列表信息
