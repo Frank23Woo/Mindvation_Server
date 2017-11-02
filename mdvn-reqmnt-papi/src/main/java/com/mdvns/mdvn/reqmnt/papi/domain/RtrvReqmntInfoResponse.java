@@ -24,14 +24,14 @@ public class RtrvReqmntInfoResponse{
     private RtrvStoryListResponse rtrvStoryListResponse;
 
 
-    private StaffAuthInfo staffAuthInfo;
+    private List<StaffAuthInfo> staffAuthInfos;
 
-    public StaffAuthInfo getStaffAuthInfo() {
-        return staffAuthInfo;
+    public List<StaffAuthInfo> getStaffAuthInfos() {
+        return staffAuthInfos;
     }
 
-    public void setStaffAuthInfo(StaffAuthInfo staffAuthInfo) {
-        this.staffAuthInfo = staffAuthInfo;
+    public void setStaffAuthInfos(List<StaffAuthInfo> staffAuthInfos) {
+        this.staffAuthInfos = staffAuthInfos;
     }
 
     public void setReqmntInfo(RequirementInfo reqmntInfo) {
@@ -89,5 +89,54 @@ public class RtrvReqmntInfoResponse{
 
     public void setAttchInfos(List<AttchInfo> attchInfos) {
         this.attchInfos = attchInfos;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RtrvReqmntInfoResponse)) return false;
+
+        RtrvReqmntInfoResponse that = (RtrvReqmntInfoResponse) o;
+
+        if (getReqmntInfo() != null ? !getReqmntInfo().equals(that.getReqmntInfo()) : that.getReqmntInfo() != null)
+            return false;
+        if (getLabelDetail() != null ? !getLabelDetail().equals(that.getLabelDetail()) : that.getLabelDetail() != null)
+            return false;
+        if (getTagList() != null ? !getTagList().equals(that.getTagList()) : that.getTagList() != null) return false;
+        if (getMembers() != null ? !getMembers().equals(that.getMembers()) : that.getMembers() != null) return false;
+        if (getCheckLists() != null ? !getCheckLists().equals(that.getCheckLists()) : that.getCheckLists() != null)
+            return false;
+        if (getAttchInfos() != null ? !getAttchInfos().equals(that.getAttchInfos()) : that.getAttchInfos() != null)
+            return false;
+        if (getRtrvStoryListResponse() != null ? !getRtrvStoryListResponse().equals(that.getRtrvStoryListResponse()) : that.getRtrvStoryListResponse() != null)
+            return false;
+        return getStaffAuthInfos() != null ? getStaffAuthInfos().equals(that.getStaffAuthInfos()) : that.getStaffAuthInfos() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getReqmntInfo() != null ? getReqmntInfo().hashCode() : 0;
+        result = 31 * result + (getLabelDetail() != null ? getLabelDetail().hashCode() : 0);
+        result = 31 * result + (getTagList() != null ? getTagList().hashCode() : 0);
+        result = 31 * result + (getMembers() != null ? getMembers().hashCode() : 0);
+        result = 31 * result + (getCheckLists() != null ? getCheckLists().hashCode() : 0);
+        result = 31 * result + (getAttchInfos() != null ? getAttchInfos().hashCode() : 0);
+        result = 31 * result + (getRtrvStoryListResponse() != null ? getRtrvStoryListResponse().hashCode() : 0);
+        result = 31 * result + (getStaffAuthInfos() != null ? getStaffAuthInfos().hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RtrvReqmntInfoResponse{" +
+                "reqmntInfo=" + reqmntInfo +
+                ", labelDetail=" + labelDetail +
+                ", tagList=" + tagList +
+                ", members=" + members +
+                ", checkLists=" + checkLists +
+                ", attchInfos=" + attchInfos +
+                ", rtrvStoryListResponse=" + rtrvStoryListResponse +
+                ", staffAuthInfos=" + staffAuthInfos +
+                '}';
     }
 }

@@ -180,23 +180,6 @@ public class ProjServiceImpl implements IProjService {
         return restResponse;
     }
 
-    /**
-     * 分配权限
-     * @param assignAuthRequest
-     */
-   /* private void assignAuth(AssignAuthRequest assignAuthRequest) {
-        String assignAuthUrl = "http://localhost:10014/mdvn-staff-papi/staff/assignAuth";
-        ResponseEntity<StaffAuthInfo[]> responseEntity = null;
-        try {
-            responseEntity = this.restTemplate.postForEntity(assignAuthUrl, assignAuthRequest, StaffAuthInfo[].class);
-        } catch (Exception ex) {
-            LOG.error("添加权限失败:{}", ex.getLocalizedMessage());
-            throw new BusinessException(ExceptionEnum.UNKNOW_EXCEPTION);
-        }
-
-        LOG.info("添加权限完成：{}",responseEntity.getBody().toString());
-
-    }*/
 
     /**
      * 调用sapi更改project
