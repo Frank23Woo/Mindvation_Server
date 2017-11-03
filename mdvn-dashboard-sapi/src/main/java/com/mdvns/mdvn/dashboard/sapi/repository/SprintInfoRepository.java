@@ -9,10 +9,10 @@ import java.util.List;
 @Repository
 public interface SprintInfoRepository extends JpaRepository<SprintInfo, Integer> {
 
-    List<SprintInfo> findBySubjectIdAndIsDeletedAndSprintIndex(String subjectId , Integer isDeleted,Integer sprintIndex);
+    List<SprintInfo> findBySubjectIdAndCreatorIdAndIsDeletedAndSprintIndexAndStatusIsNot(String subjectId ,String creatorId, Integer isDeleted,Integer sprintIndex,String status);
 
-    List<SprintInfo> findBySubjectIdAndModelIdAndIsDeleted(String subjectId ,String modelId, Integer isDeleted);
+    List<SprintInfo> findBySubjectIdAndModelIdAndCreatorIdAndIsDeletedAndStatusIsNot(String subjectId ,String modelId,String creatorId, Integer isDeleted,String status);
 
-    SprintInfo findBySubjectIdAndNameAndIsDeleted(String subjectId ,String name, Integer isDeleted);
-    SprintInfo findBySubjectIdAndSprintIndex(String subjectId ,Integer sprintIndex);
+    SprintInfo findBySubjectIdAndCreatorIdAndNameAndIsDeleted(String subjectId ,String creatorId,String name, Integer isDeleted);
+    SprintInfo findBySubjectIdAndCreatorIdAndSprintIndex(String subjectId,String creatorId ,Integer sprintIndex);
 }

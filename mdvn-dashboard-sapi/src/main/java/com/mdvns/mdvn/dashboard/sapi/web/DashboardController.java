@@ -27,13 +27,13 @@ public class DashboardController {
 
     /**
      * 根据projId查询SprintInfo对象(判断是不是新建)
-     * @param projId
+     * @param request
      * @return
      */
     @PostMapping(value = "/dashboardInfos")
-    public List<SprintInfo> findDashboardInfoById(@RequestBody String projId) {
-        LOG.info("项目编号："+projId);
-        return this.dashboardService.findDashboardInfoById(projId);
+    public List<SprintInfo> findDashboardInfoById(@RequestBody RtrvAllStoryListRequest request) {
+        LOG.info("开始执行项目findDashboardInfoById：");
+        return this.dashboardService.findDashboardInfoById(request);
     }
 
     /**

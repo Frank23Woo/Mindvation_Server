@@ -62,7 +62,7 @@ public class StaffServiceImpl implements StaffService {
         RetrieveStaffListResponse retrieveStaffListResponse = new RetrieveStaffListResponse();
         if(request.getPage()==null || request.getPageSize() ==null){
 //            List<Staff> list = this.staffRepository.findAll();
-            List<Staff> list = this.staffRepository.findAllByAccountIsNot("admin");
+            List<Staff> list = this.staffRepository.findAllByAccountIsNot("Admin");
             retrieveStaffListResponse.setStaffs(list);
             retrieveStaffListResponse.setTotalNumber(Long.valueOf(list.size()));
             return retrieveStaffListResponse;
@@ -74,7 +74,7 @@ public class StaffServiceImpl implements StaffService {
             PageRequest pageable = new PageRequest(page, pageSize, Sort.Direction.ASC, sortBy);
             Page<Staff> staffPage = null;
 //            staffPage = this.staffRepository.findAll(pageable);
-            staffPage = this.staffRepository.findAllByAccountIsNot("admin",pageable);
+            staffPage = this.staffRepository.findAllByAccountIsNot("Admin",pageable);
 //            Long count = this.staffRepository.getStaffCount();
             retrieveStaffListResponse.setStaffs(staffPage.getContent());
             retrieveStaffListResponse.setTotalNumber(staffPage.getTotalElements());
@@ -301,6 +301,7 @@ public class StaffServiceImpl implements StaffService {
         staff.setPhoneNum(request.getPhoneNum());
         staff.setGender(request.getGender());
         staff.setStatus("active");
+        staff.setAvatar("http://img4.imgtn.bdimg.com/it/u=1033329440,3258066026&fm=27&gp=0.jpg");
         staff = staffRepository.save(staff);
         staff.setStaffId("E"+ staff.getUuId());
         staff = staffRepository.save(staff);

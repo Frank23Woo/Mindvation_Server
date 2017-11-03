@@ -11,6 +11,8 @@ import com.mdvns.mdvn.dashboard.papi.domain.SprintInfo;
 import com.mdvns.mdvn.dashboard.papi.service.DashboardService;
 import com.mdvns.mdvn.dashboard.papi.utils.LogUtil;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,11 @@ import java.util.*;
 
 @Service
 public class DashboardServiceImpl implements DashboardService {
+
+    /* 日志常亮 */
+    private static final Logger LOG = LoggerFactory.getLogger(DashboardServiceImpl.class);
+
+    private final String CLASS = this.getClass().getName();
 
     /* 注入RestTemplate*/
     @Autowired
@@ -57,11 +64,15 @@ public class DashboardServiceImpl implements DashboardService {
         RtrvDashboardRequest rtrvDashboardRequest = new RtrvDashboardRequest();
         rtrvDashboardRequest.setProjId(request.getProjId());
         rtrvDashboardRequest.setModleId(modelId);
+        rtrvDashboardRequest.setCreatorId(request.getCreatorId());
         ParameterizedTypeReference pTypeReference = new ParameterizedTypeReference<List<SprintInfo>>() {
         };
         List<SprintInfo> sprintInfos = FetchListUtil.fetch(restTemplate, webConfig.getFindDashboardInfoByIdsUrl(), rtrvDashboardRequest, pTypeReference);
         List<SprintStoryListAndLabelId> sprintStoryLists = new ArrayList<>();
         for (int j = 0; j < sprintInfos.size(); j++) {
+            if(j > 2){
+                break;
+            }
             SprintStoryListAndLabelId sprintStoryList = new SprintStoryListAndLabelId();
             sprintStoryList.setSprintInfo(sprintInfos.get(j));
             String labIds = sprintInfos.get(j).getLabelIds();
@@ -111,14 +122,16 @@ public class DashboardServiceImpl implements DashboardService {
 
 
     private List<RtrvDashboardResponse> rtrvDashboard(RtrvAllStoryListRequest request) {
+        LOG.info("开始执行方法：rtrvDashboard");
         List<RtrvDashboardResponse> rtrvDashboardResponses = new ArrayList<>();
         //首先判断是否是第一次创建sprintInfo
         String findDashboardInfoByIdUrl = webConfig.getFindDashboardInfoByIdUrl();
         ParameterizedTypeReference parameTypeReference = new ParameterizedTypeReference<List<SprintInfo>>() {
         };
-        List<SprintInfo> sprintInfoList = FetchListUtil.fetch(restTemplate, findDashboardInfoByIdUrl, request.getProjId(), parameTypeReference);
+        List<SprintInfo> sprintInfoList = FetchListUtil.fetch(restTemplate, findDashboardInfoByIdUrl, request, parameTypeReference);
         //------------------------已经创建过看板
         for (int i = 0; i < sprintInfoList.size(); i++) {
+            LOG.info("已经创建过看板"+sprintInfoList.get(i));
             RtrvDashboardResponse rtrvDashboardResponse = new RtrvDashboardResponse();
 //                //创建者对象
 //                String creatorId = sprintInfoList.get(i).getCreatorId();
@@ -134,11 +147,15 @@ public class DashboardServiceImpl implements DashboardService {
             RtrvDashboardRequest rtrvDashboardRequest = new RtrvDashboardRequest();
             rtrvDashboardRequest.setProjId(request.getProjId());
             rtrvDashboardRequest.setModleId(modelId);
+            rtrvDashboardRequest.setCreatorId(request.getCreatorId());
             ParameterizedTypeReference pTypeReference = new ParameterizedTypeReference<List<SprintInfo>>() {
             };
             List<SprintInfo> sprintInfos = FetchListUtil.fetch(restTemplate, webConfig.getFindDashboardInfoByIdsUrl(), rtrvDashboardRequest, pTypeReference);
             List<SprintStoryListAndLabelId> sprintStoryLists = new ArrayList<>();
             for (int j = 0; j < sprintInfos.size(); j++) {
+                if(j > 2){
+                    break;
+                }
                 SprintStoryListAndLabelId sprintStoryList = new SprintStoryListAndLabelId();
                 sprintStoryList.setSprintInfo(sprintInfos.get(j));
                 String labIds = sprintInfos.get(j).getLabelIds();
@@ -185,6 +202,7 @@ public class DashboardServiceImpl implements DashboardService {
             rtrvDashboardResponse.setSprintStoryLists(sprintStoryLists);
             rtrvDashboardResponses.add(rtrvDashboardResponse);
         }
+        LOG.info("结束执行方法：rtrvDashboard");
         return rtrvDashboardResponses;
     }
 
@@ -203,10 +221,11 @@ public class DashboardServiceImpl implements DashboardService {
         String findDashboardInfoByIdUrl = webConfig.getFindDashboardInfoByIdUrl();
         ParameterizedTypeReference parameTypeReference = new ParameterizedTypeReference<List<SprintInfo>>() {
         };
-        List<SprintInfo> sprintInfoList = FetchListUtil.fetch(restTemplate, findDashboardInfoByIdUrl, request.getProjId(), parameTypeReference);
+        List<SprintInfo> sprintInfoList = FetchListUtil.fetch(restTemplate, findDashboardInfoByIdUrl, request, parameTypeReference);
 
         //------------------------已经创建过看板
         if (sprintInfoList.size() != 0) {
+            LOG.info("获取storyList时已经创建过看板");
 
 //            rtrvDashboard(request);
 
@@ -226,7 +245,9 @@ public class DashboardServiceImpl implements DashboardService {
             ParameterizedTypeReference parameterizedTypeReference = new ParameterizedTypeReference<List<RtrvReqmntInfoByModelIdResponse>>() {
             };
             List<RtrvReqmntInfoByModelIdResponse> responseList = FetchListUtil.fetch(restTemplate, rtrvReqmntInfoBymodelIdUrl, reqmntInfoByModelRequest, parameterizedTypeReference);
+            System.out.println(responseList);
             for (int i = 0; i < responseList.size(); i++) {
+                LOG.info("第一次创建看板");
                 RtrvAllStoryListResponse rtrvAllStoryListResponse = new RtrvAllStoryListResponse();
                 String modelId = responseList.get(i).getModelId();
                 List<RequirementInfo> reqmntInfos = responseList.get(i).getRequirementInfos();
@@ -547,6 +568,7 @@ public class DashboardServiceImpl implements DashboardService {
         RtrvDashboardRequest rtrvAllStoryListRequest = new RtrvDashboardRequest();
         rtrvAllStoryListRequest.setProjId(projId);
         rtrvAllStoryListRequest.setModleId(sprintInfo.getModelId());
+        rtrvAllStoryListRequest.setCreatorId(creatorId);
         restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
         restResponse.setResponseMsg("请求成功");
         restResponse.setResponseCode("000");

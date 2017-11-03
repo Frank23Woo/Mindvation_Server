@@ -6,6 +6,15 @@ import org.springframework.stereotype.Component;
 public class AddStoryRequest {
     private String storyId;
     private String projId;
+    private String creatorId;
+
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
+    }
 
     public String getStoryId() {
         return storyId;

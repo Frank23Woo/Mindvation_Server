@@ -168,9 +168,11 @@ public class StoryServiceImpl implements IStoryService {
         AddStoryRequest addStoryRequest = new AddStoryRequest();
         addStoryRequest.setProjId(createStoryRequest.getStoryInfo().getProjId());
         addStoryRequest.setStoryId(storyId);
+        addStoryRequest.setCreatorId(createStoryRequest.getCreatorId());
         String addStoryUrl = config.getAddStoryUrl();
         try {
             SprintInfo sprintInfo = restTemplate.postForObject(addStoryUrl, addStoryRequest, SprintInfo.class);
+            LOG.info("sprintInfo信息为："+sprintInfo);
         } catch (Exception ex) {
             throw new BusinessException(ExceptionEnum.STORY_DASHBOARD_NOT_CREATE);
         }

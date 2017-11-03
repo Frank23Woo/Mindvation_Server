@@ -6,5 +6,3 @@ url:
   retrieveUrl : http://localhost:8080/mdvn-file-sapi/files/file/
 
   retrieveAttchsUrl : http://localhost:8080/mdvn-file-sapi/files/
-
-  saveAttchInfoUrl : http://localhost:8080/mdvn-file-sapi/files
