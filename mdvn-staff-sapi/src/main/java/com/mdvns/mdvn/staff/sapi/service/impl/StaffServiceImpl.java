@@ -95,7 +95,9 @@ public class StaffServiceImpl implements StaffService {
             Staff staffInfo = this.staffRepository.findByStaffId(request.getStaffIdList().get(i));
             if (null == staffInfo) {
                 LOG.error("该id的员工在员工库中不存在.", staffInfo);
-                throw new BusinessException(staffInfo + "该id的员工在员工库中不存在.");
+                List<Staff> staffList = new ArrayList<>();
+                return staffList;
+//                throw new BusinessException(staffInfo + "该id的员工在员工库中不存在.");
             }else{
                 list.add(staffInfo);
             }
@@ -323,8 +325,8 @@ public class StaffServiceImpl implements StaffService {
         response.setStaffId(staff.getStaffId());
         response.setName(staff.getName());
         response.setGender(staff.getGender());
-//       private Postion positionDetail;
-//       private Department deptDetail;
+        response.setPositionId(staff.getPositionId());
+        response.setDeptId(staff.getDeptId());
         response.setEmailAddr(staff.getEmailAddr());
         response.setPhoneNum(staff.getPhoneNum());
         response.setTagsCnt(staffTags.size());

@@ -17,9 +17,24 @@ public class CreateStaffResponse {
 
     private String gender;
 
-    private Position positionDetail;
+    private String deptId;
+    private Integer positionId;
 
-    private DepartmentDetail deptDetail;
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
+
+    public Integer getPositionId() {
+        return positionId;
+    }
+
+    public void setPositionId(Integer positionId) {
+        this.positionId = positionId;
+    }
 
     public String getEmailAddr() {
         return emailAddr;
@@ -61,22 +76,7 @@ public class CreateStaffResponse {
         this.gender = gender;
     }
 
-    public Object getPositionDetail() {
-        return positionDetail;
-    }
 
-
-    public Object getDeptDetail() {
-        return deptDetail;
-    }
-
-    public void setPositionDetail(Position positionDetail) {
-        this.positionDetail = positionDetail;
-    }
-
-    public void setDeptDetail(DepartmentDetail deptDetail) {
-        this.deptDetail = deptDetail;
-    }
 
     public String getPhoneNum() {
         return phoneNum;

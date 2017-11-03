@@ -11,9 +11,8 @@ public class CreateStaffResponse {
 
     private String gender;
 
-    private Object positionDetail;
-
-    private Object deptDetail;
+    private String deptId;
+    private Integer positionId;
 
     private String emailAddr;
 
@@ -47,20 +46,20 @@ public class CreateStaffResponse {
         this.gender = gender;
     }
 
-    public Object getPositionDetail() {
-        return positionDetail;
+    public String getDeptId() {
+        return deptId;
     }
 
-    public void setPositionDetail(Object positionDetail) {
-        this.positionDetail = positionDetail;
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
     }
 
-    public Object getDeptDetail() {
-        return deptDetail;
+    public Integer getPositionId() {
+        return positionId;
     }
 
-    public void setDeptDetail(Object deptDetail) {
-        this.deptDetail = deptDetail;
+    public void setPositionId(Integer positionId) {
+        this.positionId = positionId;
     }
 
     public String getEmailAddr() {

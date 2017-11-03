@@ -106,7 +106,7 @@ public class ReqmntServiceImpl implements IReqmntService {
         requirementInfo = responseEntity.getBody();
 
         //1.1 给需求创建者分配权限
-        StaffAuthUtil.assignAuthForCreator(this.restTemplate, createReqmntRequest.getProjId(), requirementInfo.getReqmntId(), createReqmntRequest.getCreatorId(), AuthEnum.Leader.getCode() );
+        StaffAuthUtil.assignAuthForCreator(this.restTemplate, createReqmntRequest.getProjId(), requirementInfo.getReqmntId(), createReqmntRequest.getCreatorId(), AuthEnum.Leader.getCode());
         LOG.info("给创建需求者：{}，分配权限：{}成功", createReqmntRequest.getCreatorId(), AuthEnum.Leader.getCode());
 
         //2.保存requirement member信息
@@ -230,8 +230,8 @@ public class ReqmntServiceImpl implements IReqmntService {
         mapLabel.put("labelId", requirementInfo.getFunctionLabelId());
 
         FunctionLabel funcLabel = this.restTemplate.postForObject(config.getRtrvFuncLabelUrl(), mapLabel, FunctionLabel.class);
+//        funcLabel.setSubFunctionLabels();
         rtrvReqmntInfoResponse.setLabelDetail(funcLabel);
-
 
         // 查询tag
         ParameterizedTypeReference reqmntTagTypeReference = new ParameterizedTypeReference<List<ReqmntTag>>() {
@@ -333,13 +333,15 @@ public class ReqmntServiceImpl implements IReqmntService {
                 List<Staff> assigneedStaffList = FetchListUtil.fetch(restTemplate, config.getRtrvStaffsByIdsUrl(), params1, typeReference);
                 params1.put("staffIdList", assignerIds);
                 List<Staff> assignerdStaffList = FetchListUtil.fetch(restTemplate, config.getRtrvStaffsByIdsUrl(), params1, typeReference);
-
-                for (int i = 0; i < checkLists.size(); i++) {
-                    checkLists.get(i).setAssigner(assignerdStaffList.get(i));
-                    checkLists.get(i).setAssignee(assigneedStaffList.get(i));
+                if (assignerdStaffList.size() != 0) {
+                    for (int i = 0; i < checkLists.size(); i++) {
+                        checkLists.get(i).setAssigner(assignerdStaffList.get(i));
+                        checkLists.get(i).setAssignee(assigneedStaffList.get(i));
+                    }
+                    rtrvReqmntInfoResponse.setCheckLists(checkLists);
+                }else{
+                    rtrvReqmntInfoResponse.setCheckLists(new ArrayList<>());
                 }
-
-                rtrvReqmntInfoResponse.setCheckLists(checkLists);
             } else {
                 rtrvReqmntInfoResponse.setCheckLists(new ArrayList<>());
             }
