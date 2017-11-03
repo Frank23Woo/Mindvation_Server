@@ -56,6 +56,7 @@ public class TaskServiceImpl implements TaskService {
                 StringUtils.isEmpty(request.getDescription()) || request.getDeliver() == null ||
                 StringUtils.isEmpty(request.getDeliver().getModelId()) || StringUtils.isEmpty(request.getDeliver().getName()) ||
                 request.getStartTime() == null || request.getEndTime() == null) {
+            LOG.info("请求参数错误，有空值");
             return new RestResponse(ExceptionEnum.PARAMS_EXCEPTION.getErroCode(), null);
         }
 
@@ -67,16 +68,17 @@ public class TaskServiceImpl implements TaskService {
 
             // 查询creator和assinee
             Staff creator = restTemplate.postForObject(urlConfig.getRtrvStaffInfoUrl(), task.getCreatorId(), Staff.class);
+            LOG.info("创建者信息为："+creator);
             task.setCreator(creator);
 
             Staff assignee = restTemplate.postForObject(urlConfig.getRtrvStaffInfoUrl(), task.getAssigneeId(), Staff.class);
+            LOG.info("执行者信息为："+assignee);
             task.setAssignee(assignee);
 
             // todo 查询附件
-
-
         } catch (RestClientException e) {
             e.printStackTrace();
+            LOG.info("创建task失败");
             response.setResponseCode(ExceptionEnum.TASK_SAVE_FAILED.getErroCode());
             response.setResponseMsg(ExceptionEnum.TASK_SAVE_FAILED.getErrorMsg());
         }

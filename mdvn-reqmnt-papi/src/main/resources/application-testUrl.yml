@@ -34,6 +34,8 @@ config:
 # model sapi urls
   rtrvFuncLabelUrl: http://localhost:8080/mdvn-model-sapi/models/findFuncById
   rtrvModelRoleByModelIdUrl: http://localhost:8080/mdvn-model-sapi/models/findById
+
+  rtrvStoryInfoListUrl: http://localhost:8080/mdvn-story-sapi/story/rtrvStoryInfoList
 # attchment sapi url
   rtrvAttchInfoListUrl: http://localhost:8080/mdvn-file-sapi/files/
 

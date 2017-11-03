@@ -1,36 +1,36 @@
 config:
-  saveReqmntUrl: http://localhost/mdvn-reqmnt-sapi:8080/saveReqmnt
-  saveRMembersUrl: http://localhost/mdvn-reqmnt-sapi:8080/saveRMembers
-  saveRTagsUrl: http://localhost/mdvn-reqmnt-sapi:8080/saveRTags
-  saveRCheckListUrl: http://localhost/mdvn-reqmnt-sapi:8080/saveRCheckLists
-  saveRAttchUrl: http://localhost/mdvn-reqmnt-sapi:8080/saveRAttchUrls
+  saveReqmntUrl: http://localhost:8080/mdvn-reqmnt-sapi/saveReqmnt
+  saveRMembersUrl: http://localhost:8080/mdvn-reqmnt-sapi/saveRMembers
+  saveRTagsUrl: http://localhost:8080/mdvn-reqmnt-sapi/saveRTags
+  saveRCheckListUrl: http://localhost:8080/mdvn-reqmnt-sapi/saveRCheckLists
+  saveRAttchUrl: http://localhost:8080/mdvn-reqmnt-sapi/saveRAttchUrls
 
-  rtrvReqmntInfoUrl: http://localhost/mdvn-reqmnt-sapi:8080/rtrvReqmntInfo
-  rtrvReqmntListUrl: http://localhost/mdvn-reqmnt-sapi:8080/rtrvReqmntList
-  rtrvReqmntTagsUrl: http://localhost/mdvn-reqmnt-sapi:8080/rtrvReqmntTags
-  rtrvReqmntMembersUrl : http://localhost/mdvn-reqmnt-sapi:8080/rtrvReqmntMembers
-  rtrvReqmntCheckListUrl : http://localhost/mdvn-reqmnt-sapi:8080/rtrvReqmntCheckList
-  rtrvReqmntAttchsUrl: http://localhost/mdvn-reqmnt-sapi:8080/rtrvReqmntAttUrls
-  updateReqmntInfoUrl: http://localhost/mdvn-reqmnt-sapi:8080/updateReqmntInfo
+  rtrvReqmntInfoUrl: http://localhost:8080/mdvn-reqmnt-sapi/rtrvReqmntInfo
+  rtrvReqmntListUrl: http://localhost:8080/mdvn-reqmnt-sapi/rtrvReqmntList
+  rtrvReqmntTagsUrl: http://localhost:8080/mdvn-reqmnt-sapi/rtrvReqmntTags
+  rtrvReqmntMembersUrl : http://localhost:8080/mdvn-reqmnt-sapi/rtrvReqmntMembers
+  rtrvReqmntCheckListUrl : http://localhost:8080/mdvn-reqmnt-sapi/rtrvReqmntCheckList
+  rtrvReqmntAttchsUrl: http://localhost:8080/mdvn-reqmnt-sapi/rtrvReqmntAttUrls
+  updateReqmntInfoUrl: http://localhost:8080/mdvn-reqmnt-sapi/updateReqmntInfo
+
 
 # staff sapi urls
-  rtrvStaffsByIdsUrl: http://localhost/mdvn-staff-sapi:8080/rtrvStaffListByStaffIdList
-  rtrvStaffInfoUrl: http://localhost:10013/mdvn-staff-sapi:8080/rtrvStaffInfo
+  rtrvStaffsByIdsUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffListByStaffIdList
+  rtrvStaffInfoUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffInfo
 
 # tag sapi urls
-  rtrvTagsByIdsUrl: http://localhost/mdvn-tag-s:8080/tags/rtrvTags
+  rtrvTagsByIdsUrl: http://localhost:8080/mdvn-tag-s/tags/rtrvTags
 
 # model sapi urls
-  rtrvFuncLabelUrl: http://localhost/mdvn-model-s:8080/models/findFuncById
-  rtrvModelRoleByModelIdUrl: http://localhost/mdvn-model-s:8080/models/findById
+  rtrvFuncLabelUrl: http://localhost:8080/mdvn-model-s/models/findFuncById
+  rtrvModelRoleByModelIdUrl: http://localhost:8080/mdvn-model-s/models/findById
 
 # task sapi urls
-  saveTaskUrl: http://localhost/mdvn-task-sapi:8080/saveTask
-  rtrvTaskListUrl: http://localhost/mdvn-task-sapi:8080/rtrvTaskList
+  saveTaskUrl: http://localhost:8080/mdvn-task-sapi/saveTask
+  rtrvTaskListUrl: http://localhost:8080/mdvn-task-sapi/rtrvTaskList
   rtrvTaskInfoUrl: http://localhost:8080/mdvn-task-sapi/rtrvTaskInfo
-  updateTaskUrl: http://localhost/mdvn-task-sapi:8080/updateTask
-  addAttachForTaskUrl: http://localhost/mdvn-task-sapi/addAttachForTask
+  updateTaskUrl: http://localhost:8080/mdvn-task-sapi/updateTask
+  addAttachForTaskUrl: http://localhost:8080/mdvn-task-sapi/addAttachForTask
   deleteAttachForTaskUrl: http://localhost:8080/mdvn-task-sapi/deleteAttachForTask
-
 # attachment sapi urls
-  getAttachmentListByIdsUrl: http://localhost/mdvn-file-sapi/files/
+  getAttachmentListByIdsUrl: http://localhost:8080/mdvn-file-sapi/files/

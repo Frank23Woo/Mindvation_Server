@@ -384,8 +384,12 @@ public class ReqmntServiceImpl implements IReqmntService {
         rtrvStoryListRequest.setReqmntId(request.getReqmntId());
         String storyInfoListUrl = config.getRtrvStoryInfoListUrl();
         try {
+            LOG.info("storyInfoListUrl为："+storyInfoListUrl);
+            LOG.info("rtrvStoryListRequest(ReqmntId)："+rtrvStoryListRequest.getReqmntId());
             ResponseEntity<RtrvStoryListResponse> rtrvStoryListResponse = this.restTemplate.postForEntity(storyInfoListUrl, rtrvStoryListRequest, RtrvStoryListResponse.class);
 //            restResponse = this.restTemplate.postForObject(storyInfoListUrl, rtrvStoryListRequest, RestResponse.class);
+            LOG.info("rtrvStoryListResponse为："+rtrvStoryListResponse);
+            LOG.info("rtrvStoryListResponse.getBody()为："+rtrvStoryListResponse.getBody());
             rtrvReqmntInfoResponse.setRtrvStoryListResponse(rtrvStoryListResponse.getBody());
         } catch (Exception ex) {
             throw new BusinessException(ExceptionEnum.PROJECT_DETAIL_STORY_NOT_RTRV);
