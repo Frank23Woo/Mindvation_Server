@@ -138,10 +138,8 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
         if (StringUtils.isEmpty(createStoryRequest) || StringUtils.isEmpty(createStoryRequest.getStoryInfo().getSummary()) ||
                 StringUtils.isEmpty(createStoryRequest.getCreatorId()) ||
                 StringUtils.isEmpty(createStoryRequest.getStoryInfo().getReqmntId()) ||
-                StringUtils.isEmpty(createStoryRequest.getStoryInfo().getDescription()) ||
-                StringUtils.isEmpty(createStoryRequest.getStoryInfo().getStartDate()) ||
-                StringUtils.isEmpty(createStoryRequest.getStoryInfo().getEndDate())) {
-            throw new NullPointerException("createStoryRequest不能为空 或创建者Id不能为空 或所属需求 或用户故事概要不能为空 或用户故事描述不能为空 或者用户故事开始结束时间不能为空");
+                StringUtils.isEmpty(createStoryRequest.getStoryInfo().getDescription())) {
+            throw new NullPointerException("createStoryRequest不能为空 或创建者Id不能为空 或所属需求 或用户故事概要不能为空 或用户故事描述不能为空");
         }
         story.setProjId(createStoryRequest.getStoryInfo().getProjId());
         story.setReqmntId(createStoryRequest.getStoryInfo().getReqmntId());
@@ -149,7 +147,6 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
         story.setDescription(createStoryRequest.getStoryInfo().getDescription());
         story.setCreatorId(createStoryRequest.getCreatorId());
         story.setLabelId(createStoryRequest.getSubFunctionLabel().getLabelId());
-        story.setStoryPoint(createStoryRequest.getStoryInfo().getStoryPoint());
         story.setIsDeleted(0);
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
         story.setCreateTime(currentTime);
@@ -157,8 +154,15 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
         story.setStatus("new");
         story.setRagStatus("G");
         story.setProgress((double) 0);
-        story.setStartDate(createStoryRequest.getStoryInfo().getStartDate());
-        story.setEndDate(createStoryRequest.getStoryInfo().getEndDate());
+        if (!StringUtils.isEmpty(createStoryRequest.getStoryInfo().getStoryPoint())) {
+            story.setStoryPoint(createStoryRequest.getStoryInfo().getStoryPoint());
+        }
+        if (!StringUtils.isEmpty(createStoryRequest.getStoryInfo().getStartDate())) {
+            story.setStartDate(createStoryRequest.getStoryInfo().getStartDate());
+        }
+        if (!StringUtils.isEmpty(createStoryRequest.getStoryInfo().getEndDate())) {
+            story.setEndDate(createStoryRequest.getStoryInfo().getEndDate());
+        }
         if (!StringUtils.isEmpty(createStoryRequest.getStoryInfo().getPriority())) {
             story.setPriority(createStoryRequest.getStoryInfo().getPriority());
         }

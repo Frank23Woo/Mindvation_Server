@@ -108,7 +108,7 @@ public class UpdateReqmntServiceImpl implements IUpdateReqmntService {
                 }
 
                 //modelID change
-                if (!StringUtils.isEmpty(newInfo.getModelId()) &&  !newInfo.getModelId().equals(oldInfo.getModelId())) {
+                if (!StringUtils.isEmpty(newInfo.getModelId()) && !newInfo.getModelId().equals(oldInfo.getModelId())) {
                     oldInfo.setModelId(newInfo.getModelId());
                     changeFlag = true;
                 }
@@ -139,30 +139,30 @@ public class UpdateReqmntServiceImpl implements IUpdateReqmntService {
 
         //tags
         List<Tag> currentTags = request.getTags();
-        if(currentTags!=null &&  currentTags.size()==0){
-            List<ReqmntTag> deleteList = tagRepository.findAllByReqmntIdAndIsDeleted(reqmntId,0);
+        if (currentTags != null && currentTags.size() == 0) {
+            List<ReqmntTag> deleteList = tagRepository.findAllByReqmntIdAndIsDeleted(reqmntId, 0);
             for (int i = 0; i < deleteList.size(); i++) {
                 deleteList.get(i).setIsDeleted(1);
                 deleteList.get(i).setUpdateTime(now);
             }
             tagRepository.save(deleteList);
-        }else if(currentTags!=null &&  currentTags.size()>0){
+        } else if (currentTags != null && currentTags.size() > 0) {
 
             List<ReqmntTag> oldTagList = new ArrayList<>();
             List<Tag> addTagList = currentTags;
 
-            oldTagList = tagRepository.findAllByReqmntIdAndIsDeleted(reqmntId,0);
+            oldTagList = tagRepository.findAllByReqmntIdAndIsDeleted(reqmntId, 0);
             List<ReqmntTag> rmvTagList = oldTagList;
             for (int i = 0; i < currentTags.size(); i++) {
                 for (int j = 0; j < oldTagList.size(); j++) {
-                    if(oldTagList.get(j).getTagId().equals(currentTags.get(i).getTagId())){
+                    if (oldTagList.get(j).getTagId().equals(currentTags.get(i).getTagId())) {
                         rmvTagList.remove(j);
                     }
 
                 }
             }
 
-            if(!rmvTagList.isEmpty()){
+            if (!rmvTagList.isEmpty()) {
                 for (int i = 0; i < rmvTagList.size(); i++) {
                     rmvTagList.get(i).setIsDeleted(1);
                     rmvTagList.get(i).setUpdateTime(now);
@@ -170,17 +170,17 @@ public class UpdateReqmntServiceImpl implements IUpdateReqmntService {
                 tagRepository.save(rmvTagList);
             }
 
-            oldTagList = tagRepository.findAllByReqmntIdAndIsDeleted(reqmntId,0);
-            for (int i = 0; i < currentTags.size(); i++) {
-                for (int j = 0; j < oldTagList.size(); j++) {
-                    if(currentTags.get(i).getTagId().equals(oldTagList.get(j).getTagId())){
+            oldTagList = tagRepository.findAllByReqmntIdAndIsDeleted(reqmntId, 0);
+            for (int j = 0; j < oldTagList.size(); j++) {
+                for (int i = 0; i < currentTags.size(); i++) {
+                    if (currentTags.get(i).getTagId().equals(oldTagList.get(j).getTagId())) {
                         addTagList.remove(i);
                     }
                 }
             }
 
 
-            if(!addTagList.isEmpty()){
+            if (!addTagList.isEmpty()) {
                 List<ReqmntTag> addReqmntTagList = new ArrayList<>();
                 for (int i = 0; i < addTagList.size(); i++) {
                     ReqmntTag reqmntTag = new ReqmntTag();
@@ -194,20 +194,16 @@ public class UpdateReqmntServiceImpl implements IUpdateReqmntService {
             }
 
 
-
-
-
         }
-
 
 
         // attch urls
         changeFlag = false;
         List<ReqmntAttchUrl> currentAttches = request.getAttchUrls();
 //        List<Tag> currentTags = request.getTags();
-        if(currentAttches!=null &&  currentAttches.size()==0){
+        if (currentAttches != null && currentAttches.size() == 0) {
 //            List<ReqmntTag> deleteList = tagRepository.findAllByReqmntIdAndIsDeleted(reqmntId,0);
-            List<ReqmntAttchUrl> deleteList = attchUrlsRepository.findAllByReqmntIdAndIsDeleted(reqmntId,0);
+            List<ReqmntAttchUrl> deleteList = attchUrlsRepository.findAllByReqmntIdAndIsDeleted(reqmntId, 0);
 
             for (int i = 0; i < deleteList.size(); i++) {
                 deleteList.get(i).setIsDeleted(1);
@@ -215,23 +211,23 @@ public class UpdateReqmntServiceImpl implements IUpdateReqmntService {
             }
 //            tagRepository.save(deleteList);
             attchUrlsRepository.save(deleteList);
-        }else if(currentAttches!=null &&  currentAttches.size()>0){
+        } else if (currentAttches != null && currentAttches.size() > 0) {
 
-            List<ReqmntAttchUrl> oldAttaches = attchUrlsRepository.findAllByReqmntIdAndIsDeleted(reqmntId,0);
+            List<ReqmntAttchUrl> oldAttaches = attchUrlsRepository.findAllByReqmntIdAndIsDeleted(reqmntId, 0);
             List<ReqmntAttchUrl> rmvAttchList = oldAttaches;
             List<ReqmntAttchUrl> addAttchList = currentAttches;
 
 
             for (int i = 0; i < currentAttches.size(); i++) {
                 for (int j = 0; j < oldAttaches.size(); j++) {
-                    if(oldAttaches.get(j).getAttachmentId().equals(currentAttches.get(i).getAttachmentId())){
+                    if (oldAttaches.get(j).getAttachmentId().equals(currentAttches.get(i).getAttachmentId())) {
                         rmvAttchList.remove(j);
                     }
 
                 }
             }
 
-            if(!rmvAttchList.isEmpty()){
+            if (!rmvAttchList.isEmpty()) {
                 for (int i = 0; i < rmvAttchList.size(); i++) {
                     rmvAttchList.get(i).setIsDeleted(1);
                     rmvAttchList.get(i).setUpdateTime(now);
@@ -239,17 +235,17 @@ public class UpdateReqmntServiceImpl implements IUpdateReqmntService {
                 attchUrlsRepository.save(rmvAttchList);
             }
 
-            oldAttaches = attchUrlsRepository.findAllByReqmntIdAndIsDeleted(reqmntId,0);
-            for (int i = 0; i < oldAttaches.size(); i++) {
+            oldAttaches = attchUrlsRepository.findAllByReqmntIdAndIsDeleted(reqmntId, 0);
+            for (int i = 0; i < currentAttches.size(); i++) {
                 for (int j = 0; j < oldAttaches.size(); j++) {
-                    if(currentAttches.get(i).getAttachmentId().equals(oldAttaches.get(j).getAttachmentId())){
+                    if (currentAttches.get(i).getAttachmentId().equals(oldAttaches.get(j).getAttachmentId())) {
                         addAttchList.remove(i);
                     }
                 }
             }
 
 
-            if(!addAttchList.isEmpty()){
+            if (!addAttchList.isEmpty()) {
                 List<ReqmntAttchUrl> addReqmentAttchList = new ArrayList<>();
                 for (int i = 0; i < addAttchList.size(); i++) {
                     ReqmntAttchUrl reqmntAttchUrl = new ReqmntAttchUrl();
@@ -263,9 +259,6 @@ public class UpdateReqmntServiceImpl implements IUpdateReqmntService {
 
 
             }
-
-
-
 
 
         }
@@ -288,26 +281,24 @@ public class UpdateReqmntServiceImpl implements IUpdateReqmntService {
 //        }
 
 
-
-
         // checklist
         List<ReqmntCheckList> checkLists = request.getCheckLists();
-        if(checkLists !=null && checkLists.size()==0){
+        if (checkLists != null && checkLists.size() == 0) {
             List<ReqmntCheckList> deleteList = checkListRepository.findAllByReqmntIdAndIsDeleted(reqmntId, 0);
-            for (ReqmntCheckList checkList:deleteList) {
+            for (ReqmntCheckList checkList : deleteList) {
                 checkList.setIsDeleted(1);
                 checkList.setLastUpdateTime(now);
             }
             checkListRepository.save(deleteList);
-        }else if(checkLists !=null && checkLists.size()>0){
+        } else if (checkLists != null && checkLists.size() > 0) {
             List<ReqmntCheckList> addList = new ArrayList<>();
             List<ReqmntCheckList> oldList = new ArrayList<>();
-            oldList = checkListRepository.findAllByReqmntIdAndIsDeleted(reqmntId,0);
+            oldList = checkListRepository.findAllByReqmntIdAndIsDeleted(reqmntId, 0);
             List<ReqmntCheckList> removeList = oldList;
             for (int i = 0; i < checkLists.size(); i++) {
 
                 // if id is empty, it means we need to add new CheckList
-                if(StringUtils.isEmpty(checkLists.get(i).getCheckListId())){
+                if (StringUtils.isEmpty(checkLists.get(i).getCheckListId())) {
                     checkLists.get(i).setReqmntId(reqmntId);
                     checkLists.get(i).setCreateTime(now);
                     checkLists.get(i).setLastUpdateTime(now);
@@ -315,40 +306,37 @@ public class UpdateReqmntServiceImpl implements IUpdateReqmntService {
                     checkLists.get(i).setStatus("new");
                     checkLists.get(i).setCreatorId(request.getStaffId());
                     addList.add(checkLists.get(i));
-                }else{
+                } else {
                     //if id is not empty, it means we need to update & delete the old CheckList
 
                     //Delete action: get all check list and compare, if the check list from DB does not exit in request, we need to deleted
 
 //                    oldList = checkListRepository.findAllByReqmntIdAndIsDeleted(reqmntId,0);
 
-                    if(!oldList.isEmpty()){
+                    if (!oldList.isEmpty()) {
                         for (int j = 0; j < oldList.size(); j++) {
-                            if(oldList.get(j).getCheckListId().equals(checkLists.get(i).getCheckListId())){
+                            if (oldList.get(j).getCheckListId().equals(checkLists.get(i).getCheckListId())) {
                                 removeList.remove(j);
                             }
                         }
                     }
 
 
-
-
-
                     // Update action : get the check list which has check list id
-                    List<ReqmntCheckList> items = checkListRepository.findAllByReqmntIdAndCheckListIdAndIsDeleted(reqmntId,checkLists.get(i).getCheckListId(), 0);
+                    List<ReqmntCheckList> items = checkListRepository.findAllByReqmntIdAndCheckListIdAndIsDeleted(reqmntId, checkLists.get(i).getCheckListId(), 0);
                     ReqmntCheckList item = items.get(0);
                     boolean itemChangeFlag = false;
-                    if(!item.getdescription().equals(checkLists.get(i).getdescription())){
+                    if (!item.getdescription().equals(checkLists.get(i).getdescription())) {
                         item.setdescription(checkLists.get(i).getdescription());
                         itemChangeFlag = true;
                     }
 
-                    if(!item.getAssigneeId().equals(checkLists.get(i).getAssigneeId())){
+                    if (!item.getAssigneeId().equals(checkLists.get(i).getAssigneeId())) {
                         item.setAssigneeId(checkLists.get(i).getAssigneeId());
                         itemChangeFlag = true;
                     }
 
-                    if(itemChangeFlag){
+                    if (itemChangeFlag) {
                         item.setLastUpdateTime(now);
                         checkListRepository.save(item);
                     }
@@ -357,16 +345,16 @@ public class UpdateReqmntServiceImpl implements IUpdateReqmntService {
 
             }
 
-            if(!addList.isEmpty()){
+            if (!addList.isEmpty()) {
                 List<ReqmntCheckList> updateIdList = checkListRepository.save(addList);
                 for (int i = 0; i < updateIdList.size(); i++) {
-                    updateIdList.get(i).setCheckListId("RC"+updateIdList.get(i).getUuId());
+                    updateIdList.get(i).setCheckListId("RC" + updateIdList.get(i).getUuId());
                 }
                 checkListRepository.save(updateIdList);
             }
 
-            if(!removeList.isEmpty()){
-                for (int i = 0; i < removeList.size() ; i++) {
+            if (!removeList.isEmpty()) {
+                for (int i = 0; i < removeList.size(); i++) {
                     removeList.get(i).setIsDeleted(1);
                     removeList.get(i).setLastUpdateTime(now);
                 }
@@ -379,8 +367,8 @@ public class UpdateReqmntServiceImpl implements IUpdateReqmntService {
 
         // memebers
 
-        if(request.getMembers()!=null){
-            List<RoleMember>  roleMembers = request.getMembers();
+        if (request.getMembers() != null) {
+            List<RoleMember> roleMembers = request.getMembers();
             List<ReqmntMember> reqmntMembers = new ArrayList<>();
             ReqmntMember reqmntMember = null;
             String roleId = "";
@@ -403,7 +391,7 @@ public class UpdateReqmntServiceImpl implements IUpdateReqmntService {
             memberRepository.save(reqmntMembers);
         }
 
-        result=true;
+        result = true;
         return result;
     }
 

@@ -95,7 +95,6 @@ public class ReqmntServiceImpl implements IReqmntService {
             throw new NullPointerException("Mandatory fields should not be empty for createReqmntRequest");
         }
 
-
         String saveReqmntUrl = config.getSaveReqmntUrl();
         ResponseEntity<RequirementInfo> responseEntity = null;
         responseEntity = restTemplate.postForEntity(saveReqmntUrl, createReqmntRequest, RequirementInfo.class);
