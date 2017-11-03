@@ -39,4 +39,6 @@ config:
 # attchment sapi url
   rtrvAttchInfoListUrl: http://localhost:8080/mdvn-file-sapi/files/
 
+  rtrvSRoleMembersUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/rtrvSRoleMembers
+
 

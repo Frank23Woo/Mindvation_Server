@@ -390,6 +390,45 @@ public class ReqmntServiceImpl implements IReqmntService {
 //            restResponse = this.restTemplate.postForObject(storyInfoListUrl, rtrvStoryListRequest, RestResponse.class);
             LOG.info("rtrvStoryListResponse为："+rtrvStoryListResponse);
             LOG.info("rtrvStoryListResponse.getBody()为："+rtrvStoryListResponse.getBody());
+
+            for (int j = 0; j < rtrvStoryListResponse.getBody().getStories().size() ; j++) {
+                Story storyInfo = rtrvStoryListResponse.getBody().getStories().get(j);
+                String creatorId = storyInfo.getCreatorId();
+                // call staff sapi
+                List staffs = new ArrayList();
+                staffs.add(creatorId);
+                Map<String, Object> prams = new HashMap<>();
+                prams.put("staffIdList", staffs);
+                ParameterizedTypeReference tReference = new ParameterizedTypeReference<List<Staff>>() {
+                };
+                LOG.info("获取创建者信息的url为："+config.getRtrvStaffsByIdsUrl());
+                List<Staff> staffList = (List<Staff>) FetchListUtil.fetch(restTemplate, config.getRtrvStaffsByIdsUrl(), prams, tReference);
+                storyInfo.setCreatorInfo(staffList.get(0));
+
+                // 查询members(不重复的个数)
+                try {
+                    // call story sapi
+                    RtrvStoryDetailRequest rtrvStoryDetailRequest = new RtrvStoryDetailRequest();
+                    rtrvStoryDetailRequest.setStaffId(request.getStaffId());
+                    rtrvStoryDetailRequest.setStoryId(storyInfo.getStoryId());
+                    ParameterizedTypeReference storyReference = new ParameterizedTypeReference<List<StoryRoleMember>>() {
+                    };
+                    List<StoryRoleMember> storyRoleMembers = FetchListUtil.fetch(restTemplate, config.getRtrvSRoleMembersUrl(), rtrvStoryDetailRequest, storyReference);
+                    //选出不同的角色
+                    List<String> memberIds = new ArrayList<String>();
+                    for (int i = 0; i < storyRoleMembers.size(); i++) {
+                        String id = storyRoleMembers.get(i).getStaffId();
+                        if (!memberIds.isEmpty() && memberIds.contains(id)) {
+                            continue;
+                        }
+                        memberIds.add(id);
+                    }
+                    storyInfo.setMemberCunt(memberIds.size());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new BusinessException(ExceptionEnum.REQMNT_QUERY_MEMBER_FAIELD);
+                }
+            }
             rtrvReqmntInfoResponse.setRtrvStoryListResponse(rtrvStoryListResponse.getBody());
         } catch (Exception ex) {
             throw new BusinessException(ExceptionEnum.PROJECT_DETAIL_STORY_NOT_RTRV);

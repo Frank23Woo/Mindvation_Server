@@ -9,7 +9,7 @@ public class ReqmntMember {
 
     private String staffId;
 
-       private String roleId;
+    private String roleId;
 
     private String reqmntId;
 
@@ -32,7 +32,6 @@ public class ReqmntMember {
     public void setStaffId(String staffId) {
         this.staffId = staffId;
     }
-
 
 
     public String getReqmntId() {

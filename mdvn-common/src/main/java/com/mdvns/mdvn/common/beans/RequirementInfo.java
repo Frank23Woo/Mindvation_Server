@@ -7,7 +7,8 @@ public class RequirementInfo {
 
     /* project ID */
     private String projId;
-    /* requirement ID */
+    /* model ID */
+    private String modelId;
 
     public String getProjId() {
         return projId;
@@ -47,6 +48,34 @@ public class RequirementInfo {
     private String remarks;
     //是否被删除
     private Integer isDeleted;
+
+    //成员数
+    private Integer memberCunt;
+    private Staff creatorInfo;
+
+    public Integer getMemberCunt() {
+        return memberCunt;
+    }
+
+    public void setMemberCunt(Integer memberCunt) {
+        this.memberCunt = memberCunt;
+    }
+
+    public String getModelId() {
+        return modelId;
+    }
+
+    public void setModelId(String modelId) {
+        this.modelId = modelId;
+    }
+
+    public Staff getCreatorInfo() {
+        return creatorInfo;
+    }
+
+    public void setCreatorInfo(Staff creatorInfo) {
+        this.creatorInfo = creatorInfo;
+    }
 
     public String getReqmntId() {
         return reqmntId;

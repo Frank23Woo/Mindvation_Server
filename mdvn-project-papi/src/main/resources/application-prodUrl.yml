@@ -23,3 +23,6 @@ config:
   rtrvReqmntListUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntList
   rtrvAttchListUrl: http://localhost:10019/mdvn-file-sapi/files/
 
+  rtrvStaffsByIdsUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffListByStaffIdList
+  rtrvReqmntMembersUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntMembers
+

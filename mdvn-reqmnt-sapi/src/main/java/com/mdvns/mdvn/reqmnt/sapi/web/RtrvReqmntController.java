@@ -65,8 +65,4 @@ public class RtrvReqmntController {
         return service.rtrvlabelIdBystoryId(storyId);
     }
 
-
-
-
-
 }

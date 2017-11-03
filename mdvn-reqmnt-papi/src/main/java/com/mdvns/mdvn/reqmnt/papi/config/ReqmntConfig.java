@@ -41,6 +41,16 @@ public class ReqmntConfig {
 
     private String rtrvAttchInfoListUrl;
 
+    private String rtrvSRoleMembersUrl;
+
+    public String getRtrvSRoleMembersUrl() {
+        return rtrvSRoleMembersUrl;
+    }
+
+    public void setRtrvSRoleMembersUrl(String rtrvSRoleMembersUrl) {
+        this.rtrvSRoleMembersUrl = rtrvSRoleMembersUrl;
+    }
+
     public String getRtrvAttchInfoListUrl() {
         return rtrvAttchInfoListUrl;
     }

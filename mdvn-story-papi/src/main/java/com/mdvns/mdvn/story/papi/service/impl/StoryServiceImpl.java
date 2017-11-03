@@ -10,6 +10,7 @@ import com.mdvns.mdvn.common.utils.StaffAuthUtil;
 import com.mdvns.mdvn.story.papi.config.StoryConfig;
 import com.mdvns.mdvn.story.papi.domain.*;
 import com.mdvns.mdvn.story.papi.domain.Story;
+import com.mdvns.mdvn.story.papi.domain.StoryRoleMember;
 import com.mdvns.mdvn.story.papi.service.IStoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

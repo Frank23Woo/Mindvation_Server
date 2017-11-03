@@ -61,6 +61,26 @@ public class ProjConfig {
 
     private String rtrvAttchListUrl;
 
+    private String rtrvStaffsByIdsUrl;
+
+    private String rtrvReqmntMembersUrl;
+
+    public String getRtrvReqmntMembersUrl() {
+        return rtrvReqmntMembersUrl;
+    }
+
+    public void setRtrvReqmntMembersUrl(String rtrvReqmntMembersUrl) {
+        this.rtrvReqmntMembersUrl = rtrvReqmntMembersUrl;
+    }
+
+    public String getRtrvStaffsByIdsUrl() {
+        return rtrvStaffsByIdsUrl;
+    }
+
+    public void setRtrvStaffsByIdsUrl(String rtrvStaffsByIdsUrl) {
+        this.rtrvStaffsByIdsUrl = rtrvStaffsByIdsUrl;
+    }
+
     public String getRtrvAttchListUrl() {
         return rtrvAttchListUrl;
     }

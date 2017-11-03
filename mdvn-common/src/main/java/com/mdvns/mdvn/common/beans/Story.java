@@ -63,6 +63,26 @@ public class Story {
     //备注
     private String remarks;
 
+    private Staff creatorInfo;
+
+    private Integer memberCunt;
+
+    public Staff getCreatorInfo() {
+        return creatorInfo;
+    }
+
+    public void setCreatorInfo(Staff creatorInfo) {
+        this.creatorInfo = creatorInfo;
+    }
+
+    public Integer getMemberCunt() {
+        return memberCunt;
+    }
+
+    public void setMemberCunt(Integer memberCunt) {
+        this.memberCunt = memberCunt;
+    }
+
     public String getProjId() {
         return projId;
     }

@@ -23,9 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ProjServiceImpl implements IProjService {
@@ -429,6 +427,42 @@ public class ProjServiceImpl implements IProjService {
         rtrvReqmntListRequest.setProjId(rtrvProjectDetailRequest.getProjId());
         try {
             RtrvReqmntListResponse rtrvReqmntListResponse = restTemplate.postForObject(rtrvReqmntListUrl, rtrvReqmntListRequest, RtrvReqmntListResponse.class);
+            for (int j = 0; j < rtrvReqmntListResponse.getRequirementInfos().size() ; j++) {
+                RequirementInfo requirementInfo = rtrvReqmntListResponse.getRequirementInfos().get(j);
+                String creatorId = requirementInfo.getCreatorId();
+                // call staff sapi
+                List staffs = new ArrayList();
+                staffs.add(creatorId);
+                Map<String, Object> prams = new HashMap<>();
+                prams.put("staffIdList", staffs);
+                ParameterizedTypeReference tReference = new ParameterizedTypeReference<List<com.mdvns.mdvn.common.beans.Staff>>() {
+                };
+                LOG.info("获取创建者信息的url为："+config.getRtrvStaffsByIdsUrl());
+                List<com.mdvns.mdvn.common.beans.Staff> staffList = (List<com.mdvns.mdvn.common.beans.Staff>) FetchListUtil.fetch(restTemplate, config.getRtrvStaffsByIdsUrl(), prams, tReference);
+                requirementInfo.setCreatorInfo(staffList.get(0));
+
+                // 查询members(不重复的个数)
+                try {
+                    // call reqmnt sapi
+                    ParameterizedTypeReference parameterizedTypeReference = new ParameterizedTypeReference<List<ReqmntMember>>() {
+                    };
+                    List<ReqmntMember> data = FetchListUtil.fetch(restTemplate, config.getRtrvReqmntMembersUrl(), requirementInfo.getReqmntId(), parameterizedTypeReference);
+                    List<ReqmntMember> reqmntMembers = data;
+                    List<String> memberIds = new ArrayList<>();
+                    for (int i = 0; i < reqmntMembers.size(); i++) {
+                        String id = reqmntMembers.get(i).getStaffId();
+                        if (!memberIds.isEmpty() && memberIds.contains(id)) {
+                            continue;
+                        }
+                        memberIds.add(reqmntMembers.get(i).getStaffId());
+                    }
+                    requirementInfo.setMemberCunt(memberIds.size());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new BusinessException(ExceptionEnum.REQMNT_QUERY_MEMBER_FAIELD);
+                }
+            }
+
             projectDetail.setReqmntListResponse(rtrvReqmntListResponse);
         } catch (Exception ex) {
             throw new BusinessException(ExceptionEnum.PROJECT_DETAIL_REQMNT_NOT_RTRV);
