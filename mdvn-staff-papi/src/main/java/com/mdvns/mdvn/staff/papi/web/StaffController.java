@@ -50,8 +50,8 @@ public class StaffController {
      * @return
      */
     @PostMapping(value = "/rtrvStaffListByStaffIdList")
-    public RestResponse rtrvStaffListByStaffIdList(@RequestBody RtrvStaffListByStaffIbListRequest request) {
-        return this.staffService.rtrvStaffListByStaffIdList(request);
+    public RestResponse rtrvStaffListById(@RequestBody RtrvStaffListByIdRequest request) {
+        return this.staffService.rtrvStaffListById(request);
     }
 
     /**
@@ -97,7 +97,11 @@ public class StaffController {
         return responseEntity;
     }
 
-
+    /**
+     * 获取员工在指定项目中的权限信息
+     * @param rtrvAuthRequest
+     * @return
+     */
     @PostMapping(value = "/rtrvAuth")
     public ResponseEntity<?> rtrvAuth(@RequestBody RtrvStaffAuthInfoRequest rtrvAuthRequest) {
 
@@ -109,6 +113,11 @@ public class StaffController {
         return this.authService.removeAuth(removeAuthRequest);
     }
 
+    /**
+     * 添加员工
+     * @param request
+     * @return
+     */
     @PostMapping(value = "/createStaff")
     public ResponseEntity<?> createStaff(@RequestBody CreateStaffRequest request) {
         return this.staffService.createStaff(request);
@@ -128,5 +137,11 @@ public class StaffController {
     public ResponseEntity<?> updateStaffDetail(@RequestBody UpdateStaffDetailRequest request) {
         return this.staffService.updateStaffDetail(request);
     }
+
+   /* @PostMapping(value = "/rtrvStaff")
+    public ResponseEntity<?> rtrvStaff(@RequestBody RtrvStaffRequest rtrvStaffRequest) {
+        return this.staffService.rtrvStaff(rtrvStaffRequest);
+    }*/
+
 
 }

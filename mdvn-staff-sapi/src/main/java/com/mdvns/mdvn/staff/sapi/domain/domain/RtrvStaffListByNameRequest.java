@@ -1,4 +1,4 @@
-package com.mdvns.mdvn.staff.sapi.domain;
+package com.mdvns.mdvn.staff.sapi.domain.domain;
 
 import org.springframework.stereotype.Component;
 

@@ -14,8 +14,6 @@ public interface StaffRepository extends JpaRepository<Staff, Integer> {
 
     Staff findByStaffId(String staffId);
 
-    @Query(value="SELECT *  FROM staff where NAME LIKE ?1", nativeQuery = true)
-    List<Staff> rtrvStaffListByStaffName(String name);
 
     @Query(value="SELECT DISTINCT COUNT(*) FROM staff ", nativeQuery = true)
     Long getStaffCount();
@@ -31,4 +29,5 @@ public interface StaffRepository extends JpaRepository<Staff, Integer> {
     List<Staff> findAllByAccountIsNot(String account);
 
     Page<Staff> findAllByAccountIsNot(String account,Pageable pageable);
+
 }

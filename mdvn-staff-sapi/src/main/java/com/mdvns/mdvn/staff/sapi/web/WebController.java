@@ -1,10 +1,7 @@
 package com.mdvns.mdvn.staff.sapi.web;
 
 
-import com.mdvns.mdvn.common.beans.AssignAuthRequest;
-import com.mdvns.mdvn.common.beans.LoginRequest;
-import com.mdvns.mdvn.common.beans.RestResponse;
-import com.mdvns.mdvn.common.beans.RtrvStaffAuthInfoRequest;
+import com.mdvns.mdvn.common.beans.*;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.staff.sapi.domain.*;
 import com.mdvns.mdvn.staff.sapi.domain.entity.Staff;
@@ -44,8 +41,8 @@ public class WebController {
      * 通过staffId的list获取他们的对象列表
      */
     @PostMapping(value = "/rtrvStaffListByStaffIdList")
-    public List<Staff> rtrvStaffListByStaffIdList(@RequestBody RtrvStaffListByStaffIbListRequest request) {
-        return this.staffService.rtrvStaffListByStaffIdList(request);
+    public List<Staff> rtrvStaffListById(@RequestBody RtrvStaffListByIdRequest request) {
+        return this.staffService.rtrvStaffListById(request);
     }
 
     /**
@@ -72,14 +69,14 @@ public class WebController {
         Integer page = request.getPage();
         Integer pageSize = request.getPageSize();
         if (null==page||pageSize==null) {
-            return this.staffService.rtrvStaffListByStaffName(request.getName());
+            return this.staffService.rtrvStaffListByStaffName(request);
         }
 //        page, pageSize不能小于1
         if (page<1||pageSize<1) {
             LOG.error("获取name列表，分页参数不正确!");
             throw new IllegalArgumentException("分页参数不正确.");
         }
-        return this.staffService.rtrvStaffListByStaffName((page-1), pageSize,request.getName(), request.getSortBy());
+        return this.staffService.rtrvStaffListByStaffName(request);
     }
 
 
@@ -133,4 +130,9 @@ public class WebController {
     public Boolean deleteStaff(@PathVariable String staffId) {
         return this.staffService.deleteStaff(staffId);
     }
+
+/*
+    public ResponseEntity<?> rtrvStaff(RtrvStaffRequest rtrvStaffRequest) {
+        return this.staffService.rtrvStaff(rtrvStaffRequest);
+    }*/
 }

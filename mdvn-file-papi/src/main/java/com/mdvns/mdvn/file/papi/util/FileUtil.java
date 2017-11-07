@@ -38,7 +38,6 @@ public class FileUtil {
         StringBuilder url = new StringBuilder(accessType);
 //        String ip = (null==LocalHostUtil.getIp())?request.getLocalAddr():LocalHostUtil.getIp();
         String ip = request.getLocalAddr();
-        request.get
 //        Integer port = (null==LocalHostUtil.getPort())?request.getServerPort():LocalHostUtil.getPort();
         Integer port = request.getLocalPort();
         url.append(ip).append(":").append(port)

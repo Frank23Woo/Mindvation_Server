@@ -1,0 +1,19 @@
+package com.mdvns.mdvn.staff.sapi.domain;
+
+
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+@Component
+public class RtrvStaffListByIdRequest {
+    private List<String> staffIdList;
+
+    public List<String> getStaffIdList() {
+        return staffIdList;
+    }
+
+    public void setStaffIdList(List<String> staffIdList) {
+        this.staffIdList = staffIdList;
+    }
+}

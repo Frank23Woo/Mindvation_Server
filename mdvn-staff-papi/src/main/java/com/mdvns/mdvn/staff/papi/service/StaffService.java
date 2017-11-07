@@ -10,7 +10,7 @@ public interface StaffService {
 
     RestResponse rtrvStaffList(RetrieveStaffListRequest request);
 
-    RestResponse rtrvStaffListByStaffIdList(RtrvStaffListByStaffIbListRequest request);
+    RestResponse rtrvStaffListById(RtrvStaffListByIdRequest request);
 
     RestResponse rtrvStaffInfo(RtrvStaffInfoRequest request);
 
@@ -29,5 +29,5 @@ public interface StaffService {
     ResponseEntity<?> deleteStaff(String staffId);
 
 
-
+//    ResponseEntity<?> rtrvStaff(RtrvStaffRequest rtrvStaffRequest);
 }

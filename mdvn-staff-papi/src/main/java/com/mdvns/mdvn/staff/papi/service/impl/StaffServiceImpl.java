@@ -1,19 +1,21 @@
 package com.mdvns.mdvn.staff.papi.service.impl;
 
-import com.mdvns.mdvn.common.beans.*;
+import com.mdvns.mdvn.common.beans.LoginRequest;
+import com.mdvns.mdvn.common.beans.RestResponse;
+import com.mdvns.mdvn.common.beans.Tag;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
 import com.mdvns.mdvn.common.utils.FetchListUtil;
 import com.mdvns.mdvn.common.utils.RestResponseUtil;
 import com.mdvns.mdvn.staff.papi.config.WebConfig;
 import com.mdvns.mdvn.staff.papi.domain.*;
-import com.mdvns.mdvn.staff.papi.domain.Staff;
 import com.mdvns.mdvn.staff.papi.service.StaffService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -83,11 +85,10 @@ public class StaffServiceImpl implements StaffService {
      * @return
      */
     @Override
-    public RestResponse rtrvStaffListByStaffIdList(RtrvStaffListByStaffIbListRequest request) {
-        List<Staff> list = new ArrayList<>();
+    public RestResponse rtrvStaffListById(RtrvStaffListByIdRequest request) {
         ResponseEntity<Object> responseEntity;
         String url = webConfig.getRtrvStaffListByStaffIdListUrl();
-        list = this.restTemplate.postForObject(url, request, List.class);
+        List<Staff> list = this.restTemplate.postForObject(url, request, List.class);
 //        restResponse = RestResponseUtil.success(responseEntity.getBody());
         restResponse.setResponseBody(list);
         restResponse.setResponseCode("000");
@@ -200,6 +201,31 @@ public class StaffServiceImpl implements StaffService {
         }
 
     }
+
+    /*@Override
+    public ResponseEntity<?> rtrvStaff(RtrvStaffRequest rtrvStaffRequest) {
+        List<Staff> staff = null;
+
+        String findStaffByNameUrl = "";
+        ResponseEntity<Staff[]> responseEntity = this.restTemplate.postForEntity(findStaffByNameUrl, rtrvStaffRequest, Staff[].class);
+
+        if (responseEntity.getStatusCode().equals(HttpStatus.OK)) {
+            staff = Arrays.asList(responseEntity.getBody());
+        }else{
+            LOG.error("调用SAPI获取Staff失败");
+            throw new BusinessException(ExceptionEnum.SAPI_EXCEPTION);
+        }
+        if (staff.isEmpty()) {
+            String position = rtrvStaffRequest.getNameOrPosition();
+            String rtrvStaffByPositionUrl = "";
+            ResponseEntity<Staff[]> rEntity = this.restTemplate.postForEntity(rtrvStaffByPositionUrl, rtrvStaffRequest, Staff[].class);
+            if (rEntity.getStatusCode().equals(HttpStatus.OK)) {
+                staff = Arrays.asList((rEntity.getBody()));
+            }
+        }
+
+        return RestResponseUtil.successResponseEntity(staff);
+    }*/
 
     @Override
     public ResponseEntity<?> rtrvStaffDetail(String staffId) {

@@ -2,6 +2,7 @@ package com.mdvns.mdvn.staff.sapi.service;
 
 
 import com.mdvns.mdvn.common.beans.RestResponse;
+import com.mdvns.mdvn.common.beans.RtrvStaffRequest;
 import com.mdvns.mdvn.staff.sapi.domain.*;
 import com.mdvns.mdvn.staff.sapi.domain.entity.Staff;
 import com.mdvns.mdvn.staff.sapi.domain.entity.StaffTag;
@@ -14,13 +15,12 @@ public interface StaffService {
 
     RetrieveStaffListResponse rtrvStaffList(RetrieveStaffListRequest request);
 
-    List<Staff> rtrvStaffListByStaffIdList(RtrvStaffListByStaffIbListRequest request);
+    List<Staff> rtrvStaffListById(RtrvStaffListByIdRequest request);
 
     Staff rtrvStaffInfo(String staffId);
 
-    ResponseEntity<?> rtrvStaffListByStaffName(String name);
 
-    ResponseEntity<?> rtrvStaffListByStaffName(Integer page, Integer pageSize, String name, String sortBy) throws SQLException;
+    ResponseEntity<?> rtrvStaffListByStaffName(RtrvStaffListByNameRequest request) throws SQLException;
 
 
     CreateStaffResponse createStaff(CreateStaffRequest request);
@@ -32,4 +32,6 @@ public interface StaffService {
 
 
     ResponseEntity<?> findByAccountAndPassword(String account, String password);
+
+//    ResponseEntity<?> rtrvStaff(RtrvStaffRequest rtrvStaffRequest);
 }

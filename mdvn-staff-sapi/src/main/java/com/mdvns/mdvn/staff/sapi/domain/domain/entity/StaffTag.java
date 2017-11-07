@@ -1,11 +1,10 @@
-package com.mdvns.mdvn.staff.sapi.domain.entity;
+package com.mdvns.mdvn.staff.sapi.domain.domain.entity;
 
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
 import java.sql.Timestamp;
 
 @Entity

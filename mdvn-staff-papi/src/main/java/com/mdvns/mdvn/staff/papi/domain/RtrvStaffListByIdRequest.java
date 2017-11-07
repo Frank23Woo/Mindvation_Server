@@ -1,4 +1,4 @@
-package com.mdvns.mdvn.staff.sapi.domain;
+package com.mdvns.mdvn.staff.papi.domain;
 
 
 import org.springframework.stereotype.Component;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class RtrvStaffListByStaffIbListRequest {
+public class RtrvStaffListByIdRequest {
     private List<String> staffIdList;
 
     public List<String> getStaffIdList() {
