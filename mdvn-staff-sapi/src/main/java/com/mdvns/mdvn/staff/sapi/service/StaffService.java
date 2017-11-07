@@ -1,8 +1,7 @@
 package com.mdvns.mdvn.staff.sapi.service;
 
 
-import com.mdvns.mdvn.common.beans.RestResponse;
-import com.mdvns.mdvn.common.beans.RtrvStaffRequest;
+
 import com.mdvns.mdvn.staff.sapi.domain.*;
 import com.mdvns.mdvn.staff.sapi.domain.entity.Staff;
 import com.mdvns.mdvn.staff.sapi.domain.entity.StaffTag;
