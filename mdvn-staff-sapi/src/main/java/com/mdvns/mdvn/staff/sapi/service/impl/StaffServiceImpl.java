@@ -237,11 +237,11 @@ public class StaffServiceImpl implements StaffService {
         PageRequest pageable = new PageRequest(page, pageSize, Sort.Direction.DESC, sortBy);
 
         //分页对象
-        Page<Staff> staffPage = null;
+        Page<Staff> staffPage;
         //姓名
         String name = request.getName();
-
-        List<Staff> result = null;
+        //声明方法返回Staff集合变量
+        List<Staff> result;
         if (StringUtils.isEmpty(name)) {
             List<String> tags = request.getTags();
             if (tags == null) {
@@ -251,10 +251,8 @@ public class StaffServiceImpl implements StaffService {
             List<StaffTag> staffList = this.staffTagRepository.findByTagIdIn(tags);
             //2.对staffId去重
             List<String> idList = new ArrayList<>(distinctStaffId(staffList));
-            //3.根据每个人的标签匹配情况，计算标签匹配
-//            staffScoreList = getStaff(staffList, tags);
-
-            result = countTagScore(staffList, tags, idList);
+            //3.根据每个人的标签匹配情况，计算标签匹配分值，并按分值返回staff列表
+            result = rtrvStaffListByTags(staffList, tags, idList);
 
             rtrvStaffListByNameResponse.setStaffs(result);
             rtrvStaffListByNameResponse.setTotalNumber((long) result.size());
@@ -269,35 +267,28 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * 按标签推荐staff，对标签进行斐波那契数列赋值，最后按分值倒叙排列
-     * @param stList
-     * @param tags
-     * @param idList
+     * @param stList tagId在tags中的所有StaffTag对象；当StaffTag具有多个tag时，会有相同的staffId的多个StaffTag存在
+     * @param tags 按照标签查Staff的参数
+     * @param idList tagId在tags中的所有StaffTag不重复的staffId集合
+     *  计算过程：
+     *   1. 遍历idList， 并以每一个不重复的staffId 实例化一个StaffTagScore对象
+     *   2.
      * @return
      */
-    private List<Staff> countTagScore(List<StaffTag> stList, List<String> tags, List<String> idList) {
+    private List<Staff> rtrvStaffListByTags(List<StaffTag> stList, List<String> tags, List<String> idList) {
         List<StaffTagScore> stsList = new ArrayList<StaffTagScore>();
-        //遍历
+        //1. 遍历idList， 并以每一个不重复的staffId 实例化一个StaffTagScore对象
         for (String id : idList) {
             StaffTagScore sts = new StaffTagScore();
             sts.setStaffId(id);
             sts.setTagScore(0D);
-
+            //2.遍历stList
             for (int i = 0; i < stList.size(); i++) {
                 StaffTag st = stList.get(i);
 
                 if (id.equals(st.getStaffId())) {
-                    for (int j = 0; j < tags.size(); j++) {
-                        LOG.info("j的值是：{}", j);
-                        LOG.info("第{}个staff, 标签score: {}", i, sts.getTagScore());
-                        if (st.getTagId().equals(tags.get(j))) {
-                            List<String> tagList = (sts.getTagId() == null) ? new ArrayList<String>() : sts.getTagId();
-                            tagList.add(st.getTagId());
-                            Collections.sort(tagList);
-                            sts.setTagId(tagList);
-                            Double tagScore = sts.getTagScore();
-                            sts.setTagScore(tagScore + Math.pow(0.5, j + 1));
-                        }
-                    }
+                    sts = countTagScore(st,tags,sts);
+
 
                     LOG.info("第{}个staff, 标签score: {}", i, sts.getTagScore());
                 }
@@ -325,6 +316,30 @@ public class StaffServiceImpl implements StaffService {
         }
 
         return sList;
+    }
+
+    /**
+     * 根据斐波那契梳理计算每个tag对应的分值
+     * @param st
+     * @param tags
+     * @param sts
+     * @return
+     */
+    private StaffTagScore countTagScore(StaffTag st, List<String> tags, StaffTagScore sts) {
+
+        for (int j = 0; j < tags.size(); j++) {
+            LOG.info("j的值是：{}", j);
+            LOG.info("第{}个staff, 标签score: {}",st.getStaffId(), sts.getTagScore());
+            if (st.getTagId().equals(tags.get(j))) {
+                List<String> tagList = (sts.getTagId() == null) ? new ArrayList<String>() : sts.getTagId();
+                tagList.add(st.getTagId());
+                Collections.sort(tagList);
+                sts.setTagId(tagList);
+                Double tagScore = sts.getTagScore();
+                sts.setTagScore(tagScore + Math.pow(0.5, j + 1));
+            }
+        }
+        return sts;
     }
 
 /*

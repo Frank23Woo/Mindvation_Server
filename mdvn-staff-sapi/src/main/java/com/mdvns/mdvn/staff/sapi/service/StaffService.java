@@ -33,5 +33,4 @@ public interface StaffService {
 
     ResponseEntity<?> findByAccountAndPassword(String account, String password);
 
-//    ResponseEntity<?> rtrvStaff(RtrvStaffRequest rtrvStaffRequest);
 }

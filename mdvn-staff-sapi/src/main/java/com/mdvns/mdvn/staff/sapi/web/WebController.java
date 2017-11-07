@@ -131,8 +131,5 @@ public class WebController {
         return this.staffService.deleteStaff(staffId);
     }
 
-/*
-    public ResponseEntity<?> rtrvStaff(RtrvStaffRequest rtrvStaffRequest) {
-        return this.staffService.rtrvStaff(rtrvStaffRequest);
-    }*/
+
 }
