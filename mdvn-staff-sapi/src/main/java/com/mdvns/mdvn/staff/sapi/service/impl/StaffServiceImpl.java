@@ -9,7 +9,6 @@ import com.mdvns.mdvn.staff.sapi.domain.entity.StaffTag;
 import com.mdvns.mdvn.staff.sapi.repository.StaffRepository;
 import com.mdvns.mdvn.staff.sapi.repository.StaffTagRepository;
 import com.mdvns.mdvn.staff.sapi.service.StaffService;
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -226,22 +225,12 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public ResponseEntity<?> rtrvStaffListByStaffName(RtrvStaffListByNameRequest request) throws SQLException {
         RtrvStaffListByNameResponse rtrvStaffListByNameResponse = new RtrvStaffListByNameResponse();
-        String sortBy = (request.getSortBy() == null) ? "tagId" : request.getSortBy();
-        //第几页
-        Integer page = request.getPage();
-        //需获取的数据条数
-        Integer pageSize = request.getPageSize();
-        page = (page == null || page < Integer.valueOf(ConstantEnum.ONE.getValue())) ? Integer.valueOf(ConstantEnum.ONE.getValue()) : page;
-        pageSize = (pageSize == null || pageSize < Integer.valueOf(ConstantEnum.ONE.getValue())) ? Integer.valueOf(ConstantEnum.TEN.getValue()) : pageSize;
-        //构建分页参数
-        PageRequest pageable = new PageRequest(page, pageSize, Sort.Direction.DESC, sortBy);
-
-        //分页对象
-        Page<Staff> staffPage;
-        //姓名
-        String name = request.getName();
+        String sortBy = (request.getSortBy() == null) ? "staffId" : request.getSortBy();
         //声明方法返回Staff集合变量
         List<Staff> result;
+        //姓名
+        String name = request.getName();
+        //如果name没有值
         if (StringUtils.isEmpty(name)) {
             List<String> tags = request.getTags();
             if (tags == null) {
@@ -257,10 +246,24 @@ public class StaffServiceImpl implements StaffService {
             rtrvStaffListByNameResponse.setStaffs(result);
             rtrvStaffListByNameResponse.setTotalNumber((long) result.size());
         } else {
-            staffPage = this.staffRepository.findByNameLike(name, pageable);
-            rtrvStaffListByNameResponse.setStaffs(staffPage.getContent());
-            rtrvStaffListByNameResponse.setTotalNumber(staffPage.getTotalElements());
+            //第几页
+            Integer page = request.getPage();
+            //需获取的数据条数
+            Integer pageSize = request.getPageSize();
+            page = (page == null || page < Integer.valueOf(ConstantEnum.ONE.getValue())) ? Integer.valueOf(ConstantEnum.ONE.getValue()) : page;
+            pageSize = (pageSize == null || pageSize < Integer.valueOf(ConstantEnum.ONE.getValue())) ? Integer.valueOf(ConstantEnum.TEN.getValue()) : pageSize;
+            //构建分页参数
+            PageRequest pageable = new PageRequest(page, pageSize);
+            //分页对象
+            Page<Staff> staffPage;
+            LOG.info("name：{}", name);
+            List<Staff> staffList = this.staffRepository.findByNameStartingWith(name);
+
+//            LOG.info("获取到的Staff:{}", list.size());
+            rtrvStaffListByNameResponse.setStaffs(staffList);
+            rtrvStaffListByNameResponse.setTotalNumber((long) staffList.size());
         }
+
 
         return ResponseEntity.ok(rtrvStaffListByNameResponse);
     }

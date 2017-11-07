@@ -2,6 +2,7 @@ package com.mdvns.mdvn.staff.sapi.repository;
 
 import com.mdvns.mdvn.staff.sapi.domain.entity.Staff;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -30,4 +31,8 @@ public interface StaffRepository extends JpaRepository<Staff, Integer> {
 
     Page<Staff> findAllByAccountIsNot(String account,Pageable pageable);
 
+//    @Query(value = "select * from staff where name like %?1", nativeQuery = true)
+    List<Staff> findByNameLike(String name);
+
+    List<Staff> findByNameStartingWith(String name);
 }
