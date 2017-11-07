@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.reqmnt.sapi.domain;
 
+import com.mdvns.mdvn.common.beans.SubFunctionLabel;
 import com.mdvns.mdvn.common.beans.Tag;
 import com.mdvns.mdvn.reqmnt.sapi.domain.entity.ReqmntAttchUrl;
 import com.mdvns.mdvn.reqmnt.sapi.domain.entity.ReqmntCheckList;
@@ -13,11 +14,20 @@ import java.util.List;
 public class UpdateReqmntInfoRequest {
     private String staffId;
     private RequirementInfo reqmntInfo;
+    private SubFunctionLabel functionLabel;
     private List<Tag> tags;
     private List<RoleMember> members;
     private List<ReqmntCheckList> checkLists;
     private List<ReqmntAttchUrl> attchUrls;
     private List<String> remarks;
+
+    public SubFunctionLabel getFunctionLabel() {
+        return functionLabel;
+    }
+
+    public void setFunctionLabel(SubFunctionLabel functionLabel) {
+        this.functionLabel = functionLabel;
+    }
 
     public String getStaffId() {
         return staffId;

@@ -17,18 +17,27 @@ public class StoryDetail {
     private List<RoleAndMember> rMembers;
     //用户故事标签（集合）
     private List<Tag> tags;
+    private SubFunctionLabel subFunctionLabel;
     private FunctionLabel labelDetail;
-
+    private List<SubFunctionLabel> subFunctionLabels;
     private List<TaskDelivery> taskDeliveries;
 
 //    private List<RoleAndMember> members;
     //最后一层过程方法模块对象
-    private SubFunctionLabel subFunctionLabel;
+
     //用户故事附件（集合）
     private List<AttchInfo> attchInfos;
     //用户故事task(可以创建完后添加)
     private List<TaskDetail> sTasks;
     private List<String> remarks;
+
+    public List<SubFunctionLabel> getSubFunctionLabels() {
+        return subFunctionLabels;
+    }
+
+    public void setSubFunctionLabels(List<SubFunctionLabel> subFunctionLabels) {
+        this.subFunctionLabels = subFunctionLabels;
+    }
 
     public List<TaskDelivery> getTaskDeliveries() {
         return taskDeliveries;

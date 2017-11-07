@@ -40,7 +40,7 @@ config:
   rtrvModelRoleByModelIdUrl: http://localhost:10009/mdvn-model-sapi/models/findById
   rtrvRoleByRoleIdUrl: http://localhost:10009/mdvn-model-sapi/models/findRoleById
   findTaskDeliveryByIdUrl: http://localhost:10009/mdvn-model-sapi/models/findTaskDeliveryById
-
+  findSubFuncListByIdUrl: http://localhost:10009/mdvn-model-sapi/models/findSubFuncListById
   rtrvTaskListByStoryIdUrl: http://localhost:10003/mdvn-task-papi/task/retrieveTaskList
 
   rtrvAttchListUrl: http://localhost:10019/mdvn-file-sapi/files/

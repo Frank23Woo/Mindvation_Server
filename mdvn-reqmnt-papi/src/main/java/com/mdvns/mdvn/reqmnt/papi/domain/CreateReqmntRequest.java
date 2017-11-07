@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.reqmnt.papi.domain;
 
+import com.mdvns.mdvn.common.beans.SubFunctionLabel;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -32,12 +33,22 @@ public class CreateReqmntRequest {
     private List<RoleMember> members;
     /* tags of requirement*/
     private List<ReqmntTag> tags;
+    //过程方法模块(用在判断是否过程方法模块在数据库中)
+    private SubFunctionLabel functionLabel;
     /* requirement checklist */
     private List<ReqmntCheckList> rCheckLists;
     /* requirement attachment url*/
     private List<ReqmntAttchUrl> attchUrls;
     /* remarks*/
     private List<String> remarks;
+
+    public SubFunctionLabel getFunctionLabel() {
+        return functionLabel;
+    }
+
+    public void setFunctionLabel(SubFunctionLabel functionLabel) {
+        this.functionLabel = functionLabel;
+    }
 
     public String getCreatorId() {
         return creatorId;

@@ -148,6 +148,17 @@ public class WebController {
     }
 
     /**
+     * 根据labelId查询模块
+     *
+     * @param request labelId
+     * @return SubFunctionLabelList
+     */
+    @PostMapping(value = "/models/findSubFuncListById")
+    public List<SubFunctionLabel> findSubFuncListById(@RequestBody RtrvSubFunctionLabelById request) {
+        return this.modelService.findSubFuncListById(request);
+    }
+
+    /**
      * 根据角色id查询角色对象
      *
      * @param roleId 角色Id
@@ -167,6 +178,17 @@ public class WebController {
     @PostMapping(value = "/models/judgeSubLabelId")
     public SubFunctionLabel judgeSubLabelId(@RequestBody JudgeSubLabelIdRequest request) {
         return this.modelService.judgeSubLabelId(request);
+    }
+
+    /**
+     * 根据parentId 和 过程方法子模块的那么 查询过程方法模块的Id，如果不存在添加
+     *
+     * @param request
+     * @return ModelRole
+     */
+    @PostMapping(value = "/models/judgeLabelId")
+    public SubFunctionLabel judgeLabelId(@RequestBody JudgeLabelIdRequest request) {
+        return this.modelService.judgeLabelId(request);
     }
 
     /**

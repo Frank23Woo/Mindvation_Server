@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.story.papi.domain;
 
+import com.mdvns.mdvn.common.beans.Staff;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
@@ -63,9 +64,29 @@ public class Story {
     //是否被删除
     private Integer isDeleted;
     //用户故事点数
-    private Integer storyPoint;
+    private Float storyPoint;
     //备注
     private String remarks;
+
+    private Staff creatorInfo;
+
+    private Integer memberCunt;
+
+    public Staff getCreatorInfo() {
+        return creatorInfo;
+    }
+
+    public void setCreatorInfo(Staff creatorInfo) {
+        this.creatorInfo = creatorInfo;
+    }
+
+    public Integer getMemberCunt() {
+        return memberCunt;
+    }
+
+    public void setMemberCunt(Integer memberCunt) {
+        this.memberCunt = memberCunt;
+    }
 
     public String getProjId() {
         return projId;
@@ -75,11 +96,11 @@ public class Story {
         this.projId = projId;
     }
 
-    public Integer getStoryPoint() {
+    public Float getStoryPoint() {
         return storyPoint;
     }
 
-    public void setStoryPoint(Integer storyPoint) {
+    public void setStoryPoint(Float storyPoint) {
         this.storyPoint = storyPoint;
     }
 

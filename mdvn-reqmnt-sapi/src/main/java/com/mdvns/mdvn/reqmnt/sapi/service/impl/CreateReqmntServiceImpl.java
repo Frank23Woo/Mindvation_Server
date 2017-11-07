@@ -129,7 +129,7 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
         requirementInfo.setProgress((double) 0);
         requirementInfo.setTotalStoryPoint(0);
         requirementInfo.setIsDeleted(0);
-        requirementInfo.setFunctionLabelId(createReqmntRequest.getFunctionLabelId());
+        requirementInfo.setFunctionLabelId(createReqmntRequest.getFunctionLabel().getLabelId());
 
         try {
             requirementInfo = reqmntRepository.saveAndFlush(requirementInfo);

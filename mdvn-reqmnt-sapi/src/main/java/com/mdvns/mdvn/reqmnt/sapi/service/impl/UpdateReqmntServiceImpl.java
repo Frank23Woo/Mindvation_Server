@@ -119,6 +119,10 @@ public class UpdateReqmntServiceImpl implements IUpdateReqmntService {
                 }
             }
         }
+//        if (request.getFunctionLabel() !=null){
+//
+//        }
+
 
 //        // tags
 //        if (request.getTags() != null) {

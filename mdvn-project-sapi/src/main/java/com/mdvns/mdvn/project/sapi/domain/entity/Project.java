@@ -59,7 +59,7 @@ public class Project {
     private Integer storyQty;
     //storypoint总数
     @Column(columnDefinition = "int default 0")
-    private Integer storyPointQty;
+    private Float storyPointQty;
     //crstory总数
     @Column(columnDefinition = "int default 0")
     private Integer crStoryQty;
@@ -190,11 +190,11 @@ public class Project {
         this.storyQty = storyQty;
     }
 
-    public Integer getStoryPointQty() {
+    public Float getStoryPointQty() {
         return storyPointQty;
     }
 
-    public void setStoryPointQty(Integer storyPointQty) {
+    public void setStoryPointQty(Float storyPointQty) {
         this.storyPointQty = storyPointQty;
     }
 

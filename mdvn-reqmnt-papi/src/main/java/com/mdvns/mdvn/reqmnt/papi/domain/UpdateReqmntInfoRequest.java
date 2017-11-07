@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.reqmnt.papi.domain;
 
+import com.mdvns.mdvn.common.beans.SubFunctionLabel;
 import com.mdvns.mdvn.common.beans.Tag;
 import org.springframework.stereotype.Component;
 
@@ -9,6 +10,7 @@ import java.util.List;
 public class UpdateReqmntInfoRequest {
     private String staffId;
     private RequirementInfo reqmntInfo;
+    private SubFunctionLabel functionLabel;
     private List<Tag> tags;
 
         /* members of requirement*/
@@ -16,6 +18,14 @@ public class UpdateReqmntInfoRequest {
     private List<ReqmntCheckList> checkLists;
     private List<ReqmntAttchUrl> attchUrls;
     private List<String> remarks;
+
+    public SubFunctionLabel getFunctionLabel() {
+        return functionLabel;
+    }
+
+    public void setFunctionLabel(SubFunctionLabel functionLabel) {
+        this.functionLabel = functionLabel;
+    }
 
     public String getStaffId() {
         return staffId;

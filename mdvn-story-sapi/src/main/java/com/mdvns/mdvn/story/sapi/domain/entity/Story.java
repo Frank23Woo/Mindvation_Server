@@ -14,7 +14,7 @@ public class Story {
     //项目ID
     private String projId;
     //用户故事点数
-    private Integer storyPoint;
+    private Float storyPoint;
     //用户故事编号
     private String storyId;
     //表自增长生成的Id
@@ -117,11 +117,11 @@ public class Story {
         this.projId = projId;
     }
 
-    public Integer getStoryPoint() {
+    public Float getStoryPoint() {
         return storyPoint;
     }
 
-    public void setStoryPoint(Integer storyPoint) {
+    public void setStoryPoint(Float storyPoint) {
         this.storyPoint = storyPoint;
     }
 

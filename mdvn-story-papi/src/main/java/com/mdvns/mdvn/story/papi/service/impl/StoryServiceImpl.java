@@ -52,7 +52,7 @@ public class StoryServiceImpl implements IStoryService {
         ResponseEntity<RtrvStoryListResponse> rtrvStoryListResponse = this.restTemplate.postForEntity(storyInfoListUrl, rtrvStoryListRequest, RtrvStoryListResponse.class);
         restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
         restResponse.setResponseCode("000");
-        Integer storyPoint = null;
+        Float storyPoint = null;
         for (int i = 0; i <rtrvStoryListResponse.getBody().getStories().size() ; i++) {
             storyPoint = rtrvStoryListResponse.getBody().getStories().get(i).getStoryPoint();
             storyPoint +=storyPoint;
@@ -128,6 +128,43 @@ public class StoryServiceImpl implements IStoryService {
                 List<StoryRoleMember> sRoleMembers = restTemplate.postForObject(savePLeadersUrl, storyLeaders, List.class);
             } catch (Exception ex) {
                 throw new BusinessException(ExceptionEnum.STORY_STAFF_NOT_CREATE);
+            }
+
+            //取每条story的人数和创建者信息
+            Story storyInfo = responseEntity.getBody();
+            String creatorId = storyInfo.getCreatorId();
+            // call staff sapi
+            List staffs = new ArrayList();
+            staffs.add(creatorId);
+            Map<String, Object> prams = new HashMap<>();
+            prams.put("staffIdList", staffs);
+            ParameterizedTypeReference tReference = new ParameterizedTypeReference<List<Staff>>() {
+            };
+            LOG.info("获取创建者信息的url为：" + config.getRtrvStaffsByIdsUrl());
+            List<Staff> staffList = (List<Staff>) FetchListUtil.fetch(restTemplate, config.getRtrvStaffsByIdsUrl(), prams, tReference);
+            responseEntity.getBody().setCreatorInfo(staffList.get(0));
+
+            // 查询members(不重复的个数)
+            try {
+                // call reqmnt sapi
+                ParameterizedTypeReference parameterizedTypeReference = new ParameterizedTypeReference<List<StoryRoleMember>>() {
+                };
+                RtrvStoryDetailRequest request = new RtrvStoryDetailRequest();
+                request.setStoryId(storyInfo.getStoryId());
+                List<StoryRoleMember> data = FetchListUtil.fetch(restTemplate, config.getRtrvSRoleMembersUrl(), request, parameterizedTypeReference);
+                List<StoryRoleMember> storyMembers = data;
+                List<String> memberIds = new ArrayList<>();
+                for (int i = 0; i < storyMembers.size(); i++) {
+                    String id = storyMembers.get(i).getStaffId();
+                    if (!memberIds.isEmpty() && memberIds.contains(id)) {
+                        continue;
+                    }
+                    memberIds.add(id);
+                }
+                responseEntity.getBody().setMemberCunt(memberIds.size());
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new BusinessException(ExceptionEnum.REQMNT_QUERY_MEMBER_FAIELD);
             }
 
             //给成员分配权限
@@ -222,6 +259,7 @@ public class StoryServiceImpl implements IStoryService {
                 throw new BusinessException(ExceptionEnum.STORY_BASEINFO_NOT_UPDATE);
             }
         }
+
         //之后ragStatus需要后台计算以后传给前台
 //        if (!StringUtils.isEmpty(updateStoryDetailRequest.getRagStatus())) {
 //            story.setRagStatus(updateStoryDetailRequest.getRagStatus());
@@ -316,6 +354,18 @@ public class StoryServiceImpl implements IStoryService {
             } catch (Exception ex) {
                 throw new BusinessException(ExceptionEnum.STORY_DETAIL_MODEL_NOT_RTRV);
             }
+            Map mapLabel = new HashMap();
+            //查询reqmnt下的labelid
+            String storyId = updateStoryDetailRequest.getStoryInfo().getStoryId();
+            Map mapStory = new HashMap();
+            mapStory.put("storyId", storyId);
+            String labelId = restTemplate.postForObject(config.getLabelIdByStoryIdUrl(), storyId, String.class);
+            mapLabel.put("labelId", labelId);
+            FunctionLabel funcLabel = this.restTemplate.postForObject(config.getRtrvFuncLabelUrl(), mapLabel, FunctionLabel.class);
+            storyDetail.setLabelDetail(funcLabel);
+            List<SubFunctionLabel> subFunctionLabels = this.restTemplate.postForObject(config.getFindSubFuncListByIdUrl(), mapLabel, List.class);
+//        funcLabel.setSubFunctionLabels();
+            storyDetail.setSubFunctionLabels(subFunctionLabels);
         }
         //6.判断是否更改项目附件信息
         if (updateStoryDetailRequest.getAttchUrls() != null && !updateStoryDetailRequest.getAttchUrls().isEmpty()) {
@@ -498,6 +548,7 @@ public class StoryServiceImpl implements IStoryService {
             mapLabel.put("labelId", labelId);
             SubFunctionLabel storyModel = restTemplate.postForObject(config.getRtrvFuncLabelUrl(), mapLabel, SubFunctionLabel.class);
             storyDetail.setSubFunctionLabel(storyModel);
+
         } catch (Exception ex) {
             throw new BusinessException(ExceptionEnum.STORY_DETAIL_MODEL_NOT_RTRV);
         }
@@ -513,6 +564,9 @@ public class StoryServiceImpl implements IStoryService {
         mapLabel.put("labelId", labelId);
         FunctionLabel funcLabel = this.restTemplate.postForObject(config.getRtrvFuncLabelUrl(), mapLabel, FunctionLabel.class);
         storyDetail.setLabelDetail(funcLabel);
+        List<SubFunctionLabel> subFunctionLabels = this.restTemplate.postForObject(config.getFindSubFuncListByIdUrl(), mapLabel, List.class);
+//        funcLabel.setSubFunctionLabels();
+        storyDetail.setSubFunctionLabels(subFunctionLabels);
         //6.获取用户故事list<task>信息
         String url = config.getRtrvTaskListByStoryIdUrl();
         RtrvTaskListRequest rtrvTaskListRequest = new RtrvTaskListRequest();

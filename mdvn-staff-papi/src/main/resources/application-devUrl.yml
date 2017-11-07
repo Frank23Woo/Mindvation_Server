@@ -1,6 +1,7 @@
 url:
   rtrvStaffListUrl: http://localhost:10013/mdvn-staff-sapi/staffList
   rtrvStaffListByStaffIdListUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffListByStaffIdList
+  rtrvStaffsByIdsUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffListByStaffIdList
   rtrvStaffInfoUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffInfo
   rtrvStaffListByNameUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffListByName
 
