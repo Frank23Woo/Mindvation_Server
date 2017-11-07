@@ -59,7 +59,7 @@ public class Story {
     //是否被删除
     private Integer isDeleted;
     //用户故事点数
-    private Integer storyPoint;
+    private Float storyPoint;
     //备注
     private String remarks;
 
@@ -91,11 +91,11 @@ public class Story {
         this.projId = projId;
     }
 
-    public Integer getStoryPoint() {
+    public Float getStoryPoint() {
         return storyPoint;
     }
 
-    public void setStoryPoint(Integer storyPoint) {
+    public void setStoryPoint(Float storyPoint) {
         this.storyPoint = storyPoint;
     }
 
