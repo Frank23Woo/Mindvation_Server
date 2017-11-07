@@ -125,6 +125,7 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public ResponseEntity<?> rtrvStaffListByName(RtrvStaffListByNameRequest request) {
         String url = webConfig.getRtrvStaffListByNameUrl();
+        LOG.info("RtrvStaffListByName, name：{}，tags :{}", request.getName(), request.getTags().toString());
         RtrvStaffListByNameResponse rtrvStaffListByNameResponse = this.restTemplate.postForObject(url, request, RtrvStaffListByNameResponse.class);
         restResponse = RestResponseUtil.success(rtrvStaffListByNameResponse);
         return ResponseEntity.ok(restResponse);

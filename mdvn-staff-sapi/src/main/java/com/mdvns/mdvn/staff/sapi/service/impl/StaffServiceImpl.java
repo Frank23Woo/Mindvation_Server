@@ -289,32 +289,38 @@ public class StaffServiceImpl implements StaffService {
                 if (id.equals(st.getStaffId())) {
                     sts = countTagScore(st,tags,sts);
 
-
                     LOG.info("第{}个staff, 标签score: {}", i, sts.getTagScore());
                 }
             }
             stsList.add(sts);
         }
-
-        LOG.info("排序前的staff：{}", stsList.toString());
-        //List排序
-
+        LOG.info("排序前的StaffTagScore：{}", stsList.toString());
+        //对StaffTagScore 按照tagScore排序，从高到底
         Comparator<StaffTagScore> comparator = (h1, h2) -> h1.getTagScore().compareTo(h2.getTagScore());
         stsList.sort(comparator.reversed());
-        LOG.info("排序后的staff：{}", stsList.toString());
+        LOG.info("排序后的StaffTagScore：{}", stsList.toString());
         //取tag分值从高到底前10个staff数据
-        List<Staff> sList = new ArrayList<Staff>();
-        List<String> ids = new ArrayList<>();
+        return topTenAtMost(stsList);
+    }
 
-        Staff staff = null;
+    /**
+     *最多取前十条数据
+     * @param stsList
+     * @return
+     */
+    private List<Staff> topTenAtMost(List<StaffTagScore> stsList) {
+        List<Staff> sList = new ArrayList<Staff>();
+        Staff staff;
         int m = 0;
         m = (stsList.size() > Integer.valueOf(ConstantEnum.TEN.getValue()))?Integer.valueOf(ConstantEnum.TEN.getValue()):stsList.size();
+        if (stsList.isEmpty()) {
+            return new ArrayList<>();
+        }
         for (int i = 0; i < m; i++) {
             LOG.info("staffId：{}", stsList.get(i).getStaffId());
             staff = this.staffRepository.findByStaffId(stsList.get(i).getStaffId());
             sList.add(staff);
         }
-
         return sList;
     }
 
