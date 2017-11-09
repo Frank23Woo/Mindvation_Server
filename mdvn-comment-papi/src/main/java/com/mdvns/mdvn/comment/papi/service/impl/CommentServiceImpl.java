@@ -2,21 +2,17 @@ package com.mdvns.mdvn.comment.papi.service.impl;
 
 
 import com.mdvns.mdvn.comment.papi.config.WebConfig;
-import com.mdvns.mdvn.comment.papi.domain.Comment;
 import com.mdvns.mdvn.comment.papi.domain.CreateCommentInfoRequest;
 import com.mdvns.mdvn.comment.papi.domain.CreateCommentInfoResponse;
-import com.mdvns.mdvn.comment.papi.domain.ReplyDetail;
 import com.mdvns.mdvn.comment.papi.service.CommentService;
 import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.common.beans.Staff;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
-import org.hibernate.validator.constraints.ModCheck;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -56,14 +52,13 @@ public class CommentServiceImpl implements CommentService {
         //创建者返回对象
         String staffUrl = webConfig.getRtrvStaffInfoUrl();
         String creatorId = createCommentInfoResponse.getComment().getCreatorId();
-        Staff staff = restTemplate.postForObject(staffUrl,creatorId,Staff.class);
+        Staff staff = restTemplate.postForObject(staffUrl, creatorId, Staff.class);
         createCommentInfoResponse.getComment().setCreatorInfo(staff);
         //被@的人返回对象
-        List<ReplyDetail> replyDetails = createCommentInfoResponse.getReplyDetails();
-        for (int i = 0; i < replyDetails.size(); i++) {
-            String passiveAt = replyDetails.get(i).getPassiveAt();
-            Staff passiveAtInfo = restTemplate.postForObject(staffUrl,passiveAt,Staff.class);
-            replyDetails.get(i).setPassiveAtInfo(passiveAtInfo);
+        if (request.getReplyId() != null) {
+            String passiveAt = createCommentInfoResponse.getReplyDetail().getCreatorId();
+            Staff passiveAtInfo = restTemplate.postForObject(staffUrl, passiveAt, Staff.class);
+            createCommentInfoResponse.getReplyDetail().setCreatorInfo(passiveAtInfo);
         }
         restResponse.setResponseBody(createCommentInfoResponse);
         restResponse.setStatusCode(String.valueOf(HttpStatus.OK));

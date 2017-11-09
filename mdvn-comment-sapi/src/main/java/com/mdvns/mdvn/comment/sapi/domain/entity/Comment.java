@@ -43,8 +43,18 @@ public class Comment {
     //创建评论的时间
     @Column(columnDefinition = "timestamp", nullable = false)
     private Timestamp createTime;
+    //回复上一次被@的差值(间隔时间)
+    private Long intervalTime;
     //是否已删除
     private Integer isDeleted;
+
+    public Long getIntervalTime() {
+        return intervalTime;
+    }
+
+    public void setIntervalTime(Long intervalTime) {
+        this.intervalTime = intervalTime;
+    }
 
     public String getReplyId() {
         return replyId;

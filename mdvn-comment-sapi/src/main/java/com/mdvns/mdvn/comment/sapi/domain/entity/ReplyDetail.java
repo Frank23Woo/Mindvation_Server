@@ -1,3 +1,4 @@
+/*
 package com.mdvns.mdvn.comment.sapi.domain.entity;
 
 
@@ -9,9 +10,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.sql.Timestamp;
 
+*/
 /**
  * 回复类
- */
+ *//*
+
 @Entity
 @Component
 public class ReplyDetail {
@@ -98,3 +101,4 @@ public class ReplyDetail {
     }
 
 }
+*/

@@ -10,5 +10,6 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
     List<Comment> findByProjIdAndSubjectIdAndIsDeleted(String projId,String subjectId,Integer isDeleted);
+    Comment findByCommentId(String commentId);
 
 }

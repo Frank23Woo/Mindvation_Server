@@ -1,16 +1,14 @@
 package com.mdvns.mdvn.comment.sapi.domain;
 
 import com.mdvns.mdvn.comment.sapi.domain.entity.Comment;
-import com.mdvns.mdvn.comment.sapi.domain.entity.ReplyDetail;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 
 @Component
 public class CreateCommentInfoResponse {
 
     private Comment comment;
-    private List<ReplyDetail> replyDetails;
+    private Comment replyDetail;
 
     public Comment getComment() {
         return comment;
@@ -20,11 +18,11 @@ public class CreateCommentInfoResponse {
         this.comment = comment;
     }
 
-    public List<ReplyDetail> getReplyDetails() {
-        return replyDetails;
+    public Comment getReplyDetail() {
+        return replyDetail;
     }
 
-    public void setReplyDetails(List<ReplyDetail> replyDetails) {
-        this.replyDetails = replyDetails;
+    public void setReplyDetail(Comment replyDetail) {
+        this.replyDetail = replyDetail;
     }
 }

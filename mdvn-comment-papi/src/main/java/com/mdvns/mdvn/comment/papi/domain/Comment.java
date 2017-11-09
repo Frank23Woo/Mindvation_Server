@@ -1,14 +1,12 @@
 package com.mdvns.mdvn.comment.papi.domain;
 
 import com.mdvns.mdvn.common.beans.Staff;
-import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 
 /**
  * 评论类
  */
-
-@Component
 public class Comment {
 
     private Integer uuId;
@@ -22,8 +20,8 @@ public class Comment {
     private String replyId;
     //发起@的人(创建这条评论的人)
     private String creatorId;
-//    //被@的人(可以是多个人)
-//    private String passiveAts;
+    //被@的人(可以是多个人)
+    private String passiveAts;
     //评论的内容
     private String content;
     //点赞这个评论的人数
@@ -36,6 +34,10 @@ public class Comment {
     private String dislikeIds;
     //创建评论的时间
     private Long createTime;
+    //回复上一次被@的差值(间隔时间)
+    private Long intervalTime;
+//    //是否已删除
+//    private Integer isDeleted;
 
     private Staff creatorInfo;
 
@@ -45,6 +47,15 @@ public class Comment {
 
     public void setCreatorInfo(Staff creatorInfo) {
         this.creatorInfo = creatorInfo;
+    }
+
+
+    public Long getIntervalTime() {
+        return intervalTime;
+    }
+
+    public void setIntervalTime(Long intervalTime) {
+        this.intervalTime = intervalTime;
     }
 
     public String getReplyId() {
@@ -63,13 +74,13 @@ public class Comment {
         this.commentId = commentId;
     }
 
-//    public String getPassiveAts() {
-//        return passiveAts;
-//    }
-//
-//    public void setPassiveAts(String passiveAts) {
-//        this.passiveAts = passiveAts;
-//    }
+    public String getPassiveAts() {
+        return passiveAts;
+    }
+
+    public void setPassiveAts(String passiveAts) {
+        this.passiveAts = passiveAts;
+    }
 
     public Integer getUuId() {
         return uuId;
@@ -146,10 +157,10 @@ public class Comment {
     public Long getCreateTime() {
         return createTime;
     }
+
     public void setCreateTime(Long createTime) {
         this.createTime = createTime;
     }
-
 }
 
 

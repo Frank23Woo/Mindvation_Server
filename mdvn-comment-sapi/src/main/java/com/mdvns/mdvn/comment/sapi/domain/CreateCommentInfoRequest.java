@@ -7,7 +7,7 @@ import java.util.List;
 @Component
 public class CreateCommentInfoRequest {
 
-    private String commentId;
+    private String replyId;
     private String projId;
     private String subjectId;
     private String creatorId;
@@ -15,12 +15,12 @@ public class CreateCommentInfoRequest {
     //被@的人（可有可无）
     private List<String> passiveAts;
 
-    public String getCommentId() {
-        return commentId;
+    public String getReplyId() {
+        return replyId;
     }
 
-    public void setCommentId(String commentId) {
-        this.commentId = commentId;
+    public void setReplyId(String replyId) {
+        this.replyId = replyId;
     }
 
     public String getProjId() {

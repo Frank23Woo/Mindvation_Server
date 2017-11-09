@@ -40,6 +40,7 @@ public class CommentController {
         LOG.info("开始执行{} createCommentInfo()方法.", this.CLASS);
         return this.commentService.createCommentInfo(request);
     }
+
     /**
      * 获取每个reqmnt或者story的评论（获取列表时需要）
      * @param request
