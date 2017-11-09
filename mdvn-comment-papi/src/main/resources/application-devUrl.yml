@@ -1,6 +1,7 @@
 url:
    createCommentInfoUrl: http://localhost:10025/mdvn-comment-sapi/comments/createCommentInfo
    rtrvStaffInfoUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffInfo
+   likeOrDislikeUrl: http://localhost:10025/mdvn-comment-sapi/comments/likeOrDislike
 
 
 

@@ -122,7 +122,10 @@ public enum ExceptionEnum {
 
 	//comment
 	COMMENT__NOT_CREATE("2201", "评论未创建成功"),
-	COMMENT__NOT_RTRV("2202", "评论未获取成功");
+	COMMENT__NOT_RTRV("2202", "评论未获取成功"),
+	COMMENT__LIKEORDISLIKE_FAILD("2203", "评论点赞或者踩失败")
+	;
+
 	
 	
 	

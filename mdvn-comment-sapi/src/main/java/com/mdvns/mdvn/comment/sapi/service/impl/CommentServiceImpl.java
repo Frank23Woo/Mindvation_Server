@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -87,27 +88,94 @@ public class CommentServiceImpl implements CommentService {
     public Comment likeComment(LikeCommentRequest request) {
         LOG.info("开始执行{} likeComment()方法.", this.CLASS);
         String remark = request.getRemark();
-        Comment comment = this.commentRepository.findOne(request.getUuId());
-        if (remark == "like") {
-            comment.setLikeQty(comment.getLikeQty() + 1);
+        String commentId = request.getCommentId();
+        String creatorId = request.getCreatorId();
+        Comment comment = this.commentRepository.findByCommentId(commentId);
+        if (remark.equals("like")) {
+            //对于点赞这边
             String likeIds = comment.getLikeIds();
-            if (likeIds == null) {
-                comment.setLikeIds(request.getCreatorId());
+            if (!StringUtils.isEmpty(likeIds)) {
+                String[] likeArrayIds = likeIds.split(",");
+                List<String> likeIdList = Arrays.asList(likeArrayIds);
+                List list =new ArrayList(likeIdList);
+                for (int i = 0; i < list.size(); i++) {
+                    if (creatorId.equals(list.get(i))) {
+                        list.remove(creatorId);
+                    }
+                }
+                likeIds = MdvnStringUtil.join(list, ",");
+                if (likeIdList.size() == list.size()){
+                    comment.setLikeQty(comment.getLikeQty() + 1);
+                    comment.setLikeIds(likeIds + "," + creatorId);
+                } else{
+                    comment.setLikeQty(comment.getLikeQty() - 1);
+                    comment.setLikeIds(likeIds);
+                }
             } else {
-                comment.setLikeIds(likeIds + "," + request.getCreatorId());
+                comment.setLikeQty(1);
+                comment.setLikeIds(creatorId);
             }
-        }
-        if (remark == "dislike") {
-            comment.setDislikeQty(comment.getDislikeQty() + 1);
+            //对于踩这边
             String dislikeIds = comment.getDislikeIds();
-            if (dislikeIds == null) {
-                comment.setDislikeIds(request.getCreatorId());
-            } else {
-                comment.setDislikeIds(dislikeIds + "," + request.getCreatorId());
+            if (!StringUtils.isEmpty(dislikeIds)){
+                String[] dislikeArrayIds = dislikeIds.split(",");
+                List<String> dislikeIdList = Arrays.asList(dislikeArrayIds);
+                List list =new ArrayList(dislikeIdList);
+                for (int i = 0; i < list.size(); i++) {
+                    if (creatorId.equals(list.get(i))) {
+                        list.remove(creatorId);
+                    }
+                }
+                dislikeIds = MdvnStringUtil.join(list, ",");
+                if (dislikeIdList.size() != list.size()){
+                    comment.setDislikeQty(comment.getDislikeQty() - 1);
+                    comment.setDislikeIds(dislikeIds);
+                } 
             }
         }
-
-
+        if (remark.equals("dislike")) {
+            //对于踩这边
+            String dislikeIds = comment.getDislikeIds();
+            if (!StringUtils.isEmpty(dislikeIds)) {
+                String[] dislikeArrayIds = dislikeIds.split(",");
+                List<String> dislikeIdList = Arrays.asList(dislikeArrayIds);
+                List list =new ArrayList(dislikeIdList);
+                for (int i = 0; i < list.size(); i++) {
+                    if (creatorId.equals(list.get(i))) {
+                        list.remove(creatorId);
+                    }
+                }
+                dislikeIds = MdvnStringUtil.join(list, ",");
+                if (dislikeIdList.size() == list.size()){
+                    comment.setDislikeQty(comment.getDislikeQty() + 1);
+                    comment.setDislikeIds(dislikeIds + "," + creatorId);
+                } else{
+                    comment.setDislikeQty(comment.getDislikeQty() - 1);
+                    comment.setDislikeIds(dislikeIds);
+                }
+            } else {
+                comment.setDislikeQty(1);
+                comment.setDislikeIds(creatorId);
+            }
+            //对于点赞这边
+            String likeIds = comment.getLikeIds();
+            if (!StringUtils.isEmpty(likeIds)){
+                String[] likeArrayIds = likeIds.split(",");
+                List<String> likeIdList = Arrays.asList(likeArrayIds);
+                List list =new ArrayList(likeIdList);
+                for (int i = 0; i < list.size(); i++) {
+                    if (creatorId.equals(list.get(i))) {
+                        list.remove(creatorId);
+                    }
+                }
+                likeIds = MdvnStringUtil.join(list, ",");
+                if (likeIdList.size() != list.size()){
+                    comment.setLikeQty(comment.getLikeQty() - 1);
+                    comment.setLikeIds(likeIds);
+                }
+            }
+        }
+        comment = this.commentRepository.saveAndFlush(comment);
         LOG.info("结束执行{} likeComment()方法.", this.CLASS);
         return comment;
     }

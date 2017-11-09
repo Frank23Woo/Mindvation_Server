@@ -10,6 +10,16 @@ public class WebConfig {
 
     private String rtrvStaffInfoUrl;
 
+    private String likeOrDislikeUrl;
+
+    public String getLikeOrDislikeUrl() {
+        return likeOrDislikeUrl;
+    }
+
+    public void setLikeOrDislikeUrl(String likeOrDislikeUrl) {
+        this.likeOrDislikeUrl = likeOrDislikeUrl;
+    }
+
     public String getRtrvStaffInfoUrl() {
         return rtrvStaffInfoUrl;
     }
