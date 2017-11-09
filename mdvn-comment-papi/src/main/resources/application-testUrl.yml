@@ -1,0 +1,8 @@
+url:
+  createCommentInfoUrl: http://localhost:8080/mdvn-comment-sapi/comments/createCommentInfo
+  rtrvStaffInfoUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffInfo
+
+
+
+
+

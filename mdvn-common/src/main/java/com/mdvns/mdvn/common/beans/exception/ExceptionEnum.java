@@ -15,7 +15,8 @@ public enum ExceptionEnum {
 	 * 1600~1700 task
 	 * 1700~1800 dashboard
 	 * 1800 ~2000 staff
-	 * 2000~2200 
+	 * 2000~2200
+	 * 2201~2202  comment
 	 */
 	
 	//通用
@@ -117,7 +118,11 @@ public enum ExceptionEnum {
 	UPDATE_STAFF_FAIL("1900", "Fail to Update Staff Information "),
 	DELETE_STAFF_FAIL("1901", "Fail to delete staff"),
 	USER_NAME_EXISTS("1902", "User name already exists"),
-	USER_ACCT_EXISTS("1903", "User account already exists");
+	USER_ACCT_EXISTS("1903", "User account already exists"),
+
+	//comment
+	COMMENT__NOT_CREATE("2201", "评论未创建成功"),
+	COMMENT__NOT_RTRV("2202", "评论未获取成功");
 	
 	
 	

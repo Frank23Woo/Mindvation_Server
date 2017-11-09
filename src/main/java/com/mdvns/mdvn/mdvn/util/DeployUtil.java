@@ -15,11 +15,9 @@ import java.util.Properties;
 public class DeployUtil {
     public static void main(String[] args) {
 
-        makeWarPackage();
-//        localhostIntegration();
+//        makeWarPackage();
+        localhostIntegration();
     }
-
-
 
     private static void updateProperties(String config, List<String> packageList){
         try {
@@ -107,6 +105,8 @@ public class DeployUtil {
         packageList.add("mdvn-department-sapi");
         packageList.add("mdvn-file-papi");
         packageList.add("mdvn-file-sapi");
+        packageList.add("mdvn-comment-papi");
+        packageList.add("mdvn-comment-sapi");
         return packageList;
     }
 
