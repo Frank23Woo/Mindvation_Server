@@ -66,8 +66,10 @@ public class AuthServiceImpl implements AuthService {
         String projId = rtrvAuthRequest.getProjId();
         String staffId = rtrvAuthRequest.getStaffId();
         String hierarchyId = rtrvAuthRequest.getHierarchyId();
-        List<StaffAuthInfo> staffAuthInfos =  this.authInfoRepository.findByProjIdAndStaffIdAndHierarchyId(projId, hierarchyId, staffId);
+        LOG.info("SPAPI获取员工权限的request为：{}", rtrvAuthRequest.toString());
+        List<StaffAuthInfo> staffAuthInfos =  this.authInfoRepository.findByProjIdAndHierarchyIdAndStaffId(projId, hierarchyId, staffId);
 
+        LOG.info("SAPI查到的员工权限为：{}", staffAuthInfos.size());
         return ResponseEntity.ok(staffAuthInfos);
     }
 /*
