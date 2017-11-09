@@ -23,6 +23,8 @@ public class ReqmntConfig {
     private String rtrvTagsByIdsUrl;
     private String rtrvFuncLabelUrl;
 
+    private String judgeLabelIdUrl;
+
     private String updateReqmntInfoUrl;
 
     //staff sapi url
@@ -40,6 +42,34 @@ public class ReqmntConfig {
     private String storyListPageSize;
 
     private String rtrvAttchInfoListUrl;
+
+    private String rtrvSRoleMembersUrl;
+
+    private String findSubFuncListByIdUrl;
+
+    public String getJudgeLabelIdUrl() {
+        return judgeLabelIdUrl;
+    }
+
+    public void setJudgeLabelIdUrl(String judgeLabelIdUrl) {
+        this.judgeLabelIdUrl = judgeLabelIdUrl;
+    }
+
+    public String getFindSubFuncListByIdUrl() {
+        return findSubFuncListByIdUrl;
+    }
+
+    public void setFindSubFuncListByIdUrl(String findSubFuncListByIdUrl) {
+        this.findSubFuncListByIdUrl = findSubFuncListByIdUrl;
+    }
+
+    public String getRtrvSRoleMembersUrl() {
+        return rtrvSRoleMembersUrl;
+    }
+
+    public void setRtrvSRoleMembersUrl(String rtrvSRoleMembersUrl) {
+        this.rtrvSRoleMembersUrl = rtrvSRoleMembersUrl;
+    }
 
     public String getRtrvAttchInfoListUrl() {
         return rtrvAttchInfoListUrl;

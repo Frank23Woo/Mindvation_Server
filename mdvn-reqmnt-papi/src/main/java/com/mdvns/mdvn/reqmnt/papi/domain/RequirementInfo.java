@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.reqmnt.papi.domain;
 
+import com.mdvns.mdvn.common.beans.Staff;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -48,6 +49,25 @@ public class RequirementInfo {
     private String remarks;
     //是否被删除
     private Integer isDeleted;
+    //成员数
+    private Integer memberCunt;
+    private Staff creatorInfo;
+
+    public Integer getMemberCunt() {
+        return memberCunt;
+    }
+
+    public void setMemberCunt(Integer memberCunt) {
+        this.memberCunt = memberCunt;
+    }
+
+    public Staff getCreatorInfo() {
+        return creatorInfo;
+    }
+
+    public void setCreatorInfo(Staff creatorInfo) {
+        this.creatorInfo = creatorInfo;
+    }
 
     public String getReqmntId() {
         return reqmntId;

@@ -12,6 +12,8 @@ public class RtrvReqmntInfoResponse{
 
     private FunctionLabel labelDetail;
 
+    private List<SubFunctionLabel> subFunctionLabels;
+
     private List<Tag> tagList;
 
     private List<RoleAndMember> members;
@@ -25,6 +27,14 @@ public class RtrvReqmntInfoResponse{
 
 
     private List<StaffAuthInfo> staffAuthInfo;
+
+    public List<SubFunctionLabel> getSubFunctionLabels() {
+        return subFunctionLabels;
+    }
+
+    public void setSubFunctionLabels(List<SubFunctionLabel> subFunctionLabels) {
+        this.subFunctionLabels = subFunctionLabels;
+    }
 
     public List<StaffAuthInfo> getStaffAuthInfo() {
         return staffAuthInfo;
