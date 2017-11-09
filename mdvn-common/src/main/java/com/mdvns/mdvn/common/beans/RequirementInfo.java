@@ -2,6 +2,8 @@ package com.mdvns.mdvn.common.beans;
 
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class RequirementInfo {
 
@@ -47,6 +49,16 @@ public class RequirementInfo {
     private String remarks;
     //是否被删除
     private Integer isDeleted;
+
+    private List<CommentDetail> commentDetails;
+
+    public List<CommentDetail> getCommentDetails() {
+        return commentDetails;
+    }
+
+    public void setCommentDetails(List<CommentDetail> commentDetails) {
+        this.commentDetails = commentDetails;
+    }
 
     public String getReqmntId() {
         return reqmntId;
