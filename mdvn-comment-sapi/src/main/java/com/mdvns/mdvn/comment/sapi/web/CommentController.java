@@ -58,7 +58,7 @@ public class CommentController {
      * @return
      */
     @PostMapping(value = "/likeOrDislike")
-    public Comment likeComment(@RequestBody LikeCommentRequest request) {
+    public CreateCommentInfoResponse likeComment(@RequestBody LikeCommentRequest request) {
         LOG.info("开始执行{} likeComment()方法.", this.CLASS);
         return this.commentService.likeComment(request);
     }

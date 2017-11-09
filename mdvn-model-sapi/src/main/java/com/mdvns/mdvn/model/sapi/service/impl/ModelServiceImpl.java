@@ -468,6 +468,19 @@ public class ModelServiceImpl implements ModelService {
     }
 
     /**
+     * 通过labelId获取过程方法子模块的list
+     * @param request
+     * @return
+     */
+    @Override
+    public List<SubFunctionLabel> findSubFuncListById(RtrvSubFunctionLabelById request) {
+        LOG.info("开始执行{} findById()方法.", this.CLASS);
+        List<SubFunctionLabel> subFunctionLabels = this.functionModelRepository.findByParentId(request.getLabelId());
+        LOG.info("执行结束{} findById()方法.", this.CLASS);
+        return subFunctionLabels;
+    }
+
+    /**
      * 通过roleId获取ModelRole对象（单个）
      *
      * @param roleId
@@ -531,6 +544,36 @@ public class ModelServiceImpl implements ModelService {
             subFunctionLabel = this.functionModelRepository.findByLabelId(request.getSubFunctionLabel().getLabelId());
         }
         LOG.info("执行结束{} findLabelId()方法.", this.CLASS);
+        return subFunctionLabel;
+    }
+
+    /**
+     * 判断过程方法模块是否在数据库里面
+     * @param request
+     * @return
+     */
+
+    @Override
+    public SubFunctionLabel judgeLabelId(JudgeLabelIdRequest request) {
+        LOG.info("开始执行{} judgeLabelId()方法.", this.CLASS);
+        subFunctionLabel = request.getFunctionLabel();
+        String creatorId = request.getCreatorId();
+        String name = request.getFunctionLabel().getName();
+        SubFunctionLabel subFuncLabel = new SubFunctionLabel();
+        if (subFunctionLabel.getLabelId() == null) {
+            subFuncLabel.setIsDeleted(0);
+            subFuncLabel.setName(name);
+            subFuncLabel.setCreatorId(creatorId);
+            Timestamp createTime = new Timestamp(System.currentTimeMillis());
+            subFuncLabel.setCreateTime(createTime);
+            subFuncLabel.setQuoteCnt(0);
+            subFunctionLabel = this.functionModelRepository.saveAndFlush(subFuncLabel);
+            subFunctionLabel.setLabelId("MF" + subFunctionLabel.getUuId());
+            subFunctionLabel = this.functionModelRepository.saveAndFlush(subFunctionLabel);
+        } else {
+            subFunctionLabel = this.functionModelRepository.findByLabelId(request.getFunctionLabel().getLabelId());
+        }
+        LOG.info("执行结束{} judgeLabelId()方法.", this.CLASS);
         return subFunctionLabel;
     }
 

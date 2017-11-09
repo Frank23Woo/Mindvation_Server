@@ -34,6 +34,8 @@ public interface ModelService {
 
     SubFunctionLabel findById(RtrvSubFunctionLabelById request);
 
+    List<SubFunctionLabel> findSubFuncListById(RtrvSubFunctionLabelById request);
+
     ModelRole findById(String roleId);
 
     Model findModelById(String modelId);
@@ -41,6 +43,8 @@ public interface ModelService {
     List<IterationModel> findIterationModelById(String modelId);
 
     SubFunctionLabel judgeSubLabelId(JudgeSubLabelIdRequest request);
+
+    SubFunctionLabel judgeLabelId(JudgeLabelIdRequest request);
 
     List<TaskDelivery> findTaskDeliveryById(RtrvModelByIdRequest request);
 
