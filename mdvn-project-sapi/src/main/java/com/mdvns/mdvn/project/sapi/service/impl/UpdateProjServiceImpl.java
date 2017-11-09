@@ -127,7 +127,6 @@ public class UpdateProjServiceImpl implements IUpdateProjService {
             ProjLeaders projLeader = new ProjLeaders();
             staffIdList.add(list.getLeaders().get(i).getStaffId());
             projLeader = this.projLeadersRepository.findByProjIdAndStaffId(projId, list.getLeaders().get(i).getStaffId());
-            LOG.info("创建项目，给leader分配权限成功!");
             //不存在的加上, 如果
             if (projLeader == null) {
                 list.getLeaders().get(i).setProjId(projId);
