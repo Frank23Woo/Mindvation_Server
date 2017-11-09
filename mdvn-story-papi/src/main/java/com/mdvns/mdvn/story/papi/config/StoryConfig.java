@@ -69,6 +69,16 @@ public class StoryConfig {
 
     private String addStoryUrl;
 
+    private String findSubFuncListByIdUrl;
+
+    public String getFindSubFuncListByIdUrl() {
+        return findSubFuncListByIdUrl;
+    }
+
+    public void setFindSubFuncListByIdUrl(String findSubFuncListByIdUrl) {
+        this.findSubFuncListByIdUrl = findSubFuncListByIdUrl;
+    }
+
     public String getAddStoryUrl() {
         return addStoryUrl;
     }
