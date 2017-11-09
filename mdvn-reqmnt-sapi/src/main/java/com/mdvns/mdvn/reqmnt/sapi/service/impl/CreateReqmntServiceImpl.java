@@ -102,9 +102,8 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
     public ResponseEntity<?> saveReqmnt(CreateReqmntRequest createReqmntRequest) {
         RequirementInfo requirementInfo = new RequirementInfo();
         //先保存项目基本信息
-        if (StringUtils.isEmpty(createReqmntRequest) || StringUtils.isEmpty(createReqmntRequest.getCreatorId()) ||
-                StringUtils.isEmpty(createReqmntRequest.getSummary()) || StringUtils.isEmpty(createReqmntRequest.getDescription()) || StringUtils.isEmpty(createReqmntRequest.getModelId())||
-        StringUtils.isEmpty(createReqmntRequest.getStartDate()) || StringUtils.isEmpty(createReqmntRequest.getEndDate()) || StringUtils.isEmpty(createReqmntRequest.getProjId())) {
+        if (StringUtils.isEmpty(createReqmntRequest) || StringUtils.isEmpty(createReqmntRequest.getCreatorId()) || StringUtils.isEmpty(createReqmntRequest.getSummary()) || StringUtils.isEmpty(createReqmntRequest.getDescription()) || StringUtils.isEmpty(createReqmntRequest.getModelId())
+ || StringUtils.isEmpty(createReqmntRequest.getProjId())) {
             throw new NullPointerException("Mandatory fields should not be empty for createReqmntRequest");
         }
         LOG.info("。。。。。保存需求开始。。。。。");
@@ -130,7 +129,7 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
         requirementInfo.setProgress((double) 0);
         requirementInfo.setTotalStoryPoint(0);
         requirementInfo.setIsDeleted(0);
-        requirementInfo.setFunctionLabelId(createReqmntRequest.getFunctionLabelId());
+        requirementInfo.setFunctionLabelId(createReqmntRequest.getFunctionLabel().getLabelId());
 
         try {
             requirementInfo = reqmntRepository.saveAndFlush(requirementInfo);
