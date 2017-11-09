@@ -43,3 +43,6 @@ config:
 
   rtrvSRoleMembersUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/rtrvSRoleMembers
 
+  rtrvCommentInfosUrl: http://localhost:10025/mdvn-comment-sapi/comments/rtrvCommentInfos
+  rtrvStaffInfoUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffInfo
+

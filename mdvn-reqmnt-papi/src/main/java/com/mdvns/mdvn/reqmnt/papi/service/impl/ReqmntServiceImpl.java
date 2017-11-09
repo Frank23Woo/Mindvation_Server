@@ -437,6 +437,32 @@ public class ReqmntServiceImpl implements IReqmntService {
             LOG.info("rtrvStoryListRequest(ReqmntId)：" + rtrvStoryListRequest.getReqmntId());
             ResponseEntity<RtrvStoryListResponse> rtrvStoryListResponse = this.restTemplate.postForEntity(storyInfoListUrl, rtrvStoryListRequest, RtrvStoryListResponse.class);
 //            restResponse = this.restTemplate.postForObject(storyInfoListUrl, rtrvStoryListRequest, RestResponse.class);
+            //加上评论list
+            String rtrvCommentInfosUrl = config.getRtrvCommentInfosUrl();
+            RtrvCommentInfosRequest rtrvCommentInfosRequest = new RtrvCommentInfosRequest();
+            for (int i = 0; i < rtrvStoryListResponse.getBody().getStories().size(); i++) {
+                Story story = rtrvStoryListResponse.getBody().getStories().get(i);
+                rtrvCommentInfosRequest.setProjId(story.getProjId());
+                rtrvCommentInfosRequest.setSubjectId(story.getStoryId());
+                ParameterizedTypeReference tReference = new ParameterizedTypeReference<List<CommentDetail>>() {
+                };
+                List<CommentDetail> commentDetails = FetchListUtil.fetch(restTemplate, rtrvCommentInfosUrl, rtrvCommentInfosRequest, tReference);
+                for (int j = 0; j <commentDetails.size() ; j++) {
+                    //创建者返回对象
+                    String staffUrl = config.getRtrvStaffInfoUrl();
+                    String creatorId = commentDetails.get(j).getComment().getCreatorId();
+                    com.mdvns.mdvn.common.beans.Staff staff = restTemplate.postForObject(staffUrl, creatorId, com.mdvns.mdvn.common.beans.Staff.class);
+                    commentDetails.get(j).getComment().setCreatorInfo(staff);
+                    //被@的人返回对象
+                    if (commentDetails.get(j).getComment().getReplyId() != null) {
+                        String passiveAt = commentDetails.get(j).getReplyDetail().getCreatorId();
+                        com.mdvns.mdvn.common.beans.Staff passiveAtInfo = restTemplate.postForObject(staffUrl, passiveAt, com.mdvns.mdvn.common.beans.Staff.class);
+                        commentDetails.get(j).getReplyDetail().setCreatorInfo(passiveAtInfo);
+                    }
+                }
+                story.setCommentDetails(commentDetails);
+            }
+
             LOG.info("rtrvStoryListResponse为：" + rtrvStoryListResponse);
             LOG.info("rtrvStoryListResponse.getBody()为：" + rtrvStoryListResponse.getBody());
 

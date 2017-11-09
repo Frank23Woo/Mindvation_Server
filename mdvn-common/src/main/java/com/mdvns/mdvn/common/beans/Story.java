@@ -2,6 +2,8 @@ package com.mdvns.mdvn.common.beans;
 
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class Story {
     //用户故事编号
@@ -66,6 +68,16 @@ public class Story {
     private Staff creatorInfo;
 
     private Integer memberCunt;
+
+    private List<CommentDetail> commentDetails;
+
+    public List<CommentDetail> getCommentDetails() {
+        return commentDetails;
+    }
+
+    public void setCommentDetails(List<CommentDetail> commentDetails) {
+        this.commentDetails = commentDetails;
+    }
 
     public Staff getCreatorInfo() {
         return creatorInfo;
