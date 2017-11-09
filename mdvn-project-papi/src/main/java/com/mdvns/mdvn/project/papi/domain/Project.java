@@ -38,7 +38,7 @@ public class Project {
     //story总数
     private Integer storyQty;
     //storypoint总数
-    private Integer storyPointQty;
+    private Float storyPointQty;
     //crstory总数
     private Integer crStoryQty;
     //crstorypoint总数
@@ -181,11 +181,11 @@ public class Project {
         this.storyQty = storyQty;
     }
 
-    public Integer getStoryPointQty() {
+    public Float getStoryPointQty() {
         return storyPointQty;
     }
 
-    public void setStoryPointQty(Integer storyPointQty) {
+    public void setStoryPointQty(Float storyPointQty) {
         this.storyPointQty = storyPointQty;
     }
 
