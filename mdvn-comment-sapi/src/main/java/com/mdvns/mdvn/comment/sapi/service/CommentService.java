@@ -13,7 +13,7 @@ public interface CommentService {
 
     CreateCommentInfoResponse createCommentInfo(CreateCommentInfoRequest request);
 
-    Comment likeComment(LikeCommentRequest request);
+    CreateCommentInfoResponse likeComment(LikeCommentRequest request);
 
     List<CommentDetail> rtrvCommentInfos(RtrvCommentInfosRequest request);
 

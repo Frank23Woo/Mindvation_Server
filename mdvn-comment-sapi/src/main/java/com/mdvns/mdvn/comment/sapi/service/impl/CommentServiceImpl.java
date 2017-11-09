@@ -85,8 +85,9 @@ public class CommentServiceImpl implements CommentService {
 
 
     @Override
-    public Comment likeComment(LikeCommentRequest request) {
+    public CreateCommentInfoResponse likeComment(LikeCommentRequest request) {
         LOG.info("开始执行{} likeComment()方法.", this.CLASS);
+        CreateCommentInfoResponse createCommentInfoResponse = new CreateCommentInfoResponse();
         String remark = request.getRemark();
         String commentId = request.getCommentId();
         String creatorId = request.getCreatorId();
@@ -97,17 +98,17 @@ public class CommentServiceImpl implements CommentService {
             if (!StringUtils.isEmpty(likeIds)) {
                 String[] likeArrayIds = likeIds.split(",");
                 List<String> likeIdList = Arrays.asList(likeArrayIds);
-                List list =new ArrayList(likeIdList);
+                List list = new ArrayList(likeIdList);
                 for (int i = 0; i < list.size(); i++) {
                     if (creatorId.equals(list.get(i))) {
                         list.remove(creatorId);
                     }
                 }
                 likeIds = MdvnStringUtil.join(list, ",");
-                if (likeIdList.size() == list.size()){
+                if (likeIdList.size() == list.size()) {
                     comment.setLikeQty(comment.getLikeQty() + 1);
                     comment.setLikeIds(likeIds + "," + creatorId);
-                } else{
+                } else {
                     comment.setLikeQty(comment.getLikeQty() - 1);
                     comment.setLikeIds(likeIds);
                 }
@@ -117,20 +118,20 @@ public class CommentServiceImpl implements CommentService {
             }
             //对于踩这边
             String dislikeIds = comment.getDislikeIds();
-            if (!StringUtils.isEmpty(dislikeIds)){
+            if (!StringUtils.isEmpty(dislikeIds)) {
                 String[] dislikeArrayIds = dislikeIds.split(",");
                 List<String> dislikeIdList = Arrays.asList(dislikeArrayIds);
-                List list =new ArrayList(dislikeIdList);
+                List list = new ArrayList(dislikeIdList);
                 for (int i = 0; i < list.size(); i++) {
                     if (creatorId.equals(list.get(i))) {
                         list.remove(creatorId);
                     }
                 }
                 dislikeIds = MdvnStringUtil.join(list, ",");
-                if (dislikeIdList.size() != list.size()){
+                if (dislikeIdList.size() != list.size()) {
                     comment.setDislikeQty(comment.getDislikeQty() - 1);
                     comment.setDislikeIds(dislikeIds);
-                } 
+                }
             }
         }
         if (remark.equals("dislike")) {
@@ -139,17 +140,17 @@ public class CommentServiceImpl implements CommentService {
             if (!StringUtils.isEmpty(dislikeIds)) {
                 String[] dislikeArrayIds = dislikeIds.split(",");
                 List<String> dislikeIdList = Arrays.asList(dislikeArrayIds);
-                List list =new ArrayList(dislikeIdList);
+                List list = new ArrayList(dislikeIdList);
                 for (int i = 0; i < list.size(); i++) {
                     if (creatorId.equals(list.get(i))) {
                         list.remove(creatorId);
                     }
                 }
                 dislikeIds = MdvnStringUtil.join(list, ",");
-                if (dislikeIdList.size() == list.size()){
+                if (dislikeIdList.size() == list.size()) {
                     comment.setDislikeQty(comment.getDislikeQty() + 1);
                     comment.setDislikeIds(dislikeIds + "," + creatorId);
-                } else{
+                } else {
                     comment.setDislikeQty(comment.getDislikeQty() - 1);
                     comment.setDislikeIds(dislikeIds);
                 }
@@ -159,25 +160,30 @@ public class CommentServiceImpl implements CommentService {
             }
             //对于点赞这边
             String likeIds = comment.getLikeIds();
-            if (!StringUtils.isEmpty(likeIds)){
+            if (!StringUtils.isEmpty(likeIds)) {
                 String[] likeArrayIds = likeIds.split(",");
                 List<String> likeIdList = Arrays.asList(likeArrayIds);
-                List list =new ArrayList(likeIdList);
+                List list = new ArrayList(likeIdList);
                 for (int i = 0; i < list.size(); i++) {
                     if (creatorId.equals(list.get(i))) {
                         list.remove(creatorId);
                     }
                 }
                 likeIds = MdvnStringUtil.join(list, ",");
-                if (likeIdList.size() != list.size()){
+                if (likeIdList.size() != list.size()) {
                     comment.setLikeQty(comment.getLikeQty() - 1);
                     comment.setLikeIds(likeIds);
                 }
             }
         }
         comment = this.commentRepository.saveAndFlush(comment);
+        createCommentInfoResponse.setComment(comment);
+        if (!StringUtils.isEmpty(comment.getReplyId())) {
+            Comment comm = this.commentRepository.findByCommentId(comment.getReplyId());
+            createCommentInfoResponse.setReplyDetail(comm);
+        }
         LOG.info("结束执行{} likeComment()方法.", this.CLASS);
-        return comment;
+        return createCommentInfoResponse;
     }
 
     /**
@@ -197,8 +203,11 @@ public class CommentServiceImpl implements CommentService {
             CommentDetail commentDetail = new CommentDetail();
             Comment comment = comments.get(i);
             commentDetail.setComment(comment);
-//            List<Comment> replyDetails = this.replyDetailRepository.findByCommentIdAndIsDeleted(comment.getCommentId(), 0);
-//            commentDetail.setReplyDetails(replyDetails);
+            String replyId = comment.getReplyId();
+            if (!StringUtils.isEmpty(replyId)) {
+                Comment comm = this.commentRepository.findByCommentId(replyId);
+                commentDetail.setReplyDetail(comm);
+            }
             commentDetails.add(commentDetail);
         }
         LOG.info("结束执行{} rtrvCommentInfos()方法.", this.CLASS);

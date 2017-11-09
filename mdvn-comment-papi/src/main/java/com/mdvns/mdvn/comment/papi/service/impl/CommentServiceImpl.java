@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -73,20 +74,28 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public RestResponse likeOrDislike(LikeCommentRequest request) {
         LOG.info("开始执行{} likeOrDislikeUrl()方法.", this.CLASS);
+        CreateCommentInfoResponse createCommentInfoResponse = new CreateCommentInfoResponse();
         String likeOrDislikeUrl = webConfig.getLikeOrDislikeUrl();
         Comment comment = new Comment();
         try {
-            comment = restTemplate.postForObject(likeOrDislikeUrl, request, Comment.class);
+            createCommentInfoResponse = restTemplate.postForObject(likeOrDislikeUrl, request, CreateCommentInfoResponse.class);
         } catch (Exception ex) {
             LOG.info("点赞或者踩评论失败");
             throw new BusinessException(ExceptionEnum.COMMENT__LIKEORDISLIKE_FAILD);
         }
         //创建者返回对象
         String staffUrl = webConfig.getRtrvStaffInfoUrl();
-        String creatorId = request.getCreatorId();
+        String creatorId = createCommentInfoResponse.getComment().getCreatorId();
         Staff staff = restTemplate.postForObject(staffUrl, creatorId, Staff.class);
-        comment.setCreatorInfo(staff);
-        restResponse.setResponseBody(comment);
+        createCommentInfoResponse.getComment().setCreatorInfo(staff);
+        //被@的人返回对象
+        String replyId = createCommentInfoResponse.getComment().getReplyId();
+        if (!StringUtils.isEmpty(replyId)) {
+            String passiveAt = createCommentInfoResponse.getReplyDetail().getCreatorId();
+            Staff passiveAtInfo = restTemplate.postForObject(staffUrl, passiveAt, Staff.class);
+            createCommentInfoResponse.getReplyDetail().setCreatorInfo(passiveAtInfo);
+        }
+        restResponse.setResponseBody(createCommentInfoResponse);
         restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
         restResponse.setResponseMsg("请求成功");
         restResponse.setResponseCode("000");
