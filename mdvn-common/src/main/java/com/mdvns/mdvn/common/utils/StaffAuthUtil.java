@@ -71,6 +71,18 @@ public class StaffAuthUtil {
 		}
 		return Arrays.asList(staffAuthInfos);
 	}
+	
+	/**
+	 * 取消指定项目的指定模块的所有人的权限
+	 * @param restTemplate
+	 * @param projId
+	 * @param hierarchyId
+	 */
+	public static void deleteAllAuth(RestTemplate restTemplate, String projId, String hierarchyId) {
+		String deleteAllAuthUrl = "http://localhost:10013/mdvn-staff-sapi/staff/removeAllAuth"+"/"+projId+"/"+hierarchyId;
+		restTemplate.delete(deleteAllAuthUrl);
+		LOG.info("全部删除项目{}的，{}层的所有权限成功!", projId, hierarchyId);
+	}
 
 	/**
 	 * 取消权限
@@ -111,5 +123,7 @@ public class StaffAuthUtil {
 		assignAuthRequest.setAuthCode(authCode);
 		return assignAuth(restTemplate, assignAuthRequest);
 	}
+	
+	
 
 }

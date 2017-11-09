@@ -6,5 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface StaffAuthInfoRepository extends JpaRepository<StaffAuthInfo, Integer> {
-    List<StaffAuthInfo> findByProjIdAndStaffIdAndHierarchyId(String projId, String staffId, String hierarchyId);
+    List<StaffAuthInfo> findByProjIdAndStaffIdAndHierarchyId(String projId, String hierarchyId, String staffId);
+
+    int deleteAllByProjIdAndHierarchyId(String projId, String hierarchyId);
 }

@@ -42,6 +42,8 @@ public class WebConfig {
 
     private String findByAccounAndPasswordtUrl;
 
+    private String removeAllAuthUrl;
+
     public String getFindByAccounAndPasswordtUrl() {
         return findByAccounAndPasswordtUrl;
     }
@@ -166,5 +168,13 @@ public class WebConfig {
 
     public void setDeleteStaffUrl(String deleteStaffUrl) {
         this.deleteStaffUrl = deleteStaffUrl;
+    }
+
+    public String getRemoveAllAuthUrl() {
+        return removeAllAuthUrl;
+    }
+
+    public void setRemoveAllAuthUrl(String removeAllAuthUrl) {
+        this.removeAllAuthUrl = removeAllAuthUrl;
     }
 }

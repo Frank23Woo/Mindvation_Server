@@ -19,6 +19,8 @@ url:
   rtrvDepartmentDetailUrl: http://localhost:10023/mdvn-department-sapi/findDepartmentById
   findByAccounAndPasswordtUrl : http://localhost:10013/mdvn-staff-sapi/staff
 
+  removeAllAuthUrl: http://localhost:10013/mdvn-staff-sapi/removeAllAuth
+
 
 
 

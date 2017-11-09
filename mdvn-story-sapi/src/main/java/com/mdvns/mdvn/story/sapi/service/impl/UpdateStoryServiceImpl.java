@@ -1,5 +1,8 @@
 package com.mdvns.mdvn.story.sapi.service.impl;
 
+import com.mdvns.mdvn.common.beans.AssignAuthRequest;
+import com.mdvns.mdvn.common.enums.AuthEnum;
+import com.mdvns.mdvn.common.utils.StaffAuthUtil;
 import com.mdvns.mdvn.story.sapi.domain.UpdateAttchUrlsRequest;
 import com.mdvns.mdvn.story.sapi.domain.UpdateSMembersRequest;
 import com.mdvns.mdvn.story.sapi.domain.UpdateSTagsRequest;
@@ -13,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -141,6 +145,7 @@ public class UpdateStoryServiceImpl implements IUpdateStoryService {
         for (int j = 0; j < roleIds.size(); j++) {
             String roleId = roleIds.get(j);
             List<String> staffIdList = new ArrayList();
+            List<String> addAuthList = new ArrayList<>();
             for (int i = 0; i < list.getsRoleMembers().size(); i++) {
                 if (roleId.equals(list.getsRoleMembers().get(i).getRoleId())) {
                     StoryRoleMember storyLeader = new StoryRoleMember();
@@ -151,6 +156,7 @@ public class UpdateStoryServiceImpl implements IUpdateStoryService {
                         list.getsRoleMembers().get(i).setStoryId(storyId);
                         list.getsRoleMembers().get(i).setIsDeleted(0);
                         this.storyRoleMemberRepository.saveAndFlush(list.getsRoleMembers().get(i));
+                        addAuthList.add(list.getsRoleMembers().get(i).getStaffId());
                     } else {
                         //之前是成员后来改掉，数据库中存在记录，但是is_deleted为1，需要修改成0
                         if (storyLeader.getIsDeleted().equals(1)) {
@@ -158,6 +164,10 @@ public class UpdateStoryServiceImpl implements IUpdateStoryService {
                             this.jdbcTemplate.update(sql);
                         }
                     }
+                    //2.1 给新增的项目leader分配权限
+                    RestTemplate restTemplate = new RestTemplate();
+                    StaffAuthUtil.assignAuth(restTemplate, new AssignAuthRequest(list.getProjId(), list.getStaffId(), addAuthList, list.getStoryId(), AuthEnum.SMEMBER.getCode()));
+                    LOG.info("更新项目，给新增的leader:{},分配权限成功!", addAuthList.toString());
                 }
             }
                 //将数据库中将要删除的成员信息修改is_deleted状态

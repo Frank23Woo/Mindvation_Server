@@ -131,5 +131,8 @@ public class WebController {
         return this.staffService.deleteStaff(staffId);
     }
 
-
+    @RequestMapping(value = "/removeAllAuth/{projId}/{hierarchyId}")
+    public ResponseEntity<?> removeAllAuth(@PathVariable String projId, @PathVariable String hierarchyId) {
+        return this.authService.removeAllAuth(projId, hierarchyId);
+    }
 }

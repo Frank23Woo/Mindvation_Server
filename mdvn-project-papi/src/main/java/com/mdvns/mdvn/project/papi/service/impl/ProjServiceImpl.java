@@ -326,6 +326,12 @@ public class ProjServiceImpl implements IProjService {
                 throw new BusinessException(ExceptionEnum.PROJECT_ATTCHURL_NOT_UPDATE);
             }
         }
+
+        //获取用户在项目中的权限信息
+        RtrvStaffAuthInfoRequest rtrvAuthInfoRequest = new RtrvStaffAuthInfoRequest();
+        String projId = updateProjectDetailRequest.getProjId();
+        List<StaffAuthInfo> staffAuthInfos = StaffAuthUtil.rtrvStaffAuthInfo(this.restTemplate, projId, projId, updateProjectDetailRequest.getStaffId());
+        updateProjectDetailResponse.setStaffAuthInfo(staffAuthInfos);
         updateProjectDetailResponse.setProjectDetail(projectDetail);
         restResponse.setResponseBody(updateProjectDetailResponse);
         restResponse.setStatusCode("200");

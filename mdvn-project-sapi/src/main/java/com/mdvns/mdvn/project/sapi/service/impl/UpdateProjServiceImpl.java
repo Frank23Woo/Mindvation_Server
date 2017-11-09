@@ -1,6 +1,9 @@
 package com.mdvns.mdvn.project.sapi.service.impl;
 
+import com.mdvns.mdvn.common.beans.AssignAuthRequest;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
+import com.mdvns.mdvn.common.enums.AuthEnum;
+import com.mdvns.mdvn.common.utils.StaffAuthUtil;
 import com.mdvns.mdvn.project.sapi.domain.*;
 import com.mdvns.mdvn.project.sapi.domain.entity.*;
 import com.mdvns.mdvn.project.sapi.repository.*;
@@ -11,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -117,23 +121,31 @@ public class UpdateProjServiceImpl implements IUpdateProjService {
         }
         String projId = list.getProjId();
         List<String> staffIdList = new ArrayList();
+        List<String> addAuthList = new ArrayList<>();
         //将数据库中没有的插入
         for (int i = 0; i < list.getLeaders().size(); i++) {
             ProjLeaders projLeader = new ProjLeaders();
             staffIdList.add(list.getLeaders().get(i).getStaffId());
             projLeader = this.projLeadersRepository.findByProjIdAndStaffId(projId, list.getLeaders().get(i).getStaffId());
-            //不存在的加上
+            LOG.info("创建项目，给leader分配权限成功!");
+            //不存在的加上, 如果
             if (projLeader == null) {
                 list.getLeaders().get(i).setProjId(projId);
                 list.getLeaders().get(i).setIsDeleted(0);
                 this.projLeadersRepository.saveAndFlush(list.getLeaders().get(i));
+                addAuthList.add(list.getLeaders().get(i).getStaffId());
             } else {
                 //之前是负责人后来改掉，数据库中存在记录，但是is_deleted为1，需要修改成0
                 if (projLeader.getIsDeleted().equals(1)) {
                     String sql = "UPDATE staff_proj_map SET is_deleted= 0 WHERE proj_id=" + "\"" + projId + "\"" + "AND staff_id =" + "\"" + list.getLeaders().get(i).getStaffId() + "\"" + "";
                     this.jdbcTemplate.update(sql);
                 }
+
             }
+            //2.1 给新增的项目leader分配权限
+            RestTemplate restTemplate = new RestTemplate();
+            StaffAuthUtil.assignAuth(restTemplate, new AssignAuthRequest(projId, list.getStaffId(), addAuthList, projId, AuthEnum.Leader.getCode()));
+            LOG.info("更新项目，给新增的leader:{},分配权限成功!", addAuthList.toString());
         }
         //将数据库中将要删除的负责人信息修改is_deleted状态
         //数组转化为字符串格式

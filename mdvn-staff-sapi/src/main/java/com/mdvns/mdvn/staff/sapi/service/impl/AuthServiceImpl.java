@@ -1,6 +1,7 @@
 package com.mdvns.mdvn.staff.sapi.service.impl;
 
 import com.mdvns.mdvn.common.beans.AssignAuthRequest;
+import com.mdvns.mdvn.common.beans.RemoveAuthRequest;
 import com.mdvns.mdvn.common.beans.RtrvStaffAuthInfoRequest;
 import com.mdvns.mdvn.staff.sapi.domain.entity.StaffAuthInfo;
 import com.mdvns.mdvn.staff.sapi.repository.StaffAuthInfoRepository;
@@ -8,6 +9,7 @@ import com.mdvns.mdvn.staff.sapi.service.AuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -64,8 +66,19 @@ public class AuthServiceImpl implements AuthService {
         String projId = rtrvAuthRequest.getProjId();
         String staffId = rtrvAuthRequest.getStaffId();
         String hierarchyId = rtrvAuthRequest.getHierarchyId();
-        List<StaffAuthInfo> staffAuthInfos =  this.authInfoRepository.findByProjIdAndStaffIdAndHierarchyId(projId, staffId, hierarchyId);
+        List<StaffAuthInfo> staffAuthInfos =  this.authInfoRepository.findByProjIdAndStaffIdAndHierarchyId(projId, hierarchyId, staffId);
 
         return ResponseEntity.ok(staffAuthInfos);
+    }
+/*
+    public ResponseEntity<?> removeAuth() {
+        StaffAuthInfo staffAuthInfo = this.authInfoRepository.findOne(removeAuthRequest.getStaffAuthInfo().getId());
+
+
+    }*/
+
+    public ResponseEntity<?> removeAllAuth(String projId, String hierarchyId) {
+        int nums = this.authInfoRepository.deleteAllByProjIdAndHierarchyId(projId, hierarchyId);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

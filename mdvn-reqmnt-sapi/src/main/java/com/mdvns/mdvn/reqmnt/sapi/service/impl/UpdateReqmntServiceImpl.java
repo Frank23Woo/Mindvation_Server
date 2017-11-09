@@ -1,15 +1,21 @@
 package com.mdvns.mdvn.reqmnt.sapi.service.impl;
 
+import com.mdvns.mdvn.common.beans.AssignAuthRequest;
 import com.mdvns.mdvn.common.beans.Tag;
+import com.mdvns.mdvn.common.enums.AuthEnum;
+import com.mdvns.mdvn.common.utils.StaffAuthUtil;
 import com.mdvns.mdvn.reqmnt.sapi.domain.RoleMember;
 import com.mdvns.mdvn.reqmnt.sapi.domain.UpdateReqmntInfoRequest;
 import com.mdvns.mdvn.reqmnt.sapi.domain.entity.*;
 import com.mdvns.mdvn.reqmnt.sapi.repository.*;
 import com.mdvns.mdvn.reqmnt.sapi.service.IUpdateReqmntService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -17,6 +23,8 @@ import java.util.List;
 
 @Service
 public class UpdateReqmntServiceImpl implements IUpdateReqmntService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(UpdateReqmntServiceImpl.class);
 
     @Autowired
     private ReqmntRepository reqmntRepository;
@@ -383,6 +391,7 @@ public class UpdateReqmntServiceImpl implements IUpdateReqmntService {
             List<RoleMember>  roleMembers = request.getMembers();
             List<ReqmntMember> reqmntMembers = new ArrayList<>();
             ReqmntMember reqmntMember = null;
+            List<String> addAuthList = new ArrayList<>();
             String roleId = "";
             for (int i = 0; i < roleMembers.size(); i++) {
                 roleId = roleMembers.get(i).getRoleId();
@@ -396,11 +405,17 @@ public class UpdateReqmntServiceImpl implements IUpdateReqmntService {
                     reqmntMember.setLastUpdateTime(new Timestamp(System.currentTimeMillis()));
                     reqmntMembers.add(reqmntMember);
                 }
-
+                addAuthList.addAll(roleMembers.get(i).getMemberIds());
             }
 
             int tmp = memberRepository.deleteAllByReqmntId(request.getReqmntInfo().getReqmntId());
+            StaffAuthUtil.deleteAllAuth(new RestTemplate(), request.getReqmntInfo().getProjId(), reqmntId);
             memberRepository.save(reqmntMembers);
+            //2.1 重新给成员分配权限
+            RestTemplate restTemplate = new RestTemplate();
+            StaffAuthUtil.assignAuth(restTemplate, new AssignAuthRequest(request.getReqmntInfo().getProjId(), request.getStaffId(), addAuthList, reqmntId, AuthEnum.RMEMBER.getCode()));
+            LOG.info("更新项目，给新增的leader:{},分配权限成功!", addAuthList.toString());
+
         }
 
         result=true;

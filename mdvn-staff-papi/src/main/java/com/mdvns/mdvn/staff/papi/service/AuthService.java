@@ -11,4 +11,6 @@ public interface AuthService {
     ResponseEntity<?> rtrvAuth(RtrvStaffAuthInfoRequest rtrvAuthRequest);
 
     ResponseEntity<?> removeAuth(RemoveAuthRequest removeAuthRequest);
+
+    ResponseEntity<?> removeAllAuth(String projId, String hierarchyId);
 }

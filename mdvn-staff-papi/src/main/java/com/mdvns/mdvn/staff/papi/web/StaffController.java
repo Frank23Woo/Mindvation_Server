@@ -113,6 +113,11 @@ public class StaffController {
         return this.authService.removeAuth(removeAuthRequest);
     }
 
+    @RequestMapping(value = "/removeAllAuth/{projId}/{hierarchyId}")
+    public ResponseEntity<?> removeAllAuth(@PathVariable String projId, @PathVariable String hierarchyId) {
+        return this.authService.removeAllAuth(projId, hierarchyId);
+    }
+
     /**
      * 添加员工
      * @param request

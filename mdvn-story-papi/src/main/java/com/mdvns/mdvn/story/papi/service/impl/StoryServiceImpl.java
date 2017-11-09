@@ -238,6 +238,8 @@ public class StoryServiceImpl implements IStoryService {
                     list.add(storyRoleMember);
                 }
             }
+            updateSMembersRequest.setStaffId(updateStoryDetailRequest.getCreatorId());
+            updateSMembersRequest.setProjId(updateStoryDetailRequest.getStoryInfo().getProjId());
             updateSMembersRequest.setStoryId(updateStoryDetailRequest.getStoryInfo().getStoryId());
             updateSMembersRequest.setsRoleMembers(list);
             String updateStoryMembersUrl = config.getUpdateStoryMembersUrl();
@@ -341,6 +343,10 @@ public class StoryServiceImpl implements IStoryService {
                 throw new BusinessException(ExceptionEnum.PROJECT_ATTCHURL_NOT_UPDATE);
             }
         }
+
+        //获取用户权限信息
+        List<StaffAuthInfo> staffAuthInfos = StaffAuthUtil.rtrvStaffAuthInfo(this.restTemplate, story.getProjId(), story.getStoryId(), updateStoryDetailRequest.getCreatorId());
+        updateStoryDetailResponse.setStaffAuthInfo(staffAuthInfos);
         updateStoryDetailResponse.setStoryDetail(storyDetail);
         restResponse.setResponseBody(updateStoryDetailResponse);
         restResponse.setStatusCode("200");

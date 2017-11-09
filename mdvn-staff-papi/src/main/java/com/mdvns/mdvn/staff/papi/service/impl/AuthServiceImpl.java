@@ -1,9 +1,6 @@
 package com.mdvns.mdvn.staff.papi.service.impl;
 
-import com.mdvns.mdvn.common.beans.AssignAuthRequest;
-import com.mdvns.mdvn.common.beans.RemoveAuthRequest;
-import com.mdvns.mdvn.common.beans.RtrvStaffAuthInfoRequest;
-import com.mdvns.mdvn.common.beans.StaffAuthInfo;
+import com.mdvns.mdvn.common.beans.*;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
 import com.mdvns.mdvn.staff.papi.config.WebConfig;
@@ -62,16 +59,35 @@ public class AuthServiceImpl implements AuthService {
         throw new BusinessException(ExceptionEnum.SAPI_EXCEPTION);
     }
 
+    /**
+     * 更新权限
+     * @param removeAuthRequest
+     * @return
+     */
     @Override
     public ResponseEntity<?> removeAuth(RemoveAuthRequest removeAuthRequest) {
-        String removeAuthUrl = "http://localhost:10013/mdvn-staff-sapi/rtrvAuth";
-        RtrvStaffAuthInfoRequest rtrvAuthRequest = new RtrvStaffAuthInfoRequest();
-        rtrvAuthRequest.setProjId(removeAuthRequest.getProjId());
-        rtrvAuthRequest.setStaffId(removeAuthRequest.getStaffId());
-        rtrvAuthRequest.setHierarchyId(removeAuthRequest.getHierarchyId());
-        ResponseEntity<StaffAuthInfo> responseEntity = this.restTemplate.postForEntity(removeAuthUrl, rtrvAuthRequest, StaffAuthInfo.class);
-        StaffAuthInfo staffAuthInfo = responseEntity.getBody();
+        String removeAuthUrl = "";
 
-        return null;
+        if (removeAuthRequest.getStaffAuthInfo() == null) {
+            LOG.error("删除权限时，权限信息不能为空!");
+            throw new IllegalArgumentException("staffAuth 不能为空!");
+        }
+        //根据id更新staffAuthInfo 的isDelete = 1
+        String deleteAutInfoUrl = "";
+
+        StaffAuthInfo  staffAuthInfo = this.restTemplate.getForObject(deleteAutInfoUrl, StaffAuthInfo.class);
+        if (null==staffAuthInfo) {
+            LOG.error("权限信息不存在");
+            throw new BusinessException(ExceptionEnum.AUTH_INFO_NOT_FOUND);
+        }
+
+        return ResponseEntity.ok(staffAuthInfo);
     }
+
+    public ResponseEntity<?> removeAllAuth(String projId, String hierarchyId) {
+        String removeAllAuthUrl = webConfig.getRemoveAllAuthUrl() + "/" + projId + "/" + hierarchyId;
+        this.restTemplate.delete(removeAllAuthUrl);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 }

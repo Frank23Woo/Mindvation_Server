@@ -17,3 +17,4 @@ url:
   rtrvPostionDetailUrl: http://localhost:8080/mdvn-department-sapi/findPositionById
   rtrvDepartmentDetailUrl: http://localhost:8080/mdvn-department-sapi/findDepartmentById
   findByAccounAndPasswordtUrl : http://localhost:8080/mdvn-staff-sapi/staff
+  removeAllAuthUrl: http://localhost:8080/mdvn-staff-sapi/removeAllAuth

@@ -14,8 +14,8 @@ public enum ExceptionEnum {
 	 * 1500~1600 story
 	 * 1600~1700 task
 	 * 1700~1800 dashboard
-	 * 1800 ~2000 user
-	 * 2000~2200 staff
+	 * 1800 ~2000 staff
+	 * 2000~2200 
 	 */
 	
 	//通用
@@ -34,16 +34,8 @@ public enum ExceptionEnum {
 	Model_IS_CREATED("1201", "模块已存在!"),
 	functionModel_NOT_FOUND("1202", "过程方法模块不存在!"),
 
-	//Staff
-	UPDATE_STAFF_FAIL("1900", "Fail to Update Staff Information "),
-	DELETE_STAFF_FAIL("1901", "Fail to delete staff"),
-	USER_NAME_EXISTS("1902", "User name already exists"),
-	USER_ACCT_EXISTS("1903", "User account already exists"),
 
-	//用户(User)
-	USER_NOT_FOUND("1800", "用户不存在!"),
-	ACCOUNT_OR_PASSWORD_INCORRECT("1801", "账号或密码错误!"),
-	
+
 	
 	
 
@@ -116,9 +108,19 @@ public enum ExceptionEnum {
 	MYDASHBOARD_NOT_UPDATE("1706", "调用SAPI更改个人dashboard时失败"),
 	DASHBOARD_STATUS_START_NOT_UPDATE("1707", "调用SAPI更改SprintInfo(start)时失败"),
 	DASHBOARD_STATUS_CLOSE_NOT_UPDATE("1708", "调用SAPI更改SprintInfo(CLOSE)时失败"),
-	DASHBOARD_NEXT_SPRINT_NOT_RTRV("1709", "调用SAPI获取接下来两个sprint时失败");
-
-
+	DASHBOARD_NEXT_SPRINT_NOT_RTRV("1709", "调用SAPI获取接下来两个sprint时失败"),
+	
+	//Staff
+	USER_NOT_FOUND("1800", "用户不存在!"),
+	ACCOUNT_OR_PASSWORD_INCORRECT("1801", "账号或密码错误!"),
+	AUTH_INFO_NOT_FOUND("1802","权限信息不存在"),
+	UPDATE_STAFF_FAIL("1900", "Fail to Update Staff Information "),
+	DELETE_STAFF_FAIL("1901", "Fail to delete staff"),
+	USER_NAME_EXISTS("1902", "User name already exists"),
+	USER_ACCT_EXISTS("1903", "User account already exists");
+	
+	
+	
 		String erroCode;
 		String ErrorMsg;
 		
