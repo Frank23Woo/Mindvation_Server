@@ -397,7 +397,6 @@ public class UpdateReqmntServiceImpl implements IUpdateReqmntService {
             }
 
             int tmp = memberRepository.deleteAllByReqmntId(request.getReqmntInfo().getReqmntId());
-            StaffAuthUtil.deleteAllAuth(new RestTemplate(), request.getReqmntInfo().getProjId(), reqmntId);
             memberRepository.save(reqmntMembers);
             //2.1 重新给成员分配权限
             RestTemplate restTemplate = new RestTemplate();

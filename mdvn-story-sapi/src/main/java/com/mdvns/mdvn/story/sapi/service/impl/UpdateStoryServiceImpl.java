@@ -167,7 +167,7 @@ public class UpdateStoryServiceImpl implements IUpdateStoryService {
                     //2.1 给新增的story成员分配权限
                     RestTemplate restTemplate = new RestTemplate();
                     StaffAuthUtil.assignAuth(restTemplate, new AssignAuthRequest(list.getProjId(), list.getStaffId(), addAuthList, list.getStoryId(), AuthEnum.SMEMBER.getCode()));
-                    LOG.info("更新项目，给新增的leader:{},分配权限成功!", addAuthList.toString());
+                    LOG.info("更新项目，给story：{}新增的member:{},分配权限成功:{}",list.getStoryId(), list.getStaffId(),addAuthList.toString());
                 }
             }
                 //将数据库中将要删除的成员信息修改is_deleted状态

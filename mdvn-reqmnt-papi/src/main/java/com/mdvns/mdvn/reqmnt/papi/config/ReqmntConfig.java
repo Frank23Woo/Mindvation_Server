@@ -47,6 +47,26 @@ public class ReqmntConfig {
 
     private String findSubFuncListByIdUrl;
 
+    private String rtrvCommentInfosUrl;
+
+    private String rtrvStaffInfoUrl;
+
+    public String getRtrvStaffInfoUrl() {
+        return rtrvStaffInfoUrl;
+    }
+
+    public void setRtrvStaffInfoUrl(String rtrvStaffInfoUrl) {
+        this.rtrvStaffInfoUrl = rtrvStaffInfoUrl;
+    }
+
+    public String getRtrvCommentInfosUrl() {
+        return rtrvCommentInfosUrl;
+    }
+
+    public void setRtrvCommentInfosUrl(String rtrvCommentInfosUrl) {
+        this.rtrvCommentInfosUrl = rtrvCommentInfosUrl;
+    }
+
     public String getJudgeLabelIdUrl() {
         return judgeLabelIdUrl;
     }
