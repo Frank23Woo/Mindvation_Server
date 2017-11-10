@@ -281,6 +281,8 @@ public class StoryServiceImpl implements IStoryService {
             }
             updateSMembersRequest.setStoryId(updateStoryDetailRequest.getStoryInfo().getStoryId());
             updateSMembersRequest.setsRoleMembers(list);
+            updateSMembersRequest.setStaffId(updateStoryDetailRequest.getCreatorId());
+            updateSMembersRequest.setProjId(updateStoryDetailRequest.getStoryInfo().getProjId());
             String updateStoryMembersUrl = config.getUpdateStoryMembersUrl();
             try {
                 ParameterizedTypeReference reqmntTagTypeReference = new ParameterizedTypeReference<List<StoryRoleMember>>() {
