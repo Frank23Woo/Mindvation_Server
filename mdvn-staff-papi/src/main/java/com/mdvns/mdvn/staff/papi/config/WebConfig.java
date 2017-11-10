@@ -44,6 +44,13 @@ public class WebConfig {
 
     private String removeAllAuthUrl;
 
+    /*获取拥有指定标签集中任意标签的StaffTag信息*/
+    private String rtrvStaffByTagsUrl;
+    /*查询staffId 为 指定id的tagId集合*/
+    private String rtrvTagsByStaffIdUrl;
+    /*查询name以指定字符串开头的所有用户*/
+    private String rtrvStaffByNameStartingUrl;
+
     public String getFindByAccounAndPasswordtUrl() {
         return findByAccounAndPasswordtUrl;
     }
@@ -176,5 +183,29 @@ public class WebConfig {
 
     public void setRemoveAllAuthUrl(String removeAllAuthUrl) {
         this.removeAllAuthUrl = removeAllAuthUrl;
+    }
+
+    public String getRtrvStaffByTagsUrl() {
+        return rtrvStaffByTagsUrl;
+    }
+
+    public void setRtrvStaffByTagsUrl(String rtrvStaffByTagsUrl) {
+        this.rtrvStaffByTagsUrl = rtrvStaffByTagsUrl;
+    }
+
+    public String getRtrvTagsByStaffIdUrl() {
+        return rtrvTagsByStaffIdUrl;
+    }
+
+    public void setRtrvTagsByStaffIdUrl(String rtrvTagsByStaffIdUrl) {
+        this.rtrvTagsByStaffIdUrl = rtrvTagsByStaffIdUrl;
+    }
+
+    public String getRtrvStaffByNameStartingUrl() {
+        return rtrvStaffByNameStartingUrl;
+    }
+
+    public void setRtrvStaffByNameStartingUrl(String rtrvStaffByNameStartingUrl) {
+        this.rtrvStaffByNameStartingUrl = rtrvStaffByNameStartingUrl;
     }
 }

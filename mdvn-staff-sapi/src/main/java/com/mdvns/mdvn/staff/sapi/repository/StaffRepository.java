@@ -15,6 +15,7 @@ public interface StaffRepository extends JpaRepository<Staff, Integer> {
 
     Staff findByStaffId(String staffId);
 
+    Page<Staff> findByNameStartingWith(String pswd, Pageable pageable);
 
     @Query(value="SELECT DISTINCT COUNT(*) FROM staff ", nativeQuery = true)
     Long getStaffCount();
@@ -34,5 +35,8 @@ public interface StaffRepository extends JpaRepository<Staff, Integer> {
 //    @Query(value = "select * from staff where name like %?1", nativeQuery = true)
     List<Staff> findByNameLike(String name);
 
-    List<Staff> findByNameStartingWith(String name);
+
+    List<Staff> findByNameStartingWith(String startingStr);
+
+
 }

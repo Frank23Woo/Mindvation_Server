@@ -32,4 +32,11 @@ public interface StaffService {
 
     ResponseEntity<?> findByAccountAndPassword(String account, String password);
 
+    //获取拥有指定标签集中任意标签的所有StaffTag
+    ResponseEntity<?> getStaffByTags(List<String> tags);
+
+    //查询name以指定字符串开始的所有Staff
+    ResponseEntity<?> findByNameStartingWith(String startingStr);
+//    查询staffId为指定id的所有tagId集合
+    List<String> rtrvTagsByStaffId(String staffId);
 }

@@ -2,7 +2,6 @@ url:
   rtrvStaffListUrl: http://localhost:10013/mdvn-staff-sapi/staffList
   rtrvStaffListByStaffIdListUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffListByStaffIdList
   rtrvStaffInfoUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffInfo
-  rtrvStaffListByNameUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffListByName
 
   assignAuthUrl : http://localhost:10013/mdvn-staff-sapi/staffAuth
   rtrvAuthUrl : http://localhost:10013/mdvn-staff-sapi/rtrvAuth
@@ -21,6 +20,11 @@ url:
 
   removeAllAuthUrl: http://localhost:10013/mdvn-staff-sapi/removeAllAuth
 
-
+#  获取拥有指定标签集中任意标签的StaffTag信息
+  rtrvStaffByTagsUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffByTags
+#查询staffId 为 指定id的tagId集合
+  rtrvTagsByStaffIdUrl: http://localhost:10013/mdvn-staff-sapi/rtrvTagsByStaffId
+#查询name以指定字符串开头的所有用户
+  rtrvStaffByNameStartingUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffByNameStarting
 
 

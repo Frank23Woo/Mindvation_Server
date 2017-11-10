@@ -61,7 +61,7 @@ public class WebController {
      * @param request
      * @return
      * @throws SQLException
-     * @throws BusinessException
+     * @throws
      */
     @PostMapping(value = "/rtrvStaffListByName")
     public ResponseEntity<?> rtrvStaffListByName(@RequestBody RtrvStaffListByNameRequest request) throws SQLException, BusinessException {
@@ -103,18 +103,32 @@ public class WebController {
         return this.authService.assignAuth(assignAuthRequest);
     }
 
+    /**
+     * 获取员工权限
+     * @param rtrvAuthRequest
+     * @return
+     */
     @PostMapping(value = "/rtrvAuth")
     public ResponseEntity<?> assignAuth(@RequestBody RtrvStaffAuthInfoRequest rtrvAuthRequest) {
 
         return this.authService.rtrvAuth(rtrvAuthRequest);
     }
 
+    /**
+     * 添加员工
+     * @param request
+     * @return
+     */
     @PostMapping(value = "/createStaff")
     public CreateStaffResponse createStaff(@RequestBody CreateStaffRequest request) {
         return this.staffService.createStaff(request);
     }
 
-
+    /**
+     *查询所有StaffID为指定id的StaffTag对象
+     * @param staffId
+     * @return
+     */
     @PostMapping(value = "/rtrvStaffTagList")
     public List<StaffTag> rtrvStaffTagList(@RequestBody String staffId) {
         return this.staffService.rtrvStaffTagList(staffId);
@@ -131,8 +145,46 @@ public class WebController {
         return this.staffService.deleteStaff(staffId);
     }
 
+    /**
+     * 取消指定项目的指定模块所有的权限
+     * @param projId
+     * @param hierarchyId
+     * @return
+     */
     @RequestMapping(value = "/removeAllAuth/{projId}/{hierarchyId}")
     public ResponseEntity<?> removeAllAuth(@PathVariable String projId, @PathVariable String hierarchyId) {
         return this.authService.removeAllAuth(projId, hierarchyId);
     }
+
+    /**
+     * 获取拥有指定标签集中任意标签的所有StaffTag
+     * @param tags
+     * @return
+     */
+    @PostMapping(value = "/rtrvStaffByTags")
+    public ResponseEntity<?> getStaffByTags(@RequestBody List<String> tags) {
+        return this.staffService.getStaffByTags(tags);
+    }
+
+    /**
+     * 查询name以指定字符串开始的所有Staff
+     * @param startingStr
+     * @return
+     */
+    @PostMapping(value = "/rtrvStaffByNameStarting/{startingStr}")
+    public ResponseEntity<?> findByNameStartingWith(@PathVariable String startingStr) {
+
+        return this.staffService.findByNameStartingWith(startingStr);
+    }
+
+    /**
+     * 查询staffId为指定id的所有tagId集合
+     * @param staffId
+     * @return
+     */
+    @PostMapping(value = "/rtrvTagsByStaffId/{staffId}")
+    public List<String> rtrvTagsByStaffId(@PathVariable String staffId) {
+        return this.staffService.rtrvTagsByStaffId(staffId);
+    }
 }
+

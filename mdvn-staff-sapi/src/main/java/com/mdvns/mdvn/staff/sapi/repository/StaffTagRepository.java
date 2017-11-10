@@ -12,4 +12,6 @@ public interface StaffTagRepository extends JpaRepository<StaffTag, Integer> {
 
     List<StaffTag> findByTagIdIn(List<String> tags);
 
+    @Query("select st.tagId from StaffTag st where st.staffId =?1")
+    List<String> findTagIdByStaffId(String staffId);
 }

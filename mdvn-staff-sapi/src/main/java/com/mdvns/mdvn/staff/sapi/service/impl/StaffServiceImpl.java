@@ -21,7 +21,8 @@ import org.springframework.util.StringUtils;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class StaffServiceImpl implements StaffService {
@@ -41,7 +42,6 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * 获取全部模块
-     *
      * @return
      */
     @Override
@@ -71,7 +71,6 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * 通过staffIdList获取staff对象列表
-     *
      * @param request
      * @return
      */
@@ -92,7 +91,6 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * 通过staffId获取单条staff对象
-     *
      * @param staffId
      * @return
      */
@@ -196,11 +194,7 @@ public class StaffServiceImpl implements StaffService {
                 staffTagRepository.save(addStaffTag);
                 flag = true;
             }
-
-
         }
-
-
         return flag;
     }
 
@@ -217,17 +211,13 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * 根据name模糊查询Staff，当name==null, 通过tag查询staff
-     *
      * @param request
      * @return
      * @throws SQLException
      */
     @Override
     public ResponseEntity<?> rtrvStaffListByStaffName(RtrvStaffListByNameRequest request) throws SQLException {
-        RtrvStaffListByNameResponse rtrvStaffListByNameResponse = new RtrvStaffListByNameResponse();
         String sortBy = (request.getSortBy() == null) ? "staffId" : request.getSortBy();
-        //声明方法返回Staff集合变量
-        List<Staff> result;
         //姓名
         String name = request.getName();
         //如果name没有值
@@ -236,215 +226,28 @@ public class StaffServiceImpl implements StaffService {
             if (tags == null) {
                 LOG.error("标签参数为空:{}", tags);
             }
-            //1.查出拥有tags中任意一种标签的所有人
-            List<StaffTag> staffList = this.staffTagRepository.findByTagIdIn(tags);
-            //2.对staffId去重
-            List<String> idList = new ArrayList<>(distinctStaffId(staffList));
-            //3.根据每个人的标签匹配情况，计算标签匹配分值，并按分值返回staff列表
-            result = rtrvStaffListByTags(staffList, tags, idList);
-
-            rtrvStaffListByNameResponse.setStaffs(result);
-            rtrvStaffListByNameResponse.setTotalNumber((long) result.size());
-        } else {
-            //第几页
-            Integer page = request.getPage();
-            //需获取的数据条数
-            Integer pageSize = request.getPageSize();
-            page = (page == null || page < Integer.valueOf(ConstantEnum.ONE.getValue())) ? Integer.valueOf(ConstantEnum.ONE.getValue()) : page;
-            pageSize = (pageSize == null || pageSize < Integer.valueOf(ConstantEnum.ONE.getValue())) ? Integer.valueOf(ConstantEnum.TEN.getValue()) : pageSize;
-            //构建分页参数
-            PageRequest pageable = new PageRequest(page, pageSize);
-            //分页对象
-            Page<Staff> staffPage;
-            LOG.info("name：{}", name);
-            List<Staff> staffList = this.staffRepository.findByNameStartingWith(name);
-
-//            LOG.info("获取到的Staff:{}", list.size());
-            rtrvStaffListByNameResponse.setStaffs(staffList);
-            rtrvStaffListByNameResponse.setTotalNumber((long) staffList.size());
+            return null;
         }
+        //第几页
+        Integer page = request.getPage();
+        //需获取的数据条数
+        Integer pageSize = request.getPageSize();
+        page = (page == null || page < Integer.valueOf(ConstantEnum.ONE.getValue())) ? Integer.valueOf(ConstantEnum.ONE.getValue()) : page;
+        pageSize = (pageSize == null || pageSize < Integer.valueOf(ConstantEnum.ONE.getValue())) ? Integer.valueOf(ConstantEnum.TEN.getValue()) : pageSize;
+        //构建分页参数
+        PageRequest pageable = new PageRequest(page, pageSize);
+        //分页对象
+        Page<Staff> staffPage;
+        LOG.info("查询name以：{}开头的员工", name);
+        staffPage = this.staffRepository.findByNameStartingWith(name, pageable);
 
+        return ResponseEntity.ok(staffPage);
 
-        return ResponseEntity.ok(rtrvStaffListByNameResponse);
     }
 
-    /**
-     * 按标签推荐staff，对标签进行斐波那契数列赋值，最后按分值倒叙排列
-     * @param stList tagId在tags中的所有StaffTag对象；当StaffTag具有多个tag时，会有相同的staffId的多个StaffTag存在
-     * @param tags 按照标签查Staff的参数
-     * @param idList tagId在tags中的所有StaffTag不重复的staffId集合
-     *  计算过程：
-     *   1. 遍历idList， 并以每一个不重复的staffId 实例化一个StaffTagScore对象
-     *   2.
-     * @return
-     */
-    private List<Staff> rtrvStaffListByTags(List<StaffTag> stList, List<String> tags, List<String> idList) {
-        List<StaffTagScore> stsList = new ArrayList<StaffTagScore>();
-        //1. 遍历idList， 并以每一个不重复的staffId 实例化一个StaffTagScore对象
-        for (String id : idList) {
-            StaffTagScore sts = new StaffTagScore();
-            sts.setStaffId(id);
-            sts.setTagScore(0D);
-            //2.遍历stList
-            for (int i = 0; i < stList.size(); i++) {
-                StaffTag st = stList.get(i);
-
-                if (id.equals(st.getStaffId())) {
-                    sts = countTagScore(st,tags,sts);
-
-                    LOG.info("第{}个staff, 标签score: {}", i, sts.getTagScore());
-                }
-            }
-            stsList.add(sts);
-        }
-        LOG.info("排序前的StaffTagScore：{}", stsList.toString());
-        //对StaffTagScore 按照tagScore排序，从高到底
-        Comparator<StaffTagScore> comparator = (h1, h2) -> h1.getTagScore().compareTo(h2.getTagScore());
-        stsList.sort(comparator.reversed());
-        LOG.info("排序后的StaffTagScore：{}", stsList.toString());
-        //取tag分值从高到底前10个staff数据
-        return topTenAtMost(stsList);
-    }
-
-    /**
-     *最多取前十条数据
-     * @param stsList
-     * @return
-     */
-    private List<Staff> topTenAtMost(List<StaffTagScore> stsList) {
-        List<Staff> sList = new ArrayList<Staff>();
-        Staff staff;
-        int m = 0;
-        m = (stsList.size() > Integer.valueOf(ConstantEnum.TEN.getValue()))?Integer.valueOf(ConstantEnum.TEN.getValue()):stsList.size();
-        if (stsList.isEmpty()) {
-            return new ArrayList<>();
-        }
-        for (int i = 0; i < m; i++) {
-            LOG.info("staffId：{}", stsList.get(i).getStaffId());
-            staff = this.staffRepository.findByStaffId(stsList.get(i).getStaffId());
-            sList.add(staff);
-        }
-        return sList;
-    }
-
-    /**
-     * 根据斐波那契梳理计算每个tag对应的分值
-     * @param st
-     * @param tags
-     * @param sts
-     * @return
-     */
-    private StaffTagScore countTagScore(StaffTag st, List<String> tags, StaffTagScore sts) {
-
-        for (int j = 0; j < tags.size(); j++) {
-            LOG.info("j的值是：{}", j);
-            LOG.info("第{}个staff, 标签score: {}",st.getStaffId(), sts.getTagScore());
-            if (st.getTagId().equals(tags.get(j))) {
-                List<String> tagList = (sts.getTagId() == null) ? new ArrayList<String>() : sts.getTagId();
-                tagList.add(st.getTagId());
-                Collections.sort(tagList);
-                sts.setTagId(tagList);
-                Double tagScore = sts.getTagScore();
-                sts.setTagScore(tagScore + Math.pow(0.5, j + 1));
-            }
-        }
-        return sts;
-    }
-
-/*
-    private List<StaffTagScore> itStaffList(Set<String> staffIdList, List<StaffTag> staffList, List<String> tags) {
-        List<String> idList = new ArrayList<String>(staffIdList);
-        List<StaffTagScore> staffTagScores = gernerateTagScoreList(tags);
-        for (int i = 0; i < idList.size(); i++) {
-            String staffId = idList.get(i);
-
-            for (int j = 0; j < staffList.size(); j++) {
-                StaffTag st = staffList.get(j);
-                if (staffId.equals(st.getStaffId())) {
-                    for (int k = 0; k < staffTagScores.size(); k++) {
-                        //
-                        StaffTagScore staffTagScore = staffTagScores.get(k);
-                        if (st.getTagId().equals(staffTagScores.get(k).getTagId())) {
-                            staffTagScore.setStaffId(staffId);
-
-                        }
-                    }
-
-                }
-            }
-        }
-        return staffTagScores;
-
-    }
-*/
-
-    /**
-     * StaffId 去重
-     *
-     * @param staffList
-     * @return
-     */
-    private Set<String> distinctStaffId(List<StaffTag> staffList) {
-        Set<String> staffSet = new HashSet<String>();
-        for (StaffTag st : staffList) {
-            staffSet.add(st.getStaffId());
-        }
-
-        return staffSet;
-    }
-
-
-   /* public List<StaffTagScore> gernerateTagScoreList(List<String> tagIds) {
-        StaffTagScore staffTagScore = null;
-        List<StaffTagScore> list = new ArrayList<>();
-        for (int i = 0; i < tagIds.size(); i++) {
-            staffTagScore = new StaffTagScore();
-            staffTagScore.setTagId(tagIds.get(i));
-            staffTagScore.setTagScore(Math.pow(0.5, i + 1));
-            list.add(staffTagScore);
-        }
-        return list;
-
-    }*/
-/*
-    private List<StaffTagScore> getStaff(List<StaffTag> staffList, List<String> tags) {
-
-        *//**
-     * 1. + 0.5
-     * 2.+1/4
-     *//*
-        List<StaffTagScore> stcList = new ArrayList<StaffTagScore>();
-        for (int i = 0; i < staffList.size(); i++) {
-
-            StaffTag sTag = staffList.get(i);
-            StaffTagScore stMpper = new StaffTagScore(sTag.getTagId(), sTag.getStaffId(), 0D);
-
-            for (int j = 0; j < tags.size(); j++) {
-                LOG.info("j的值是：{}", j);
-                LOG.info("第{}个staff, 标签score: {}",i, stMpper.getTagScore());
-                if (sTag.getTagId().equals(tags.get(j))) {
-
-                    stMpper.setTagScore(stMpper.getTagScore() + Math.pow(0.5,  j+1));
-                }
-                stcList.add(stMpper);
-            }
-            LOG.info("第{}个staff, 标签score: {}",i, stMpper.getTagScore());
-        }
-        LOG.info("排序前的staff：{}",stcList.toString());
-        //List排序
-        Collections.sort(stcList, new Comparator<StaffTagScore>() {
-
-            public int compare(StaffTagScore h1, StaffTagScore h2) {
-                return h1.getTagScore().compareTo(h2.getTagScore());
-            }
-        });
-        LOG.info("排序后的staff：{}",stcList.toString());
-        return stcList;
-    }*/
 
     /**
      * 根据指定account查询staff
-     *
      * @param account
      * @return
      */
@@ -452,6 +255,42 @@ public class StaffServiceImpl implements StaffService {
     public ResponseEntity<?> findByAccountAndPassword(String account, String password) {
         Staff staff = this.staffRepository.findByAccountAndPassword(account, password);
         return ResponseEntity.ok(staff);
+    }
+
+    /**
+     * 查找拥有标签集中最多标签的StaffTag
+     * @param tags
+     * @return List<StaffTag>
+     */
+    @Override
+    public ResponseEntity<?> getStaffByTags(List<String> tags) {
+        List<StaffTag> staffTags = this.staffTagRepository.findByTagIdIn(tags);
+        LOG.info("拥有标签集中任意标签的Staff有：{}个", staffTags.size());
+        return ResponseEntity.ok(staffTags);
+    }
+
+    /**
+     * 查询name以指定字符串开头的所有Staff
+     * @param startingStr
+     * @return
+     */
+    @Override
+    public ResponseEntity<?> findByNameStartingWith(String startingStr) {
+
+        List<Staff> staffPage = this.staffRepository.findByNameStartingWith(startingStr);
+        LOG.info("查询name以指定字符串:{}开头的所有Staff...", startingStr);
+        return ResponseEntity.ok(staffPage);
+    }
+
+    /**
+     * 查询staffId为指定id的所有tagId集合
+     * @param staffId
+     * @return
+     */
+    @Override
+    public List<String> rtrvTagsByStaffId(String staffId) {
+
+        return this.staffTagRepository.findTagIdByStaffId(staffId);
     }
 
 

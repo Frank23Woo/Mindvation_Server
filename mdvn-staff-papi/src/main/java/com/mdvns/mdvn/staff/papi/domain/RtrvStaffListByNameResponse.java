@@ -7,18 +7,18 @@ import java.util.List;
 @Component
 public class RtrvStaffListByNameResponse {
 
-    private List<Staff> staffs;
+    private List<StaffMatched> staffMatched;
 
     private Long totalNumber;
 
     private List<String> remarks;
 
-    public List<Staff> getStaffs() {
-        return staffs;
+    public List<StaffMatched> getStaffMatched() {
+        return staffMatched;
     }
 
-    public void setStaffs(List<Staff> staffs) {
-        this.staffs = staffs;
+    public void setStaffMatched(List<StaffMatched> staffMatched) {
+        this.staffMatched = staffMatched;
     }
 
     public Long getTotalNumber() {
