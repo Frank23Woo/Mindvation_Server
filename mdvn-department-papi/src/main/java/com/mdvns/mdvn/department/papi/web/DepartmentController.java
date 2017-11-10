@@ -41,7 +41,7 @@ public class DepartmentController {
     }
 
     @PostMapping(value = "/getAllDepartment")
-    private RestResponse<List<DepartmentDetail>> queryAll() {
+    private RestResponse<List<DepartmentDetail>> queryAll(){
         return departmentService.getAllDepartment();
     }
 

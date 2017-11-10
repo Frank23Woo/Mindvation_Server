@@ -15,8 +15,8 @@ import java.util.Properties;
 public class DeployUtil {
     public static void main(String[] args) {
 
-//        makeWarPackage();
-        localhostIntegration();
+        makeWarPackage();
+//        localhostIntegration();
     }
 
     private static void updateProperties(String config, List<String> packageList){
