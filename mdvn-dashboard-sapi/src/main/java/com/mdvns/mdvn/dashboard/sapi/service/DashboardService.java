@@ -18,7 +18,7 @@ public interface DashboardService {
 //    ResponseEntity<?> rtrvSprint(RtrvSprintRequest request) throws SQLException;
 
     /*根据projId查询dashboard对象(判断是不是新建)*/
-    List<SprintInfo> findDashboardInfoById(String projId);
+    List<SprintInfo> findDashboardInfoById(RtrvAllStoryListRequest request);
 
     /*根据projId和modelId查询dashboard对象(更改时查询)*/
     List<SprintInfo> findDashboardInfoByIds(RtrvDashboardRequest request);

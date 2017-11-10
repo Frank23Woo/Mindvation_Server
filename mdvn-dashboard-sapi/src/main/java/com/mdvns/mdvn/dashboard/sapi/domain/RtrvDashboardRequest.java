@@ -6,6 +6,15 @@ import org.springframework.stereotype.Component;
 public class RtrvDashboardRequest {
     private String projId;
     private String modleId;
+    private String creatorId;
+
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
+    }
 
     public String getProjId() {
         return projId;

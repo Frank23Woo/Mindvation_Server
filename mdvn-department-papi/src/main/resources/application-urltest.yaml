@@ -19,11 +19,11 @@ config:
   rtrvStaffInfoUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffInfo
 
 # tag sapi urls
-  rtrvTagsByIdsUrl: http://localhost:8080/mdvn-tag-s/tags/rtrvTags
+  rtrvTagsByIdsUrl: http://localhost:8080/mdvn-tag-sapi/tags/rtrvTags
 
 # model sapi urls
-  rtrvFuncLabelUrl: http://localhost:8080/mdvn-model-s/models/findFuncById
-  rtrvModelRoleByModelIdUrl: http://localhost:8080/mdvn-model-s/models/findById
+  rtrvFuncLabelUrl: http://localhost:8080/mdvn-model-sapi/models/findFuncById
+  rtrvModelRoleByModelIdUrl: http://localhost:8080/mdvn-model-sapi/models/findById
 
 # task sapi urls
   saveTaskUrl: http://localhost:8080/mdvn-task-sapi/saveTask

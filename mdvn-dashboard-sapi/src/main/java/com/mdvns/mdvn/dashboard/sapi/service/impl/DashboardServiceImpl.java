@@ -38,9 +38,9 @@ public class DashboardServiceImpl implements DashboardService {
 
 
     @Override
-    public List<SprintInfo> findDashboardInfoById(String projId) {
+    public List<SprintInfo> findDashboardInfoById(RtrvAllStoryListRequest request) {
         LOG.info("开始执行{} findDashboardInfoById()方法.", this.CLASS);
-        List<SprintInfo> dashboards = this.sprintInfoRepository.findBySubjectIdAndIsDeletedAndSprintIndex(projId, 0, 0);
+        List<SprintInfo> dashboards = this.sprintInfoRepository.findBySubjectIdAndCreatorIdAndIsDeletedAndSprintIndexAndStatusIsNot(request.getProjId(),request.getCreatorId(),0, 0,"close");
         LOG.info("执行结束{} findDashboardInfoById()方法.", this.CLASS);
         return dashboards;
     }
@@ -48,7 +48,7 @@ public class DashboardServiceImpl implements DashboardService {
     @Override
     public List<SprintInfo> findDashboardInfoByIds(RtrvDashboardRequest request) {
         LOG.info("开始执行{} findDashboardInfoByIds()方法.", this.CLASS);
-        List<SprintInfo> dashboards = this.sprintInfoRepository.findBySubjectIdAndModelIdAndIsDeleted(request.getProjId(), request.getModleId(), 0);
+        List<SprintInfo> dashboards = this.sprintInfoRepository.findBySubjectIdAndModelIdAndCreatorIdAndIsDeletedAndStatusIsNot(request.getProjId(), request.getModleId(),request.getCreatorId(), 0,"close");
         LOG.info("执行结束{} findDashboardInfoByIds()方法.", this.CLASS);
         return dashboards;
     }
@@ -120,7 +120,8 @@ public class DashboardServiceImpl implements DashboardService {
     public SprintInfo addStory(AddStoryRequest request) {
         String subjectId = request.getProjId();
         String storyId = request.getStoryId();
-        sprintInfo = this.sprintInfoRepository.findBySubjectIdAndNameAndIsDeleted(subjectId, "Product Backlogs", 0);
+
+        sprintInfo = this.sprintInfoRepository.findBySubjectIdAndCreatorIdAndNameAndIsDeleted(subjectId, request.getCreatorId(),"Product Backlogs", 0);
         if (sprintInfo != null){
             String storyIds = sprintInfo.getItemIds();
             storyIds = storyIds + "," + storyId;
@@ -185,8 +186,9 @@ public class DashboardServiceImpl implements DashboardService {
         sprintInfo = this.sprintInfoRepository.findOne(uuId);
         Integer sprintIndex = sprintInfo.getSprintIndex();
         String subjectId = sprintInfo.getSubjectId();
-        SprintInfo sInfo = this.sprintInfoRepository.findBySubjectIdAndSprintIndex(subjectId,sprintIndex+1);
-        SprintInfo spInfo = this.sprintInfoRepository.findBySubjectIdAndSprintIndex(subjectId,sprintIndex+2);
+        String creatorId = sprintInfo.getCreatorId();
+        SprintInfo sInfo = this.sprintInfoRepository.findBySubjectIdAndCreatorIdAndSprintIndex(subjectId,creatorId,sprintIndex+1);
+        SprintInfo spInfo = this.sprintInfoRepository.findBySubjectIdAndCreatorIdAndSprintIndex(subjectId,creatorId,sprintIndex+2);
         sprintInfos.add(sInfo);
         if (spInfo != null) {
             sprintInfos.add(spInfo);
