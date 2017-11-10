@@ -447,7 +447,7 @@ public class ReqmntServiceImpl implements IReqmntService {
                 ParameterizedTypeReference tReference = new ParameterizedTypeReference<List<CommentDetail>>() {
                 };
                 List<CommentDetail> commentDetails = FetchListUtil.fetch(restTemplate, rtrvCommentInfosUrl, rtrvCommentInfosRequest, tReference);
-                for (int j = 0; j <commentDetails.size() ; j++) {
+                for (int j = 0; j < commentDetails.size(); j++) {
                     //创建者返回对象
                     String staffUrl = config.getRtrvStaffInfoUrl();
                     String creatorId = commentDetails.get(j).getComment().getCreatorId();
@@ -513,6 +513,11 @@ public class ReqmntServiceImpl implements IReqmntService {
         List<StaffAuthInfo> staffAuthInfos = StaffAuthUtil.rtrvStaffAuthInfo(this.restTemplate, requirementInfo.getProjId(), requirementInfo.getReqmntId(), request.getStaffId());
         rtrvReqmntInfoResponse.setStaffAuthInfo(staffAuthInfos);
         LOG.info("获取需求中用户权限成功" + "projId:" + requirementInfo.getProjId() + "reqmntId:" + requirementInfo.getReqmntId() + "staffId:" + request.getStaffId());
+        if (staffAuthInfos != null) {
+            for (int i = 0; i < staffAuthInfos.size(); i++) {
+                LOG.info("用户在需求中的权限为：{}", staffAuthInfos.get(i).toString());
+            }
+        }
         restResponse.setResponseBody(rtrvReqmntInfoResponse);
 
         return restResponse;

@@ -80,6 +80,7 @@ public class StaffAuthUtil {
 	 */
 	public static void deleteAllAuth(RestTemplate restTemplate, String projId, String hierarchyId) {
 		String deleteAllAuthUrl = "http://localhost:10013/mdvn-staff-sapi/staff/removeAllAuth"+"/"+projId+"/"+hierarchyId;
+		LOG.info("取消权限的Url为："+deleteAllAuthUrl);
 		restTemplate.delete(deleteAllAuthUrl);
 		LOG.info("全部删除项目{}的，{}层的所有权限成功!", projId, hierarchyId);
 	}

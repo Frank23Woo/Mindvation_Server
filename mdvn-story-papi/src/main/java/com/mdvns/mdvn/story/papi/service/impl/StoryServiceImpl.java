@@ -173,7 +173,7 @@ public class StoryServiceImpl implements IStoryService {
                 assignees.addAll(members.get(i).getMemberIds());
             }
             StaffAuthUtil.assignAuth(this.restTemplate, new AssignAuthRequest(createStoryRequest.getStoryInfo().getProjId(), createStoryRequest.getCreatorId(), assignees, storyId, AuthEnum.SMEMBER.getCode()));
-            LOG.info("新建Story：{}并给成员分配权限成功!", createStoryRequest.getStoryInfo().getStoryId());
+            LOG.info("新建Story：{}并给成员分配权限成功!", storyId);
 
         }
         //3.保存用户故事标签信息
@@ -394,6 +394,14 @@ public class StoryServiceImpl implements IStoryService {
                 throw new BusinessException(ExceptionEnum.PROJECT_ATTCHURL_NOT_UPDATE);
             }
         }
+        //projId
+        String projId = updateStoryDetailRequest.getStoryInfo().getProjId();
+        //storyId
+        String storyId = updateStoryDetailRequest.getStoryInfo().getStoryId();
+        //staffId
+        String staffId = updateStoryDetailRequest.getCreatorId();
+        List<StaffAuthInfo> staffAuthInfos = StaffAuthUtil.rtrvStaffAuthInfo(this.restTemplate, projId, storyId, staffId);
+        updateStoryDetailResponse.setStaffAuthInfo(staffAuthInfos);
         updateStoryDetailResponse.setStoryDetail(storyDetail);
         restResponse.setResponseBody(updateStoryDetailResponse);
         restResponse.setStatusCode("200");
