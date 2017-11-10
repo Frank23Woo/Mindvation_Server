@@ -164,7 +164,7 @@ public class UpdateStoryServiceImpl implements IUpdateStoryService {
                             this.jdbcTemplate.update(sql);
                         }
                     }
-                    //2.1 给新增的项目leader分配权限
+                    //2.1 给新增的story成员分配权限
                     RestTemplate restTemplate = new RestTemplate();
                     StaffAuthUtil.assignAuth(restTemplate, new AssignAuthRequest(list.getProjId(), list.getStaffId(), addAuthList, list.getStoryId(), AuthEnum.SMEMBER.getCode()));
                     LOG.info("更新项目，给story：{}新增的member:{},分配权限成功:{}",list.getStoryId(), list.getStaffId(),addAuthList.toString());
