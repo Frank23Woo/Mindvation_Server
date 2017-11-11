@@ -443,7 +443,12 @@ public class StaffServiceImpl implements StaffService {
      * @return
      */
     private StaffTagScore countTagScore(StaffTag st, List<String> tags, StaffTagScore sts) {
-
+        //如果tags只有一个元素
+        if (tags.size() == Integer.valueOf(ConstantEnum.ONE.getValue())) {
+            sts.setTagId(tags);
+            sts.setTagScore(Double.valueOf(ConstantEnum.ONE.getValue()));
+            return sts;
+        }
         for (int j = 0; j < tags.size(); j++) {
             LOG.info("j的值是：{}", j);
             LOG.info("第{}个staff, 标签score: {}", st.getStaffId(), sts.getTagScore());
