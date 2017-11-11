@@ -50,37 +50,51 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
     public ResponseEntity<?> rtrvReqmntList(RtrvReqmntListRequest request) throws SQLException {
         RtrvReqmntListResponse rtrvReqmntListResponse = new RtrvReqmntListResponse();
 
-        if(request.getPage()!=null && request.getPageSize() !=null ){
-            if(request.getPage() < 1 ||request.getPageSize() < 1){
+        if (request.getPage() != null && request.getPageSize() != null) {
+            if (request.getPage() < 1 || request.getPageSize() < 1) {
                 throw new IllegalArgumentException("Illegal Arguments for Pagination");
             }
 
         }
 
-        if(request.getPage()==null || request.getPageSize() ==null){
-            List<RequirementInfo> list = this.reqmntRepository.findAllByProjIdAndIsDeletedOrderByUuIdAsc(request.getProjId(),0);
+        if (request.getPage() == null || request.getPageSize() == null) {
+            List<RequirementInfo> list = this.reqmntRepository.findAllByProjIdAndIsDeletedOrderByUuIdAsc(request.getProjId(), 0);
+            //计算storyPoint
+            for (int i = 0; i < list.size(); i++) {
+                String reqmntId = list.get(i).getReqmntId();
+                Float sumStoryPoint = this.reqmntRepository.rtrvReqmntStoryPointCount(reqmntId);
+                list.get(i).setTotalStoryPoint(sumStoryPoint);
+            }
+            this.reqmntRepository.save(list);
             rtrvReqmntListResponse.setRequirementInfos(list);
             rtrvReqmntListResponse.setTotalElements(Long.valueOf(list.size()));
             return ResponseEntity.ok(rtrvReqmntListResponse);
-        }else{
+        } else {
             Integer page = request.getPage();
             Integer pageSize = request.getPageSize();
             List<String> sortBy = request.getSortBy();
             Page<RequirementInfo> requirementInfos = null;
             PageRequest pageable = null;
 
-            if(sortBy==null){
-                 pageable = new PageRequest(page-1, pageSize);
-            }else{
+            if (sortBy == null) {
+                pageable = new PageRequest(page - 1, pageSize);
+            } else {
                 Sort.Order order = null;
                 for (int i = 0; i < sortBy.size(); i++) {
-                    order = new Sort.Order(Sort.Direction.ASC,sortBy.get(i));
+                    order = new Sort.Order(Sort.Direction.ASC, sortBy.get(i));
                 }
                 Sort sort = new Sort(order);
-                 pageable = new PageRequest(page-1, pageSize,sort);
+                pageable = new PageRequest(page - 1, pageSize, sort);
             }
 
-            requirementInfos = this.reqmntRepository.findAllByProjIdAndIsDeleted(request.getProjId(),0,pageable);
+            requirementInfos = this.reqmntRepository.findAllByProjIdAndIsDeleted(request.getProjId(), 0, pageable);
+            //计算storyPoint
+            for (int i = 0; i < requirementInfos.getContent().size(); i++) {
+                String reqmntId = requirementInfos.getContent().get(i).getReqmntId();
+                Float sumStoryPoint = this.reqmntRepository.rtrvReqmntStoryPointCount(reqmntId);
+                requirementInfos.getContent().get(i).setTotalStoryPoint(sumStoryPoint);
+            }
+            this.reqmntRepository.save(requirementInfos);
             rtrvReqmntListResponse.setRequirementInfos(requirementInfos.getContent());
             rtrvReqmntListResponse.setTotalElements(requirementInfos.getTotalElements());
 
@@ -103,7 +117,7 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
         RequirementInfo requirementInfo = new RequirementInfo();
         //先保存项目基本信息
         if (StringUtils.isEmpty(createReqmntRequest) || StringUtils.isEmpty(createReqmntRequest.getCreatorId()) || StringUtils.isEmpty(createReqmntRequest.getSummary()) || StringUtils.isEmpty(createReqmntRequest.getDescription()) || StringUtils.isEmpty(createReqmntRequest.getModelId())
- || StringUtils.isEmpty(createReqmntRequest.getProjId())) {
+                || StringUtils.isEmpty(createReqmntRequest.getProjId())) {
             throw new NullPointerException("Mandatory fields should not be empty for createReqmntRequest");
         }
         LOG.info("。。。。。保存需求开始。。。。。");
@@ -127,7 +141,7 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
         requirementInfo.setStatus("new");
         requirementInfo.setRagStatus("G");
         requirementInfo.setProgress((double) 0);
-        requirementInfo.setTotalStoryPoint(0);
+        requirementInfo.setTotalStoryPoint((float) 0);
         requirementInfo.setIsDeleted(0);
         requirementInfo.setFunctionLabelId(createReqmntRequest.getFunctionLabel().getLabelId());
 
@@ -188,7 +202,7 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
         List<ReqmntCheckList> pChecklists = reqmntCheckListRepository.save(request.getCheckLists());
 
         for (int i = 0; i < pChecklists.size(); i++) {
-            pChecklists.get(i).setCheckListId("RC"+pChecklists.get(i).getUuId());
+            pChecklists.get(i).setCheckListId("RC" + pChecklists.get(i).getUuId());
         }
         return reqmntCheckListRepository.save(request.getCheckLists());
     }
@@ -217,7 +231,6 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
 //            Staff creator = this.staffRepository.findByStaffId(creatorId);
 //            Staff assigner = this.staffRepository.findByStaffId(assignerId);
 //            Staff executor = this.staffRepository.findByStaffId(executorId);
-
 
 
 //            if (null == creator) {

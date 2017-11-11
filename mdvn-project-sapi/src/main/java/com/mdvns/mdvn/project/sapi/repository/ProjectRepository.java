@@ -26,4 +26,14 @@ public interface ProjectRepository extends JpaRepository<Project, Integer>{
 
     @Query(value="SELECT * from project WHERE proj_id=?1", nativeQuery = true)
     Project rtrvProjBaseInfo(String projId);
+
+    @Query(value = "SELECT SUM(story_point) FROM story WHERE proj_id = ?1 AND is_deleted = 0 ", nativeQuery = true)
+    Float rtrvProjStoryPointCount(String projId);
+
+    @Query(value = "SELECT COUNT(*) FROM story WHERE  proj_id = ?1 AND is_deleted = 0 ", nativeQuery = true)
+    Integer rtrvProjStoryQty(String projId);
+
+    @Query(value = "SELECT COUNT(*) FROM checklist_proj WHERE  proj_id = ?1 AND is_deleted = 0 ", nativeQuery = true)
+    Integer rtrvChecklistQty(String projId);
+
 }

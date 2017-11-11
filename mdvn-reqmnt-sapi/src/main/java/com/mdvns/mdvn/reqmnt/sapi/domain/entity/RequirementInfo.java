@@ -44,7 +44,7 @@ public class RequirementInfo {
     /* requirement progress*/
     private Double progress;
     /* total amount of story point and CR story point*/
-    private Integer totalStoryPoint;
+    private Float totalStoryPoint;
     //备注
     private String remarks;
     //是否被删除
@@ -156,14 +156,13 @@ public class RequirementInfo {
         this.progress = progress;
     }
 
-    public Integer getTotalStoryPoint() {
+    public Float getTotalStoryPoint() {
         return totalStoryPoint;
     }
 
-    public void setTotalStoryPoint(Integer totalStoryPoint) {
+    public void setTotalStoryPoint(Float totalStoryPoint) {
         this.totalStoryPoint = totalStoryPoint;
     }
-
 
     public String getRemarks() {
         return remarks;

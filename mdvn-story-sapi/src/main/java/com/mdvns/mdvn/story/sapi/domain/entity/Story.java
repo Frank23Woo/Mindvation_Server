@@ -14,7 +14,7 @@ public class Story {
     //项目ID
     private String projId;
     //用户故事点数
-    private Integer storyPoint;
+    private Float storyPoint;
     //用户故事编号
     private String storyId;
     //表自增长生成的Id
@@ -58,8 +58,8 @@ public class Story {
     @Column(name = "progress", columnDefinition = "Double default 0")
     private Double progress;
     //storyPointCnt+crStoryPointCnt
-    @Column(columnDefinition = "int default 0")
-    private Integer totalStoryPoint;
+    @Column(columnDefinition = "Float default 0")
+    private Float totalStoryPoint;
     //持续时间
     @Column(columnDefinition = "int default 0")
     private Integer duration;
@@ -117,11 +117,11 @@ public class Story {
         this.projId = projId;
     }
 
-    public Integer getStoryPoint() {
+    public Float getStoryPoint() {
         return storyPoint;
     }
 
-    public void setStoryPoint(Integer storyPoint) {
+    public void setStoryPoint(Float storyPoint) {
         this.storyPoint = storyPoint;
     }
 
@@ -237,11 +237,11 @@ public class Story {
         this.progress = progress;
     }
 
-    public Integer getTotalStoryPoint() {
+    public Float getTotalStoryPoint() {
         return totalStoryPoint;
     }
 
-    public void setTotalStoryPoint(Integer totalStoryPoint) {
+    public void setTotalStoryPoint(Float totalStoryPoint) {
         this.totalStoryPoint = totalStoryPoint;
     }
 

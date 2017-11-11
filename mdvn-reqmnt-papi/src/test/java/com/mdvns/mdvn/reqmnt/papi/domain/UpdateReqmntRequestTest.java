@@ -32,7 +32,6 @@ public class UpdateReqmntRequestTest {
         reqInfo.setStatus("new");
         reqInfo.setRagStatus("A");
         reqInfo.setProgress(0.85);
-        reqInfo.setTotalStoryPoint(100);
 
         request.setReqmntInfo(reqInfo);
 

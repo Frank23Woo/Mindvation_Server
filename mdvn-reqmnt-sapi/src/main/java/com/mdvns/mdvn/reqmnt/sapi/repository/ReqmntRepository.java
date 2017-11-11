@@ -33,6 +33,9 @@ public interface ReqmntRepository extends JpaRepository<RequirementInfo, Integer
     @Query(value = "SELECT * from project WHERE uu_id=?1", nativeQuery = true)
     Object rtrvProjBaseInfo(Integer uu_id);
 
+    @Query(value = "SELECT SUM(story_point) FROM story WHERE reqmnt_id = ?1 AND is_deleted = 0 ", nativeQuery = true)
+    Float rtrvReqmntStoryPointCount(String reqmntId);
+
     @Query(value = "SELECT proj_id FROM project WHERE uu_id = ?1", nativeQuery = true)
     String getProjId(Integer uuId);
 

@@ -68,6 +68,20 @@ public class CreateProjServiceImpl implements ICreateProjService {
         String sortBy = (request.getSortBy() == null) ? "uuId" : request.getSortBy();
         PageRequest pageable = new PageRequest(m, n, Sort.Direction.DESC, sortBy);
         Page<Project> pageList = this.projectRepository.findAll(pageable);
+        //计算storyPoint
+        for (int i = 0; i < pageList.getContent().size(); i++) {
+            String projId = pageList.getContent().get(i).getProjId();
+            Float sumStoryPoint = this.projectRepository.rtrvProjStoryPointCount(projId);
+            pageList.getContent().get(i).setStoryPointQty(sumStoryPoint);
+            //计算story
+            Integer storyQty = this.projectRepository.rtrvProjStoryQty(projId);
+            pageList.getContent().get(i).setStoryQty(storyQty);
+            //计算checkListQty
+            Integer checkListQty = this.projectRepository.rtrvChecklistQty(projId);
+            pageList.getContent().get(i).setCheckListQty(checkListQty);
+        }
+        this.projectRepository.save(pageList.getContent());
+
 //        Long totalElements = this.projectRepository.getProjBaseInfoCount(request.getStaffId());
         rtrvProjectListResponse.setProjects(pageList.getContent());
         rtrvProjectListResponse.setTotalElements(pageList.getTotalElements());
