@@ -454,7 +454,7 @@ public class StoryServiceImpl implements IStoryService {
             //选出角色中不同的成员
             for (int i = 0; i < roleIds.size(); i++) {
                 RoleAndMember roleAndMember = new RoleAndMember();
-                String roleId = storyRoleMembers.get(i).getRoleId();
+                String roleId = roleIds.get(i);
                 ModelRole modelRole = restTemplate.postForObject(config.getRtrvRoleByRoleIdUrl(), roleId, ModelRole.class);
                 roleAndMember.setRoleDetail(modelRole);
                 RtrvMembersByRoleIdRequest rtrvMembersByRoleIdRequest = new RtrvMembersByRoleIdRequest();
