@@ -3,6 +3,8 @@ package com.mdvns.mdvn.reqmnt.papi.domain;
 import com.mdvns.mdvn.common.beans.Staff;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.Column;
+
 @Component
 public class RequirementInfo {
 
@@ -27,6 +29,7 @@ public class RequirementInfo {
     /* staff id of creator */
     private String creatorId;
     /* requirement description*/
+    @Column(columnDefinition = "text",nullable = false)
     private String description;
     /* requirement priority*/
     private Integer priority;
