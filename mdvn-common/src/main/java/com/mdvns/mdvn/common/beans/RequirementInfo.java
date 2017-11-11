@@ -49,8 +49,27 @@ public class RequirementInfo {
     private String remarks;
     //是否被删除
     private Integer isDeleted;
+    //成员数
+    private Integer memberCunt;
+    private Staff creatorInfo;
 
     private List<CommentDetail> commentDetails;
+
+    public Integer getMemberCunt() {
+        return memberCunt;
+    }
+
+    public void setMemberCunt(Integer memberCunt) {
+        this.memberCunt = memberCunt;
+    }
+
+    public Staff getCreatorInfo() {
+        return creatorInfo;
+    }
+
+    public void setCreatorInfo(Staff creatorInfo) {
+        this.creatorInfo = creatorInfo;
+    }
 
     public List<CommentDetail> getCommentDetails() {
         return commentDetails;

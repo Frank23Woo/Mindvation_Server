@@ -24,4 +24,6 @@ config:
   rtrvAttchListUrl: http://localhost:10019/mdvn-file-sapi/files/
   rtrvCommentInfosUrl: http://localhost:10025/mdvn-comment-sapi/comments/rtrvCommentInfos
   rtrvStaffInfoUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffInfo
+  rtrvStaffsByIdsUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffListByStaffIdList
+  rtrvReqmntMembersUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntMembers
 
