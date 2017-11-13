@@ -23,12 +23,21 @@ public class CreateTaskRequest {
     private List<String> attachmentIds;
     private Integer progress;
     private String comment;
-
+    //工作用时，创建task时自己估算的时间
+    private Float usedTime;
     // 交附件
     private TaskDeliver deliver;
 
     // 备注
     private String remarks;
+
+    public Float getUsedTime() {
+        return usedTime;
+    }
+
+    public void setUsedTime(Float usedTime) {
+        this.usedTime = usedTime;
+    }
 
     public String getProjId() {
         return projId;

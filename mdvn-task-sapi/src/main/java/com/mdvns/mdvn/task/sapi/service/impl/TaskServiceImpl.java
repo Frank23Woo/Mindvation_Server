@@ -88,6 +88,7 @@ public class TaskServiceImpl implements TaskService {
         task.setCreatorId(request.getCreatorId());
         task.setAssigneeId(request.getAssigneeId());
         task.setDescription(request.getDescription());
+        task.setUsedTime(request.getUsedTime());
         task.setStartTime(new Timestamp(request.getStartTime()));
         task.setEndTime(new Timestamp(request.getEndTime()));
         Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -147,6 +148,11 @@ public class TaskServiceImpl implements TaskService {
 
             if (request.getStartTime() != null && request.getStartTime() != taskOld.getStartTime().getTime()) {
                 taskOld.setStartTime(new Timestamp(request.getStartTime()));
+                changed = true;
+            }
+
+            if (request.getUsedTime() != null && request.getUsedTime() != taskOld.getUsedTime()) {
+                taskOld.setUsedTime(request.getUsedTime());
                 changed = true;
             }
 

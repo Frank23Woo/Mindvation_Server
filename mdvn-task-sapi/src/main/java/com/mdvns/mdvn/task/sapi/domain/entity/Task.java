@@ -24,6 +24,8 @@ public class Task {
     private Timestamp startTime;
     @Column(nullable = false)
     private Timestamp endTime;
+    //工作用时，创建task时自己估算的时间
+    private Float usedTime;
     private Integer progress;
     private String status;
     private String comment;
@@ -41,6 +43,14 @@ public class Task {
     private String remarks;
 
     public Task() {
+    }
+
+    public Float getUsedTime() {
+        return usedTime;
+    }
+
+    public void setUsedTime(Float usedTime) {
+        this.usedTime = usedTime;
     }
 
     public String getStatus() {

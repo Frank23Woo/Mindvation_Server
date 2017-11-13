@@ -18,6 +18,8 @@ public class TaskDetail {
     private Integer progress;
     private String comment;
     private String attachmentIds;
+    //工作用时，创建task时自己估算的时间
+    private Float usedTime;
 
     // 交附件
     private Integer deliverId;
@@ -35,6 +37,14 @@ public class TaskDetail {
 //    private List<AttchUrl> attachUrlList;
 
     public TaskDetail() {
+    }
+
+    public Float getUsedTime() {
+        return usedTime;
+    }
+
+    public void setUsedTime(Float usedTime) {
+        this.usedTime = usedTime;
     }
 
     public TaskDeliver getDeliver() {
