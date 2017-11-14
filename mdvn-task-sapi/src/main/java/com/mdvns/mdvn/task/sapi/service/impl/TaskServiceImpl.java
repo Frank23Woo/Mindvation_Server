@@ -64,13 +64,13 @@ public class TaskServiceImpl implements TaskService {
         String sql = "UPDATE story SET progress = " + storyProgress + " WHERE story_id=" + "\"" + storyId + "\"";
         this.jdbcTemplate.update(sql);
         //获取task列表时重新计算story的用时
-        Float usedTimes = Float.valueOf(0);
-        for (int i = 0; i < tasks.size(); i++) {
-            Float usedTime = tasks.get(i).getUsedTime();
-            usedTimes+=usedTime;
-        }
-        String usedTimesSql = "UPDATE story SET duration = " + usedTimes + " WHERE story_id=" + "\"" + storyId + "\"";
-        this.jdbcTemplate.update(usedTimesSql);
+//        Float usedTimes = Float.valueOf(0);
+//        for (int i = 0; i < tasks.size(); i++) {
+//            Float usedTime = tasks.get(i).getUsedTime();
+//            usedTimes+=usedTime;
+//        }
+//        String usedTimesSql = "UPDATE story SET duration = " + usedTimes + " WHERE story_id=" + "\"" + storyId + "\"";
+//        this.jdbcTemplate.update(usedTimesSql);
         //获取task列表时重新计算story的完成用户故事点
         Float storyPoint = taskRepository.rtrvStoryPoint(storyId);
         Float finishedSP = storyPoint*storyProgress/100;
