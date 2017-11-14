@@ -27,8 +27,19 @@ public class CreateTagRequest {
     @Size(max = 10, message = "色值编码不正确")
     private String color;
 
+    /*后加的字段，1~7随机给一个数字*/
+    private Integer tagStyle;
+
 
     private List<String> remarks;
+
+    public Integer getTagStyle() {
+        return tagStyle;
+    }
+
+    public void setTagStyle(Integer tagStyle) {
+        this.tagStyle = tagStyle;
+    }
 
     public String getName() {
         return name;

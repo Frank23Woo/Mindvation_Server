@@ -1,6 +1,7 @@
 package com.mdvns.mdvn.story.sapi.service.impl;
 
 
+import com.mdvns.mdvn.story.sapi.domain.RtrvAverageReqmProgress;
 import com.mdvns.mdvn.story.sapi.domain.RtrvMembersByRoleIdRequest;
 import com.mdvns.mdvn.story.sapi.domain.RtrvStoryDetailRequest;
 import com.mdvns.mdvn.story.sapi.domain.entity.*;
@@ -11,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -76,7 +79,7 @@ public class RtrvStoryDetailServiceImpl implements IRtrvStoryDetailService {
     @Override
     public List<StoryRoleMember> rtrvMembersByRoleId(RtrvMembersByRoleIdRequest request) {
         LOG.info("start executing rtrvMembersByRoleId()方法.", this.CLASS);
-        List<StoryRoleMember> storyRoleMembers = this.storyRoleMemberRepository.rtrvMembersByRoleId(request.getStoryId(),request.getRoleId());
+        List<StoryRoleMember> storyRoleMembers = this.storyRoleMemberRepository.rtrvMembersByRoleId(request.getStoryId(), request.getRoleId());
         LOG.info("finish executing rtrvMembersByRoleId()方法.", this.CLASS);
         return storyRoleMembers;
     }
@@ -133,10 +136,11 @@ public class RtrvStoryDetailServiceImpl implements IRtrvStoryDetailService {
     @Override
     public String getLabelIdByStoryId(String storyId) {
         LOG.info("start executing getLabelIdByStoryId()方法.", this.CLASS);
-        String labelId= this.storyRepository.getLabelIdByStoryId(storyId);
+        String labelId = this.storyRepository.getLabelIdByStoryId(storyId);
         LOG.info("finish executing getLabelIdByStoryId()方法.", this.CLASS);
         return labelId;
     }
+
     /**
      * 查询上一层reqmnt下的modelId
      *
@@ -146,10 +150,11 @@ public class RtrvStoryDetailServiceImpl implements IRtrvStoryDetailService {
     @Override
     public String getModelIdByStoryId(String storyId) {
         LOG.info("start executing getModelIdByStoryId()方法.", this.CLASS);
-        String modelId= this.storyRepository.getModelIdByStoryId(storyId);
+        String modelId = this.storyRepository.getModelIdByStoryId(storyId);
         LOG.info("finish executing getModelIdByStoryId()方法.", this.CLASS);
         return modelId;
     }
+
     /**
      * 查询上一层reqmnt下的reqmntId
      *
@@ -159,10 +164,11 @@ public class RtrvStoryDetailServiceImpl implements IRtrvStoryDetailService {
     @Override
     public String getReqmntIdByStoryId(String storyId) {
         LOG.info("start executing getReqmntIdByStoryId()方法.", this.CLASS);
-        String reqmntId= this.storyRepository.getReqmntIdByStoryId(storyId);
+        String reqmntId = this.storyRepository.getReqmntIdByStoryId(storyId);
         LOG.info("finish executing getReqmntIdByStoryId()方法.", this.CLASS);
         return reqmntId;
     }
+
 
 
 }

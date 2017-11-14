@@ -63,6 +63,10 @@ public class TagServiceImpl implements TagService {
         LogUtil.errorLog("新建Tag的名称为：" + tagName);
         tag = new Tag();
         tag.setName(tagName);
+        if (createTagRequest.getTagStyle() != null) {
+            /*后加的字段，1~7随机给一个数字*/
+            tag.setTagStyle(createTagRequest.getTagStyle());
+        }
         tag.setColor(createTagRequest.getColor());
         tag.setCreatorId(createTagRequest.getCreatorId());
         String url = webConfig.getSaveTagUrl();
@@ -93,6 +97,7 @@ public class TagServiceImpl implements TagService {
 
     /**
      * 根据Id查询标签
+     *
      * @param tagId
      * @return
      */

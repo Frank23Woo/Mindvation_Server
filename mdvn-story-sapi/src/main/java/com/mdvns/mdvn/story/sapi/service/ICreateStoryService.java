@@ -30,4 +30,6 @@ public interface ICreateStoryService {
     List<StoryTask> saveSTasks(SaveSTasksRequest request);
 
     Story getStory(Integer uuId);
+
+    Float averageReqmProgress(RtrvAverageReqmProgress request);
 }

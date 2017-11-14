@@ -28,7 +28,7 @@ public class Project {
     //效率值
     private Double efficiency;
     //项目进度
-    private Double progress;
+    private Float progress;
     //项目可调整系数
     private Double contingency;
     //项目成本
@@ -42,7 +42,7 @@ public class Project {
     //crstory总数
     private Integer crStoryQty;
     //crstorypoint总数
-    private Integer crStoryPointQty;
+    private Float crStoryPointQty;
     //任务总数
     private Integer checkListQty;
     //需求变更占比
@@ -149,12 +149,16 @@ public class Project {
         this.efficiency = efficiency;
     }
 
-    public Double getProgress() {
+    public Float getProgress() {
         return progress;
     }
 
-    public void setProgress(Double progress) {
+    public void setProgress(Float progress) {
         this.progress = progress;
+    }
+
+    public void setCrStoryPointQty(Float crStoryPointQty) {
+        this.crStoryPointQty = crStoryPointQty;
     }
 
     public Double getCost() {
@@ -197,12 +201,8 @@ public class Project {
         this.crStoryQty = crStoryQty;
     }
 
-    public Integer getCrStoryPointQty() {
+    public Float getCrStoryPointQty() {
         return crStoryPointQty;
-    }
-
-    public void setCrStoryPointQty(Integer crStoryPointQty) {
-        this.crStoryPointQty = crStoryPointQty;
     }
 
     public Integer getCheckListQty() {

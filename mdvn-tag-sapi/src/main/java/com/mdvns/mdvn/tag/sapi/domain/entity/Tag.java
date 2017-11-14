@@ -44,9 +44,19 @@ public class Tag {
     /* 標簽創建時間*/
     @Column(name = "create_time", columnDefinition = "timestamp default current_timestamp", nullable = false)
     private Timestamp createTime;
+    /*后加的字段，1~7随机给一个数字*/
+    private Integer tagStyle;
 
     /*是否已删除*/
     private Integer isDeleted;
+
+    public Integer getTagStyle() {
+        return tagStyle;
+    }
+
+    public void setTagStyle(Integer tagStyle) {
+        this.tagStyle = tagStyle;
+    }
 
     public Integer getUuId() {
         return uuId;

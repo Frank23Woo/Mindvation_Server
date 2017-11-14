@@ -12,11 +12,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +28,9 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
     private static final Logger LOG = LoggerFactory.getLogger(CreateReqmntServiceImpl.class);
 
     private final String CLASS = this.getClass().getName();
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     private ReqmntRepository reqmntRepository;
@@ -56,7 +61,6 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
             }
 
         }
-
         if (request.getPage() == null || request.getPageSize() == null) {
             List<RequirementInfo> list = this.reqmntRepository.findAllByProjIdAndIsDeletedOrderByUuIdAsc(request.getProjId(), 0);
             //计算storyPoint
@@ -66,6 +70,13 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
                 list.get(i).setTotalStoryPoint(sumStoryPoint);
             }
             this.reqmntRepository.save(list);
+            //获取req列表重新计算project的进度
+            RtrvAverageProjProgress pRequest = new RtrvAverageProjProgress();
+            String projId = request.getProjId();
+            pRequest.setProjId(projId);
+            Float projProgress = this.averageProjProgress(pRequest);
+            String sql = "UPDATE project SET progress = " + projProgress + " WHERE proj_id=" + "\"" + projId + "\"";
+            this.jdbcTemplate.update(sql);
             rtrvReqmntListResponse.setRequirementInfos(list);
             rtrvReqmntListResponse.setTotalElements(Long.valueOf(list.size()));
             return ResponseEntity.ok(rtrvReqmntListResponse);
@@ -97,13 +108,16 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
             this.reqmntRepository.save(requirementInfos);
             rtrvReqmntListResponse.setRequirementInfos(requirementInfos.getContent());
             rtrvReqmntListResponse.setTotalElements(requirementInfos.getTotalElements());
-
+            //获取req列表重新计算project的进度
+            RtrvAverageProjProgress pRequest = new RtrvAverageProjProgress();
+            String projId = request.getProjId();
+            pRequest.setProjId(projId);
+            Float projProgress = this.averageProjProgress(pRequest);
+            String sql = "UPDATE project SET progress = " + projProgress + " WHERE proj_id=" + "\"" + projId + "\"";
+            this.jdbcTemplate.update(sql);
             LOG.info("查询结果为：{}", rtrvReqmntListResponse);
             return ResponseEntity.ok(rtrvReqmntListResponse);
         }
-
-
-//        return ReturnFormat.retParam(HttpStatus.OK.toString(), "000", rtrvProjectListResponse);
     }
 
     /**
@@ -140,7 +154,7 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
         requirementInfo.setLastUpdateTime(currentTime);
         requirementInfo.setStatus("new");
         requirementInfo.setRagStatus("G");
-        requirementInfo.setProgress((double) 0);
+        requirementInfo.setProgress((float) 0);
         requirementInfo.setTotalStoryPoint((float) 0);
         requirementInfo.setIsDeleted(0);
         requirementInfo.setFunctionLabelId(createReqmntRequest.getFunctionLabel().getLabelId());
@@ -148,6 +162,14 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
         try {
             requirementInfo = reqmntRepository.saveAndFlush(requirementInfo);
             requirementInfo.setReqmntId("R" + requirementInfo.getUuId());
+            //创建完reqmnt重新计算project的进度
+            RtrvAverageProjProgress request = new RtrvAverageProjProgress();
+            String projId = createReqmntRequest.getProjId();
+            request.setProjId(projId);
+            Float projProgress = this.averageProjProgress(request);
+            String sql = "UPDATE project SET progress = " + projProgress + " WHERE proj_id=" + "\"" + projId + "\"";
+            this.jdbcTemplate.update(sql);
+            //保存reqmntId
             requirementInfo = reqmntRepository.saveAndFlush(requirementInfo);
             ResponseEntity<?> responseEntity = new ResponseEntity<Object>(requirementInfo, HttpStatus.OK);
             return responseEntity;
@@ -289,6 +311,84 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
         }
         return requirementInfo;
 
+    }
+
+    /**
+     * Project的进度为所有Req的进度平均值（优先级设定优先级系数。低：0.2；中：0.3；高：0.5）
+     * @param request
+     * @return
+     */
+    @Override
+    public Float averageProjProgress(RtrvAverageProjProgress request) {
+        //获取一个proj下优先级种类
+        List<Integer> prioritys = this.reqmntRepository.findPriority(request.getProjId());
+        Float projProgressByPriority = Float.valueOf(0);
+        for (int i = 0; i < prioritys.size(); i++) {
+            Integer priority = prioritys.get(i);
+            //获取一个proj下reqmnt的storypoint的总和(某个优先级下)
+            Float storyPoints = this.reqmntRepository.rtrvStoryPointQty(request.getProjId(), priority);
+            if (storyPoints == 0) {
+                continue;
+            }
+            //获取某个proj下的某个优先级的reqmnt列表
+            List<RequirementInfo> requirementInfos = this.reqmntRepository.findAllByProjIdAndIsDeletedAndPriority(request.getProjId(), 0, priority);
+            //给各种优先级的情况分配优先级系数
+            double flag = 0;
+            /*高~中~低*/
+            if (prioritys.size() == 3) {
+                if (priority.equals(3)) {
+                    flag = 0.5;
+                }
+                if (priority.equals(2)) {
+                    flag = 0.3;
+                } else {
+                    flag = 0.2;
+                }
+            }
+            /*高~中*/
+            if (prioritys.size() == 2 && prioritys.get(0) + prioritys.get(1) == 5) {
+                if (priority.equals(3)) {
+                    flag = 0.6;
+                } else {
+                    flag = 0.4;
+                }
+            }
+            /*高~低*/
+            if (prioritys.size() == 2 && prioritys.get(0) + prioritys.get(1) == 4) {
+                if (priority.equals(3)) {
+                    flag = 0.8;
+                } else {
+                    flag = 0.2;
+                }
+            }
+            /*中~低*/
+            if (prioritys.size() == 2 && prioritys.get(0) + prioritys.get(1) == 3) {
+                if (priority.equals(2)) {
+                    flag = 0.7;
+                } else {
+                    flag = 0.3;
+                }
+            }
+            if (prioritys.size() == 1) {
+                flag = 1;
+            }
+            //计算某个优先级下的进度的平均值
+            Float projAverageProgress = Float.valueOf(0);
+            for (int j = 0; j < requirementInfos.size(); j++) {
+                RequirementInfo requirementInfo = requirementInfos.get(j);
+                Float progress = requirementInfo.getProgress();
+                Float storyPoint = requirementInfo.getTotalStoryPoint();
+                //某个story所占的比重
+                Float spProportion = storyPoint / storyPoints;
+                Float progressProportion = progress * spProportion;
+                projAverageProgress += progressProportion;
+            }
+            Float projProgByPriority = ((float) (projAverageProgress * flag));
+            projProgressByPriority += projProgByPriority;
+        }
+        DecimalFormat df = new DecimalFormat("#.00");
+        projProgressByPriority = Float.valueOf(df.format(projProgressByPriority));
+        return projProgressByPriority;
     }
 
 }

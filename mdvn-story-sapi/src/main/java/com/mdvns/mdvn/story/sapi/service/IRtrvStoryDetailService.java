@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.story.sapi.service;
 
+import com.mdvns.mdvn.story.sapi.domain.RtrvAverageReqmProgress;
 import com.mdvns.mdvn.story.sapi.domain.RtrvMembersByRoleIdRequest;
 import com.mdvns.mdvn.story.sapi.domain.RtrvStoryDetailRequest;
 import com.mdvns.mdvn.story.sapi.domain.entity.StoryAttchUrl;
@@ -27,4 +28,5 @@ public interface IRtrvStoryDetailService {
     String getLabelIdByStoryId(String storyId);
     String getModelIdByStoryId(String storyId);
     String getReqmntIdByStoryId(String storyId);
+
 }

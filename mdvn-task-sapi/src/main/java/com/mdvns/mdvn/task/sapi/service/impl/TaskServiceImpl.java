@@ -1,6 +1,7 @@
 package com.mdvns.mdvn.task.sapi.service.impl;
 
 
+import com.mdvns.mdvn.common.beans.Story;
 import com.mdvns.mdvn.common.utils.MdvnStringUtil;
 import com.mdvns.mdvn.task.sapi.domain.*;
 import com.mdvns.mdvn.task.sapi.domain.entity.Task;
@@ -14,10 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,6 +34,9 @@ public class TaskServiceImpl implements TaskService {
     private final String CLASS = this.getClass().getName();
 
     @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @Autowired
     private TaskRepository taskRepository;
 
     @Autowired
@@ -42,15 +48,37 @@ public class TaskServiceImpl implements TaskService {
             return new ArrayList<>();
         }
 
-        String storyId = request.getStoryId();
         Integer page = request.getPage() == null ? 0 : request.getPage();
         Integer pageSize = request.getPageSize() == null ? 10 : request.getPageSize();
 
         List<TaskDetail> taskDetails = new ArrayList<>();
 
         Pageable pageable = new PageRequest(page, pageSize, new Sort(Sort.DEFAULT_DIRECTION, "uuid"));
-
+        String storyId = request.getStoryId();
         List<Task> tasks = taskRepository.findAllByStoryIdAndIsDeleted(storyId, 0, pageable).getContent();
+
+        //获取task列表时重新计算story的进度
+        RtrvAverageStoryProgress tRequest = new RtrvAverageStoryProgress();
+        tRequest.setStoryId(storyId);
+        Float storyProgress = this.averageStoryProgress(tRequest);
+        String sql = "UPDATE story SET progress = " + storyProgress + " WHERE story_id=" + "\"" + storyId + "\"";
+        this.jdbcTemplate.update(sql);
+        //获取task列表时重新计算story的用时
+        Float usedTimes = Float.valueOf(0);
+        for (int i = 0; i < tasks.size(); i++) {
+            Float usedTime = tasks.get(i).getUsedTime();
+            usedTimes+=usedTime;
+        }
+        String usedTimesSql = "UPDATE story SET duration = " + usedTimes + " WHERE story_id=" + "\"" + storyId + "\"";
+        this.jdbcTemplate.update(usedTimesSql);
+        //获取task列表时重新计算story的完成用户故事点
+        Float storyPoint = taskRepository.rtrvStoryPoint(storyId);
+        Float finishedSP = storyPoint*storyProgress/100;
+        DecimalFormat df = new DecimalFormat("#.00");
+        finishedSP = Float.valueOf(df.format(finishedSP));
+        String finishedSPSql = "UPDATE story SET finishedsp = " + finishedSP + " WHERE story_id=" + "\"" + storyId + "\"";
+        this.jdbcTemplate.update(finishedSPSql);
+
         for (Task task : tasks) {
             TaskDetail detail = new TaskDetail(task);
             detail.setDeliver(deliverRepository.getOne(task.getDeliverId()));
@@ -62,6 +90,7 @@ public class TaskServiceImpl implements TaskService {
 
     /**
      * 获取单独task详细信息
+     *
      * @param taskId
      * @return
      */
@@ -88,7 +117,9 @@ public class TaskServiceImpl implements TaskService {
         task.setCreatorId(request.getCreatorId());
         task.setAssigneeId(request.getAssigneeId());
         task.setDescription(request.getDescription());
-        task.setUsedTime(request.getUsedTime());
+        if (request.getUsedTime() != null) {
+            task.setUsedTime(request.getUsedTime());
+        }
         task.setStartTime(new Timestamp(request.getStartTime()));
         task.setEndTime(new Timestamp(request.getEndTime()));
         Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -103,6 +134,13 @@ public class TaskServiceImpl implements TaskService {
         task.setTaskId("T" + task.getUuid());
         task = taskRepository.save(task);
 
+        //创建task重新计算story的进度
+        RtrvAverageStoryProgress tRequest = new RtrvAverageStoryProgress();
+        String storyId = request.getStoryId();
+        tRequest.setStoryId(storyId);
+        Float storyProgress = this.averageStoryProgress(tRequest);
+        String sql = "UPDATE story SET progress = " + storyProgress + " WHERE story_id=" + "\"" + storyId + "\"";
+        this.jdbcTemplate.update(sql);
 
         // 构造detail对象并返回
         TaskDetail detail = new TaskDetail(task);
@@ -162,10 +200,10 @@ public class TaskServiceImpl implements TaskService {
             }
 
             if (request.getProgress() != null && request.getProgress() != taskOld.getProgress()) {
-                if (request.getProgress() == 100){
+                if (request.getProgress() == 100) {
                     taskOld.setStatus("done");
                 }
-                if ( request.getProgress().intValue() < 100 && request.getProgress().intValue()>0){
+                if (request.getProgress().intValue() < 100 && request.getProgress().intValue() > 0) {
                     taskOld.setStatus("inProgress");
                 }
                 taskOld.setProgress(request.getProgress());
@@ -231,7 +269,7 @@ public class TaskServiceImpl implements TaskService {
         }
 
         String ids = task.getAttachmentIds();
-        if (StringUtils.isEmpty(ids)){
+        if (StringUtils.isEmpty(ids)) {
             ids = "";
         } else {
             ids = ids + ",";
@@ -278,6 +316,7 @@ public class TaskServiceImpl implements TaskService {
 
     /**
      * 根据projId和staffId查询个人看板信息
+     *
      * @param request
      * @return
      */
@@ -286,9 +325,9 @@ public class TaskServiceImpl implements TaskService {
         RtrvMyDashboardInfoResponse rtrvMyDashboardInfoResponse = new RtrvMyDashboardInfoResponse();
         String projId = request.getProjId();
         String creatorId = request.getCreatorId();
-        List<Task> toDoTasks = taskRepository.findAllByProjIdAndCreatorIdAndStatusAndIsDeleted(projId,creatorId,"new",0);
-        List<Task> InProgressTasks = taskRepository.findAllByProjIdAndCreatorIdAndStatusAndIsDeleted(projId,creatorId,"inProgress",0);
-        List<Task> doneTasks = taskRepository.findAllByProjIdAndCreatorIdAndStatusAndIsDeleted(projId,creatorId,"done",0);
+        List<Task> toDoTasks = taskRepository.findAllByProjIdAndCreatorIdAndStatusAndIsDeleted(projId, creatorId, "new", 0);
+        List<Task> InProgressTasks = taskRepository.findAllByProjIdAndCreatorIdAndStatusAndIsDeleted(projId, creatorId, "inProgress", 0);
+        List<Task> doneTasks = taskRepository.findAllByProjIdAndCreatorIdAndStatusAndIsDeleted(projId, creatorId, "done", 0);
         rtrvMyDashboardInfoResponse.setToDo(toDoTasks);
         rtrvMyDashboardInfoResponse.setInProgress(InProgressTasks);
         rtrvMyDashboardInfoResponse.setDone(doneTasks);
@@ -297,6 +336,7 @@ public class TaskServiceImpl implements TaskService {
 
     /**
      * 更改个人看板
+     *
      * @param request
      * @return
      */
@@ -305,9 +345,9 @@ public class TaskServiceImpl implements TaskService {
         String taskId = request.getTaskId();
         String status = request.getStatus();
         Task task = taskRepository.findByTaskId(taskId);
-        if (status.equals("inProgress")){
+        if (status.equals("inProgress")) {
             task.setStatus("inProgress");
-        }else{
+        } else {
             task.setStatus("done");
             task.setProgress(100);
         }
@@ -315,7 +355,40 @@ public class TaskServiceImpl implements TaskService {
         return task;
     }
 
+    /**
+     * Story的进度为所有Task的进度平均值
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public Float averageStoryProgress(RtrvAverageStoryProgress request) {
+        Float storyAverageProgress = Float.valueOf(0);
+        //获取一个story下task用时的总和
+        Float usedTimes = this.taskRepository.rtrvTaskUsedTimeQty(request.getStoryId());
+        if (usedTimes == 0) {
+            return storyAverageProgress;
+        }
+        //获取这个story下的task列表
+        List<Task> taskList = this.taskRepository.findAllByStoryIdAndIsDeleted(request.getStoryId(), 0);
+        List<Float> storyProgress = new ArrayList<>();
+        for (int i = 0; i < taskList.size(); i++) {
+            Task task = taskList.get(i);
+            Integer progress = task.getProgress();
+            Float usedTime = task.getUsedTime();
+            //某个task所占的比重
+            Float timeProportion = usedTime / usedTimes;
+            Float progressProportion = progress * timeProportion;
+            //计算某个story的整体平均进度
+            storyProgress.add(progressProportion);
+        }
 
-
+        for (int i = 0; i < storyProgress.size(); i++) {
+            storyAverageProgress += storyProgress.get(i);
+        }
+        DecimalFormat df = new DecimalFormat("#.00");
+        storyAverageProgress = Float.valueOf(df.format(storyAverageProgress));
+        return storyAverageProgress;
+    }
 
 }

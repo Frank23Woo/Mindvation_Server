@@ -101,4 +101,14 @@ public class CreateReqmntController {
         return requirementInfo;
     }
 
+    /**
+     * 4.Project的进度为所有Req的进度平均值（优先级设定优先级系数。低：1.2；中：1.3；高：1.5）
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "averageProjProgress")
+    public Float averageProjProgress(@RequestBody RtrvAverageProjProgress request) throws SQLException  {
+        return this.reqmntService.averageProjProgress(request);
+    }
+
 }

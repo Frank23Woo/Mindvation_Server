@@ -16,7 +16,7 @@ public class Task {
     private String description;
     private Timestamp startTime;
     private Timestamp endTime;
-    private Integer progress;
+    private Float progress;
     private String status;
     private String comment;
     private String attachmentIds;
@@ -122,11 +122,11 @@ public class Task {
         this.endTime = endTime;
     }
 
-    public Integer getProgress() {
+    public Float getProgress() {
         return progress;
     }
 
-    public void setProgress(Integer progress) {
+    public void setProgress(Float progress) {
         this.progress = progress;
     }
 

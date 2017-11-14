@@ -25,4 +25,5 @@ public interface ICreateReqmntService {
     List<ReqmntAttchUrl> saveRAttchUrl(List<ReqmntAttchUrl>  request);
     List<ReqmntCheckListDetail> getChecklistIdByUuId(UpdatePCheckListsRequest request);
     RequirementInfo getReqmnt(Integer uuId);
+    Float averageProjProgress(RtrvAverageProjProgress request);
 }

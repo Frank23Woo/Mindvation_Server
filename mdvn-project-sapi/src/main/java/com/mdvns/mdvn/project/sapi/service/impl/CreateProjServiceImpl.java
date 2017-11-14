@@ -114,7 +114,11 @@ public class CreateProjServiceImpl implements ICreateProjService {
         proj.setCreateTime(currentTime);
         proj.setStatus("new");
         proj.setRagStatus("G");
-        proj.setProgress((double) 0);
+        proj.setProgress((float) 0);
+        proj.setStoryPointQty((float) 0);
+        proj.setStoryQty(0);
+        proj.setCrStoryQty(0);
+        proj.setCrStoryPointQty((float) 0);
 
         if (!StringUtils.isEmpty(createProjectRequest.getStartDate())) {
             proj.setStartDate(createProjectRequest.getStartDate());

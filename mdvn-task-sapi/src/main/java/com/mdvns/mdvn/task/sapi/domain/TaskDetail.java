@@ -40,6 +40,7 @@ public class TaskDetail extends Task {
         this.setCreateTime(task.getCreateTime());
         this.setDeliverId(task.getDeliverId());
         this.setRemarks(task.getRemarks());
+        this.setUsedTime(task.getUsedTime());
     }
 
     public TaskDeliver getDeliver() {

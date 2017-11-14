@@ -4,15 +4,21 @@ import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.task.sapi.domain.*;
 import com.mdvns.mdvn.task.sapi.domain.entity.Task;
 import com.mdvns.mdvn.task.sapi.service.TaskService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @RestController
 public class TaskController {
+
+    private Logger LOG = LoggerFactory.getLogger(TaskController.class);
+    private final String CLASS = this.getClass().getName();
 
     @Autowired
     private TaskService taskService;
@@ -74,6 +80,15 @@ public class TaskController {
     @PostMapping(value = "/updateMyDashboard")
     public Task updateMyDashboard(@RequestBody UpdateMyDashboardRequest request) {
         return this.taskService.updateMyDashboard(request);
+    }
+
+    /**
+     * 2.Story的进度为所有Task的进度平均值
+     */
+    @PostMapping(value = "/averageStoryProgress")
+    public Float averageStoryProgress(@RequestBody RtrvAverageStoryProgress request) throws SQLException {
+        LOG.info("开始执行{} averageStoryProgress()方法.", this.CLASS);
+        return this.taskService.averageStoryProgress(request);
     }
 
 

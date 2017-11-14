@@ -56,16 +56,16 @@ public class Story {
     private Double efficiency;
     //用户故事进度
     @Column(name = "progress", columnDefinition = "Double default 0")
-    private Double progress;
+    private Float progress;
     //storyPointCnt+crStoryPointCnt
     @Column(columnDefinition = "Float default 0")
     private Float totalStoryPoint;
     //持续时间
-    @Column(columnDefinition = "int default 0")
-    private Integer duration;
+    @Column(columnDefinition = "Float default 0")
+    private Float duration;
     //已完成storypoint
-    @Column(columnDefinition = "int default 0")
-    private Integer finishedSP;
+    @Column(columnDefinition = "Float default 0")
+    private Float finishedSP;
     //缺陷总数
     private Integer defectQty;
 
@@ -229,11 +229,11 @@ public class Story {
         this.efficiency = efficiency;
     }
 
-    public Double getProgress() {
+    public Float getProgress() {
         return progress;
     }
 
-    public void setProgress(Double progress) {
+    public void setProgress(Float progress) {
         this.progress = progress;
     }
 
@@ -245,19 +245,19 @@ public class Story {
         this.totalStoryPoint = totalStoryPoint;
     }
 
-    public Integer getDuration() {
+    public Float getDuration() {
         return duration;
     }
 
-    public void setDuration(Integer duration) {
+    public void setDuration(Float duration) {
         this.duration = duration;
     }
 
-    public Integer getFinishedSP() {
+    public Float getFinishedSP() {
         return finishedSP;
     }
 
-    public void setFinishedSP(Integer finishedSP) {
+    public void setFinishedSP(Float finishedSP) {
         this.finishedSP = finishedSP;
     }
 

@@ -119,4 +119,14 @@ public class CreateStoryController {
         return story;
     }
 
+    /**
+     * 3.Req的进度为所有Story进度的平均值（Story Point为权重1，优先级设定优先级系数。低：1.2；中：1.3；高：1.5）
+     *
+     * @param request REQMID
+     */
+    @PostMapping(value = "averageReqmProgress")
+    public Float averageReqmProgress(@RequestBody RtrvAverageReqmProgress request) throws SQLException  {
+        return this.storyService.averageReqmProgress(request);
+    }
+
 }

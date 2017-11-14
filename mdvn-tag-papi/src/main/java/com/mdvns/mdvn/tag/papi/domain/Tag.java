@@ -27,8 +27,16 @@ public class Tag {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Long createTime;
 
+    /*后加的字段，1~7随机给一个数字*/
+    private Integer tagStyle;
 
+    public Integer getTagStyle() {
+        return tagStyle;
+    }
 
+    public void setTagStyle(Integer tagStyle) {
+        this.tagStyle = tagStyle;
+    }
 
     public String getTagId() {
         return tagId;

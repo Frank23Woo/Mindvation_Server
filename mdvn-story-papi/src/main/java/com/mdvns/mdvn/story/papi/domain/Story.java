@@ -40,13 +40,13 @@ public class Story {
     //效率值
     private Double efficiency;
     //用户故事进度
-    private Double progress;
+    private Float progress;
     //storyPointCnt+crStoryPointCnt
     private Integer totalStoryPoint;
     //持续时间
-    private Integer duration;
+    private Float duration;
     //已完成storypoint
-    private Integer finishedSP;
+    private Float finishedSP;
     //缺陷总数
     private Integer defectQty;
     //缺陷严重
@@ -200,11 +200,11 @@ public class Story {
         this.efficiency = efficiency;
     }
 
-    public Double getProgress() {
+    public Float getProgress() {
         return progress;
     }
 
-    public void setProgress(Double progress) {
+    public void setProgress(Float progress) {
         this.progress = progress;
     }
 
@@ -216,19 +216,19 @@ public class Story {
         this.totalStoryPoint = totalStoryPoint;
     }
 
-    public Integer getDuration() {
+    public Float getDuration() {
         return duration;
     }
 
-    public void setDuration(Integer duration) {
+    public void setDuration(Float duration) {
         this.duration = duration;
     }
 
-    public Integer getFinishedSP() {
+    public Float getFinishedSP() {
         return finishedSP;
     }
 
-    public void setFinishedSP(Integer finishedSP) {
+    public void setFinishedSP(Float finishedSP) {
         this.finishedSP = finishedSP;
     }
 

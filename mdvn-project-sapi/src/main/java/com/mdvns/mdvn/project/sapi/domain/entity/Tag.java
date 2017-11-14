@@ -45,6 +45,16 @@ public class Tag {
     @Column(name = "create_time", columnDefinition = "timestamp default current_timestamp", nullable = false)
     private Timestamp createTime;
 
+    /*后加的字段，1~7随机给一个数字*/
+    private Integer tagStyle;
+
+    public Integer getTagStyle() {
+        return tagStyle;
+    }
+
+    public void setTagStyle(Integer tagStyle) {
+        this.tagStyle = tagStyle;
+    }
 
     public Integer getUuId() {
         return uuId;

@@ -44,4 +44,15 @@ public interface ReqmntRepository extends JpaRepository<RequirementInfo, Integer
 
     @Query(value = "SELECT * from requirement_info WHERE reqmnt_id= (select reqmnt_id from story where story_id = ?1)", nativeQuery = true)
     RequirementInfo rtrvReqmntInfoByStoryId(String storyId);
+
+    //获取一个proj下story的storypoint的总和(某个优先级下)
+    @Query(value = "SELECT SUM(total_story_point) FROM requirement_info WHERE proj_id = ?1 AND priority = ?2 AND is_deleted = 0", nativeQuery = true)
+    Float rtrvStoryPointQty(String projId, Integer priority);
+
+    //获取某个proj下的高优先级的reqmnt列表
+    List<RequirementInfo> findAllByProjIdAndIsDeletedAndPriority(String projId, Integer isDeleted, Integer priority);
+
+    //查询某个proj下的优先级种类
+    @Query(value = "SELECT DISTINCT priority FROM requirement_info WHERE proj_id = ?1  AND is_deleted = 0", nativeQuery = true)
+    List<Integer> findPriority(String projId);
 }

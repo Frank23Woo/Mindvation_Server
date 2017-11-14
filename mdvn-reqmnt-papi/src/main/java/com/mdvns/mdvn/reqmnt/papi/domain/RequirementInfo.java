@@ -45,7 +45,7 @@ public class RequirementInfo {
     /* requirement RAG status, ie. Red, Amber, Green*/
     private String ragStatus;
     /* requirement progress*/
-    private Double progress;
+    private Float progress;
     /* total amount of story point and CR story point*/
     private Float totalStoryPoint;
     //备注
@@ -160,11 +160,11 @@ public class RequirementInfo {
         this.ragStatus = ragStatus;
     }
 
-    public Double getProgress() {
+    public Float getProgress() {
         return progress;
     }
 
-    public void setProgress(Double progress) {
+    public void setProgress(Float progress) {
         this.progress = progress;
     }
 

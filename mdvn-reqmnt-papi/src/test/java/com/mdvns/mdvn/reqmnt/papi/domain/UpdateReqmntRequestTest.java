@@ -31,7 +31,7 @@ public class UpdateReqmntRequestTest {
         reqInfo.setCreateTime(System.currentTimeMillis());
         reqInfo.setStatus("new");
         reqInfo.setRagStatus("A");
-        reqInfo.setProgress(0.85);
+//        reqInfo.setProgress(0.85);
 
         request.setReqmntInfo(reqInfo);
 

@@ -1,5 +1,6 @@
 package com.mdvns.mdvn.story.sapi.web;
 
+import com.mdvns.mdvn.story.sapi.domain.RtrvAverageReqmProgress;
 import com.mdvns.mdvn.story.sapi.domain.RtrvMembersByRoleIdRequest;
 import com.mdvns.mdvn.story.sapi.domain.RtrvStoryDetailRequest;
 import com.mdvns.mdvn.story.sapi.domain.entity.StoryAttchUrl;
@@ -120,4 +121,6 @@ public class RtrvStoryDetailController {
     public String getReqmntIdByStoryId(@RequestBody String storyId) throws SQLException {
         return rtrvStoryDetailService.getReqmntIdByStoryId(storyId);
     }
+
+
 }

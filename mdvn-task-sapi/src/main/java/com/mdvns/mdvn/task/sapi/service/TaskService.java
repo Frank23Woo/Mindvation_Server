@@ -23,4 +23,6 @@ public interface TaskService {
     Task updateMyDashboard(UpdateMyDashboardRequest request);
 
     TaskDetail rtrvTaskInfo(String taskId);
+
+    Float averageStoryProgress(RtrvAverageStoryProgress request);
 }

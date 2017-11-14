@@ -16,11 +16,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +35,9 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
 
     @Autowired
     private Story story;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     private StoryRepository storyRepository;
@@ -63,8 +68,15 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
             }
         }
         if (request.getPage() == null || request.getPageSize() == null) {
-
             List<Story> list = this.storyRepository.findAllByReqmntIdAndIsDeletedOrderByUuIdAsc(request.getReqmntId(), 0);
+            //获取story列表重新计算reqm的进度
+            RtrvAverageReqmProgress rRequest = new RtrvAverageReqmProgress();
+            String reqmId = request.getReqmntId();
+            rRequest.setReqmId(reqmId);
+            Float reqmProgress = this.averageReqmProgress(rRequest);
+            String sql = "UPDATE requirement_info SET progress = " + reqmProgress + " WHERE reqmnt_id=" + "\"" + reqmId + "\"";
+            this.jdbcTemplate.update(sql);
+
             rtrvStoryListResponse.setStories(list);
             rtrvStoryListResponse.setTotalElements(Long.valueOf(list.size()));
             return ResponseEntity.ok(rtrvStoryListResponse);
@@ -89,6 +101,13 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
             storyInfos = this.storyRepository.findAllByReqmntIdAndIsDeleted(request.getReqmntId(), 0, pageable);
             rtrvStoryListResponse.setStories(storyInfos.getContent());
             rtrvStoryListResponse.setTotalElements(storyInfos.getTotalElements());
+            //获取story列表重新计算reqm的进度
+            RtrvAverageReqmProgress rRequest = new RtrvAverageReqmProgress();
+            String reqmId = request.getReqmntId();
+            rRequest.setReqmId(reqmId);
+            Float reqmProgress = this.averageReqmProgress(rRequest);
+            String sql = "UPDATE requirement_info SET progress = " + reqmProgress + " WHERE reqmnt_id=" + "\"" + reqmId + "\"";
+            this.jdbcTemplate.update(sql);
             LOG.info("查询结果为：{}", rtrvStoryListResponse);
             return ResponseEntity.ok(rtrvStoryListResponse);
         }
@@ -96,6 +115,7 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
 
     /**
      * 通过reqmntlist获取story整个列表
+     *
      * @param request
      * @return
      * @throws SQLException
@@ -109,8 +129,10 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
         rtrvStoryListResponse.setTotalElements(Long.valueOf(list.size()));
         return ResponseEntity.ok(rtrvStoryListResponse);
     }
+
     /**
      * 通过storylist获取story整个列表
+     *
      * @param request
      * @return
      * @throws SQLException
@@ -156,7 +178,7 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
         story.setLastUpdateTime(currentTime);
         story.setStatus("new");
         story.setRagStatus("G");
-        story.setProgress((double) 0);
+        story.setProgress((float) 0);
         story.setStartDate(createStoryRequest.getStoryInfo().getStartDate());
         story.setEndDate(createStoryRequest.getStoryInfo().getEndDate());
         if (!StringUtils.isEmpty(createStoryRequest.getStoryInfo().getPriority())) {
@@ -164,6 +186,14 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
         }
         Story sto = storyRepository.saveAndFlush(story);
         story.setStoryId("S" + sto.getUuId());
+        //创建完story重新计算reqm的进度
+        RtrvAverageReqmProgress request = new RtrvAverageReqmProgress();
+        String reqmId = createStoryRequest.getStoryInfo().getReqmntId();
+        request.setReqmId(reqmId);
+        Float reqmProgress = this.averageReqmProgress(request);
+        String sql = "UPDATE requirement_info SET progress = " + reqmProgress + " WHERE reqmnt_id=" + "\"" + reqmId + "\"";
+        this.jdbcTemplate.update(sql);
+        //保存storyId;
         Story st = storyRepository.saveAndFlush(story);
         ResponseEntity<?> responseEntity = new ResponseEntity<Object>(st, HttpStatus.OK);
         return responseEntity;
@@ -198,6 +228,7 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
         List<StoryTag> storyTags = storyTagRepository.save(request);
         return storyTags;
     }
+
     /**
      * 创建STORY时保存附件信息
      *
@@ -255,4 +286,82 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
 
     }
 
+    /**
+     * Req的进度为所有Story进度的平均值（Story Point为权重1，优先级设定优先级系数。低：1.2；中：1.3；高：1.5）
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public Float averageReqmProgress(RtrvAverageReqmProgress request) {
+        //获取一个proj下优先级种类
+        List<Integer> prioritys = this.storyRepository.findPriority(request.getReqmId());
+        Float reqmProgressByPriority = Float.valueOf(0);
+        for (int i = 0; i < prioritys.size(); i++) {
+            Integer priority = prioritys.get(i);
+            //获取一个reqmnt下story的storypoint的总和(某个优先级下)
+            Float storyPoints = this.storyRepository.rtrvStoryPointQty(request.getReqmId(), priority);
+            if (storyPoints == 0) {
+                continue;
+            }
+            //获取某个reqmnt下的高优先级的story列表
+            List<Story> stories = this.storyRepository.findAllByReqmntIdAndIsDeletedAndPriority(request.getReqmId(), 0, priority);
+            //给各种优先级的情况分配优先级系数
+            double flag = 0;
+            /*高~中~低*/
+            if (prioritys.size() == 3) {
+                if (priority.equals(3)) {
+                    flag = 0.5;
+                }
+                if (priority.equals(2)) {
+                    flag = 0.3;
+                } else {
+                    flag = 0.2;
+                }
+            }
+            /*高~中*/
+            if (prioritys.size() == 2 && prioritys.get(0) + prioritys.get(1) == 5) {
+                if (priority.equals(3)) {
+                    flag = 0.6;
+                } else {
+                    flag = 0.4;
+                }
+            }
+            /*高~低*/
+            if (prioritys.size() == 2 && prioritys.get(0) + prioritys.get(1) == 4) {
+                if (priority.equals(3)) {
+                    flag = 0.8;
+                } else {
+                    flag = 0.2;
+                }
+            }
+            /*中~低*/
+            if (prioritys.size() == 2 && prioritys.get(0) + prioritys.get(1) == 3) {
+                if (priority.equals(2)) {
+                    flag = 0.7;
+                } else {
+                    flag = 0.3;
+                }
+            }
+            if (prioritys.size() == 1) {
+                flag = 1;
+            }
+            //计算某个优先级下的进度的平均值
+            Float reqmAverageProgress = Float.valueOf(0);
+            for (int j = 0; j < stories.size(); j++) {
+                Story story = stories.get(j);
+                Float progress = story.getProgress();
+                Float storyPoint = story.getStoryPoint();
+                //某个story所占的比重
+                Float spProportion = storyPoint / storyPoints;
+                Float progressProportion = progress * spProportion;
+                reqmAverageProgress += progressProportion;
+            }
+            Float reqmProgByPriority = ((float) (reqmAverageProgress * flag));
+            reqmProgressByPriority += reqmProgByPriority;
+        }
+        DecimalFormat df = new DecimalFormat("#.00");
+        reqmProgressByPriority = Float.valueOf(df.format(reqmProgressByPriority));
+        return reqmProgressByPriority;
+    }
 }
