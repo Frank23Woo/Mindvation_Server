@@ -60,4 +60,7 @@ public interface StoryRepository extends JpaRepository<Story, Integer> {
     //查询某个proj下的优先级种类
     @Query(value = "SELECT DISTINCT priority FROM story WHERE reqmnt_id = ?1  AND is_deleted = 0", nativeQuery = true)
     List<Integer> findPriority(String reqmntId);
+    //获取reqmnt状态信息
+    @Query(value = "SELECT status FROM requirement_info WHERE reqmnt_id = ?1", nativeQuery = true)
+    String rtrvStatus(String reqmntId);
 }

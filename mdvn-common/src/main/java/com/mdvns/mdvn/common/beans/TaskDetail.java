@@ -15,6 +15,7 @@ public class TaskDetail {
     private String description;
     private Long startTime;
     private Long endTime;
+    private String status;
     private Integer progress;
     private String comment;
     private String attachmentIds;
@@ -37,6 +38,14 @@ public class TaskDetail {
 //    private List<AttchUrl> attachUrlList;
 
     public TaskDetail() {
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Float getUsedTime() {

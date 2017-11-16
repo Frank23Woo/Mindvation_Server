@@ -56,24 +56,26 @@ public class TaskServiceImpl implements TaskService {
         Pageable pageable = new PageRequest(page, pageSize, new Sort(Sort.DEFAULT_DIRECTION, "uuid"));
         String storyId = request.getStoryId();
         List<Task> tasks = taskRepository.findAllByStoryIdAndIsDeleted(storyId, 0, pageable).getContent();
-
         //获取task列表时重新计算story的进度
         RtrvAverageStoryProgress tRequest = new RtrvAverageStoryProgress();
         tRequest.setStoryId(storyId);
         Float storyProgress = this.averageStoryProgress(tRequest);
         String sql = "UPDATE story SET progress = " + storyProgress + " WHERE story_id=" + "\"" + storyId + "\"";
         this.jdbcTemplate.update(sql);
-        //获取task列表时重新计算story的用时
-//        Float usedTimes = Float.valueOf(0);
-//        for (int i = 0; i < tasks.size(); i++) {
-//            Float usedTime = tasks.get(i).getUsedTime();
-//            usedTimes+=usedTime;
-//        }
-//        String usedTimesSql = "UPDATE story SET duration = " + usedTimes + " WHERE story_id=" + "\"" + storyId + "\"";
-//        this.jdbcTemplate.update(usedTimesSql);
+        //所有的task进度都为100时，story的状态变为done
+        Integer progresses = 0;
+        String status = this.taskRepository.rtrvStatus(storyId);
+        for (int i = 0; i < tasks.size(); i++) {
+            progresses += tasks.get(i).getProgress();
+        }
+        if (progresses / tasks.size() == 100) {
+            status = "done";
+        }
+        String statusSql = "UPDATE story SET status = " + "\""+ status+ "\"" + " WHERE story_id=" + "\"" + storyId + "\"";
+        this.jdbcTemplate.update(statusSql);
         //获取task列表时重新计算story的完成用户故事点
         Float storyPoint = taskRepository.rtrvStoryPoint(storyId);
-        Float finishedSP = storyPoint*storyProgress/100;
+        Float finishedSP = storyPoint * storyProgress / 100;
         DecimalFormat df = new DecimalFormat("#.00");
         finishedSP = Float.valueOf(df.format(finishedSP));
         String finishedSPSql = "UPDATE story SET finishedsp = " + finishedSP + " WHERE story_id=" + "\"" + storyId + "\"";
@@ -84,7 +86,6 @@ public class TaskServiceImpl implements TaskService {
             detail.setDeliver(deliverRepository.getOne(task.getDeliverId()));
             taskDetails.add(detail);
         }
-
         return taskDetails;
     }
 

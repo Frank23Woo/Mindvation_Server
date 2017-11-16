@@ -77,6 +77,17 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
             Float projProgress = this.averageProjProgress(pRequest);
             String sql = "UPDATE project SET progress = " + projProgress + " WHERE proj_id=" + "\"" + projId + "\"";
             this.jdbcTemplate.update(sql);
+            //所有的reqmnt进度都为100时，project的状态变为done
+            Float progresses = Float.valueOf(0);
+            String status = this.reqmntRepository.rtrvStatus(projId);
+            for (int i = 0; i < list.size(); i++) {
+                progresses += list.get(i).getProgress();
+            }
+            if (progresses / list.size() == 100) {
+                status = "done";
+            }
+            String statusSql = "UPDATE project SET status = " + "\""+ status+ "\"" + " WHERE proj_id=" + "\"" + projId + "\"";
+            this.jdbcTemplate.update(statusSql);
             rtrvReqmntListResponse.setRequirementInfos(list);
             rtrvReqmntListResponse.setTotalElements(Long.valueOf(list.size()));
             return ResponseEntity.ok(rtrvReqmntListResponse);
@@ -115,6 +126,17 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
             Float projProgress = this.averageProjProgress(pRequest);
             String sql = "UPDATE project SET progress = " + projProgress + " WHERE proj_id=" + "\"" + projId + "\"";
             this.jdbcTemplate.update(sql);
+            //所有的reqmnt进度都为100时，project的状态变为done
+            Float progresses = Float.valueOf(0);
+            String status = this.reqmntRepository.rtrvStatus(projId);
+            for (int i = 0; i < requirementInfos.getContent().size(); i++) {
+                progresses += requirementInfos.getContent().get(i).getProgress();
+            }
+            if (progresses / requirementInfos.getContent().size() == 100) {
+                status = "done";
+            }
+            String statusSql = "UPDATE project SET status = " + "\""+ status+ "\"" + " WHERE proj_id=" + "\"" + projId + "\"";
+            this.jdbcTemplate.update(statusSql);
             LOG.info("查询结果为：{}", rtrvReqmntListResponse);
             return ResponseEntity.ok(rtrvReqmntListResponse);
         }
@@ -356,17 +378,17 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
             /*高~低*/
             if (prioritys.size() == 2 && prioritys.get(0) + prioritys.get(1) == 4) {
                 if (priority.equals(3)) {
-                    flag = 0.8;
+                    flag = 0.7;
                 } else {
-                    flag = 0.2;
+                    flag = 0.3;
                 }
             }
             /*中~低*/
             if (prioritys.size() == 2 && prioritys.get(0) + prioritys.get(1) == 3) {
                 if (priority.equals(2)) {
-                    flag = 0.7;
+                    flag = 0.6;
                 } else {
-                    flag = 0.3;
+                    flag = 0.4;
                 }
             }
             if (prioritys.size() == 1) {

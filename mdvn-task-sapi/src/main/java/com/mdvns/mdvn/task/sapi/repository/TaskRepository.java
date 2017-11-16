@@ -27,8 +27,10 @@ public interface TaskRepository extends JpaRepository<Task, Integer>{
     //获取一个story下task用时的总和
     @Query(value = "SELECT SUM(used_time) FROM task WHERE story_id = ?1 AND is_deleted = 0", nativeQuery = true)
     Float rtrvTaskUsedTimeQty(String taskId);
-    //获取story对象信息
+    //获取story用户故事点信息
     @Query(value = "SELECT story_point FROM story WHERE story_id = ?1", nativeQuery = true)
     Float rtrvStoryPoint(String storyId);
-
+    //获取story状态信息
+    @Query(value = "SELECT status FROM story WHERE story_id = ?1", nativeQuery = true)
+    String rtrvStatus(String storyId);
 }

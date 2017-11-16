@@ -76,6 +76,17 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
             Float reqmProgress = this.averageReqmProgress(rRequest);
             String sql = "UPDATE requirement_info SET progress = " + reqmProgress + " WHERE reqmnt_id=" + "\"" + reqmId + "\"";
             this.jdbcTemplate.update(sql);
+            //所有的story进度都为100时，reqmnt的状态变为done
+            Float progresses = Float.valueOf(0);
+            String status = this.storyRepository.rtrvStatus(reqmId);
+            for (int i = 0; i < list.size(); i++) {
+                progresses += list.get(i).getProgress();
+            }
+            if (progresses / list.size() == 100) {
+                status = "done";
+            }
+            String statusSql = "UPDATE requirement_info SET status = " + "\""+ status+ "\"" + " WHERE reqmnt_id=" + "\"" + reqmId + "\"";
+            this.jdbcTemplate.update(statusSql);
 
             rtrvStoryListResponse.setStories(list);
             rtrvStoryListResponse.setTotalElements(Long.valueOf(list.size()));
@@ -108,6 +119,17 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
             Float reqmProgress = this.averageReqmProgress(rRequest);
             String sql = "UPDATE requirement_info SET progress = " + reqmProgress + " WHERE reqmnt_id=" + "\"" + reqmId + "\"";
             this.jdbcTemplate.update(sql);
+            //所有的story进度都为100时，reqmnt的状态变为done
+            Float progresses = Float.valueOf(0);
+            String status = this.storyRepository.rtrvStatus(reqmId);
+            for (int i = 0; i < storyInfos.getContent().size(); i++) {
+                progresses += storyInfos.getContent().get(i).getProgress();
+            }
+            if (progresses / storyInfos.getContent().size() == 100) {
+                status = "done";
+            }
+            String statusSql = "UPDATE requirement_info SET status = " + "\""+ status+ "\"" + " WHERE reqmnt_id=" + "\"" + reqmId + "\"";
+            this.jdbcTemplate.update(statusSql);
             LOG.info("查询结果为：{}", rtrvStoryListResponse);
             return ResponseEntity.ok(rtrvStoryListResponse);
         }
@@ -330,17 +352,17 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
             /*高~低*/
             if (prioritys.size() == 2 && prioritys.get(0) + prioritys.get(1) == 4) {
                 if (priority.equals(3)) {
-                    flag = 0.8;
+                    flag = 0.7;
                 } else {
-                    flag = 0.2;
+                    flag = 0.3;
                 }
             }
             /*中~低*/
             if (prioritys.size() == 2 && prioritys.get(0) + prioritys.get(1) == 3) {
                 if (priority.equals(2)) {
-                    flag = 0.7;
+                    flag = 0.6;
                 } else {
-                    flag = 0.3;
+                    flag = 0.4;
                 }
             }
             if (prioritys.size() == 1) {

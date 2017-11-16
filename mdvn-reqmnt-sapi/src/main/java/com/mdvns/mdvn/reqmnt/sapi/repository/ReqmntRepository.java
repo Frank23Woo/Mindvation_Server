@@ -55,4 +55,7 @@ public interface ReqmntRepository extends JpaRepository<RequirementInfo, Integer
     //查询某个proj下的优先级种类
     @Query(value = "SELECT DISTINCT priority FROM requirement_info WHERE proj_id = ?1  AND is_deleted = 0", nativeQuery = true)
     List<Integer> findPriority(String projId);
+    //获取proj状态信息
+    @Query(value = "SELECT status FROM project WHERE proj_id = ?1", nativeQuery = true)
+    String rtrvStatus(String projId);
 }
