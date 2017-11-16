@@ -23,8 +23,6 @@ public class CreateTagRequest {
     private String creatorId;
 
     /*標簽色值*/
-    @NotBlank(message = "标签色值不能为空")
-    @Size(max = 10, message = "色值编码不正确")
     private String color;
 
     /*后加的字段，1~7随机给一个数字*/

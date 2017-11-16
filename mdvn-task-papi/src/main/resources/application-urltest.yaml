@@ -34,3 +34,6 @@ config:
   deleteAttachForTaskUrl: http://localhost:8080/mdvn-task-sapi/deleteAttachForTask
 # attachment sapi urls
   getAttachmentListByIdsUrl: http://localhost:8080/mdvn-file-sapi/files/
+
+  rtrvStoryBaseInfoUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/rtrvStoryBaseInfo
+  updateStoryBaseInfoUrl: http://localhost:8080/mdvn-story-sapi/updateStory/updateStoryBaseInfo

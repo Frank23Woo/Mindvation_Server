@@ -1,5 +1,5 @@
 server:
-  port: 80
+  port: 10003
   context-path: /mdvn-task-papi
 spring:
   profiles:

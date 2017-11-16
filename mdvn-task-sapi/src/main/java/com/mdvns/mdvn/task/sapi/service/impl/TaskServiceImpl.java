@@ -1,7 +1,6 @@
 package com.mdvns.mdvn.task.sapi.service.impl;
 
 
-import com.mdvns.mdvn.common.beans.Story;
 import com.mdvns.mdvn.common.utils.MdvnStringUtil;
 import com.mdvns.mdvn.task.sapi.domain.*;
 import com.mdvns.mdvn.task.sapi.domain.entity.Task;
@@ -62,17 +61,6 @@ public class TaskServiceImpl implements TaskService {
         Float storyProgress = this.averageStoryProgress(tRequest);
         String sql = "UPDATE story SET progress = " + storyProgress + " WHERE story_id=" + "\"" + storyId + "\"";
         this.jdbcTemplate.update(sql);
-        //所有的task进度都为100时，story的状态变为done
-        Integer progresses = 0;
-        String status = this.taskRepository.rtrvStatus(storyId);
-        for (int i = 0; i < tasks.size(); i++) {
-            progresses += tasks.get(i).getProgress();
-        }
-        if (progresses / tasks.size() == 100) {
-            status = "done";
-        }
-        String statusSql = "UPDATE story SET status = " + "\""+ status+ "\"" + " WHERE story_id=" + "\"" + storyId + "\"";
-        this.jdbcTemplate.update(statusSql);
         //获取task列表时重新计算story的完成用户故事点
         Float storyPoint = taskRepository.rtrvStoryPoint(storyId);
         Float finishedSP = storyPoint * storyProgress / 100;

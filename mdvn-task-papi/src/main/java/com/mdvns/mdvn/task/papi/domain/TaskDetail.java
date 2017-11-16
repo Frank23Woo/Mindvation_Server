@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mdvns.mdvn.common.beans.AttchInfo;
 import com.mdvns.mdvn.common.beans.Staff;
 import com.mdvns.mdvn.common.beans.StaffAuthInfo;
+import com.mdvns.mdvn.common.beans.Story;
 import com.mdvns.mdvn.task.papi.domain.entity.TaskDeliver;
 import org.springframework.stereotype.Component;
 
@@ -46,7 +47,17 @@ public class TaskDetail {
 
     private List<StaffAuthInfo> staffAuthInfo;
 
+    private Story story;
+
     public TaskDetail() {
+    }
+
+    public Story getStory() {
+        return story;
+    }
+
+    public void setStory(Story story) {
+        this.story = story;
     }
 
     public Float getUsedTime() {

@@ -38,7 +38,6 @@ public class Tag {
     private String creatorId;
 
     /* 標簽色值*/
-    @Column(name = "color", nullable = false)
     private String color;
 
     /* 標簽創建時間*/

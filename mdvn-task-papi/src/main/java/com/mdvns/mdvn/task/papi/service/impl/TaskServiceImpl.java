@@ -1,15 +1,14 @@
 package com.mdvns.mdvn.task.papi.service.impl;
 
-import com.mdvns.mdvn.common.beans.AttchInfo;
-import com.mdvns.mdvn.common.beans.RestResponse;
-import com.mdvns.mdvn.common.beans.Staff;
-import com.mdvns.mdvn.common.beans.StaffAuthInfo;
+import com.mdvns.mdvn.common.beans.*;
+import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
 import com.mdvns.mdvn.common.enums.AuthEnum;
 import com.mdvns.mdvn.common.utils.FetchListUtil;
 import com.mdvns.mdvn.common.utils.StaffAuthUtil;
 import com.mdvns.mdvn.task.papi.config.UrlConfig;
 import com.mdvns.mdvn.task.papi.domain.*;
+import com.mdvns.mdvn.task.papi.domain.TaskDetail;
 import com.mdvns.mdvn.task.papi.service.TaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,12 +17,9 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-import sun.swing.StringUIClientPropertyKey;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +41,6 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     private UrlConfig urlConfig;
 
-
     @Autowired
     private RestTemplate restTemplate;
 
@@ -61,6 +56,7 @@ public class TaskServiceImpl implements TaskService {
 
         RestResponse response = new RestResponse();
         TaskDetail task = null;
+
         try {
             request.setAssigneeId(request.getCreatorId());
             task = restTemplate.postForObject(urlConfig.getSaveTaskUrl(), request, TaskDetail.class);
@@ -81,10 +77,27 @@ public class TaskServiceImpl implements TaskService {
             response.setResponseMsg(ExceptionEnum.TASK_SAVE_FAILED.getErrorMsg());
         }
         //分配权限
-        System.out.println(request.getProjId()+task.getTaskId()+request.getCreatorId()+ AuthEnum.TMEMBER.getCode());
-        List<StaffAuthInfo> staffAuthInfos = StaffAuthUtil.assignAuthForCreator(restTemplate, request.getProjId(), task.getTaskId(),request.getCreatorId(), AuthEnum.TMEMBER.getCode());
+        System.out.println(request.getProjId() + task.getTaskId() + request.getCreatorId() + AuthEnum.TMEMBER.getCode());
+        List<StaffAuthInfo> staffAuthInfos = StaffAuthUtil.assignAuthForCreator(restTemplate, request.getProjId(), task.getTaskId(), request.getCreatorId(), AuthEnum.TMEMBER.getCode());
         task.setStaffAuthInfo(staffAuthInfos);
         LOG.info("新建Task，分配权限成功!");
+        //创建一个task之后，如果这个story是done的要改为inprogress
+        // 返回story对象
+        RtrvStoryDetailRequest rtrvStoryDetailRequest = new RtrvStoryDetailRequest();
+        rtrvStoryDetailRequest.setStoryId(request.getStoryId());
+        String rtrvStoryBaseInfoUrl = urlConfig.getRtrvStoryBaseInfoUrl();
+        Story story = restTemplate.postForObject(rtrvStoryBaseInfoUrl, rtrvStoryDetailRequest, Story.class);
+        if (story.getStatus().equals("done")) {
+            story.setStatus("inProgress");
+            String updateStoryBaseInfoUrl = urlConfig.getUpdateStoryBaseInfoUrl();
+            try {
+                story = restTemplate.postForObject(updateStoryBaseInfoUrl, story, Story.class);
+            } catch (Exception ex) {
+                throw new BusinessException(ExceptionEnum.STORY_BASEINFO_NOT_UPDATE);
+            }
+        }
+        task.setStory(story);
+        response.setStatusCode(String.valueOf(HttpStatus.OK));
         response.setResponseBody(task);
         response.setResponseCode("000");
         response.setResponseMsg("ok");
@@ -110,10 +123,10 @@ public class TaskServiceImpl implements TaskService {
 
             for (int i = 0; i < taskList.size(); i++) {
                 //获取权限信息
-                LOG.info("projId:"+taskList.get(i).getProjId());
-                LOG.info("taskId:"+ taskList.get(i).getTaskId());
-                LOG.info("staffId:"+request.getStaffId());
-                List<StaffAuthInfo> staffAuthInfos = StaffAuthUtil.rtrvStaffAuthInfo(this.restTemplate, taskList.get(i).getProjId(), taskList.get(i).getTaskId(), request.getStaffId() );
+                LOG.info("projId:" + taskList.get(i).getProjId());
+                LOG.info("taskId:" + taskList.get(i).getTaskId());
+                LOG.info("staffId:" + request.getStaffId());
+                List<StaffAuthInfo> staffAuthInfos = StaffAuthUtil.rtrvStaffAuthInfo(this.restTemplate, taskList.get(i).getProjId(), taskList.get(i).getTaskId(), request.getStaffId());
                 taskList.get(i).setStaffAuthInfo(staffAuthInfos);
             }
 
@@ -162,6 +175,7 @@ public class TaskServiceImpl implements TaskService {
 
     /**
      * 获取单个task信息
+     *
      * @param request
      * @return
      * @throws Exception
@@ -182,21 +196,21 @@ public class TaskServiceImpl implements TaskService {
             ParameterizedTypeReference typeReference = new ParameterizedTypeReference<TaskDetail>() {
             };
             String taskId = request.getTaskId();
-            TaskDetail taskDetail = restTemplate.postForObject(urlConfig.getRtrvTaskInfoUrl(),taskId,TaskDetail.class);
+            TaskDetail taskDetail = restTemplate.postForObject(urlConfig.getRtrvTaskInfoUrl(), taskId, TaskDetail.class);
             // 查询creator和assignee
             String creatorId = taskDetail.getCreatorId();
-            Staff creatorInfo = this.restTemplate.postForObject(urlConfig.getRtrvStaffInfoUrl(),creatorId,Staff.class);
+            Staff creatorInfo = this.restTemplate.postForObject(urlConfig.getRtrvStaffInfoUrl(), creatorId, Staff.class);
             String assigneeId = taskDetail.getAssigneeId();
-            Staff assigneeInfo = this.restTemplate.postForObject(urlConfig.getRtrvStaffInfoUrl(),assigneeId,Staff.class);
+            Staff assigneeInfo = this.restTemplate.postForObject(urlConfig.getRtrvStaffInfoUrl(), assigneeId, Staff.class);
             taskDetail.setAssignee(assigneeInfo);
             taskDetail.setCreator(creatorInfo);
             //附件
             getTaskAttachment(taskDetail);
 
             //获取权限信息
-            List<StaffAuthInfo> staffAuthInfos = StaffAuthUtil.rtrvStaffAuthInfo(this.restTemplate, taskDetail.getProjId(), taskId, request.getStaffId() );
+            List<StaffAuthInfo> staffAuthInfos = StaffAuthUtil.rtrvStaffAuthInfo(this.restTemplate, taskDetail.getProjId(), taskId, request.getStaffId());
             taskDetail.setStaffAuthInfo(staffAuthInfos);
-            LOG.info("获取task权限"+staffAuthInfos.toString());
+            LOG.info("获取task权限" + staffAuthInfos.toString());
             restResponse.setResponseCode("000");
             restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
             restResponse.setResponseMsg("ok");
@@ -235,6 +249,37 @@ public class TaskServiceImpl implements TaskService {
                 // 查询附件
                 getTaskAttachment(result);
 
+                //更改一个task之后判断其他所有的task进度是否都为100%
+                // 查询task sapi
+                RtrvTaskListRequest rtrvTaskListRequest = new RtrvTaskListRequest();
+                rtrvTaskListRequest.setStoryId(request.getStoryId());
+                ParameterizedTypeReference typeReference = new ParameterizedTypeReference<List<TaskDetail>>() {
+                };
+                List<TaskDetail> tasks = FetchListUtil.fetch(restTemplate, urlConfig.getRtrvTaskListUrl(), rtrvTaskListRequest, typeReference);
+
+                // 返回story对象
+                RtrvStoryDetailRequest rtrvStoryDetailRequest = new RtrvStoryDetailRequest();
+                rtrvStoryDetailRequest.setStoryId(request.getStoryId());
+                String rtrvStoryBaseInfoUrl = urlConfig.getRtrvStoryBaseInfoUrl();
+                Story story = restTemplate.postForObject(rtrvStoryBaseInfoUrl, rtrvStoryDetailRequest, Story.class);
+                //所有的task进度都为100时，story的状态变为done
+                Integer progresses = 0;
+                for (int i = 0; i < tasks.size(); i++) {
+                    progresses += tasks.get(i).getProgress();
+                }
+                Story st = story;
+                if (progresses / tasks.size() == 100) {
+                    String status = "done";
+                    story.setStatus(status);
+                    String updateStoryBaseInfoUrl = urlConfig.getUpdateStoryBaseInfoUrl();
+                    try {
+                        st = restTemplate.postForObject(updateStoryBaseInfoUrl, story, Story.class);
+                    } catch (Exception ex) {
+                        throw new BusinessException(ExceptionEnum.STORY_BASEINFO_NOT_UPDATE);
+                    }
+                }
+                result.setStory(st);
+                restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
                 restResponse.setResponseCode("000");
                 restResponse.setResponseMsg("ok");
                 restResponse.setResponseBody(result);
@@ -321,7 +366,7 @@ public class TaskServiceImpl implements TaskService {
         final String ids = task.getAttachmentIds();
         if (!StringUtils.isEmpty(ids)) {
             ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(urlConfig.getGetAttachmentListByIdsUrl() + ids, RestResponse.class);
-            task.setAttachUrlList((List<AttchInfo>)responseEntity.getBody().getResponseBody());
+            task.setAttachUrlList((List<AttchInfo>) responseEntity.getBody().getResponseBody());
 //            ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(urlConfig.getGetAttachmentListByIdsUrl(), RestResponse.class, ids);
 //            task.setAttachUrlList((List)responseEntity.getBody().getResponseBody());
         }

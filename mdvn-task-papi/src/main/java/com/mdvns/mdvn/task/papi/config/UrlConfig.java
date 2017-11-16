@@ -45,6 +45,26 @@ public class UrlConfig {
 
     private String deleteAttachForTaskUrl;
 
+    private String rtrvStoryBaseInfoUrl;
+
+    private String updateStoryBaseInfoUrl;
+
+    public String getUpdateStoryBaseInfoUrl() {
+        return updateStoryBaseInfoUrl;
+    }
+
+    public void setUpdateStoryBaseInfoUrl(String updateStoryBaseInfoUrl) {
+        this.updateStoryBaseInfoUrl = updateStoryBaseInfoUrl;
+    }
+
+    public String getRtrvStoryBaseInfoUrl() {
+        return rtrvStoryBaseInfoUrl;
+    }
+
+    public void setRtrvStoryBaseInfoUrl(String rtrvStoryBaseInfoUrl) {
+        this.rtrvStoryBaseInfoUrl = rtrvStoryBaseInfoUrl;
+    }
+
     public String getRtrvTaskInfoUrl() {
         return rtrvTaskInfoUrl;
     }
