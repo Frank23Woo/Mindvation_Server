@@ -1,48 +1,48 @@
 config:
-  judgeSubLabelIdUrl: http://localhost:10009/mdvn-model-sapi/models/judgeSubLabelId
-  createStoryUrl: http://localhost:10015/mdvn-story-sapi/story/createStory
-  saveStoryBaseUrl: http://localhost:10015/mdvn-story-sapi/story/saveStory
-  savePTagsUrl: http://localhost:10015/mdvn-story-sapi/story/savePTags
-  savePModelsUrl: http://localhost:10015/mdvn-story-sapi/story/savePModels
-  saveCheckListsUrl: http://localhost:10015/mdvn-story-sapi/story/savePCheckLists
-  checklistsListByUuIdUrl: http://localhost:10015/mdvn-story-sapi/story/checklistsListByUuId
-  saveSAttchUrlsUrl: http://localhost:10015/mdvn-story-sapi/story/saveSAttchUrls
-  savePLeadersUrl: http://localhost:10015/mdvn-story-sapi/story/savePLeaders
-  updateStoryBaseInfoUrl: http://localhost:10015/mdvn-story-sapi/updateStory/updateStoryBaseInfo
-  updateStoryMembersUrl: http://localhost:10015/mdvn-story-sapi/updateStory/updateStoryMembers
-  updateStoryAttchUrlsUrl: http://localhost:10015/mdvn-story-sapi/updateStory/updateStoryAttchUrls
-  updateStoryTagsUrl: http://localhost:10015/mdvn-story-sapi/updateStory/updateStoryTags
-  updateStoryChecklistsUrl: http://localhost:10015/mdvn-story-sapi/updateStory/updateStoryChecklists
-  updateStoryModelsUrl: http://localhost:10015/mdvn-story-sapi/updateStory/updateStoryModels
-  rtrvStoryBaseInfoUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/rtrvStoryBaseInfo
-  rtrvSRoleMembersUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/rtrvSRoleMembers
-  rtrvStoryTagsUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/rtrvStoryTags
-  rtrvStoryModelsUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/rtrvStoryModels
-  rtrvStoryCheckListsUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/rtrvStoryCheckLists
-  rtrvStoryAttUrlsUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/rtrvStoryAttUrls
-  rtrvReqmntListUrl: http://localhost:10011/mdvn-reqmnt-papi/rtrvReqmntList
+  judgeSubLabelIdUrl: http://localhost:8080/mdvn-model-sapi/models/judgeSubLabelId
+  createStoryUrl: http://localhost:8080/mdvn-story-sapi/story/createStory
+  saveStoryBaseUrl: http://localhost:8080/mdvn-story-sapi/story/saveStory
+  savePTagsUrl: http://localhost:8080/mdvn-story-sapi/story/savePTags
+  savePModelsUrl: http://localhost:8080/mdvn-story-sapi/story/savePModels
+  saveCheckListsUrl: http://localhost:8080/mdvn-story-sapi/story/savePCheckLists
+  checklistsListByUuIdUrl: http://localhost:8080/mdvn-story-sapi/story/checklistsListByUuId
+  saveSAttchUrlsUrl: http://localhost:8080/mdvn-story-sapi/story/saveSAttchUrls
+  savePLeadersUrl: http://localhost:8080/mdvn-story-sapi/story/savePLeaders
+  updateStoryBaseInfoUrl: http://localhost:8080/mdvn-story-sapi/updateStory/updateStoryBaseInfo
+  updateStoryMembersUrl: http://localhost:8080/mdvn-story-sapi/updateStory/updateStoryMembers
+  updateStoryAttchUrlsUrl: http://localhost:8080/mdvn-story-sapi/updateStory/updateStoryAttchUrls
+  updateStoryTagsUrl: http://localhost:8080/mdvn-story-sapi/updateStory/updateStoryTags
+  updateStoryChecklistsUrl: http://localhost:8080/mdvn-story-sapi/updateStory/updateStoryChecklists
+  updateStoryModelsUrl: http://localhost:8080/mdvn-story-sapi/updateStory/updateStoryModels
+  rtrvStoryBaseInfoUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/rtrvStoryBaseInfo
+  rtrvSRoleMembersUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/rtrvSRoleMembers
+  rtrvStoryTagsUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/rtrvStoryTags
+  rtrvStoryModelsUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/rtrvStoryModels
+  rtrvStoryCheckListsUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/rtrvStoryCheckLists
+  rtrvStoryAttUrlsUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/rtrvStoryAttUrls
+  rtrvReqmntListUrl: http://localhost:8080/mdvn-reqmnt-papi/rtrvReqmntList
 
-  rtrvMembersByRoleIdUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/rtrvMembersByRoleId
-  labelIdByStoryIdUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/getLabelIdByStoryId
-  modelIdByStoryIdUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/getModelIdByStoryId
-  reqmntIdByStoryIdUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/getReqmntIdByStoryId
-  rtrvReqmntMembersUrl : http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntMembers
+  rtrvMembersByRoleIdUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/rtrvMembersByRoleId
+  labelIdByStoryIdUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/getLabelIdByStoryId
+  modelIdByStoryIdUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/getModelIdByStoryId
+  rtrvReqmntMembersUrl : http://localhost:8080/mdvn-reqmnt-sapi/rtrvReqmntMembers
+  reqmntIdByStoryIdUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/getReqmntIdByStoryId
 # staff sapi urls
-  rtrvStaffsByIdsUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffListByStaffIdList
+  rtrvStaffsByIdsUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffListByStaffIdList
 
 
 # tag sapi urls
-  rtrvTagsByIdsUrl: http://localhost:10002/mdvn-tag-sapi/tags/rtrvTags
+  rtrvTagsByIdsUrl: http://localhost:8080/mdvn-tag-sapi/tags/rtrvTags
 
 # model sapi urls
-  rtrvFuncLabelUrl: http://localhost:10009/mdvn-model-sapi/models/findFuncById
-  rtrvModelRoleByModelIdUrl: http://localhost:10009/mdvn-model-sapi/models/findById
-  rtrvRoleByRoleIdUrl: http://localhost:10009/mdvn-model-sapi/models/findRoleById
-  findTaskDeliveryByIdUrl: http://localhost:10009/mdvn-model-sapi/models/findTaskDeliveryById
-  findSubFuncListByIdUrl: http://localhost:10009/mdvn-model-sapi/models/findSubFuncListById
-  rtrvStoryInfoListUrl: http://localhost:10015/mdvn-story-sapi/story/rtrvStoryInfoList
-  rtrvTaskListByStoryIdUrl: http://localhost:10003/mdvn-task-papi/task/retrieveTaskList
+  rtrvFuncLabelUrl: http://localhost:8080/mdvn-model-sapi/models/findFuncById
+  rtrvModelRoleByModelIdUrl: http://localhost:8080/mdvn-model-sapi/models/findById
+  rtrvRoleByRoleIdUrl: http://localhost:8080/mdvn-model-sapi/models/findRoleById
+  findTaskDeliveryByIdUrl: http://localhost:8080/mdvn-model-sapi/models/findTaskDeliveryById
+  findSubFuncListByIdUrl: http://localhost:8080/mdvn-model-sapi/models/findSubFuncListById
+  rtrvStoryInfoListUrl: http://localhost:8080/mdvn-story-sapi/story/rtrvStoryInfoList
+  rtrvTaskListByStoryIdUrl: http://localhost:8080/mdvn-task-papi/task/retrieveTaskList
 
-  rtrvAttchListUrl: http://localhost:10019/mdvn-file-sapi/files/
+  rtrvAttchListUrl: http://localhost:8080/mdvn-file-sapi/files/
 
-  addStoryUrl: http://localhost:10017/mdvn-dashboard-sapi/dashboards/addStory
+  addStoryUrl: http://localhost:8080/mdvn-dashboard-sapi/dashboards/addStory

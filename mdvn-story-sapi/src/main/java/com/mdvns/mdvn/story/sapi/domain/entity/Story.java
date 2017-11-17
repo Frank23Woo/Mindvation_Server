@@ -36,13 +36,13 @@ public class Story {
     //用户故事优先级
     private Integer priority;
     //用户故事开始日期
-    @Column(name = "start_date", columnDefinition = "timestamp", nullable = false)
+//    @Column(name = "start_date", columnDefinition = "timestamp", nullable = false)
     private Timestamp startDate;
     //用户故事结束时期
-    @Column(name = "end_date", columnDefinition = "timestamp", nullable = false)
+//    @Column(name = "end_date", columnDefinition = "timestamp", nullable = false)
     private Timestamp endDate;
     //用户故事最后一次更新时间
-    @Column(name = "last_update_time", columnDefinition = "timestamp", nullable = false)
+//    @Column(name = "last_update_time", columnDefinition = "timestamp", nullable = false)
     private Timestamp lastUpdateTime;
     //创建时间
     @Column(name = "create_time", nullable = false)

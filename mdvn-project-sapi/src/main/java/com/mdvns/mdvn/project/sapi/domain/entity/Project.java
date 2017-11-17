@@ -28,10 +28,10 @@ public class Project {
     //项目优先级
     private Integer priority;
     //项目开始日期
-    @Column(name = "start_date", columnDefinition = "timestamp", nullable = false)
+//    @Column(name = "start_date", columnDefinition = "timestamp", nullable = false)
     private Timestamp startDate;
     //项目结束时期
-    @Column(name = "end_date", columnDefinition = "timestamp", nullable = false)
+//    @Column(name = "end_date", columnDefinition = "timestamp", nullable = false)
     private Timestamp endDate;
     //创建时间
     @Column(name = "create_time", nullable = false)

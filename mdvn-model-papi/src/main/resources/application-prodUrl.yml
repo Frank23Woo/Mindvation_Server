@@ -1,13 +1,12 @@
 url:
-  saveModelUrl: http://localhost:10009/mdvn-model-sapi/models/saveModel
-#  rtrvModelListUrl: http://localhost:10009/mdvn-model-sapi/models
-  rtrvModelListUrl: http://localhost:10009/mdvn-model-sapi/modelsAndSort
-  rtrvModelListByTypeUrl: http://localhost:10009/mdvn-model-sapi/modelsByType
-  updateQuoteCntUrl: http://localhost:10009/mdvn-model-sapi/models
-  findByNameUrl : http://localhost:10009/mdvn-model-sapi/models/model
-  findByIdUrl: http://localhost:10009/mdvn-model-sapi/models/findById
-  findModelDetailByIdUrl: http://localhost:10009/mdvn-model-sapi/models/findModelDetailById
-  rtrvStaffInfoUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffInfo
-
+  saveModelUrl: http://localhost:8080/mdvn-model-sapi/models/saveModel
+#  rtrvModelListUrl: http://localhost:8080/mdvn-model-sapi/models
+  rtrvModelListUrl: http://localhost:8080/mdvn-model-sapi/modelsAndSort
+  rtrvModelListByTypeUrl: http://localhost:8080/mdvn-model-sapi/modelsByType
+  updateQuoteCntUrl: http://localhost:8080/mdvn-model-sapi/models
+  findByNameUrl : http://localhost:8080/mdvn-model-sapi/models/model
+  findByIdUrl: http://localhost:8080/mdvn-model-sapi/models/findById
+  findModelDetailByIdUrl: http://localhost:8080/mdvn-model-sapi/models/findModelDetailById
+  rtrvStaffInfoUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffInfo
 
 

@@ -1,39 +1,39 @@
 config:
-  saveReqmntUrl: http://localhost:10012/mdvn-reqmnt-sapi/saveReqmnt
-  saveRMembersUrl: http://localhost:10012/mdvn-reqmnt-sapi/saveRMembers
-  saveRTagsUrl: http://localhost:10012/mdvn-reqmnt-sapi/saveRTags
-  saveRCheckListUrl: http://localhost:10012/mdvn-reqmnt-sapi/saveRCheckLists
-  saveRAttchUrl: http://localhost:10012/mdvn-reqmnt-sapi/saveRAttchUrls
+  saveReqmntUrl: http://localhost:8080/mdvn-reqmnt-sapi/saveReqmnt
+  saveRMembersUrl: http://localhost:8080/mdvn-reqmnt-sapi/saveRMembers
+  saveRTagsUrl: http://localhost:8080/mdvn-reqmnt-sapi/saveRTags
+  saveRCheckListUrl: http://localhost:8080/mdvn-reqmnt-sapi/saveRCheckLists
+  saveRAttchUrl: http://localhost:8080/mdvn-reqmnt-sapi/saveRAttchUrls
 
-  rtrvReqmntInfoUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntInfo
-  rtrvReqmntListUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntList
-  rtrvReqmntTagsUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntTags
-  rtrvReqmntMembersUrl : http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntMembers
-  rtrvReqmntCheckListUrl : http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntCheckList
-  rtrvReqmntAttchsUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntAttUrls
-  updateReqmntInfoUrl: http://localhost:10012/mdvn-reqmnt-sapi/updateReqmntInfo
+  rtrvReqmntInfoUrl: http://localhost:8080/mdvn-reqmnt-sapi/rtrvReqmntInfo
+  rtrvReqmntListUrl: http://localhost:8080/mdvn-reqmnt-sapi/rtrvReqmntList
+  rtrvReqmntTagsUrl: http://localhost:8080/mdvn-reqmnt-sapi/rtrvReqmntTags
+  rtrvReqmntMembersUrl : http://localhost:8080/mdvn-reqmnt-sapi/rtrvReqmntMembers
+  rtrvReqmntCheckListUrl : http://localhost:8080/mdvn-reqmnt-sapi/rtrvReqmntCheckList
+  rtrvReqmntAttchsUrl: http://localhost:8080/mdvn-reqmnt-sapi/rtrvReqmntAttUrls
+  updateReqmntInfoUrl: http://localhost:8080/mdvn-reqmnt-sapi/updateReqmntInfo
 
 
 # staff sapi urls
-  rtrvStaffsByIdsUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffListByStaffIdList
-  rtrvStaffInfoUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffInfo
+  rtrvStaffsByIdsUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffListByStaffIdList
+  rtrvStaffInfoUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffInfo
 
 # tag sapi urls
-  rtrvTagsByIdsUrl: http://localhost:10002/mdvn-tag-sapi/tags/rtrvTags
+  rtrvTagsByIdsUrl: http://localhost:8080/mdvn-tag-sapi/tags/rtrvTags
 
 # model sapi urls
-  rtrvFuncLabelUrl: http://localhost:10009/mdvn-model-sapi/models/findFuncById
-  rtrvModelRoleByModelIdUrl: http://localhost:10009/mdvn-model-sapi/models/findById
+  rtrvFuncLabelUrl: http://localhost:8080/mdvn-model-sapi/models/findFuncById
+  rtrvModelRoleByModelIdUrl: http://localhost:8080/mdvn-model-sapi/models/findById
 
 # task sapi urls
-  saveTaskUrl: http://localhost:10004/mdvn-task-sapi/saveTask
-  rtrvTaskListUrl: http://localhost:10004/mdvn-task-sapi/rtrvTaskList
-  rtrvTaskInfoUrl: http://localhost:10004/mdvn-task-sapi/rtrvTaskInfo
-  updateTaskUrl: http://localhost:10004/mdvn-task-sapi/updateTask
-  addAttachForTaskUrl: http://localhost:10004/mdvn-task-sapi/addAttachForTask
-  deleteAttachForTaskUrl: http://localhost:10004/mdvn-task-sapi/deleteAttachForTask
+  saveTaskUrl: http://localhost:8080/mdvn-task-sapi/saveTask
+  rtrvTaskListUrl: http://localhost:8080/mdvn-task-sapi/rtrvTaskList
+  rtrvTaskInfoUrl: http://localhost:8080/mdvn-task-sapi/rtrvTaskInfo
+  updateTaskUrl: http://localhost:8080/mdvn-task-sapi/updateTask
+  addAttachForTaskUrl: http://localhost:8080/mdvn-task-sapi/addAttachForTask
+  deleteAttachForTaskUrl: http://localhost:8080/mdvn-task-sapi/deleteAttachForTask
 # attachment sapi urls
-  getAttachmentListByIdsUrl: http://localhost:10019/mdvn-file-sapi/files/
+  getAttachmentListByIdsUrl: http://localhost:8080/mdvn-file-sapi/files/
 
-  rtrvStoryBaseInfoUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/rtrvStoryBaseInfo
-  updateStoryBaseInfoUrl: http://localhost:10015/mdvn-story-sapi/updateStory/updateStoryBaseInfo
+  rtrvStoryBaseInfoUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/rtrvStoryBaseInfo
+  updateStoryBaseInfoUrl: http://localhost:8080/mdvn-story-sapi/updateStory/updateStoryBaseInfo

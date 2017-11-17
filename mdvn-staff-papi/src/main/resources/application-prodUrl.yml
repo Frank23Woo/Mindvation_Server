@@ -1,25 +1,26 @@
 url:
-  rtrvStaffListUrl: http://localhost:10013/mdvn-staff-sapi/staffList
-  rtrvStaffListByStaffIdListUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffListByStaffIdList
-  rtrvStaffInfoUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffInfo
+  rtrvStaffListUrl: http://localhost:8080/mdvn-staff-sapi/staffList
+  rtrvStaffListByStaffIdListUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffListByStaffIdList
+  rtrvStaffInfoUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffInfo
 
-  assignAuthUrl : http://localhost:10013/mdvn-staff-sapi/staffAuth
-  rtrvAuthUrl : http://localhost:10013/mdvn-staff-sapi/rtrvAuth
-  findByIdUrl : http://localhost:10013/mdvn-staff-sapi/staff
+  assignAuthUrl : http://localhost:8080/mdvn-staff-sapi/staffAuth
+  rtrvAuthUrl : http://localhost:8080/mdvn-staff-sapi/rtrvAuth
+  findByIdUrl : http://localhost:8080/mdvn-staff-sapi/staff
 
-  createStaffUrl: http://localhost:10013/mdvn-staff-sapi/createStaff
-  rtrvStaffDetailUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffDetail
-  rtrvStaffTagListUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffTagList
-  updateStaffDetailUrl: http://localhost:10013/mdvn-staff-sapi/updateStaffDetail
-  rtrvTagsUrl: http://localhost:10002/mdvn-tag-sapi/tags/rtrvTags
+  createStaffUrl: http://localhost:8080/mdvn-staff-sapi/createStaff
+  rtrvStaffDetailUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffDetail
+  rtrvStaffTagListUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffTagList
+  updateStaffDetailUrl: http://localhost:8080/mdvn-staff-sapi/updateStaffDetail
+  rtrvTagsUrl: http://localhost:8080/mdvn-tag-sapi/tags/rtrvTags
 
-  rtrvPostionDetailUrl: http://localhost:10023/mdvn-department-sapi/findPositionById
-  rtrvDepartmentDetailUrl: http://localhost:10023/mdvn-department-sapi/findDepartmentById
-  findByAccounAndPasswordtUrl : http://localhost:10013/mdvn-staff-sapi/staff
-  removeAllAuthUrl: http://localhost:10013/mdvn-staff-sapi/removeAllAuth
+  rtrvPostionDetailUrl: http://localhost:8080/mdvn-department-sapi/findPositionById
+  rtrvDepartmentDetailUrl: http://localhost:8080/mdvn-department-sapi/findDepartmentById
+  findByAccounAndPasswordtUrl : http://localhost:8080/mdvn-staff-sapi/staff
+  removeAllAuthUrl: http://localhost:8080/mdvn-staff-sapi/removeAllAuth
 #  获取拥有指定标签集中任意标签的StaffTag信息
-  rtrvStaffByTagsUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffByTags
+  rtrvStaffByTagsUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffByTags
 #查询staffId 为 指定id的tagId集合
-  rtrvTagsByStaffIdUrl: http://localhost:10013/mdvn-staff-sapi/rtrvTagsByStaffId
+  rtrvTagsByStaffIdUrl: http://localhost:8080/mdvn-staff-sapi/rtrvTagsByStaffId
 #查询name以指定字符串开头的所有用户
-  rtrvStaffByNameStartingUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffByNameStarting
+  rtrvStaffByNameStartingUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffByNameStarting
+

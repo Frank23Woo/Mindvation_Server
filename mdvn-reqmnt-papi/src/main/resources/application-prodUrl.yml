@@ -10,39 +10,40 @@ config:
 #  savePAttchUrlsUrl: http://localhost:10005/mdvn-project-sapi/project/savePAttchUrls
 #  savePLeadersUrl: http://localhost:10005/mdvn-project-sapi/project/savePLeaders
 
-  saveReqmntUrl: http://localhost:10012/mdvn-reqmnt-sapi/saveReqmnt
-  saveRMembersUrl: http://localhost:10012/mdvn-reqmnt-sapi/saveRMembers
-  saveRTagsUrl: http://localhost:10012/mdvn-reqmnt-sapi/saveRTags
-  saveRCheckListUrl: http://localhost:10012/mdvn-reqmnt-sapi/saveRCheckLists
-  saveRAttchUrl: http://localhost:10012/mdvn-reqmnt-sapi/saveRAttchUrls
+  saveReqmntUrl: http://localhost:8080/mdvn-reqmnt-sapi/saveReqmnt
+  saveRMembersUrl: http://localhost:8080/mdvn-reqmnt-sapi/saveRMembers
+  saveRTagsUrl: http://localhost:8080/mdvn-reqmnt-sapi/saveRTags
+  saveRCheckListUrl: http://localhost:8080/mdvn-reqmnt-sapi/saveRCheckLists
+  saveRAttchUrl: http://localhost:8080/mdvn-reqmnt-sapi/saveRAttchUrls
 
-  rtrvReqmntInfoUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntInfo
-  rtrvReqmntListUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntList
-  rtrvReqmntTagsUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntTags
-  rtrvReqmntMembersUrl : http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntMembers
-  rtrvReqmntCheckListUrl : http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntCheckList
-  rtrvReqmntAttchsUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntAttUrls
-  updateReqmntInfoUrl: http://localhost:10012/mdvn-reqmnt-sapi/updateReqmntInfo
+  rtrvReqmntInfoUrl: http://localhost:8080/mdvn-reqmnt-sapi/rtrvReqmntInfo
+  rtrvReqmntListUrl: http://localhost:8080/mdvn-reqmnt-sapi/rtrvReqmntList
+  rtrvReqmntTagsUrl: http://localhost:8080/mdvn-reqmnt-sapi/rtrvReqmntTags
+  rtrvReqmntMembersUrl : http://localhost:8080/mdvn-reqmnt-sapi/rtrvReqmntMembers
+  rtrvReqmntCheckListUrl : http://localhost:8080/mdvn-reqmnt-sapi/rtrvReqmntCheckList
+  rtrvReqmntAttchsUrl: http://localhost:8080/mdvn-reqmnt-sapi/rtrvReqmntAttUrls
+  updateReqmntInfoUrl: http://localhost:8080/mdvn-reqmnt-sapi/updateReqmntInfo
 
 
 # staff sapi urls
-  rtrvStaffsByIdsUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffListByStaffIdList
+  rtrvStaffsByIdsUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffListByStaffIdList
 
 # tag sapi urls
-  rtrvTagsByIdsUrl: http://localhost:10002/mdvn-tag-sapi/tags/rtrvTags
+  rtrvTagsByIdsUrl: http://localhost:8080/mdvn-tag-sapi/tags/rtrvTags
 
 # model sapi urls
-  rtrvFuncLabelUrl: http://localhost:10009/mdvn-model-sapi/models/findFuncById
-  rtrvModelRoleByModelIdUrl: http://localhost:10009/mdvn-model-sapi/models/findById
-  findSubFuncListByIdUrl: http://localhost:10009/mdvn-model-sapi/models/findSubFuncListById
-  judgeLabelIdUrl: http://localhost:10009/mdvn-model-sapi/models/judgeLabelId
-  rtrvStoryInfoListUrl: http://localhost:10015/mdvn-story-sapi/story/rtrvStoryInfoList
+  rtrvFuncLabelUrl: http://localhost:8080/mdvn-model-sapi/models/findFuncById
+  findSubFuncListByIdUrl: http://localhost:8080/mdvn-model-sapi/models/findSubFuncListById
+  judgeLabelIdUrl: http://localhost:8080/mdvn-model-sapi/models/judgeLabelId
+  rtrvModelRoleByModelIdUrl: http://localhost:8080/mdvn-model-sapi/models/findById
 
+  rtrvStoryInfoListUrl: http://localhost:8080/mdvn-story-sapi/story/rtrvStoryInfoList
 # attchment sapi url
-  rtrvAttchInfoListUrl: http://localhost:10019/mdvn-file-sapi/files/
+  rtrvAttchInfoListUrl: http://localhost:8080/mdvn-file-sapi/files/
 
-  rtrvSRoleMembersUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/rtrvSRoleMembers
+  rtrvSRoleMembersUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/rtrvSRoleMembers
 
-  rtrvCommentInfosUrl: http://localhost:10025/mdvn-comment-sapi/comments/rtrvCommentInfos
-  rtrvStaffInfoUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffInfo
+  rtrvCommentInfosUrl: http://localhost:8080/mdvn-comment-sapi/comments/rtrvCommentInfos
+  rtrvStaffInfoUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffInfo
+
 

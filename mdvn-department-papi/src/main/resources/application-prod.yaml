@@ -1,5 +1,5 @@
 server:
-  port: 80
+  port: 10024
   context-path: /mdvn-department-papi
 spring:
   profiles:
