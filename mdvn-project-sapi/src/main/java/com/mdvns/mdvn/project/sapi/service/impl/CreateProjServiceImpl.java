@@ -72,6 +72,9 @@ public class CreateProjServiceImpl implements ICreateProjService {
         for (int i = 0; i < pageList.getContent().size(); i++) {
             String projId = pageList.getContent().get(i).getProjId();
             Float sumStoryPoint = this.projectRepository.rtrvProjStoryPointCount(projId);
+            if(sumStoryPoint == null){
+                sumStoryPoint= Float.valueOf(0);
+            }
             pageList.getContent().get(i).setStoryPointQty(sumStoryPoint);
             //计算story
             Integer storyQty = this.projectRepository.rtrvProjStoryQty(projId);

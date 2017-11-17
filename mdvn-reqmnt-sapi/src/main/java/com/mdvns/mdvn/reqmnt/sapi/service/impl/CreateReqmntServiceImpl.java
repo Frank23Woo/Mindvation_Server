@@ -114,6 +114,9 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
             for (int i = 0; i < requirementInfos.getContent().size(); i++) {
                 String reqmntId = requirementInfos.getContent().get(i).getReqmntId();
                 Float sumStoryPoint = this.reqmntRepository.rtrvReqmntStoryPointCount(reqmntId);
+                if(sumStoryPoint == null){
+                    sumStoryPoint = Float.valueOf(0);
+                }
                 requirementInfos.getContent().get(i).setTotalStoryPoint(sumStoryPoint);
             }
             this.reqmntRepository.save(requirementInfos);
