@@ -193,6 +193,9 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
         story.setDescription(createStoryRequest.getStoryInfo().getDescription());
         story.setCreatorId(createStoryRequest.getCreatorId());
         story.setLabelId(createStoryRequest.getSubFunctionLabel().getLabelId());
+        if(null == createStoryRequest.getStoryInfo().getStoryPoint()){
+            createStoryRequest.getStoryInfo().setStoryPoint(Float.valueOf(0));
+        }
         story.setStoryPoint(createStoryRequest.getStoryInfo().getStoryPoint());
         story.setIsDeleted(0);
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());

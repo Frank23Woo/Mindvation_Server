@@ -252,14 +252,14 @@ public class TaskServiceImpl implements TaskService {
                 //更改一个task之后判断其他所有的task进度是否都为100%
                 // 查询task sapi
                 RtrvTaskListRequest rtrvTaskListRequest = new RtrvTaskListRequest();
-                rtrvTaskListRequest.setStoryId(request.getStoryId());
+                rtrvTaskListRequest.setStoryId(result.getStoryId());
                 ParameterizedTypeReference typeReference = new ParameterizedTypeReference<List<TaskDetail>>() {
                 };
                 List<TaskDetail> tasks = FetchListUtil.fetch(restTemplate, urlConfig.getRtrvTaskListUrl(), rtrvTaskListRequest, typeReference);
 
                 // 返回story对象
                 RtrvStoryDetailRequest rtrvStoryDetailRequest = new RtrvStoryDetailRequest();
-                rtrvStoryDetailRequest.setStoryId(request.getStoryId());
+                rtrvStoryDetailRequest.setStoryId(result.getStoryId());
                 String rtrvStoryBaseInfoUrl = urlConfig.getRtrvStoryBaseInfoUrl();
                 Story story = restTemplate.postForObject(rtrvStoryBaseInfoUrl, rtrvStoryDetailRequest, Story.class);
                 //所有的task进度都为100时，story的状态变为done
