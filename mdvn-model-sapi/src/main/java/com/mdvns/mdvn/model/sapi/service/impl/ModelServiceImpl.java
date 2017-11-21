@@ -525,7 +525,7 @@ public class ModelServiceImpl implements ModelService {
      */
     @Override
     public SubFunctionLabel judgeSubLabelId(JudgeSubLabelIdRequest request) {
-        LOG.info("开始执行{} findLabelId()方法.", this.CLASS);
+        LOG.info("开始执行{} judgeSubLabelId()方法.", this.CLASS);
         subFunctionLabel = request.getSubFunctionLabel();
         String creatorId = request.getCreatorId();
         String name = request.getSubFunctionLabel().getName();
@@ -537,13 +537,15 @@ public class ModelServiceImpl implements ModelService {
             Timestamp createTime = new Timestamp(System.currentTimeMillis());
             subFuncLabel.setCreateTime(createTime);
             subFuncLabel.setQuoteCnt(0);
+            LOG.info("judgeSubLabelId方法中传入Name值："+subFuncLabel.getName());
+            LOG.info("judgeSubLabelId方法中传入值："+subFuncLabel.toString());
             subFunctionLabel = this.functionModelRepository.saveAndFlush(subFuncLabel);
             subFunctionLabel.setLabelId("MF" + subFunctionLabel.getUuId());
             subFunctionLabel = this.functionModelRepository.saveAndFlush(subFunctionLabel);
         } else {
             subFunctionLabel = this.functionModelRepository.findByLabelId(request.getSubFunctionLabel().getLabelId());
         }
-        LOG.info("执行结束{} findLabelId()方法.", this.CLASS);
+        LOG.info("执行结束{} judgeSubLabelId()方法.", this.CLASS);
         return subFunctionLabel;
     }
 

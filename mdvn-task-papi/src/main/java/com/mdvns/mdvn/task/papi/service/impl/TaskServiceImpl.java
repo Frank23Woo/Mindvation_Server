@@ -268,16 +268,22 @@ public class TaskServiceImpl implements TaskService {
                     progresses += tasks.get(i).getProgress();
                 }
                 Story st = story;
+                String status = null;
                 if (progresses / tasks.size() == 100) {
-                    String status = "done";
+                    status = "done";
                     story.setStatus(status);
-                    String updateStoryBaseInfoUrl = urlConfig.getUpdateStoryBaseInfoUrl();
-                    try {
-                        st = restTemplate.postForObject(updateStoryBaseInfoUrl, story, Story.class);
-                    } catch (Exception ex) {
-                        throw new BusinessException(ExceptionEnum.STORY_BASEINFO_NOT_UPDATE);
-                    }
                 }
+                if (progresses / tasks.size() != 100 && progresses / tasks.size() != 0) {
+                    status = "inProgress";
+                    story.setStatus(status);
+                }
+                String updateStoryBaseInfoUrl = urlConfig.getUpdateStoryBaseInfoUrl();
+                try {
+                    st = restTemplate.postForObject(updateStoryBaseInfoUrl, story, Story.class);
+                } catch (Exception ex) {
+                    throw new BusinessException(ExceptionEnum.STORY_BASEINFO_NOT_UPDATE);
+                }
+
                 result.setStory(st);
                 restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
                 restResponse.setResponseCode("000");

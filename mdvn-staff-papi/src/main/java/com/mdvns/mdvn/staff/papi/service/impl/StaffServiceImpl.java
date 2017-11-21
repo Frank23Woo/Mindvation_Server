@@ -172,8 +172,8 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     public ResponseEntity<?> deleteStaff(String staffId) {
-        String url = webConfig.getDeleteStaffUrl();
-        Boolean flag = this.restTemplate.postForObject(url + "/" + staffId, "", Boolean.class);
+        String url = webConfig.getDeleteStaffUrl()+ "/" + staffId;
+        Boolean flag = this.restTemplate.postForObject(url, "", Boolean.class);
         if (flag) {
             return ResponseEntity.ok(RestResponseUtil.success());
         } else {

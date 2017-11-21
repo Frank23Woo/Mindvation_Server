@@ -85,4 +85,18 @@ public class UpdateReqmntInfoRequest {
     public void setMembers(List<RoleMember> members) {
         this.members = members;
     }
+
+    @Override
+    public String toString() {
+        return "UpdateReqmntInfoRequest{" +
+                "staffId='" + staffId + '\'' +
+                ", reqmntInfo=" + reqmntInfo +
+                ", functionLabel=" + functionLabel +
+                ", tags=" + tags +
+                ", members=" + members +
+                ", checkLists=" + checkLists +
+                ", attchUrls=" + attchUrls +
+                ", remarks=" + remarks +
+                '}';
+    }
 }

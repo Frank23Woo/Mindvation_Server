@@ -34,6 +34,7 @@ public class Story {
     @Column(columnDefinition = "text",nullable = false)
     private String description;
     //用户故事优先级
+    @Column(nullable = false)
     private Integer priority;
     //用户故事开始日期
 //    @Column(name = "start_date", columnDefinition = "timestamp", nullable = false)

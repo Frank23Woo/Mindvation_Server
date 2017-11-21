@@ -31,8 +31,8 @@ public class ReqmntServiceImpl implements IReqmntService {
     @Autowired
     private ReqmntConfig config;
 
-    @Autowired
-    private RequirementInfo requirementInfo;
+//    @Autowired
+//    private RequirementInfo requirementInfo;
 
     @Autowired
     private RestResponse restResponse;
@@ -85,6 +85,9 @@ public class ReqmntServiceImpl implements IReqmntService {
 
     @Override
     public RestResponse createReqmnt(CreateReqmntRequest createReqmntRequest) {
+        if (createReqmntRequest == null || createReqmntRequest.getPriority() == null) {
+            throw new NullPointerException("createStoryRequest 或需求优先级不能为空");
+        }
         CreateReqmntResponse createReqmntResponse = new CreateReqmntResponse();
         //先判断过程方法子模块是新建还是选取（访问model模块）
         JudgeLabelIdRequest judgeLabelIdRequest = new JudgeLabelIdRequest();
@@ -108,7 +111,7 @@ public class ReqmntServiceImpl implements IReqmntService {
         String saveReqmntUrl = config.getSaveReqmntUrl();
         ResponseEntity<RequirementInfo> responseEntity = null;
         responseEntity = restTemplate.postForEntity(saveReqmntUrl, createReqmntRequest, RequirementInfo.class);
-        requirementInfo = responseEntity.getBody();
+        RequirementInfo requirementInfo = responseEntity.getBody();
 
         //1.1 给需求创建者分配权限
         StaffAuthUtil.assignAuthForCreator(this.restTemplate, createReqmntRequest.getProjId(), requirementInfo.getReqmntId(), createReqmntRequest.getCreatorId(), AuthEnum.Leader.getCode());
@@ -141,7 +144,7 @@ public class ReqmntServiceImpl implements IReqmntService {
             }
 
             //取每条reqmnt的人数和创建者信息
-            RequirementInfo requirementInfo = responseEntity.getBody();
+            requirementInfo = responseEntity.getBody();
             String creatorId = requirementInfo.getCreatorId();
             // call staff sapi
             List staffs = new ArrayList();
@@ -260,7 +263,7 @@ public class ReqmntServiceImpl implements IReqmntService {
             throw new BusinessException(ExceptionEnum.REQMNT_DOES_NOT_EXIST);
         }
 
-        requirementInfo = responseEntity.getBody();
+        RequirementInfo requirementInfo = responseEntity.getBody();
         restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
         restResponse.setResponseBody(requirementInfo);
         restResponse.setResponseCode("000");
@@ -531,6 +534,8 @@ public class ReqmntServiceImpl implements IReqmntService {
         }
         //先判断过程方法子模块是新建还是选取（访问model模块）
         if (request.getFunctionLabel() != null) {
+            LOG.info("更改reqmnt的时候传入的过程方法模块Id："+request.getFunctionLabel().getLabelId());
+            LOG.info("更改reqmnt的时候传入的过程方法模块Name："+request.getFunctionLabel().getName());
             JudgeLabelIdRequest judgeLabelIdRequest = new JudgeLabelIdRequest();
             judgeLabelIdRequest.setCreatorId(request.getReqmntInfo().getCreatorId());
             judgeLabelIdRequest.setFunctionLabel(request.getFunctionLabel());

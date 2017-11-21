@@ -3,7 +3,11 @@ server:
   context-path: /mdvn-task-sapi
 spring:
   datasource:
-    url: jdbc:mysql://47.100.100.211/db_mdvn?useUnicode=true&characterEncoding=utf8&useSSL=false
+#    url: jdbc:mysql://47.100.100.211/db_mdvn?useUnicode=true&characterEncoding=utf8&useSSL=false
+#
+#    username: mdvn
+#    password: mdvn
 
-    username: mdvn
-    password: mdvn
+    username: owen
+    password: dm@2018
+    url: jdbc:mysql://112.74.45.247/db_mdvn?useUnicode=true&characterEncoding=utf8&useSSL=false

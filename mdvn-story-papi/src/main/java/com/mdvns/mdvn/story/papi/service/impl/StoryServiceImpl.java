@@ -19,6 +19,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
@@ -73,6 +74,9 @@ public class StoryServiceImpl implements IStoryService {
 
     @Override
     public RestResponse createStory(CreateStoryRequest createStoryRequest) {
+        if (createStoryRequest == null || createStoryRequest.getStoryInfo().getPriority() == null) {
+            throw new NullPointerException("createStoryRequest 或用户故事优先级不能为空");
+        }
         //先判断过程方法子模块是新建还是选取（访问model模块）
         JudgeSubLabelIdRequest judgeSubLabelIdRequest = new JudgeSubLabelIdRequest();
         judgeSubLabelIdRequest.setCreatorId(createStoryRequest.getCreatorId());
@@ -237,6 +241,8 @@ public class StoryServiceImpl implements IStoryService {
         if (updateStoryDetailRequest.getStoryInfo() != null) {
             //先判断过程方法子模块是新建还是选取（访问model模块）
             if (updateStoryDetailRequest.getSubFunctionLabel() != null) {
+                LOG.info("更改reqmnt的时候传入的过程方法模块Id："+updateStoryDetailRequest.getSubFunctionLabel().getLabelId());
+                LOG.info("更改reqmnt的时候传入的过程方法模块Name："+updateStoryDetailRequest.getSubFunctionLabel().getName());
                 JudgeSubLabelIdRequest judgeSubLabelIdRequest = new JudgeSubLabelIdRequest();
                 judgeSubLabelIdRequest.setCreatorId(updateStoryDetailRequest.getCreatorId());
                 judgeSubLabelIdRequest.setSubFunctionLabel(updateStoryDetailRequest.getSubFunctionLabel());
@@ -624,7 +630,7 @@ public class StoryServiceImpl implements IStoryService {
                 storyDetail.setAttchInfos((List<AttchInfo>)responseEntity.getBody().getResponseBody());
             }
         } catch (Exception ex) {
-            throw new BusinessException(ExceptionEnum.PROJECT_DETAIL_ATTCHURL_NOT_RTRV);
+            throw new BusinessException(ExceptionEnum.STORY_DETAIL_ATTCHURL_NOT_RTRV);
         }
 
         //获取用户权限信息

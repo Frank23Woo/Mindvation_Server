@@ -108,4 +108,19 @@ public class SubFunctionLabel {
     public void setIsDeleted(Integer isDeleted) {
         this.isDeleted = isDeleted;
     }
+
+    @Override
+    public String toString() {
+        return "SubFunctionLabel{" +
+                "uuId=" + uuId +
+                ", name='" + name + '\'' +
+                ", quoteCnt=" + quoteCnt +
+                ", labelId='" + labelId + '\'' +
+                ", parentId='" + parentId + '\'' +
+                ", creatorId='" + creatorId + '\'' +
+                ", color='" + color + '\'' +
+                ", createTime=" + createTime +
+                ", isDeleted=" + isDeleted +
+                '}';
+    }
 }
