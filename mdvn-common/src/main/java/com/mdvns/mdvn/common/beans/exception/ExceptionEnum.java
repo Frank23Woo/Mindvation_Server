@@ -33,7 +33,8 @@ public enum ExceptionEnum {
 	//模块
 	Model_NOT_FOUND("1200", "模块不存在!"),
 	Model_IS_CREATED("1201", "模块已存在!"),
-	functionModel_NOT_FOUND("1202", "过程方法模块不存在!"),
+	STYLE_REQUEST_NOT_NULL("1202", "创建模块Request中style不能为空!"),
+	functionModel_NOT_FOUND("1203", "过程方法模块不存在!"),
 
 
 
