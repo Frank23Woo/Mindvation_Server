@@ -77,6 +77,7 @@ public class ModelServiceImpl implements ModelService {
         Timestamp createTime = new Timestamp(System.currentTimeMillis());
         Model model = new Model();
         //1.保存Model表数据
+        model.setStyle(request.getStyle());
         model.setIsDeleted(0);
         model.setQuoteCnt(0);
         model.setCreateTime(createTime);

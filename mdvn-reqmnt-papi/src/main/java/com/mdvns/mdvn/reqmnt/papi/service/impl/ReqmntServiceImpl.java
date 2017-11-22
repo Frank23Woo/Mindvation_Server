@@ -250,6 +250,7 @@ public class ReqmntServiceImpl implements IReqmntService {
 
     @Override
     public RestResponse rtrvReqmntInfo(RtrvReqmntInfoRequest request) {
+        RtrvReqmntInfoResponse rtrvReqmntInfoResponse = new RtrvReqmntInfoResponse();
         if (request == null || StringUtils.isEmpty(request.getReqmntId())) {
             restResponse.setStatusCode(String.valueOf(HttpStatus.BAD_REQUEST));
             restResponse.setResponseMsg("Requirement ID should not be empty");

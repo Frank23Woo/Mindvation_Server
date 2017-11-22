@@ -24,8 +24,19 @@ public class Model {
 
     private Long createTime;
 
+    //1~7的随机数
+    private Integer style;
+
     /*是否已删除*/
     private Integer isDeleted;
+
+    public Integer getStyle() {
+        return style;
+    }
+
+    public void setStyle(Integer style) {
+        this.style = style;
+    }
 
     public String getName() {
         return name;

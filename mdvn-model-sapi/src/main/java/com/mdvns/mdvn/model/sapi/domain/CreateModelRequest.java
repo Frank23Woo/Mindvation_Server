@@ -14,6 +14,8 @@ public class CreateModelRequest {
     private String creatorId;
     //行业(model_type)
     private String modelType;
+    //1~7的随机数
+    private Integer style;
     //过程方法模块
     private List<FunctionLabel> functionLabels;
     //模块下对应的角色
@@ -21,6 +23,14 @@ public class CreateModelRequest {
     private List<CreateItModelRequest> iterationModels;
     private List<TaskDelivery> taskDeliveries;
     private List<String> remarks;
+
+    public Integer getStyle() {
+        return style;
+    }
+
+    public void setStyle(Integer style) {
+        this.style = style;
+    }
 
     public String getName() {
         return name;

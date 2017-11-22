@@ -10,6 +10,8 @@ public class CreateModelRequest {
 
     private String name;
     private String creatorId;
+    //1~7的随机数
+    private Integer style;
     //行业(model_type)
     private String modelType;
     //过程方法模块
@@ -19,6 +21,14 @@ public class CreateModelRequest {
     private List<CreateItModelRequest> iterationModels;
     private List<TaskDelivery> taskDeliveries;
     private List<String> remarks;
+
+    public Integer getStyle() {
+        return style;
+    }
+
+    public void setStyle(Integer style) {
+        this.style = style;
+    }
 
     public String getName() {
         return name;

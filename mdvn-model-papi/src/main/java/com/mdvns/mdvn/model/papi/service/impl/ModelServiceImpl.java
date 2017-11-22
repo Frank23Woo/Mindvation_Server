@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -145,7 +146,9 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     public ResponseEntity<?> createModel(CreateModelRequest createModelRequest) {
-
+        if (StringUtils.isEmpty(createModelRequest.getStyle())) {
+            throw new BusinessException(ExceptionEnum.STYLE_REQUEST_NOT_NULL);
+        }
         LogUtil.sreviceStartLog("createModel");
         String modelName = createModelRequest.getName();
         //根据name查询model是否存在
