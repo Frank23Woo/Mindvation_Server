@@ -15,8 +15,9 @@ import java.util.Properties;
 public class DeployUtil {
     public static void main(String[] args) {
 
-        makeWarPackage();
-//        localhostIntegration();
+//        makeWarPackage();
+        localhostIntegration();
+//        makeWarPackageForProd();
     }
 
     private static void updateProperties(String config, List<String> packageList){
@@ -119,6 +120,11 @@ public class DeployUtil {
     private static void localhostIntegration(){
         updateProperties("dev",setPackageList());
         updatePomDependencyScope("spring-boot-starter-tomcat","",setPackageList());
+    }
+
+    private static void makeWarPackageForProd(){
+        updateProperties("prod",setPackageList());
+        updatePomDependencyScope("spring-boot-starter-tomcat","provided",setPackageList());
     }
 
 
