@@ -47,6 +47,27 @@ public class DashboardController {
         return this.dashboardService.findDashboardInfoByIds(request);
     }
 
+    /**
+     * 成员查询所有dashboard信息
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/findAllDashboardById")
+    public List<SprintInfo> findAllDashboardById(@RequestBody RtrvAllStoryListRequest request) {
+        LOG.info("开始执行findAllDashboardById：");
+        return this.dashboardService.findAllDashboardById(request);
+    }
+
+    /**
+     * 根据projId和modelId查询SprintInfo对象(成员查询所有dashboard信息)
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/findAllDashboardInfoByIds")
+    public List<SprintInfo> findAllDashboardInfoByIds(@RequestBody RtrvDashboardRequest request) {
+        LOG.info("findAllDashboardInfoByIds 开始执行:{}");
+        return this.dashboardService.findAllDashboardInfoByIds(request);
+    }
 
     /**
      * 创建SprintInfo

@@ -16,4 +16,7 @@ public interface ReqmntMemberRepository extends JpaRepository<ReqmntMember,Integ
 
     Integer deleteAllByReqmntId(String reqmntId);
 
+    List<ReqmntMember> findByReqmntId(String reqmntId);
+
+    ReqmntMember findByReqmntIdAndRoleIdAndStaffId(String reqmntId, String roleId, String staffId);
 }

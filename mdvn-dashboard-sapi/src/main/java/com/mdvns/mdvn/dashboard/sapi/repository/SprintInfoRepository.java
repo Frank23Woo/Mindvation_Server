@@ -15,4 +15,8 @@ public interface SprintInfoRepository extends JpaRepository<SprintInfo, Integer>
 
     SprintInfo findBySubjectIdAndCreatorIdAndNameAndIsDeleted(String subjectId ,String creatorId,String name, Integer isDeleted);
     SprintInfo findBySubjectIdAndCreatorIdAndSprintIndex(String subjectId,String creatorId ,Integer sprintIndex);
+    //查询所有dashboard信息
+    List<SprintInfo> findBySubjectIdAndIsDeletedAndSprintIndexAndStatusIsNot(String subjectId, Integer isDeleted,Integer sprintIndex,String status);
+    List<SprintInfo> findBySubjectIdAndModelIdAndIsDeletedAndStatusIsNot(String subjectId ,String modelId, Integer isDeleted,String status);
+
 }

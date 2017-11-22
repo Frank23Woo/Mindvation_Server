@@ -23,6 +23,8 @@ public interface DashboardService {
     /*根据projId和modelId查询dashboard对象(更改时查询)*/
     List<SprintInfo> findDashboardInfoByIds(RtrvDashboardRequest request);
 
+    List<SprintInfo> findAllDashboardInfoByIds(RtrvDashboardRequest request);
+
     /*创建看板*/
     SprintInfo createSprintInfo(CreateSprintInfoRequest request);
 
@@ -39,4 +41,5 @@ public interface DashboardService {
 
     List<SprintInfo> itSprint(Integer uuId);
 
+    List<SprintInfo> findAllDashboardById(RtrvAllStoryListRequest request);
 }

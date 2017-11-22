@@ -44,7 +44,6 @@ public class DashboardServiceImpl implements DashboardService {
         LOG.info("执行结束{} findDashboardInfoById()方法.", this.CLASS);
         return dashboards;
     }
-
     @Override
     public List<SprintInfo> findDashboardInfoByIds(RtrvDashboardRequest request) {
         LOG.info("开始执行{} findDashboardInfoByIds()方法.", this.CLASS);
@@ -52,6 +51,28 @@ public class DashboardServiceImpl implements DashboardService {
         LOG.info("执行结束{} findDashboardInfoByIds()方法.", this.CLASS);
         return dashboards;
     }
+
+    /**
+     * 查询所有dashboard信息
+     * @param request
+     * @return
+     */
+    @Override
+    public List<SprintInfo> findAllDashboardById(RtrvAllStoryListRequest request) {
+        LOG.info("开始执行{} findDashboardInfoById()方法.", this.CLASS);
+        List<SprintInfo> dashboards = this.sprintInfoRepository.findBySubjectIdAndIsDeletedAndSprintIndexAndStatusIsNot(request.getProjId(),0, 0,"close");
+        LOG.info("执行结束{} findDashboardInfoById()方法.", this.CLASS);
+        return dashboards;
+    }
+    @Override
+    public List<SprintInfo> findAllDashboardInfoByIds(RtrvDashboardRequest request) {
+        LOG.info("开始执行{} findAllDashboardInfoByIds()方法.", this.CLASS);
+        List<SprintInfo> dashboards = this.sprintInfoRepository.findBySubjectIdAndModelIdAndIsDeletedAndStatusIsNot(request.getProjId(),request.getModleId(), 0,"close");
+        LOG.info("执行结束{} findAllDashboardInfoByIds()方法.", this.CLASS);
+        return dashboards;
+    }
+
+
 
     /**
      * 创建看板
@@ -195,5 +216,6 @@ public class DashboardServiceImpl implements DashboardService {
         }
         return sprintInfos;
     }
+
 
 }

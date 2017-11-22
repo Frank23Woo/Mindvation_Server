@@ -18,6 +18,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
@@ -70,7 +71,7 @@ public class DashboardServiceImpl implements DashboardService {
         List<SprintInfo> sprintInfos = FetchListUtil.fetch(restTemplate, webConfig.getFindDashboardInfoByIdsUrl(), rtrvDashboardRequest, pTypeReference);
         List<SprintStoryListAndLabelId> sprintStoryLists = new ArrayList<>();
         for (int j = 0; j < sprintInfos.size(); j++) {
-            if(j > 2){
+            if (j > 2) {
                 break;
             }
             SprintStoryListAndLabelId sprintStoryList = new SprintStoryListAndLabelId();
@@ -131,7 +132,7 @@ public class DashboardServiceImpl implements DashboardService {
         List<SprintInfo> sprintInfoList = FetchListUtil.fetch(restTemplate, findDashboardInfoByIdUrl, request, parameTypeReference);
         //------------------------已经创建过看板
         for (int i = 0; i < sprintInfoList.size(); i++) {
-            LOG.info("已经创建过看板"+sprintInfoList.get(i));
+            LOG.info("已经创建过看板" + sprintInfoList.get(i));
             RtrvDashboardResponse rtrvDashboardResponse = new RtrvDashboardResponse();
 //                //创建者对象
 //                String creatorId = sprintInfoList.get(i).getCreatorId();
@@ -153,7 +154,7 @@ public class DashboardServiceImpl implements DashboardService {
             List<SprintInfo> sprintInfos = FetchListUtil.fetch(restTemplate, webConfig.getFindDashboardInfoByIdsUrl(), rtrvDashboardRequest, pTypeReference);
             List<SprintStoryListAndLabelId> sprintStoryLists = new ArrayList<>();
             for (int j = 0; j < sprintInfos.size(); j++) {
-                if(j > 2){
+                if (j > 2) {
                     break;
                 }
                 SprintStoryListAndLabelId sprintStoryList = new SprintStoryListAndLabelId();
@@ -186,6 +187,7 @@ public class DashboardServiceImpl implements DashboardService {
                         String storyId = storyList.get(k).getStoryId();
                         RequirementInfo requirementInfo = this.restTemplate.postForObject(webConfig.getRtrvlabelIdBystoryIdUrl(), storyId, RequirementInfo.class);
                         String labelId = requirementInfo.getFunctionLabelId();
+                        //获取story对应的reqmnt的labelId
                         storyAndLabelId.setLabelId(labelId);
                         storyAndLabelId.setStory(storyList.get(k));
                         storyAndLabelIds.add(storyAndLabelId);
@@ -590,6 +592,141 @@ public class DashboardServiceImpl implements DashboardService {
         restResponse.setResponseCode("000");
         restResponse.setResponseBody(sprintInfos);
         return restResponse;
+    }
+
+    /**
+     * 获取所有负责人的看板信息
+     * @param request
+     * @return
+     */
+    @Override
+    public RestResponse rtrvAllDashboard(RtrvAllStoryListRequest request) {
+        RtrvProjectDetailRequest rtrvProjectDetailRequest = new RtrvProjectDetailRequest();
+        String projId = request.getProjId();
+        rtrvProjectDetailRequest.setProjId(projId);
+        List<RtrvDashboardResponse> responses = rtrvAllDashboardById(request);
+        restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
+        restResponse.setResponseCode("000");
+        restResponse.setResponseMsg("请求成功");
+        restResponse.setResponseBody(responses);
+        return restResponse;
+    }
+
+    private List<RtrvDashboardResponse> rtrvAllDashboardById(RtrvAllStoryListRequest request) {
+        LOG.info("开始执行方法：rtrvAllDashboardById");
+        List<RtrvDashboardResponse> rtrvDashboardResponses = new ArrayList<>();
+        //首先判断是否是第一次创建sprintInfo
+        String findDashboardInfoByIdUrl = webConfig.getFindAllDashboardByIdUrl();
+        ParameterizedTypeReference parameTypeReference = new ParameterizedTypeReference<List<SprintInfo>>() {
+        };
+        List<SprintInfo> sprintInfoList = FetchListUtil.fetch(restTemplate, findDashboardInfoByIdUrl, request, parameTypeReference);
+        //选出不同的模块
+        List<String> models = new ArrayList<>();
+        for (int i = 0; i < sprintInfoList.size(); i++) {
+            String id = sprintInfoList.get(i).getModelId();
+            if (!models.isEmpty() && models.contains(id)) {
+                continue;
+            }
+            models.add(id);
+        }
+        for (int i = 0; i < models.size(); i++) {
+            RtrvDashboardResponse rtrvDashboardResponse = new RtrvDashboardResponse();
+            //模型对象
+            String modelId = models.get(i);
+            Map modelIdMap = new HashMap();
+            modelIdMap.put("modelId", modelId);
+            Model model = restTemplate.postForObject(webConfig.getFindModelByIdUrl(), modelId, Model.class);
+            rtrvDashboardResponse.setModel(model);
+            //通过modelId和projectId查询所有的sprint
+            RtrvDashboardRequest rtrvDashboardRequest = new RtrvDashboardRequest();
+            rtrvDashboardRequest.setProjId(request.getProjId());
+            rtrvDashboardRequest.setModleId(modelId);
+            ParameterizedTypeReference pTypeReference = new ParameterizedTypeReference<List<SprintInfo>>() {
+            };
+            List<SprintInfo> spInfos = FetchListUtil.fetch(restTemplate, webConfig.getFindAllDashboardInfoByIdsUrl(), rtrvDashboardRequest, pTypeReference);
+
+            //选出不同的name
+            List<String> names = new ArrayList<>();
+            for (int j = 0; j < spInfos.size(); j++) {
+                String name = spInfos.get(j).getName();
+                if (!names.isEmpty() && names.contains(name)) {
+                    continue;
+                }
+                names.add(name);
+            }
+            List<SprintInfo> sprintInfos = new ArrayList<>();
+            for (int k = 0; k < names.size() ; k++) {
+                SprintInfo sprintInfo = new SprintInfo();
+                String name = names.get(k);
+                List<String> itemIdList = new ArrayList<>();
+                for (int j = 0; j < spInfos.size(); j++) {
+                    String storyIds = spInfos.get(j).getItemIds();
+                    String sprintName = spInfos.get(j).getName();
+                    String[] sprintStoryIds = storyIds.split(",");
+                    List<String> sprintStoryIdList = Arrays.asList(sprintStoryIds);
+                    if (sprintName.equals(name) && !StringUtils.isEmpty(sprintName)){
+                        sprintInfo = spInfos.get(j);
+                        itemIdList.addAll(sprintStoryIdList);
+                    }
+                }
+                String stoIds = MdvnStringUtil.join(itemIdList, ",");
+                sprintInfo.setName(name);
+                sprintInfo.setItemIds(stoIds);
+                sprintInfos.add(sprintInfo);
+            }
+            List<SprintStoryListAndLabelId> sprintStoryLists = new ArrayList<>();
+            for (int j = 0; j < sprintInfos.size(); j++) {
+                if (j > 2) {
+                    break;
+                }
+                SprintStoryListAndLabelId sprintStoryList = new SprintStoryListAndLabelId();
+                sprintStoryList.setSprintInfo(sprintInfos.get(j));
+                String labIds = sprintInfos.get(j).getLabelIds();
+                if (null != labIds) {
+                    String[] sprintlabIds = labIds.split(",");
+                    List<String> sprintlabIdList = Arrays.asList(sprintlabIds);
+                    sprintStoryList.setLabelIds(sprintlabIdList);
+                }
+                String stories = sprintInfos.get(j).getItemIds();
+                //通过stories查询出他们的storyList
+                if (null == stories) {
+                    sprintStoryLists.add(sprintStoryList);
+                    break;
+                }
+                RtrvStoryListByStoryIdsRequest rtrvStoryListByStoryIdsRequest = new RtrvStoryListByStoryIdsRequest();
+                rtrvStoryListByStoryIdsRequest.setPage(1);
+                rtrvStoryListByStoryIdsRequest.setPageSize(Integer.MAX_VALUE);
+                String[] sprintStoryIds = stories.split(",");
+                List<String> sprintStoryIdList = Arrays.asList(sprintStoryIds);
+                rtrvStoryListByStoryIdsRequest.setStoryIds(sprintStoryIdList);
+                try {
+                    String url = webConfig.getRtrvStoryInfoListByStoryIdsUrl();
+                    ResponseEntity<RtrvStoryListByStoryIdsResponse> response = this.restTemplate.postForEntity(url, rtrvStoryListByStoryIdsRequest, RtrvStoryListByStoryIdsResponse.class);
+                    List<Story> storyList = response.getBody().getStories();
+                    List<StoryAndLabelId> storyAndLabelIds = new ArrayList<>();
+                    for (int k = 0; k < storyList.size(); k++) {
+                        StoryAndLabelId storyAndLabelId = new StoryAndLabelId();
+                        String storyId = storyList.get(k).getStoryId();
+                        RequirementInfo requirementInfo = this.restTemplate.postForObject(webConfig.getRtrvlabelIdBystoryIdUrl(), storyId, RequirementInfo.class);
+                        String labelId = requirementInfo.getFunctionLabelId();
+                        //获取story对应的reqmnt的labelId
+                        storyAndLabelId.setLabelId(labelId);
+                        storyAndLabelId.setStory(storyList.get(k));
+                        storyAndLabelIds.add(storyAndLabelId);
+                    }
+                    sprintStoryList.setStories(storyAndLabelIds);
+                    sprintStoryList.setTotalElements(response.getBody().getTotalElements());
+                    sprintStoryList.setRemarks(response.getBody().getRemarks());
+                } catch (Exception ex) {
+                    throw new BusinessException(ExceptionEnum.DASHBOARD_DETAIL_STORY_NOT_RTRV);
+                }
+                sprintStoryLists.add(sprintStoryList);
+            }
+            rtrvDashboardResponse.setSprintStoryLists(sprintStoryLists);
+            rtrvDashboardResponses.add(rtrvDashboardResponse);
+        }
+        LOG.info("结束执行方法：rtrvAllDashboardById");
+        return rtrvDashboardResponses;
     }
 
 }

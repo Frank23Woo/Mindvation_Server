@@ -36,6 +36,24 @@ public class WebConfig {
     private String updateSprintCloseStatusUrl;
 
     private String itSprintUrl;
+    private String findAllDashboardByIdUrl;
+    private String findAllDashboardInfoByIdsUrl;
+
+    public String getFindAllDashboardInfoByIdsUrl() {
+        return findAllDashboardInfoByIdsUrl;
+    }
+
+    public void setFindAllDashboardInfoByIdsUrl(String findAllDashboardInfoByIdsUrl) {
+        this.findAllDashboardInfoByIdsUrl = findAllDashboardInfoByIdsUrl;
+    }
+
+    public String getFindAllDashboardByIdUrl() {
+        return findAllDashboardByIdUrl;
+    }
+
+    public void setFindAllDashboardByIdUrl(String findAllDashboardByIdUrl) {
+        this.findAllDashboardByIdUrl = findAllDashboardByIdUrl;
+    }
 
     public String getItSprintUrl() {
         return itSprintUrl;

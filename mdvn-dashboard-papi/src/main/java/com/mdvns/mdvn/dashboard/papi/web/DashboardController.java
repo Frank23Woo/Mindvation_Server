@@ -107,4 +107,15 @@ public class DashboardController {
     }
 
 
+    /**
+     * 所有角色都可以看到MVP Dashboard里的内容
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/rtrvAllDashboard")
+    public RestResponse rtrvAllDashboard(@RequestBody RtrvAllStoryListRequest request) {
+        return this.dashboardService.rtrvAllDashboard(request);
+    }
+
+
 }

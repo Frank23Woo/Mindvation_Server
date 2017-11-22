@@ -18,13 +18,6 @@ public interface DashboardService {
     RestResponse updateSprintCloseStatus(UpdateSprintCloseStatusRequest request);
     RestResponse itSprints(RtrvItSprintsRequest request);
 
-//    ResponseEntity<?> createDashboard(CreateDashboardRequest request);
-//
-//    ResponseEntity<?> rtrvDashboardList(RetrieveDashboardListRequest request);
-//
-//    ResponseEntity<?> updateQuoteCnt(String dashboardId);
-//
-//    ResponseEntity<?> findByName(String name);
-//
-//    ResponseEntity<?> findById(String dashboardId);
+    RestResponse rtrvAllDashboard(RtrvAllStoryListRequest request);
+
 }

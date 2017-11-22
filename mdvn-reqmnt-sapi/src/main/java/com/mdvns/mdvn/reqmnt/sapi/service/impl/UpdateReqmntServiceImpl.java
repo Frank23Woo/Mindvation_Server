@@ -12,6 +12,7 @@ import com.mdvns.mdvn.reqmnt.sapi.service.IUpdateReqmntService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -36,6 +37,8 @@ public class UpdateReqmntServiceImpl implements IUpdateReqmntService {
     private ReqmntAttchUrlsRepository attchUrlsRepository;
     @Autowired
     private ReqmntTagRepository tagRepository;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -375,11 +378,43 @@ public class UpdateReqmntServiceImpl implements IUpdateReqmntService {
 
         // memebers
 
+//        if (request.getMembers() != null) {
+//            List<RoleMember> roleMembers = request.getMembers();
+//            List<ReqmntMember> reqmntMembers = new ArrayList<>();
+//            ReqmntMember reqmntMember = null;
+//            List<String> addAuthList = new ArrayList<>();
+//            String roleId = "";
+//            for (int i = 0; i < roleMembers.size(); i++) {
+//                roleId = roleMembers.get(i).getRoleId();
+//                List<String> memberIds = roleMembers.get(i).getMemberIds();
+//                for (int j = 0; j < memberIds.size(); j++) {
+//                    reqmntMember = new ReqmntMember();
+//                    reqmntMember.setStaffId(memberIds.get(j));
+//                    reqmntMember.setRoleId(roleId);
+//                    reqmntMember.setReqmntId(request.getReqmntInfo().getReqmntId());
+//                    reqmntMember.setIsDeleted(0);
+//                    reqmntMember.setLastUpdateTime(new Timestamp(System.currentTimeMillis()));
+//                    reqmntMembers.add(reqmntMember);
+//                }
+//                addAuthList.addAll(roleMembers.get(i).getMemberIds());
+//            }
+//
+//            int tmp = memberRepository.deleteAllByReqmntId(request.getReqmntInfo().getReqmntId());
+//            List<ReqmntMember> members = memberRepository.findByReqmntId(reqmntId);
+//            LOG.info("members:{}", members.toString());
+//            LOG.info("第一个member:{}", members.get(0).toString());
+//            memberRepository.save(reqmntMembers);
+//            //2.1 重新给成员分配权限
+//            RestTemplate restTemplate = new RestTemplate();
+//            StaffAuthUtil.assignAuth(restTemplate, new AssignAuthRequest(request.getReqmntInfo().getProjId(), request.getStaffId(), addAuthList, reqmntId, AuthEnum.RMEMBER.getCode()));
+//            LOG.info("更新项目，给新增的leader:{},分配权限成功!", addAuthList.toString());
+//
+//        }
+        String projId = request.getReqmntInfo().getProjId();
         if (request.getMembers() != null) {
             List<RoleMember> roleMembers = request.getMembers();
             List<ReqmntMember> reqmntMembers = new ArrayList<>();
             ReqmntMember reqmntMember = null;
-            List<String> addAuthList = new ArrayList<>();
             String roleId = "";
             for (int i = 0; i < roleMembers.size(); i++) {
                 roleId = roleMembers.get(i).getRoleId();
@@ -393,20 +428,76 @@ public class UpdateReqmntServiceImpl implements IUpdateReqmntService {
                     reqmntMember.setLastUpdateTime(new Timestamp(System.currentTimeMillis()));
                     reqmntMembers.add(reqmntMember);
                 }
-                addAuthList.addAll(roleMembers.get(i).getMemberIds());
             }
-
-            int tmp = memberRepository.deleteAllByReqmntId(request.getReqmntInfo().getReqmntId());
-            memberRepository.save(reqmntMembers);
-            //2.1 重新给成员分配权限
-            RestTemplate restTemplate = new RestTemplate();
-            StaffAuthUtil.assignAuth(restTemplate, new AssignAuthRequest(request.getReqmntInfo().getProjId(), request.getStaffId(), addAuthList, reqmntId, AuthEnum.RMEMBER.getCode()));
-            LOG.info("更新项目，给新增的leader:{},分配权限成功!", addAuthList.toString());
+            updateReqmntMembers(reqmntMembers, projId, reqmntId, request.getStaffId());
+            result = true;
 
         }
 
+
         result = true;
         return result;
+    }
+
+    /**
+     * 更改需求成员信息
+     *
+     * @param list
+     * @return
+     */
+    public void updateReqmntMembers(List<ReqmntMember> list, String projId, String reqmntId, String staffId) {
+        if (list == null || list.size() <= 0) {
+            throw new NullPointerException("StoryLeaders List is empty");
+        }
+        //选出不同的角色
+        List<String> roleIds = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            String id = list.get(i).getRoleId();
+            if (!roleIds.isEmpty() && roleIds.contains(id)) {
+                continue;
+            }
+            roleIds.add(list.get(i).getRoleId());
+        }
+        //将数据库中没有的插入(分单个角色update)
+        for (int j = 0; j < roleIds.size(); j++) {
+            String roleId = roleIds.get(j);
+            List<String> staffIdList = new ArrayList();
+            List<String> addAuthList = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                if (roleId.equals(list.get(i).getRoleId())) {
+                    ReqmntMember reqmntMember = new ReqmntMember();
+                    staffIdList.add(list.get(i).getStaffId());
+                    reqmntMember = this.memberRepository.findByReqmntIdAndRoleIdAndStaffId(reqmntId, list.get(i).getRoleId(), list.get(i).getStaffId());
+                    //不存在的加上
+                    if (reqmntMember == null) {
+                        list.get(i).setReqmntId(reqmntId);
+                        list.get(i).setIsDeleted(0);
+                        this.memberRepository.saveAndFlush(list.get(i));
+                        addAuthList.add(list.get(i).getStaffId());
+                    } else {
+                        //之前是成员后来改掉，数据库中存在记录，但是is_deleted为1，需要修改成0
+                        if (reqmntMember.getIsDeleted().equals(1)) {
+                            String sql = "UPDATE staff_reqmnt_map SET is_deleted= 0 WHERE story_id=" + "\"" + reqmntId + "\"" + "AND  role_id =" + "\"" + list.get(i).getRoleId() + "\"" + "AND  staff_id =" + "\"" + list.get(i).getStaffId() + "\"" + "";
+                            this.jdbcTemplate.update(sql);
+                        }
+                    }
+                }
+            }
+            //2.1 给新增的requirement成员分配权限
+            RestTemplate restTemplate = new RestTemplate();
+            StaffAuthUtil.assignAuth(restTemplate, new AssignAuthRequest(projId, staffId, addAuthList, reqmntId, AuthEnum.RMEMBER.getCode()));
+            LOG.info("更新项目，staff{}给requirement：{}新增的member:{},分配权限成功:{}", staffId, reqmntId, addAuthList.toString(), AuthEnum.RMEMBER.getCode());
+            //将数据库中将要删除的成员信息修改is_deleted状态
+            //数组转化为字符串格式
+            StringBuffer members = new StringBuffer();
+            for (int k = 0; k < staffIdList.size(); k++) {
+                members.append("\"" + staffIdList.get(k) + "\"");
+                members.append(",");
+            }
+            String pLeaders = members.substring(0, members.length() - 1);
+            String sql = "UPDATE staff_reqmnt_map SET is_deleted= 1 WHERE reqmnt_id= " + "\"" + reqmntId + "\"" + "AND  role_id = " + "\"" + roleIds.get(j) + "\"" + " AND staff_id NOT IN (" + pLeaders + ")";
+            this.jdbcTemplate.update(sql);
+        }
     }
 
 }
