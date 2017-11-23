@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -71,8 +72,6 @@ public class DashboardServiceImpl implements DashboardService {
         LOG.info("执行结束{} findAllDashboardInfoByIds()方法.", this.CLASS);
         return dashboards;
     }
-
-
 
     /**
      * 创建看板
@@ -141,27 +140,50 @@ public class DashboardServiceImpl implements DashboardService {
     public SprintInfo addStory(AddStoryRequest request) {
         String subjectId = request.getProjId();
         String storyId = request.getStoryId();
-
         sprintInfo = this.sprintInfoRepository.findBySubjectIdAndCreatorIdAndNameAndIsDeleted(subjectId, request.getCreatorId(),"Product Backlogs", 0);
         if (sprintInfo != null){
             String storyIds = sprintInfo.getItemIds();
-            storyIds = storyIds + "," + storyId;
+            if(StringUtils.isEmpty(storyIds)){
+                storyIds = storyId;
+            }else{
+                storyIds = storyIds + "," + storyId;
+            }
             sprintInfo.setItemIds(storyIds);
             sprintInfo = this.sprintInfoRepository.saveAndFlush(sprintInfo);
         }
         return sprintInfo;
     }
 
+    /**
+     * 开启迭代（同时开启一个项目相同模型下name相同的sprint）
+     * @param request
+     * @return
+     */
     @Override
     public SprintInfo updateSprintStartStatus(UpdateSprintStartStatusRequest request) {
         Integer uuId = request.getUuId();
         sprintInfo = this.sprintInfoRepository.findOne(uuId);
-        sprintInfo.setStatus("start");
-        sprintInfo.setIterationCycle(request.getIterationCycle());
-        sprintInfo = this.sprintInfoRepository.saveAndFlush(sprintInfo);
+        //开启一个项目相同模型下name相同的sprint
+        String name = sprintInfo.getName();
+        String subjectId = sprintInfo.getSubjectId();
+        String modelId = sprintInfo.getModelId();
+        Integer sprintIndex = sprintInfo.getSprintIndex();
+        List<SprintInfo> sprintInfos = this.sprintInfoRepository.findBySubjectIdAndModelIdAndNameAndSprintIndex(subjectId,modelId,name,sprintIndex);
+        for (int i = 0; i < sprintInfos.size(); i++) {
+            SprintInfo sprintInfo = sprintInfos.get(i);
+            sprintInfo.setStatus("start");
+            sprintInfo.setIterationCycle(request.getIterationCycle());
+        }
+        List<SprintInfo> sprintInfoList = this.sprintInfoRepository.save(sprintInfos);
+        sprintInfo = this.sprintInfoRepository.findOne(uuId);
         return sprintInfo;
     }
 
+    /**
+     * 关闭迭代（同时关闭一个项目相同模型下name相同的sprint）(工作流不完善，未实现)
+     * @param request
+     * @return
+     */
     @Override
     public SprintInfo updateSprintCloseStatus(UpdateSprintCloseStatusRequest request) {
         if (request.getStories().size() > 0) {

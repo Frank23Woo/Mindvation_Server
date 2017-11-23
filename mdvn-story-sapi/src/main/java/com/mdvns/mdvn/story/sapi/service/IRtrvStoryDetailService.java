@@ -1,12 +1,7 @@
 package com.mdvns.mdvn.story.sapi.service;
 
-import com.mdvns.mdvn.story.sapi.domain.RtrvAverageReqmProgress;
-import com.mdvns.mdvn.story.sapi.domain.RtrvMembersByRoleIdRequest;
-import com.mdvns.mdvn.story.sapi.domain.RtrvStoryDetailRequest;
-import com.mdvns.mdvn.story.sapi.domain.entity.StoryAttchUrl;
-import com.mdvns.mdvn.story.sapi.domain.entity.StoryRoleMember;
-import com.mdvns.mdvn.story.sapi.domain.entity.StoryTag;
-import com.mdvns.mdvn.story.sapi.domain.entity.StoryTask;
+import com.mdvns.mdvn.story.sapi.domain.*;
+import com.mdvns.mdvn.story.sapi.domain.entity.*;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -28,5 +23,4 @@ public interface IRtrvStoryDetailService {
     String getLabelIdByStoryId(String storyId);
     String getModelIdByStoryId(String storyId);
     String getReqmntIdByStoryId(String storyId);
-
 }

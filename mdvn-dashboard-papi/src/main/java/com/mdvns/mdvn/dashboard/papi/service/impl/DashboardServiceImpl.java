@@ -477,7 +477,7 @@ public class DashboardServiceImpl implements DashboardService {
         //更改
         Task task = new Task();
         try {
-            String url = webConfig.getUpdateMyDashboardUrl();
+            String url = webConfig.getUpdateMyDashboardForTaskUrl();
             task = this.restTemplate.postForObject(url, request, Task.class);
         } catch (Exception ex) {
             throw new BusinessException(ExceptionEnum.MYDASHBOARD_NOT_UPDATE);
@@ -486,20 +486,9 @@ public class DashboardServiceImpl implements DashboardService {
         String creatorId = task.getCreatorId();
         //查询
         RtrvMyDashboardInfoRequest rtrvMyDashboardInfoRequest = new RtrvMyDashboardInfoRequest();
-        RtrvMyDashboardInfoResponse response = new RtrvMyDashboardInfoResponse();
         rtrvMyDashboardInfoRequest.setProjId(projId);
         rtrvMyDashboardInfoRequest.setCreatorId(creatorId);
-        try {
-            String url = webConfig.getMyDashboardInfosUrl();
-            response = this.restTemplate.postForObject(url, rtrvMyDashboardInfoRequest, RtrvMyDashboardInfoResponse.class);
-        } catch (Exception ex) {
-            throw new BusinessException(ExceptionEnum.MYDASHBOARD_NOT_RTRV);
-        }
-        restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
-        restResponse.setResponseMsg("请求成功");
-        restResponse.setResponseCode("000");
-        restResponse.setResponseBody(response);
-        return restResponse;
+        return this.getMyDashboardInfos(rtrvMyDashboardInfoRequest);
     }
 
     @Override
@@ -525,19 +514,147 @@ public class DashboardServiceImpl implements DashboardService {
      */
     @Override
     public RestResponse getMyDashboardInfos(RtrvMyDashboardInfoRequest request) {
-        //查询
-        RtrvMyDashboardInfoResponse response = new RtrvMyDashboardInfoResponse();
+        //查询个人创建的所有task
+        RtrvMyDashboardInfoResponse responseForTask = new RtrvMyDashboardInfoResponse();
         try {
-            String url = webConfig.getMyDashboardInfosUrl();
-            response = this.restTemplate.postForObject(url, request, RtrvMyDashboardInfoResponse.class);
+            String url = webConfig.getMyDashboardInfosForTaskUrl();
+            responseForTask = this.restTemplate.postForObject(url, request, RtrvMyDashboardInfoResponse.class);
         } catch (Exception ex) {
             throw new BusinessException(ExceptionEnum.MYDASHBOARD_NOT_RTRV);
         }
+        //查询所有task各中状态下属于的storyList
+        RtrvMyDashboardInfoForStoryResponse responseForStory = new RtrvMyDashboardInfoForStoryResponse();
+        //选出不同的story
+        /*todo*/
+        List<String> storyIds = new ArrayList<>();
+        for (int i = 0; i < responseForTask.getToDo().size(); i++) {
+            String id = responseForTask.getToDo().get(i).getStoryId();
+            if (!storyIds.isEmpty() && storyIds.contains(id)) {
+                continue;
+            }
+            storyIds.add(id);
+        }
+        if (storyIds.size() > 0) {
+            responseForStory.setToDo(this.rtrvSrotys(storyIds));
+        }
+        /*done*/
+        List<String> stoIds = new ArrayList<>();
+        for (int i = 0; i < responseForTask.getDone().size(); i++) {
+            String id = responseForTask.getDone().get(i).getStoryId();
+            if (!stoIds.isEmpty() && stoIds.contains(id)) {
+                continue;
+            }
+            stoIds.add(id);
+        }
+        if (stoIds.size() > 0) {
+            responseForStory.setDone(this.rtrvSrotys(stoIds));
+        }
+        /*inProgress*/
+        List<String> stIds = new ArrayList<>();
+        for (int i = 0; i < responseForTask.getInProgress().size(); i++) {
+            String id = responseForTask.getInProgress().get(i).getStoryId();
+            if (!stIds.isEmpty() && stIds.contains(id)) {
+                continue;
+            }
+            stIds.add(id);
+        }
+        if (stIds.size() > 0) {
+            responseForStory.setInProgress(this.rtrvSrotys(stIds));
+        }
+
+        //把task放到各自的story下面
+        MyDashboardResponse myDashboardResponse = new MyDashboardResponse();
+        /*done*/
+        if (responseForTask.getDone().size() > 0) {
+            List<StoryAndTasks> done = new ArrayList<>();
+            for (int i = 0; i < responseForStory.getDone().size(); i++) {
+                StoryAndTasks storyAndTasks = new StoryAndTasks();
+                String storyId = responseForStory.getDone().get(i).getStoryId();
+                List<Task> tasks = new ArrayList<>();
+                for (int j = 0; j < responseForTask.getDone().size(); j++) {
+                    String stoId = responseForTask.getDone().get(j).getStoryId();
+                    if (stoId.equals(storyId)) {
+                        tasks.add(responseForTask.getDone().get(j));
+                    }
+                }
+                storyAndTasks.setTasks(tasks);
+                if (storyAndTasks.getTasks().size() > 0) {
+                    storyAndTasks.setStory(responseForStory.getDone().get(i));
+                    done.add(storyAndTasks);
+                }
+            }
+            myDashboardResponse.setDone(done);
+        }
+        /*toDo*/
+        if (responseForTask.getToDo().size() > 0) {
+            List<StoryAndTasks> toDo = new ArrayList<>();
+            for (int i = 0; i < responseForStory.getToDo().size(); i++) {
+                StoryAndTasks storyAndTasks = new StoryAndTasks();
+                String storyId = responseForStory.getToDo().get(i).getStoryId();
+                List<Task> tasks = new ArrayList<>();
+                for (int j = 0; j < responseForTask.getToDo().size(); j++) {
+                    String stoId = responseForTask.getToDo().get(j).getStoryId();
+                    if (stoId.equals(storyId)) {
+                        tasks.add(responseForTask.getToDo().get(j));
+                    }
+                }
+                storyAndTasks.setTasks(tasks);
+                if (storyAndTasks.getTasks().size() > 0) {
+                    storyAndTasks.setStory(responseForStory.getToDo().get(i));
+                    toDo.add(storyAndTasks);
+                }
+            }
+            myDashboardResponse.setToDo(toDo);
+        }
+        /*InProgress*/
+        if (responseForTask.getInProgress().size() > 0) {
+            List<StoryAndTasks> inProgress = new ArrayList<>();
+            for (int i = 0; i < responseForStory.getInProgress().size(); i++) {
+                StoryAndTasks storyAndTasks = new StoryAndTasks();
+                String storyId = responseForStory.getInProgress().get(i).getStoryId();
+                List<Task> tasks = new ArrayList<>();
+                for (int j = 0; j < responseForTask.getInProgress().size(); j++) {
+                    String stoId = responseForTask.getInProgress().get(j).getStoryId();
+                    if (stoId.equals(storyId)) {
+                        tasks.add(responseForTask.getInProgress().get(j));
+                    }
+                }
+                storyAndTasks.setTasks(tasks);
+                if (storyAndTasks.getTasks().size() > 0) {
+                    storyAndTasks.setStory(responseForStory.getInProgress().get(i));
+                    inProgress.add(storyAndTasks);
+                }
+            }
+            myDashboardResponse.setInProgress(inProgress);
+        }
+
         restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
         restResponse.setResponseMsg("请求成功");
         restResponse.setResponseCode("000");
-        restResponse.setResponseBody(response);
+        restResponse.setResponseBody(myDashboardResponse);
         return restResponse;
+    }
+
+    /**
+     * //查询项目下的所有story
+     *
+     * @param storyIds
+     * @return
+     */
+    private List<Story> rtrvSrotys(List<String> storyIds) {
+        RtrvStoryListByStoryIdsRequest rtrvStoryListByStoryIdsRequest = new RtrvStoryListByStoryIdsRequest();
+        rtrvStoryListByStoryIdsRequest.setPage(1);
+        rtrvStoryListByStoryIdsRequest.setPageSize(Integer.MAX_VALUE);
+        rtrvStoryListByStoryIdsRequest.setStoryIds(storyIds);
+        List<Story> storyList = new ArrayList<>();
+        try {
+            String url = webConfig.getRtrvStoryInfoListByStoryIdsUrl();
+            ResponseEntity<RtrvStoryListByStoryIdsResponse> response = this.restTemplate.postForEntity(url, rtrvStoryListByStoryIdsRequest, RtrvStoryListByStoryIdsResponse.class);
+            storyList = response.getBody().getStories();
+        } catch (Exception ex) {
+            throw new BusinessException(ExceptionEnum.DASHBOARD_DETAIL_STORY_NOT_RTRV);
+        }
+        return storyList;
     }
 
     @Override
@@ -578,6 +695,12 @@ public class DashboardServiceImpl implements DashboardService {
         return restResponse;
     }
 
+    /**
+     * 获取下两个SprintInfo
+     *
+     * @param request
+     * @return
+     */
     @Override
     public RestResponse itSprints(RtrvItSprintsRequest request) {
         List<SprintInfo> sprintInfos = new ArrayList<>();
@@ -596,6 +719,7 @@ public class DashboardServiceImpl implements DashboardService {
 
     /**
      * 获取所有负责人的看板信息
+     *
      * @param request
      * @return
      */
@@ -655,7 +779,7 @@ public class DashboardServiceImpl implements DashboardService {
                 names.add(name);
             }
             List<SprintInfo> sprintInfos = new ArrayList<>();
-            for (int k = 0; k < names.size() ; k++) {
+            for (int k = 0; k < names.size(); k++) {
                 SprintInfo sprintInfo = new SprintInfo();
                 String name = names.get(k);
                 List<String> itemIdList = new ArrayList<>();
@@ -664,12 +788,16 @@ public class DashboardServiceImpl implements DashboardService {
                     String sprintName = spInfos.get(j).getName();
                     String[] sprintStoryIds = storyIds.split(",");
                     List<String> sprintStoryIdList = Arrays.asList(sprintStoryIds);
-                    if (sprintName.equals(name) && !StringUtils.isEmpty(sprintName)){
+                    if (sprintName.equals(name) && !StringUtils.isEmpty(sprintName)) {
                         sprintInfo = spInfos.get(j);
                         itemIdList.addAll(sprintStoryIdList);
                     }
                 }
                 String stoIds = MdvnStringUtil.join(itemIdList, ",");
+                sprintInfo.setUuId(null);
+                sprintInfo.setCreatorId("");
+                sprintInfo.setCreateTime(null);
+                sprintInfo.setUpdateTime(null);
                 sprintInfo.setName(name);
                 sprintInfo.setItemIds(stoIds);
                 sprintInfos.add(sprintInfo);

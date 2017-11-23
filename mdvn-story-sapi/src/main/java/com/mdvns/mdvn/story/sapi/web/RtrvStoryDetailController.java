@@ -1,12 +1,7 @@
 package com.mdvns.mdvn.story.sapi.web;
 
-import com.mdvns.mdvn.story.sapi.domain.RtrvAverageReqmProgress;
-import com.mdvns.mdvn.story.sapi.domain.RtrvMembersByRoleIdRequest;
-import com.mdvns.mdvn.story.sapi.domain.RtrvStoryDetailRequest;
-import com.mdvns.mdvn.story.sapi.domain.entity.StoryAttchUrl;
-import com.mdvns.mdvn.story.sapi.domain.entity.StoryRoleMember;
-import com.mdvns.mdvn.story.sapi.domain.entity.StoryTag;
-import com.mdvns.mdvn.story.sapi.domain.entity.StoryTask;
+import com.mdvns.mdvn.story.sapi.domain.*;
+import com.mdvns.mdvn.story.sapi.domain.entity.*;
 import com.mdvns.mdvn.story.sapi.service.IRtrvStoryDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

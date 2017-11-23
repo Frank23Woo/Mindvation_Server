@@ -25,8 +25,6 @@ public class WebConfig {
     private String findIterationModelByIdUrl;
 
     private String updateSprintInfoUrl;
-    private String updateMyDashboardUrl;
-    private String myDashboardInfosUrl;
     private String rtrvStaffInfoUrl;
 
     private String rtrvlabelIdBystoryIdUrl;
@@ -38,6 +36,24 @@ public class WebConfig {
     private String itSprintUrl;
     private String findAllDashboardByIdUrl;
     private String findAllDashboardInfoByIdsUrl;
+    private String updateMyDashboardForTaskUrl;
+    private String myDashboardInfosForTaskUrl;
+
+    public String getUpdateMyDashboardForTaskUrl() {
+        return updateMyDashboardForTaskUrl;
+    }
+
+    public void setUpdateMyDashboardForTaskUrl(String updateMyDashboardForTaskUrl) {
+        this.updateMyDashboardForTaskUrl = updateMyDashboardForTaskUrl;
+    }
+
+    public String getMyDashboardInfosForTaskUrl() {
+        return myDashboardInfosForTaskUrl;
+    }
+
+    public void setMyDashboardInfosForTaskUrl(String myDashboardInfosForTaskUrl) {
+        this.myDashboardInfosForTaskUrl = myDashboardInfosForTaskUrl;
+    }
 
     public String getFindAllDashboardInfoByIdsUrl() {
         return findAllDashboardInfoByIdsUrl;
@@ -93,22 +109,6 @@ public class WebConfig {
 
     public void setRtrvStaffInfoUrl(String rtrvStaffInfoUrl) {
         this.rtrvStaffInfoUrl = rtrvStaffInfoUrl;
-    }
-
-    public String getMyDashboardInfosUrl() {
-        return myDashboardInfosUrl;
-    }
-
-    public void setMyDashboardInfosUrl(String myDashboardInfosUrl) {
-        this.myDashboardInfosUrl = myDashboardInfosUrl;
-    }
-
-    public String getUpdateMyDashboardUrl() {
-        return updateMyDashboardUrl;
-    }
-
-    public void setUpdateMyDashboardUrl(String updateMyDashboardUrl) {
-        this.updateMyDashboardUrl = updateMyDashboardUrl;
     }
 
     public String getUpdateSprintInfoUrl() {

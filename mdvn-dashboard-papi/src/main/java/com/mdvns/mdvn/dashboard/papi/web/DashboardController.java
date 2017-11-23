@@ -95,7 +95,6 @@ public class DashboardController {
         return this.dashboardService.updateSprintCloseStatus(request);
     }
 
-
     /**
      * 获取下两个SprintInfo
      * @param request
@@ -105,7 +104,6 @@ public class DashboardController {
     public RestResponse itSprints(@RequestBody RtrvItSprintsRequest request) {
         return this.dashboardService.itSprints(request);
     }
-
 
     /**
      * 所有角色都可以看到MVP Dashboard里的内容
