@@ -554,7 +554,7 @@ public class ReqmntServiceImpl implements IReqmntService {
         final String url = config.getUpdateReqmntInfoUrl();
         ResponseEntity<Boolean> responseEntity = restTemplate.postForEntity(url, request, Boolean.class);
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
-            return rtrvReqmntInfo(new RtrvReqmntInfoRequest(request.getReqmntInfo().getReqmntId()));
+            return rtrvReqmntInfo(new RtrvReqmntInfoRequest(request.getStaffId(),request.getReqmntInfo().getReqmntId()));
         } else {
             throw new BusinessException(ExceptionEnum.SAPI_EXCEPTION);
         }
