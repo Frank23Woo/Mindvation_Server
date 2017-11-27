@@ -14,12 +14,14 @@ config:
   updateStoryTagsUrl: http://localhost:8080/mdvn-story-sapi/updateStory/updateStoryTags
   updateStoryChecklistsUrl: http://localhost:8080/mdvn-story-sapi/updateStory/updateStoryChecklists
   updateStoryModelsUrl: http://localhost:8080/mdvn-story-sapi/updateStory/updateStoryModels
+  updateStoryNoteUrl: http://localhost:8080/mdvn-story-sapi/updateStory/updateStoryNote
   rtrvStoryBaseInfoUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/rtrvStoryBaseInfo
   rtrvSRoleMembersUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/rtrvSRoleMembers
   rtrvStoryTagsUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/rtrvStoryTags
   rtrvStoryModelsUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/rtrvStoryModels
   rtrvStoryCheckListsUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/rtrvStoryCheckLists
   rtrvStoryAttUrlsUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/rtrvStoryAttUrls
+  rtrvStoryNoteUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/rtrvStoryNote
   rtrvReqmntListUrl: http://localhost:8080/mdvn-reqmnt-papi/rtrvReqmntList
 
   rtrvMembersByRoleIdUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/rtrvMembersByRoleId

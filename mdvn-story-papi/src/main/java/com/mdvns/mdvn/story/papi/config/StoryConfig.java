@@ -71,6 +71,26 @@ public class StoryConfig {
 
     private String findSubFuncListByIdUrl;
 
+    private String updateStoryNoteUrl;
+
+    private String rtrvStoryNoteUrl;
+
+    public String getRtrvStoryNoteUrl() {
+        return rtrvStoryNoteUrl;
+    }
+
+    public void setRtrvStoryNoteUrl(String rtrvStoryNoteUrl) {
+        this.rtrvStoryNoteUrl = rtrvStoryNoteUrl;
+    }
+
+    public String getUpdateStoryNoteUrl() {
+        return updateStoryNoteUrl;
+    }
+
+    public void setUpdateStoryNoteUrl(String updateStoryNoteUrl) {
+        this.updateStoryNoteUrl = updateStoryNoteUrl;
+    }
+
     public String getFindSubFuncListByIdUrl() {
         return findSubFuncListByIdUrl;
     }

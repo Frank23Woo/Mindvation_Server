@@ -8,7 +8,6 @@ public class Staff {
 
     private Integer uuId;
     private String staffId;
-
     private String account;
 
     private String name;
@@ -41,6 +40,7 @@ public class Staff {
     private String status;
 
     private Integer tagsCnt;
+
 
     public Integer getTagsCnt() {
         return tagsCnt;

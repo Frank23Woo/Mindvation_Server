@@ -143,6 +143,11 @@ public class StaffController {
         return this.staffService.updateStaffDetail(request);
     }
 
+    @PostMapping(value = "/updateStaffPassword")
+    public ResponseEntity<?> updateStaffPassword(@RequestBody UpdatePasswordRequest request) {
+        return this.staffService.updateStaffPassword(request);
+    }
+
    /* @PostMapping(value = "/rtrvStaff")
     public ResponseEntity<?> rtrvStaff(@RequestBody RtrvStaffRequest rtrvStaffRequest) {
         return this.staffService.rtrvStaff(rtrvStaffRequest);

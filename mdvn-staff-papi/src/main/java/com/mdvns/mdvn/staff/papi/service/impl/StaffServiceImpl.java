@@ -1,9 +1,6 @@
 package com.mdvns.mdvn.staff.papi.service.impl;
 
-import com.mdvns.mdvn.common.beans.LoginRequest;
-import com.mdvns.mdvn.common.beans.RestResponse;
-import com.mdvns.mdvn.common.beans.StaffTagScore;
-import com.mdvns.mdvn.common.beans.Tag;
+import com.mdvns.mdvn.common.beans.*;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
 import com.mdvns.mdvn.common.enums.ConstantEnum;
@@ -11,6 +8,7 @@ import com.mdvns.mdvn.common.utils.FetchListUtil;
 import com.mdvns.mdvn.common.utils.RestResponseUtil;
 import com.mdvns.mdvn.staff.papi.config.WebConfig;
 import com.mdvns.mdvn.staff.papi.domain.*;
+import com.mdvns.mdvn.staff.papi.domain.Staff;
 import com.mdvns.mdvn.staff.papi.service.StaffService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -182,6 +180,17 @@ public class StaffServiceImpl implements StaffService {
 
     }
 
+    @Override
+    public ResponseEntity<?> updateStaffPassword(UpdatePasswordRequest request) {
+
+        Boolean flag = this.restTemplate.postForObject(webConfig.getUpdateStaffPasswordUrl(), request, Boolean.class);
+        if (flag) {
+            return rtrvStaffDetail(request.getStaffId());
+        } else {
+            return ResponseEntity.ok(RestResponseUtil.error(HttpStatus.NOT_MODIFIED, ExceptionEnum.UPDATE_STAFF_PASSWORD_FAIL + "", "Fail to update staff PASSWORD"));
+        }
+    }
+
 
     @Override
     public ResponseEntity<?> rtrvStaffDetail(String staffId) {
@@ -212,6 +221,19 @@ public class StaffServiceImpl implements StaffService {
         staff.setTagsCnt(tagList.size());
         response.setStaffInfo(staff);
         response.setTags(tagList);
+
+        //返回部门信息和职位信息
+        QueryDepartmentRequest queryDepartmentRequest = new QueryDepartmentRequest();
+        queryDepartmentRequest.setDepartmentId(staff.getDeptId());
+        DepartmentDetail departmentDetail = restTemplate.postForObject(webConfig.getRtrvDepartmentUrl(), queryDepartmentRequest, DepartmentDetail.class);
+        response.setDepartmentDetail(departmentDetail);
+        Integer positionId = staff.getPositionId();
+        List<Position> positions = departmentDetail.getPositions();
+        for (int i = 0; i < positions.size(); i++) {
+            if (positions.get(i).getId().equals(positionId)){
+                response.setPosition(positions.get(i));
+            }
+        }
         return ResponseEntity.ok(RestResponseUtil.success(response));
     }
 
@@ -224,6 +246,9 @@ public class StaffServiceImpl implements StaffService {
             return ResponseEntity.ok(RestResponseUtil.error(HttpStatus.NOT_MODIFIED, ExceptionEnum.UPDATE_STAFF_FAIL + "", "Fail to update staff info"));
         }
     }
+
+
+
 
 
     /**

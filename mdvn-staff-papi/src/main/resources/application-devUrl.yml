@@ -13,7 +13,7 @@ url:
   rtrvStaffTagListUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffTagList
   updateStaffDetailUrl: http://localhost:10013/mdvn-staff-sapi/updateStaffDetail
   deleteStaffUrl: http://localhost:10013/mdvn-staff-sapi/deleteStaff
-
+  updateStaffPasswordUrl: http://localhost:10013/mdvn-staff-sapi/updateStaffPassword
   rtrvPostionDetailUrl: http://localhost:10023/mdvn-department-sapi/findPositionById
   rtrvDepartmentDetailUrl: http://localhost:10023/mdvn-department-sapi/findDepartmentById
   findByAccounAndPasswordtUrl : http://localhost:10013/mdvn-staff-sapi/staff
@@ -26,5 +26,8 @@ url:
   rtrvTagsByStaffIdUrl: http://localhost:10013/mdvn-staff-sapi/rtrvTagsByStaffId
 #查询name以指定字符串开头的所有用户
   rtrvStaffByNameStartingUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffByNameStarting
+
+  rtrvDepartmentUrl: http://localhost:10023/mdvn-department-sapi/rtrvDepartment
+
 
 

@@ -87,6 +87,17 @@ public class RtrvStoryDetailController {
     }
 
     /**
+     * 获得某个用户故事note信息
+     * @param storyId
+     * @return
+     * @throws SQLException
+     */
+    @PostMapping(value="/rtrvStoryNote")
+    public StoryNote rtrvStoryNote(@RequestBody String storyId) throws SQLException {
+        return rtrvStoryDetailService.rtrvStoryNote(storyId);
+    }
+
+    /**
      * 查询上一层reqmnt下的labelId
      * @param storyId
      * @return

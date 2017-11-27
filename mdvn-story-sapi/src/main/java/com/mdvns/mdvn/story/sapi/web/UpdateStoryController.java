@@ -1,10 +1,7 @@
 package com.mdvns.mdvn.story.sapi.web;
 
 
-import com.mdvns.mdvn.story.sapi.domain.UpdateAttchUrlsRequest;
-import com.mdvns.mdvn.story.sapi.domain.UpdateSMembersRequest;
-import com.mdvns.mdvn.story.sapi.domain.UpdateSTagsRequest;
-import com.mdvns.mdvn.story.sapi.domain.UpdateSTasksRequest;
+import com.mdvns.mdvn.story.sapi.domain.*;
 import com.mdvns.mdvn.story.sapi.domain.entity.*;
 import com.mdvns.mdvn.story.sapi.service.IUpdateStoryService;
 import org.slf4j.Logger;
@@ -72,6 +69,16 @@ public class UpdateStoryController {
     @PostMapping(value="/updateStoryTasks")
     public List<StoryTask> updateStoryTasks(@RequestBody UpdateSTasksRequest request){
         return this.updateStoryService.updateStoryTasks(request);
+    }
+
+    /**
+     * 更改用户故事便签信息
+     * @param request
+     * @return
+     */
+    @PostMapping(value="/updateStoryNote")
+    public StoryNote updateStoryNote(@RequestBody UpdateSNoteRequest request){
+        return this.updateStoryService.updateStoryNote(request);
     }
 
 }

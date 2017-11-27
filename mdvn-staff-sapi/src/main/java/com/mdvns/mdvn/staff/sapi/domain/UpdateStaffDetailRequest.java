@@ -1,6 +1,6 @@
 package com.mdvns.mdvn.staff.sapi.domain;
 
-import com.mdvns.mdvn.common.beans.Tag;
+
 import com.mdvns.mdvn.staff.sapi.domain.entity.Staff;
 
 import java.util.List;

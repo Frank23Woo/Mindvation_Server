@@ -18,7 +18,7 @@ public class FunctionLabel {
     // 创建人ID
     private String creatorId;
 
-    private Timestamp createTime;
+    private Long createTime;
 
     /*是否已删除*/
     private Integer isDeleted;
@@ -43,11 +43,11 @@ public class FunctionLabel {
         this.creatorId = creatorId;
     }
 
-    public Timestamp getCreateTime() {
+    public Long getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Long createTime) {
         this.createTime = createTime;
     }
 

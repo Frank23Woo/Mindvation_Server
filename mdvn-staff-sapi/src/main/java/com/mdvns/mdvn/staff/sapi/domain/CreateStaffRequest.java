@@ -15,6 +15,9 @@ public class CreateStaffRequest {
     /* staff login name*/
     private String account;
 
+    /*添加头像*/
+    private String avatar;
+
     private String password;
 
     private String gender;
@@ -30,6 +33,14 @@ public class CreateStaffRequest {
     private String phoneNum;
 
     private List<String> tagIds;
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
     public String getName() {
         return name;

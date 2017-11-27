@@ -7,6 +7,7 @@ import com.mdvns.mdvn.reqmnt.sapi.domain.entity.ReqmntMember;
 import com.mdvns.mdvn.reqmnt.sapi.domain.entity.ReqmntTag;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Component
@@ -29,9 +30,9 @@ public class CreateReqmntRequest {
     /* requirement function label id*/
     private String functionLabelId;
     /* requirement start date*/
-    private Long startDate;
+    private Timestamp startDate;
     /* requirement end date*/
-    private Long endDate;
+    private Timestamp endDate;
     /* staff id of Leader*/
     private String leaderId;
     /* members of requirement*/
@@ -95,19 +96,19 @@ public class CreateReqmntRequest {
         this.functionLabelId = functionLabelId;
     }
 
-    public Long getStartDate() {
+    public Timestamp getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Long startDate) {
+    public void setStartDate(Timestamp startDate) {
         this.startDate = startDate;
     }
 
-    public Long getEndDate() {
+    public Timestamp getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Long endDate) {
+    public void setEndDate(Timestamp endDate) {
         this.endDate = endDate;
     }
 

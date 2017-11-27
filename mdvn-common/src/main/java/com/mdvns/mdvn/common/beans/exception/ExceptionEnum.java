@@ -95,7 +95,8 @@ public enum ExceptionEnum {
 	STORY_DETAIL_TASK_NOT_RTRV("1519", "调用SAPI获取用户故事detail Task信息时失败"),
 	STORY_DETAIL_ATTCHURL_NOT_RTRV("1520", "调用SAPI获取用户故事detail附件信息时失败"),
 	STORY_DETAIL_MODEL_TASKDELIVERY_NOT_RTRV("1521", "调用SAPI获取模型下的交付件信息时失败"),
-	STORY_DASHBOARD_NOT_CREATE("15022", "调用SAPI保存用户故事看板sprint数据失败"),
+	STORY_DASHBOARD_NOT_CREATE("1522", "调用SAPI保存用户故事看板sprint数据失败"),
+	STORY_DETAIL_NOTE_NOT_RTRV("1523", "调用SAPI获取用户故事便签信息时失败"),
 
 	// TASK
 	TASK_SAVE_FAILED("1601", "保存task失败"),
@@ -120,6 +121,7 @@ public enum ExceptionEnum {
 	DELETE_STAFF_FAIL("1901", "Fail to delete staff"),
 	USER_NAME_EXISTS("1902", "User name already exists"),
 	USER_ACCT_EXISTS("1903", "User account already exists"),
+	UPDATE_STAFF_PASSWORD_FAIL("1904", "原密码输入有误"),
 
 	//comment
 	COMMENT__NOT_CREATE("2201", "评论未创建成功"),

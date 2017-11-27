@@ -54,9 +54,9 @@ public class StoryServiceImpl implements IStoryService {
         restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
         restResponse.setResponseCode("000");
         Float storyPoint = null;
-        for (int i = 0; i <rtrvStoryListResponse.getBody().getStories().size() ; i++) {
+        for (int i = 0; i < rtrvStoryListResponse.getBody().getStories().size(); i++) {
             storyPoint = rtrvStoryListResponse.getBody().getStories().get(i).getStoryPoint();
-            storyPoint +=storyPoint;
+            storyPoint += storyPoint;
         }
         System.out.println(storyPoint);
         restResponse.setResponseBody(rtrvStoryListResponse.getBody());
@@ -106,7 +106,7 @@ public class StoryServiceImpl implements IStoryService {
         String storyId = story.getStoryId();
 
         //1.1 给创建人分配权限
-        StaffAuthUtil.assignAuthForCreator(this.restTemplate, createStoryRequest.getStoryInfo().getProjId(),storyId,createStoryRequest.getCreatorId(), AuthEnum.RMEMBER.getCode());
+        StaffAuthUtil.assignAuthForCreator(this.restTemplate, createStoryRequest.getStoryInfo().getProjId(), storyId, createStoryRequest.getCreatorId(), AuthEnum.RMEMBER.getCode());
         LOG.info("给创建人分配权限成功!");
 
 
@@ -173,7 +173,7 @@ public class StoryServiceImpl implements IStoryService {
 
             //给成员分配权限
             List<String> assignees = new ArrayList<String>();
-            for (int i = 0; i <members.size() ; i++) {
+            for (int i = 0; i < members.size(); i++) {
                 assignees.addAll(members.get(i).getMemberIds());
             }
             StaffAuthUtil.assignAuth(this.restTemplate, new AssignAuthRequest(createStoryRequest.getStoryInfo().getProjId(), createStoryRequest.getCreatorId(), assignees, storyId, AuthEnum.SMEMBER.getCode()));
@@ -214,7 +214,7 @@ public class StoryServiceImpl implements IStoryService {
         String addStoryUrl = config.getAddStoryUrl();
         try {
             SprintInfo sprintInfo = restTemplate.postForObject(addStoryUrl, addStoryRequest, SprintInfo.class);
-            LOG.info("sprintInfo信息为："+sprintInfo);
+            LOG.info("sprintInfo信息为：" + sprintInfo);
         } catch (Exception ex) {
             throw new BusinessException(ExceptionEnum.STORY_DASHBOARD_NOT_CREATE);
         }
@@ -241,8 +241,8 @@ public class StoryServiceImpl implements IStoryService {
         if (updateStoryDetailRequest.getStoryInfo() != null) {
             //先判断过程方法子模块是新建还是选取（访问model模块）
             if (updateStoryDetailRequest.getSubFunctionLabel() != null) {
-                LOG.info("更改reqmnt的时候传入的过程方法模块Id："+updateStoryDetailRequest.getSubFunctionLabel().getLabelId());
-                LOG.info("更改reqmnt的时候传入的过程方法模块Name："+updateStoryDetailRequest.getSubFunctionLabel().getName());
+                LOG.info("更改reqmnt的时候传入的过程方法模块Id：" + updateStoryDetailRequest.getSubFunctionLabel().getLabelId());
+                LOG.info("更改reqmnt的时候传入的过程方法模块Name：" + updateStoryDetailRequest.getSubFunctionLabel().getName());
                 JudgeSubLabelIdRequest judgeSubLabelIdRequest = new JudgeSubLabelIdRequest();
                 judgeSubLabelIdRequest.setCreatorId(updateStoryDetailRequest.getCreatorId());
                 judgeSubLabelIdRequest.setSubFunctionLabel(updateStoryDetailRequest.getSubFunctionLabel());
@@ -394,7 +394,7 @@ public class StoryServiceImpl implements IStoryService {
                 String attachmentIds = MdvnStringUtil.join(idList, ",");
                 if (pAttchUrls.size() != 0) {
                     ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(config.getRtrvAttchListUrl() + attachmentIds, RestResponse.class);
-                    storyDetail.setAttchInfos((List<AttchInfo>)responseEntity.getBody().getResponseBody());
+                    storyDetail.setAttchInfos((List<AttchInfo>) responseEntity.getBody().getResponseBody());
 //                storyectDetail.setAttchUrls(pAttchUrls);
                 }
 
@@ -402,6 +402,30 @@ public class StoryServiceImpl implements IStoryService {
                 throw new BusinessException(ExceptionEnum.PROJECT_ATTCHURL_NOT_UPDATE);
             }
         }
+        //7.便签（会议记录）(考虑到之前会议记录全部删除的情况)
+        if (updateStoryDetailRequest.getNoteDesc() != null) {
+            UpdateSNoteRequest updateSNoteRequest = new UpdateSNoteRequest();
+            updateSNoteRequest.setCreatorId(updateStoryDetailRequest.getCreatorId());
+            updateSNoteRequest.setNoteDesc(updateStoryDetailRequest.getNoteDesc());
+            updateSNoteRequest.setStoryId(updateStoryDetailRequest.getStoryInfo().getStoryId());
+            try {
+                StoryNote storyNote = restTemplate.postForObject(config.getUpdateStoryNoteUrl(), updateSNoteRequest, StoryNote.class);
+                List<String> memberIds = new ArrayList<String>();
+                String staffId = storyNote.getCreatorId();
+                memberIds.add(staffId);
+                // call staff sapi
+                Map<String, Object> params = new HashMap<>();
+                params.put("staffIdList", memberIds);
+                ParameterizedTypeReference typeReference = new ParameterizedTypeReference<List<Staff>>() {
+                };
+                List<Staff> stafList = (List<Staff>) FetchListUtil.fetch(restTemplate, config.getRtrvStaffsByIdsUrl(), params, typeReference);
+                storyNote.setCreatorInfo(stafList.get(0));
+                storyDetail.setStoryNote(storyNote);
+            } catch (Exception ex) {
+                throw new BusinessException(ExceptionEnum.STORY_DETAIL_NOTE_NOT_RTRV);
+            }
+        }
+        //权限
         //projId
         String projId = updateStoryDetailRequest.getStoryInfo().getProjId();
         //storyId
@@ -441,6 +465,26 @@ public class StoryServiceImpl implements IStoryService {
             throw new BusinessException(ExceptionEnum.STORY_DETAIL_BASEINFO_NOT_RTRV);
         }
         storyDetail.setStoryInfo(story);
+        //1.1 获取storyNote信息
+        try {
+            String storyId = rtrvStoryDetailRequest.getStoryId();
+            StoryNote storyNote = restTemplate.postForObject(config.getRtrvStoryNoteUrl(), storyId, StoryNote.class);
+            if (storyNote != null) {
+                List<String> memberIds = new ArrayList<String>();
+                String staffId = storyNote.getCreatorId();
+                memberIds.add(staffId);
+                // call staff sapi
+                Map<String, Object> params = new HashMap<>();
+                params.put("staffIdList", memberIds);
+                ParameterizedTypeReference typeReference = new ParameterizedTypeReference<List<Staff>>() {
+                };
+                List<Staff> stafList = (List<Staff>) FetchListUtil.fetch(restTemplate, config.getRtrvStaffsByIdsUrl(), params, typeReference);
+                storyNote.setCreatorInfo(stafList.get(0));
+                storyDetail.setStoryNote(storyNote);
+            }
+        } catch (Exception ex) {
+            throw new BusinessException(ExceptionEnum.STORY_DETAIL_NOTE_NOT_RTRV);
+        }
         //2.获取用户故事角色成员信息
         String rtrvSRoleMembersUrl = config.getRtrvSRoleMembersUrl();
         try {
@@ -588,7 +632,7 @@ public class StoryServiceImpl implements IStoryService {
         RtrvTaskListRequest rtrvTaskListRequest = new RtrvTaskListRequest();
         rtrvTaskListRequest.setPage(0);
         rtrvTaskListRequest.setStaffId(rtrvStoryDetailRequest.getStaffId());
-        LOG.info("staffId:"+rtrvStoryDetailRequest.getStaffId());
+        LOG.info("staffId:" + rtrvStoryDetailRequest.getStaffId());
         rtrvTaskListRequest.setPageSize(Integer.MAX_VALUE);
         rtrvTaskListRequest.setStoryId(rtrvStoryDetailRequest.getStoryId());
         RestResponse<List<TaskDetail>> response = restTemplate.postForObject(url, rtrvTaskListRequest, RestResponse.class);
@@ -600,7 +644,7 @@ public class StoryServiceImpl implements IStoryService {
             rtrvModelByIdRequest.setModelId(modelId);
             List<TaskDelivery> taskDeliveries = restTemplate.postForObject(findTaskDeliveryByIdUrl, rtrvModelByIdRequest, List.class);
             storyDetail.setTaskDeliveries(taskDeliveries);
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             throw new BusinessException(ExceptionEnum.STORY_DETAIL_MODEL_TASKDELIVERY_NOT_RTRV);
         }
         //6.获取项目附件信息
@@ -627,7 +671,7 @@ public class StoryServiceImpl implements IStoryService {
                 ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(config.getRtrvAttchListUrl() + attachmentIds, RestResponse.class);
 //            List<AttchInfo> attchInfoList = restTemplate.getForObject(config.getRtrvAttchListUrl()+attachmentIds,List.class);
 //            storyectDetail.setAttchUrls(storyAttchUrls);
-                storyDetail.setAttchInfos((List<AttchInfo>)responseEntity.getBody().getResponseBody());
+                storyDetail.setAttchInfos((List<AttchInfo>) responseEntity.getBody().getResponseBody());
             }
         } catch (Exception ex) {
             throw new BusinessException(ExceptionEnum.STORY_DETAIL_ATTCHURL_NOT_RTRV);

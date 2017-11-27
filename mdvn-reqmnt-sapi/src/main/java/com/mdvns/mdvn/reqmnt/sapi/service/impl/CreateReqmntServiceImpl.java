@@ -48,7 +48,7 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
     private ReqmntAttchUrlsRepository reqmntAttchUrlsRepository;
 
     /**
-     * 获取project整个列表
+     * 获取requirment整个列表
      *
      * @return
      */
@@ -174,7 +174,7 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
         if (!StringUtils.isEmpty(createReqmntRequest.getEndDate())) {
             requirementInfo.setEndDate(createReqmntRequest.getEndDate());
         }
-        Long currentTime = System.currentTimeMillis();
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
         requirementInfo.setCreateTime(currentTime);
         requirementInfo.setLastUpdateTime(currentTime);
         requirementInfo.setStatus("new");
@@ -275,29 +275,6 @@ public class CreateReqmntServiceImpl implements ICreateReqmntService {
             String creatorId = projChecklists.get(i).getCreatorId();
             String assignerId = projChecklists.get(i).getAssignerId();
             String executorId = projChecklists.get(i).getAssigneeId();
-//            Staff creator = this.staffRepository.findByStaffId(creatorId);
-//            Staff assigner = this.staffRepository.findByStaffId(assignerId);
-//            Staff executor = this.staffRepository.findByStaffId(executorId);
-
-
-//            if (null == creator) {
-//                LOG.error("创建者在员工库中不存在.", creator);
-//                throw new BusinessException(creator + "创建者在员工库中不存在.");
-//            } else {
-//                projChecklistsDetail.setCreatorInfo(creator);
-//            }
-//            if (null == assigner) {
-//                LOG.error("设计者在员工库中不存在.", assigner);
-//                throw new BusinessException(assigner + "设计者在员工库中不存在.");
-//            } else {
-//                projChecklistsDetail.setAssignerInfo(assigner);
-//            }
-//            if (null == executor) {
-//                LOG.error("创建者在员工库中不存在.", executor);
-//                throw new BusinessException(executor + "创建者在员工库中不存在.");
-//            } else {
-//                projChecklistsDetail.setExecutorInfo(executor);
-//            }
             projChecklistsDetail.setReqmntCheckList(projChecklists.get(i));
             projChecklistsDetails.add(projChecklistsDetail);
         }

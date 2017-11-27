@@ -36,6 +36,9 @@ public class RtrvStoryDetailServiceImpl implements IRtrvStoryDetailService {
     @Autowired
     private StoryAttchRepository storyAttchRepository;
 
+    @Autowired
+    private StoryNoteRepository storyNoteRepository;
+
     /**
      * 获得某个用户故事基础信息
      *
@@ -165,6 +168,14 @@ public class RtrvStoryDetailServiceImpl implements IRtrvStoryDetailService {
         String reqmntId = this.storyRepository.getReqmntIdByStoryId(storyId);
         LOG.info("finish executing getReqmntIdByStoryId()方法.", this.CLASS);
         return reqmntId;
+    }
+
+    @Override
+    public StoryNote rtrvStoryNote(String storyId) {
+        LOG.info("start executing rtrvStoryNote()方法.", this.CLASS);
+        StoryNote storyNote = this.storyNoteRepository.findByStoryId(storyId);
+        LOG.info("finish executing rtrvStoryNote()方法.", this.CLASS);
+        return storyNote;
     }
 
 }

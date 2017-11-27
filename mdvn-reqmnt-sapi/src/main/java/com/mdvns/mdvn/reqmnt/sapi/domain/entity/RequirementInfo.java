@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.sql.Timestamp;
 
 @Component
 @Entity
@@ -32,11 +33,11 @@ public class RequirementInfo {
     private Integer priority;
     private String functionLabelId;
     /* start date of this requirement*/
-    private Long startDate;
+    private Timestamp startDate;
     /* end date of this requirement*/
-    private Long endDate;
+    private Timestamp endDate;
     /* create time of this requirement*/
-    private Long createTime;
+    private Timestamp createTime;
     /* requirement status, eg. New, Open, In progess, Closed .etc*/
     private String status;
     /* requirement RAG status, ie. Red, Amber, Green*/
@@ -50,7 +51,7 @@ public class RequirementInfo {
     //是否被删除
     private Integer isDeleted;
 
-    private Long lastUpdateTime;
+    private Timestamp lastUpdateTime;
 
     public String getReqmntId() {
         return reqmntId;
@@ -108,27 +109,27 @@ public class RequirementInfo {
         this.priority = priority;
     }
 
-    public Long getStartDate() {
+    public Timestamp getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Long startDate) {
+    public void setStartDate(Timestamp startDate) {
         this.startDate = startDate;
     }
 
-    public Long getEndDate() {
+    public Timestamp getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Long endDate) {
+    public void setEndDate(Timestamp endDate) {
         this.endDate = endDate;
     }
 
-    public Long getCreateTime() {
+    public Timestamp getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Long createTime) {
+    public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
 
@@ -190,11 +191,11 @@ public class RequirementInfo {
     }
 
 
-    public Long getLastUpdateTime() {
+    public Timestamp getLastUpdateTime() {
         return lastUpdateTime;
     }
 
-    public void setLastUpdateTime(Long lastUpdateTime) {
+    public void setLastUpdateTime(Timestamp lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
     }
 

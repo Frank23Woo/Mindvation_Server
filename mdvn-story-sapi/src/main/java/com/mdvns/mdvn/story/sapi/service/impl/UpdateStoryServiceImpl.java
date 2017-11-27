@@ -3,10 +3,7 @@ package com.mdvns.mdvn.story.sapi.service.impl;
 import com.mdvns.mdvn.common.beans.AssignAuthRequest;
 import com.mdvns.mdvn.common.enums.AuthEnum;
 import com.mdvns.mdvn.common.utils.StaffAuthUtil;
-import com.mdvns.mdvn.story.sapi.domain.UpdateAttchUrlsRequest;
-import com.mdvns.mdvn.story.sapi.domain.UpdateSMembersRequest;
-import com.mdvns.mdvn.story.sapi.domain.UpdateSTagsRequest;
-import com.mdvns.mdvn.story.sapi.domain.UpdateSTasksRequest;
+import com.mdvns.mdvn.story.sapi.domain.*;
 import com.mdvns.mdvn.story.sapi.domain.entity.*;
 import com.mdvns.mdvn.story.sapi.repository.*;
 import com.mdvns.mdvn.story.sapi.service.IUpdateStoryService;
@@ -49,6 +46,9 @@ public class UpdateStoryServiceImpl implements IUpdateStoryService {
 
     @Autowired
     private StoryAttchRepository storyAttchRepository;
+
+    @Autowired
+    private StoryNoteRepository storyNoteRepository;
 
     /**
      * 更改用户故事基本信息
@@ -375,6 +375,35 @@ public class UpdateStoryServiceImpl implements IUpdateStoryService {
         List<StoryAttchUrl> storyAttchUrls = this.storyAttchRepository.findSAttchUrls(storyId);
         LOG.info("finish executing updateStoryAttchUrls()方法.", this.CLASS);
         return storyAttchUrls;
+    }
+
+    /**
+     * 更改便签信息
+     * @param request
+     * @return
+     */
+    @Override
+    public StoryNote updateStoryNote(UpdateSNoteRequest request) {
+        StoryNote storyNote = new StoryNote();
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+        String storyId = request.getStoryId();
+        String noteDesc = request.getNoteDesc();
+        String creatorId = request.getCreatorId();
+        StoryNote stoNote = this.storyNoteRepository.findByStoryId(storyId);
+        if (stoNote == null){
+            storyNote.setCreatorId(creatorId);
+            storyNote.setNoteDesc(noteDesc);
+            storyNote.setStoryId(storyId);
+            storyNote.setLastUpdateTime(currentTime);
+            storyNote.setIsDeleted(0);
+        } else{
+            storyNote = stoNote;
+            storyNote.setCreatorId(creatorId);
+            storyNote.setNoteDesc(noteDesc);
+            storyNote.setLastUpdateTime(currentTime);
+        }
+        storyNote = this.storyNoteRepository.saveAndFlush(storyNote);
+        return storyNote;
     }
 
 }

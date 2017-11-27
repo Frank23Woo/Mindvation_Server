@@ -51,6 +51,26 @@ public class WebConfig {
     /*查询name以指定字符串开头的所有用户*/
     private String rtrvStaffByNameStartingUrl;
 
+    private String rtrvDepartmentUrl;
+
+    private String updateStaffPasswordUrl;
+
+    public String getUpdateStaffPasswordUrl() {
+        return updateStaffPasswordUrl;
+    }
+
+    public void setUpdateStaffPasswordUrl(String updateStaffPasswordUrl) {
+        this.updateStaffPasswordUrl = updateStaffPasswordUrl;
+    }
+
+    public String getRtrvDepartmentUrl() {
+        return rtrvDepartmentUrl;
+    }
+
+    public void setRtrvDepartmentUrl(String rtrvDepartmentUrl) {
+        this.rtrvDepartmentUrl = rtrvDepartmentUrl;
+    }
+
     public String getFindByAccounAndPasswordtUrl() {
         return findByAccounAndPasswordtUrl;
     }

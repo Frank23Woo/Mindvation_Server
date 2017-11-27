@@ -23,4 +23,5 @@ public interface IRtrvStoryDetailService {
     String getLabelIdByStoryId(String storyId);
     String getModelIdByStoryId(String storyId);
     String getReqmntIdByStoryId(String storyId);
+    StoryNote rtrvStoryNote(String storyId);
 }

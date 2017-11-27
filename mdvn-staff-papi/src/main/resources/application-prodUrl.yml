@@ -12,7 +12,7 @@ url:
   rtrvStaffTagListUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffTagList
   updateStaffDetailUrl: http://localhost:8080/mdvn-staff-sapi/updateStaffDetail
   rtrvTagsUrl: http://localhost:8080/mdvn-tag-sapi/tags/rtrvTags
-
+  updateStaffPasswordUrl: http://localhost:8080/mdvn-staff-sapi/updateStaffPassword
   rtrvPostionDetailUrl: http://localhost:8080/mdvn-department-sapi/findPositionById
   rtrvDepartmentDetailUrl: http://localhost:8080/mdvn-department-sapi/findDepartmentById
   findByAccounAndPasswordtUrl : http://localhost:8080/mdvn-staff-sapi/staff
@@ -23,4 +23,6 @@ url:
   rtrvTagsByStaffIdUrl: http://localhost:8080/mdvn-staff-sapi/rtrvTagsByStaffId
 #查询name以指定字符串开头的所有用户
   rtrvStaffByNameStartingUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffByNameStarting
+
+  rtrvDepartmentUrl: http://localhost:8080/mdvn-department-sapi/rtrvDepartment
 

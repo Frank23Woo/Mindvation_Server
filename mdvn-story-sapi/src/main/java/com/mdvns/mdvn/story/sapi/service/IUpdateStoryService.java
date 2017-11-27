@@ -1,9 +1,6 @@
 package com.mdvns.mdvn.story.sapi.service;
 
-import com.mdvns.mdvn.story.sapi.domain.UpdateAttchUrlsRequest;
-import com.mdvns.mdvn.story.sapi.domain.UpdateSMembersRequest;
-import com.mdvns.mdvn.story.sapi.domain.UpdateSTagsRequest;
-import com.mdvns.mdvn.story.sapi.domain.UpdateSTasksRequest;
+import com.mdvns.mdvn.story.sapi.domain.*;
 import com.mdvns.mdvn.story.sapi.domain.entity.*;
 
 import java.util.List;
@@ -19,4 +16,6 @@ public interface IUpdateStoryService {
     List<StoryTask> updateStoryTasks(UpdateSTasksRequest list);
 
     List<StoryAttchUrl> updateStoryAttchUrls(UpdateAttchUrlsRequest list);
+
+    StoryNote updateStoryNote(UpdateSNoteRequest request);
 }

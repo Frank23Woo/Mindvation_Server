@@ -39,4 +39,6 @@ public interface StaffService {
     ResponseEntity<?> findByNameStartingWith(String startingStr);
 //    查询staffId为指定id的所有tagId集合
     List<String> rtrvTagsByStaffId(String staffId);
+
+    Boolean updateStaffPassword(UpdatePasswordRequest request);
 }

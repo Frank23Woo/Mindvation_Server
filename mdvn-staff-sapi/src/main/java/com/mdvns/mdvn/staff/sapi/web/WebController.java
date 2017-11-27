@@ -186,5 +186,9 @@ public class WebController {
     public List<String> rtrvTagsByStaffId(@PathVariable String staffId) {
         return this.staffService.rtrvTagsByStaffId(staffId);
     }
+    @PostMapping(value = "/updateStaffPassword")
+    public Boolean updateStaffPassword(@RequestBody UpdatePasswordRequest request) {
+        return this.staffService.updateStaffPassword(request);
+    }
 }
 

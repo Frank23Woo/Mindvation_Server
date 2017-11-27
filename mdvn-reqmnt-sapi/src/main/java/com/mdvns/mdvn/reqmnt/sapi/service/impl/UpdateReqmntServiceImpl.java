@@ -125,7 +125,7 @@ public class UpdateReqmntServiceImpl implements IUpdateReqmntService {
                 }
 
                 if (changeFlag) {
-                    oldInfo.setLastUpdateTime(System.currentTimeMillis());
+                    oldInfo.setLastUpdateTime(now);
                     reqmntRepository.save(oldInfo);
                 }
             }

@@ -41,7 +41,8 @@ public class StaffServiceImpl implements StaffService {
     private StaffTagRepository staffTagRepository;
 
     /**
-     * 获取全部模块
+     * 获取全部人员
+     *
      * @return
      */
     @Override
@@ -71,6 +72,7 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * 通过staffIdList获取staff对象列表
+     *
      * @param request
      * @return
      */
@@ -91,6 +93,7 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * 通过staffId获取单条staff对象
+     *
      * @param staffId
      * @return
      */
@@ -112,7 +115,7 @@ public class StaffServiceImpl implements StaffService {
         Staff updateStaff = request.getStaffInfo();
 //        RtrvStaffDetailResponse response = new RtrvStaffDetailResponse();
         if (staff != null) {
-            if (!updateStaff.getDeptId().equals(staff.getDeptId())) {
+            if (!StringUtils.isEmpty(updateStaff.getDeptId()) && !updateStaff.getDeptId().equals(staff.getDeptId())) {
                 staff.setDeptId(updateStaff.getDeptId());
             }
             if (!StringUtils.isEmpty(updateStaff.getPassword()) && !updateStaff.getPassword().equals(staff.getPassword())) {
@@ -135,6 +138,10 @@ public class StaffServiceImpl implements StaffService {
             }
             if (!StringUtils.isEmpty(updateStaff.getStatus()) && !updateStaff.getStatus().equals(staff.getStatus())) {
                 staff.setStatus(updateStaff.getStatus());
+            }
+            //更改头像
+            if (!StringUtils.isEmpty(updateStaff.getAvatar()) && !updateStaff.getAvatar().equals(staff.getAvatar())) {
+                staff.setAvatar(updateStaff.getAvatar());
             }
 
             staff = staffRepository.saveAndFlush(staff);
@@ -211,6 +218,7 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * 根据name模糊查询Staff，当name==null, 通过tag查询staff
+     *
      * @param request
      * @return
      * @throws SQLException
@@ -248,6 +256,7 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * 根据指定account查询staff
+     *
      * @param account
      * @return
      */
@@ -259,6 +268,7 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * 查找拥有标签集中最多标签的StaffTag
+     *
      * @param tags
      * @return List<StaffTag>
      */
@@ -271,6 +281,7 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * 查询name以指定字符串开头的所有Staff
+     *
      * @param startingStr
      * @return
      */
@@ -284,6 +295,7 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * 查询staffId为指定id的所有tagId集合
+     *
      * @param staffId
      * @return
      */
@@ -291,6 +303,21 @@ public class StaffServiceImpl implements StaffService {
     public List<String> rtrvTagsByStaffId(String staffId) {
 
         return this.staffTagRepository.findTagIdByStaffId(staffId);
+    }
+
+    @Override
+    public Boolean updateStaffPassword(UpdatePasswordRequest request) {
+        Boolean flag = false;
+        String staffId = request.getStaffId();
+        String beforePW = request.getBeforePassword();
+        String afterPW = request.getAfterPassword();
+        Staff staff = this.staffRepository.findByStaffId(staffId);
+        if(staff.getPassword().equals(beforePW)){
+            staff.setPassword(afterPW);
+            this.staffRepository.saveAndFlush(staff);
+            flag = true;
+        }
+        return flag;
     }
 
 
@@ -317,6 +344,10 @@ public class StaffServiceImpl implements StaffService {
         staff.setPhoneNum(request.getPhoneNum());
         staff.setGender(request.getGender());
         staff.setStatus("active");
+        /*添加头像*/
+        if (!StringUtils.isEmpty(request.getAvatar())) {
+            staff.setAvatar(request.getAvatar());
+        }
         staff = staffRepository.save(staff);
         staff.setStaffId("E" + staff.getUuId());
         staff = staffRepository.save(staff);
@@ -338,8 +369,6 @@ public class StaffServiceImpl implements StaffService {
         response.setStaffId(staff.getStaffId());
         response.setName(staff.getName());
         response.setGender(staff.getGender());
-//       private Postion positionDetail;
-//       private Department deptDetail;
         response.setEmailAddr(staff.getEmailAddr());
         response.setPhoneNum(staff.getPhoneNum());
         response.setTagsCnt(staffTags.size());

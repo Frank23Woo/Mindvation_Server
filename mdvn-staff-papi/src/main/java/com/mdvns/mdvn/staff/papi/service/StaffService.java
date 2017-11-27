@@ -28,6 +28,8 @@ public interface StaffService {
 
     ResponseEntity<?> deleteStaff(String staffId);
 
+    ResponseEntity<?> updateStaffPassword(UpdatePasswordRequest request);
+
 
 //    ResponseEntity<?> rtrvStaff(RtrvStaffRequest rtrvStaffRequest);
 }

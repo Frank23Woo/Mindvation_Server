@@ -12,7 +12,7 @@ public class ModelRole {
     private String roleId;
     private String name;
     private String creatorId;
-    private Timestamp createTime;
+    private Long createTime;
     private Integer isDeleted;
     private Integer quoteCnt;
     //角色表里的角色不可以共用
@@ -61,11 +61,12 @@ public class ModelRole {
     public void setCreatorId(String creatorId) {
         this.creatorId = creatorId;
     }
-    public Timestamp getCreateTime() {
+
+    public Long getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Long createTime) {
         this.createTime = createTime;
     }
 

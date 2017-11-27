@@ -26,6 +26,16 @@ public class UpdateStoryDetailRequest {
     private SubFunctionLabel subFunctionLabel;
 //    //用户故事附件（集合）
     private List<StoryAttchUrl> attchUrls;
+    //便签信息（会议记录）
+    private String noteDesc;
+
+    public String getNoteDesc() {
+        return noteDesc;
+    }
+
+    public void setNoteDesc(String noteDesc) {
+        this.noteDesc = noteDesc;
+    }
 
     public String getCreatorId() {
         return creatorId;
