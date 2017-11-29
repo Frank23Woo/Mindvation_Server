@@ -6,9 +6,39 @@ import java.util.List;
 
 @Component
 public class UpdateSprintCloseStatusRequest {
-    private Integer beforUuId;
+    private String projId;
+    private String creatorId;
+    private String modelId;
+    private String beforeName;
+    private String afterName;
     private List<String> stories;
-    private Integer afterUuId;
+//    private Integer beforUuId;
+//    private Integer afterUuId;
+
+
+    public String getProjId() {
+        return projId;
+    }
+
+    public void setProjId(String projId) {
+        this.projId = projId;
+    }
+
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public String getModelId() {
+        return modelId;
+    }
+
+    public void setModelId(String modelId) {
+        this.modelId = modelId;
+    }
 
     public List<String> getStories() {
         return stories;
@@ -17,19 +47,19 @@ public class UpdateSprintCloseStatusRequest {
         this.stories = stories;
     }
 
-    public Integer getBeforUuId() {
-        return beforUuId;
+    public String getBeforeName() {
+        return beforeName;
     }
 
-    public void setBeforUuId(Integer beforUuId) {
-        this.beforUuId = beforUuId;
+    public void setBeforeName(String beforeName) {
+        this.beforeName = beforeName;
     }
 
-    public Integer getAfterUuId() {
-        return afterUuId;
+    public String getAfterName() {
+        return afterName;
     }
 
-    public void setAfterUuId(Integer afterUuId) {
-        this.afterUuId = afterUuId;
+    public void setAfterName(String afterName) {
+        this.afterName = afterName;
     }
 }

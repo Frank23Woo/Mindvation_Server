@@ -38,6 +38,15 @@ public class WebConfig {
     private String findAllDashboardInfoByIdsUrl;
     private String updateMyDashboardForTaskUrl;
     private String myDashboardInfosForTaskUrl;
+    private String findUuIdByIdsUrl;
+
+    public String getFindUuIdByIdsUrl() {
+        return findUuIdByIdsUrl;
+    }
+
+    public void setFindUuIdByIdsUrl(String findUuIdByIdsUrl) {
+        this.findUuIdByIdsUrl = findUuIdByIdsUrl;
+    }
 
     public String getUpdateMyDashboardForTaskUrl() {
         return updateMyDashboardForTaskUrl;

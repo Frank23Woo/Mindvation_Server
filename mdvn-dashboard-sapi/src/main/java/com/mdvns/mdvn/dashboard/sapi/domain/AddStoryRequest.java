@@ -7,6 +7,15 @@ public class AddStoryRequest {
     private String storyId;
     private String projId;
     private String creatorId;
+    private String modelId;
+
+    public String getModelId() {
+        return modelId;
+    }
+
+    public void setModelId(String modelId) {
+        this.modelId = modelId;
+    }
 
     public String getCreatorId() {
         return creatorId;

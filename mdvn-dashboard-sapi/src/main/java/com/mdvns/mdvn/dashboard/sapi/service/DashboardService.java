@@ -42,4 +42,6 @@ public interface DashboardService {
     List<SprintInfo> itSprint(Integer uuId);
 
     List<SprintInfo> findAllDashboardById(RtrvAllStoryListRequest request);
+
+    Integer findUuIdByIds(FindUuIdRequest request);
 }

@@ -16,7 +16,7 @@ public class DashboardController {
     private DashboardService dashboardService;
 
     /**
-     * 进入dashboard,首先获取product backlogs信息（story列表）
+     * 进入dashboard,首先获取product backlogs信息（story列表）(只可以获得当前登录者的dashboard信息，全部可以拖动)
      * @param request
      * @return
      */
@@ -106,13 +106,23 @@ public class DashboardController {
     }
 
     /**
-     * 所有角色都可以看到MVP Dashboard里的内容
+     * 所有角色都可以看到MVP Dashboard里的内容（只可以浏览，不可以修改）
      * @param request
      * @return
      */
     @PostMapping(value = "/rtrvAllDashboard")
     public RestResponse rtrvAllDashboard(@RequestBody RtrvAllStoryListRequest request) {
         return this.dashboardService.rtrvAllDashboard(request);
+    }
+
+    /**
+     * 所有角色都可以看到MVP Dashboard里的内容（只有负责人可以更改各自的看板信息）
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/rtrvAllMVPDashboard")
+    public RestResponse rtrvAllMVPDashboard(@RequestBody RtrvAllStoryListRequest request) {
+        return this.dashboardService.rtrvAllMVPDashboard(request);
     }
 
 

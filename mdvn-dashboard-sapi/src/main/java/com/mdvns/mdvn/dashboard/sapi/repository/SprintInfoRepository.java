@@ -13,13 +13,16 @@ public interface SprintInfoRepository extends JpaRepository<SprintInfo, Integer>
 
     List<SprintInfo> findBySubjectIdAndModelIdAndCreatorIdAndIsDeletedAndStatusIsNot(String subjectId ,String modelId,String creatorId, Integer isDeleted,String status);
 
-    SprintInfo findBySubjectIdAndCreatorIdAndNameAndIsDeleted(String subjectId ,String creatorId,String name, Integer isDeleted);
-    SprintInfo findBySubjectIdAndCreatorIdAndSprintIndex(String subjectId,String creatorId ,Integer sprintIndex);
+    SprintInfo findBySubjectIdAndCreatorIdAndNameAndIsDeletedAndModelId(String subjectId ,String creatorId,String name, Integer isDeleted,String modelId);
+    SprintInfo findBySubjectIdAndCreatorIdAndSprintIndexAndModelId(String subjectId,String creatorId ,Integer sprintIndex,String modelId);
     //查询所有dashboard信息
     List<SprintInfo> findBySubjectIdAndIsDeletedAndSprintIndexAndStatusIsNot(String subjectId, Integer isDeleted,Integer sprintIndex,String status);
     List<SprintInfo> findBySubjectIdAndModelIdAndIsDeletedAndStatusIsNot(String subjectId ,String modelId, Integer isDeleted,String status);
     //查询一个项目相同模型下name相同的sprint
     List<SprintInfo> findBySubjectIdAndModelIdAndNameAndSprintIndex(String subjectId ,String modelId, String name,Integer sprintIndex);
 
+    SprintInfo findBySubjectIdAndCreatorIdAndModelIdAndNameAndIsDeleted(String subjectId ,String creatorId,String modelId, String name, Integer isDeleted);
+    //查询同一状态下所有的sprint
+    List<SprintInfo> findBySubjectIdAndModelIdAndNameAndIsDeleted(String subjectId ,String modelId, String name,Integer isDeleted);
 
 }

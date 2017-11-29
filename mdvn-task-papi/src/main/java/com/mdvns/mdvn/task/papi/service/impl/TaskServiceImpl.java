@@ -50,7 +50,7 @@ public class TaskServiceImpl implements TaskService {
                 StringUtils.isEmpty(request.getStoryId()) ||
                 StringUtils.isEmpty(request.getDescription()) || request.getDeliver() == null ||
                 StringUtils.isEmpty(request.getDeliver().getModelId()) || StringUtils.isEmpty(request.getDeliver().getName()) ||
-                request.getStartTime() == null || request.getEndTime() == null) {
+                request.getStartTime() == null || request.getEndTime() == null || request.getUsedTime() == null) {
             return new RestResponse(ExceptionEnum.PARAMS_EXCEPTION.getErroCode(), null);
         }
 

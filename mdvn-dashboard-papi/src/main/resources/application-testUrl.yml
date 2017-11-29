@@ -18,6 +18,7 @@ url:
  updateSprintStartStatusUrl: http://localhost:8080/mdvn-dashboard-sapi/dashboards/updateSprintStartStatus
  updateSprintCloseStatusUrl: http://localhost:8080/mdvn-dashboard-sapi/dashboards/updateSprintCloseStatus
  itSprintUrl: http://localhost:8080/mdvn-dashboard-sapi/dashboards/itSprint
+ findUuIdByIdsUrl: http://localhost:8080/mdvn-dashboard-sapi/dashboards/findUuIdByIds
 
 
 

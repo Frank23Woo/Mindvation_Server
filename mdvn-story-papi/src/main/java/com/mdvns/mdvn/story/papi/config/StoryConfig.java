@@ -75,6 +75,16 @@ public class StoryConfig {
 
     private String rtrvStoryNoteUrl;
 
+    private String rtrvlabelIdBystoryIdUrl;
+
+    public String getRtrvlabelIdBystoryIdUrl() {
+        return rtrvlabelIdBystoryIdUrl;
+    }
+
+    public void setRtrvlabelIdBystoryIdUrl(String rtrvlabelIdBystoryIdUrl) {
+        this.rtrvlabelIdBystoryIdUrl = rtrvlabelIdBystoryIdUrl;
+    }
+
     public String getRtrvStoryNoteUrl() {
         return rtrvStoryNoteUrl;
     }

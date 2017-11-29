@@ -4,9 +4,18 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AddStoryRequest {
+    private String modelId;
     private String storyId;
     private String projId;
     private String creatorId;
+
+    public String getModelId() {
+        return modelId;
+    }
+
+    public void setModelId(String modelId) {
+        this.modelId = modelId;
+    }
 
     public String getCreatorId() {
         return creatorId;

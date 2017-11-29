@@ -208,6 +208,9 @@ public class StoryServiceImpl implements IStoryService {
         }
         //7.创建story时sprint表里要在backlogs里面加一条story(看板)
         AddStoryRequest addStoryRequest = new AddStoryRequest();
+        //查询story对应的reqmnt的labelId
+        RequirementInfo requirementInfo = this.restTemplate.postForObject(config.getRtrvlabelIdBystoryIdUrl(), storyId, RequirementInfo.class);
+        addStoryRequest.setModelId(requirementInfo.getModelId());
         addStoryRequest.setProjId(createStoryRequest.getStoryInfo().getProjId());
         addStoryRequest.setStoryId(storyId);
         addStoryRequest.setCreatorId(createStoryRequest.getCreatorId());

@@ -6,7 +6,11 @@ import java.util.List;
 
 @Component
 public class UpdateSprintStartStatusRequest {
-    private Integer uuId;
+    private String projId;
+    private String creatorId;
+    private String modelId;
+    private String name;
+//    private Integer uuId;
     private Integer iterationCycle;
 
     public Integer getIterationCycle() {
@@ -15,12 +19,36 @@ public class UpdateSprintStartStatusRequest {
     public void setIterationCycle(Integer iterationCycle) {
         this.iterationCycle = iterationCycle;
     }
-    public Integer getUuId() {
-        return uuId;
+
+    public String getProjId() {
+        return projId;
     }
 
-    public void setUuId(Integer uuId) {
-        this.uuId = uuId;
+    public void setProjId(String projId) {
+        this.projId = projId;
     }
 
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public String getModelId() {
+        return modelId;
+    }
+
+    public void setModelId(String modelId) {
+        this.modelId = modelId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

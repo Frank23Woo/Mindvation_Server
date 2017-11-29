@@ -1,10 +1,9 @@
-package com.mdvns.mdvn.dashboard.papi.domain;
+package com.mdvns.mdvn.dashboard.sapi.domain;
 
 import org.springframework.stereotype.Component;
 
 @Component
-public class RtrvItSprintsRequest {
-
+public class FindUuIdRequest {
     private String projId;
     private String modelId;
     private String creatorId;

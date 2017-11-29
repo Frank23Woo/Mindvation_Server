@@ -41,34 +41,56 @@ public class DashboardServiceImpl implements DashboardService {
     @Override
     public List<SprintInfo> findDashboardInfoById(RtrvAllStoryListRequest request) {
         LOG.info("开始执行{} findDashboardInfoById()方法.", this.CLASS);
-        List<SprintInfo> dashboards = this.sprintInfoRepository.findBySubjectIdAndCreatorIdAndIsDeletedAndSprintIndexAndStatusIsNot(request.getProjId(),request.getCreatorId(),0, 0,"close");
+        List<SprintInfo> dashboards = this.sprintInfoRepository.findBySubjectIdAndCreatorIdAndIsDeletedAndSprintIndexAndStatusIsNot(request.getProjId(), request.getCreatorId(), 0, 0, "close");
         LOG.info("执行结束{} findDashboardInfoById()方法.", this.CLASS);
         return dashboards;
     }
+
     @Override
     public List<SprintInfo> findDashboardInfoByIds(RtrvDashboardRequest request) {
         LOG.info("开始执行{} findDashboardInfoByIds()方法.", this.CLASS);
-        List<SprintInfo> dashboards = this.sprintInfoRepository.findBySubjectIdAndModelIdAndCreatorIdAndIsDeletedAndStatusIsNot(request.getProjId(), request.getModleId(),request.getCreatorId(), 0,"close");
+        List<SprintInfo> dashboards = this.sprintInfoRepository.findBySubjectIdAndModelIdAndCreatorIdAndIsDeletedAndStatusIsNot(request.getProjId(), request.getModleId(), request.getCreatorId(), 0, "close");
         LOG.info("执行结束{} findDashboardInfoByIds()方法.", this.CLASS);
         return dashboards;
     }
 
     /**
      * 查询所有dashboard信息
+     *
      * @param request
      * @return
      */
     @Override
     public List<SprintInfo> findAllDashboardById(RtrvAllStoryListRequest request) {
         LOG.info("开始执行{} findDashboardInfoById()方法.", this.CLASS);
-        List<SprintInfo> dashboards = this.sprintInfoRepository.findBySubjectIdAndIsDeletedAndSprintIndexAndStatusIsNot(request.getProjId(),0, 0,"close");
+        List<SprintInfo> dashboards = this.sprintInfoRepository.findBySubjectIdAndIsDeletedAndSprintIndexAndStatusIsNot(request.getProjId(), 0, 0, "close");
         LOG.info("执行结束{} findDashboardInfoById()方法.", this.CLASS);
         return dashboards;
     }
+
+    /**
+     * 更改dashboard时查询具体uuId
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public Integer findUuIdByIds(FindUuIdRequest request) {
+        LOG.info("开始执行{} findUuIdByIds()方法.", this.CLASS);
+        String subjectId = request.getProjId();
+        String creatorId = request.getCreatorId();
+        String modelId = request.getModelId();
+        String name = request.getName();
+        SprintInfo sprintInfo = this.sprintInfoRepository.findBySubjectIdAndCreatorIdAndModelIdAndNameAndIsDeleted(subjectId, creatorId, modelId, name, 0);
+        Integer uuId = sprintInfo.getUuId();
+        LOG.info("执行结束{} findUuIdByIds()方法.", this.CLASS);
+        return uuId;
+    }
+
     @Override
     public List<SprintInfo> findAllDashboardInfoByIds(RtrvDashboardRequest request) {
         LOG.info("开始执行{} findAllDashboardInfoByIds()方法.", this.CLASS);
-        List<SprintInfo> dashboards = this.sprintInfoRepository.findBySubjectIdAndModelIdAndIsDeletedAndStatusIsNot(request.getProjId(),request.getModleId(), 0,"close");
+        List<SprintInfo> dashboards = this.sprintInfoRepository.findBySubjectIdAndModelIdAndIsDeletedAndStatusIsNot(request.getProjId(), request.getModleId(), 0, "close");
         LOG.info("执行结束{} findAllDashboardInfoByIds()方法.", this.CLASS);
         return dashboards;
     }
@@ -140,12 +162,13 @@ public class DashboardServiceImpl implements DashboardService {
     public SprintInfo addStory(AddStoryRequest request) {
         String subjectId = request.getProjId();
         String storyId = request.getStoryId();
-        sprintInfo = this.sprintInfoRepository.findBySubjectIdAndCreatorIdAndNameAndIsDeleted(subjectId, request.getCreatorId(),"Product Backlogs", 0);
-        if (sprintInfo != null){
+        String modelId = request.getModelId();
+        sprintInfo = this.sprintInfoRepository.findBySubjectIdAndCreatorIdAndNameAndIsDeletedAndModelId(subjectId, request.getCreatorId(), "Product Backlogs", 0, modelId);
+        if (sprintInfo != null) {
             String storyIds = sprintInfo.getItemIds();
-            if(StringUtils.isEmpty(storyIds)){
+            if (StringUtils.isEmpty(storyIds)) {
                 storyIds = storyId;
-            }else{
+            } else {
                 storyIds = storyIds + "," + storyId;
             }
             sprintInfo.setItemIds(storyIds);
@@ -156,19 +179,22 @@ public class DashboardServiceImpl implements DashboardService {
 
     /**
      * 开启迭代（同时开启一个项目相同模型下name相同的sprint）
+     *
      * @param request
      * @return
      */
     @Override
     public SprintInfo updateSprintStartStatus(UpdateSprintStartStatusRequest request) {
-        Integer uuId = request.getUuId();
+        String creatorId = request.getCreatorId();
+        String name = request.getName();
+        String subjectId = request.getProjId();
+        String modelId = request.getModelId();
+        SprintInfo spInfo = this.sprintInfoRepository.findBySubjectIdAndCreatorIdAndModelIdAndNameAndIsDeleted(subjectId, creatorId, modelId, name, 0);
+        Integer uuId = spInfo.getUuId();
         sprintInfo = this.sprintInfoRepository.findOne(uuId);
         //开启一个项目相同模型下name相同的sprint
-        String name = sprintInfo.getName();
-        String subjectId = sprintInfo.getSubjectId();
-        String modelId = sprintInfo.getModelId();
         Integer sprintIndex = sprintInfo.getSprintIndex();
-        List<SprintInfo> sprintInfos = this.sprintInfoRepository.findBySubjectIdAndModelIdAndNameAndSprintIndex(subjectId,modelId,name,sprintIndex);
+        List<SprintInfo> sprintInfos = this.sprintInfoRepository.findBySubjectIdAndModelIdAndNameAndSprintIndex(subjectId, modelId, name, sprintIndex);
         for (int i = 0; i < sprintInfos.size(); i++) {
             SprintInfo sprintInfo = sprintInfos.get(i);
             sprintInfo.setStatus("start");
@@ -181,46 +207,66 @@ public class DashboardServiceImpl implements DashboardService {
 
     /**
      * 关闭迭代（同时关闭一个项目相同模型下name相同的sprint）(工作流不完善，未实现)
+     *
      * @param request
      * @return
      */
     @Override
     public SprintInfo updateSprintCloseStatus(UpdateSprintCloseStatusRequest request) {
+        String beforeName = request.getBeforeName();
+        String afterName = request.getAfterName();
+        String subjectId = request.getProjId();
+        String modelId = request.getModelId();
+        //查询要关闭的所有sprint
+        List<SprintInfo> sprintInfos = this.sprintInfoRepository.findBySubjectIdAndModelIdAndNameAndIsDeleted(subjectId, modelId, beforeName, 0);
+        //查询登录者移动之后的sprint
+        SprintInfo spInfo = this.sprintInfoRepository.findBySubjectIdAndCreatorIdAndModelIdAndNameAndIsDeleted(subjectId,request.getCreatorId(), modelId, afterName, 0);
         if (request.getStories().size() > 0) {
             String storyIds = MdvnStringUtil.join(request.getStories(), ",");
             String[] sprintStoryIds = storyIds.split(",");
             List<String> sprintStoryIdList = Arrays.asList(sprintStoryIds);
-
-            //移动之前的sprint
-            Integer beforUuId = request.getBeforUuId();
-            SprintInfo beforSprintInfo = this.sprintInfoRepository.findOne(beforUuId);
-            beforSprintInfo.setStatus("close");
-            String beforeStoryIds = beforSprintInfo.getItemIds();
-            String[] beforesprintStoryIds = beforeStoryIds.split(",");
-            List<String> beforesprintStoryIdList = Arrays.asList(beforesprintStoryIds);
-            List arrayList = new ArrayList(beforesprintStoryIdList);
-            for (int j = 0; j < sprintStoryIdList.size(); j++) {
-                arrayList.remove(sprintStoryIdList.get(j));
+            for (int i = 0; i < sprintInfos.size(); i++) {
+                SprintInfo sInfo = sprintInfos.get(i);
+                Integer beforUuId = sInfo.getUuId();
+                String creatorId = sInfo.getCreatorId();
+                //移动之前的sprint
+                SprintInfo beforSprintInfo = this.sprintInfoRepository.findOne(beforUuId);
+                //移动之后的sprint
+                SprintInfo afterSprintInfo = this.sprintInfoRepository.findBySubjectIdAndCreatorIdAndModelIdAndNameAndIsDeleted(subjectId, creatorId, modelId, afterName, 0);
+                beforSprintInfo.setStatus("close");
+                //移动之前的stories
+                String beforeStoryIds = beforSprintInfo.getItemIds();
+                String[] beforesprintStoryIds = beforeStoryIds.split(",");
+                List<String> beforesprintStoryIdList = Arrays.asList(beforesprintStoryIds);
+                List arrayList = new ArrayList(beforesprintStoryIdList);
+                //移动之后的stories
+                String afterStoryIds = afterSprintInfo.getItemIds();
+                String[] aftersprintStoryIds = afterStoryIds.split(",");
+                List<String> aftersprintStoryIdList = Arrays.asList(aftersprintStoryIds);
+                List arrList = new ArrayList(aftersprintStoryIdList);
+                for (int j = 0; j < sprintStoryIdList.size(); j++) {
+                    for (int k = 0; k < arrayList.size(); k++) {
+                        if (arrayList.get(k).equals(sprintStoryIdList.get(j))) {
+                            arrayList.remove(sprintStoryIdList.get(j));
+                            //往移动之后的sprint中添加
+                            arrList.add(sprintStoryIdList.get(j));
+                        }
+                    }
+                }
+                beforeStoryIds = MdvnStringUtil.join(arrayList, ",");
+                beforSprintInfo.setItemIds(beforeStoryIds);
+                afterStoryIds = MdvnStringUtil.join(arrList, ",");
+                afterSprintInfo.setItemIds(afterStoryIds);
+                beforSprintInfo = this.sprintInfoRepository.saveAndFlush(beforSprintInfo);
+                afterSprintInfo = this.sprintInfoRepository.saveAndFlush(afterSprintInfo);
             }
-            beforeStoryIds = MdvnStringUtil.join(arrayList, ",");
-            beforSprintInfo.setItemIds(beforeStoryIds);
-            beforSprintInfo = this.sprintInfoRepository.saveAndFlush(beforSprintInfo);
-
-            //移动之后的sprint
-            Integer afterUuId = request.getAfterUuId();
-            sprintInfo = this.sprintInfoRepository.findOne(afterUuId);
-            String oldStoryIds = sprintInfo.getItemIds();
-            sprintInfo.setItemIds(oldStoryIds + "," + storyIds);
-            sprintInfo = this.sprintInfoRepository.saveAndFlush(sprintInfo);
-        }else{
-            Integer beforUuId = request.getBeforUuId();
-            SprintInfo beforSprintInfo = this.sprintInfoRepository.findOne(beforUuId);
-            beforSprintInfo.setStatus("close");
-            beforSprintInfo = this.sprintInfoRepository.saveAndFlush(beforSprintInfo);
-            Integer afterUuId = request.getAfterUuId();
-            sprintInfo = this.sprintInfoRepository.findOne(afterUuId);
+        } else {
+            for (int i = 0; i < sprintInfos.size(); i++) {
+                sprintInfos.get(i).setStatus("close");
+            }
+            sprintInfos = this.sprintInfoRepository.save(sprintInfos);
         }
-        return sprintInfo;
+        return spInfo;
     }
 
     @Override
@@ -230,8 +276,9 @@ public class DashboardServiceImpl implements DashboardService {
         Integer sprintIndex = sprintInfo.getSprintIndex();
         String subjectId = sprintInfo.getSubjectId();
         String creatorId = sprintInfo.getCreatorId();
-        SprintInfo sInfo = this.sprintInfoRepository.findBySubjectIdAndCreatorIdAndSprintIndex(subjectId,creatorId,sprintIndex+1);
-        SprintInfo spInfo = this.sprintInfoRepository.findBySubjectIdAndCreatorIdAndSprintIndex(subjectId,creatorId,sprintIndex+2);
+        String modelId = sprintInfo.getModelId();
+        SprintInfo sInfo = this.sprintInfoRepository.findBySubjectIdAndCreatorIdAndSprintIndexAndModelId(subjectId, creatorId, sprintIndex + 1, modelId);
+        SprintInfo spInfo = this.sprintInfoRepository.findBySubjectIdAndCreatorIdAndSprintIndexAndModelId(subjectId, creatorId, sprintIndex + 2, modelId);
         sprintInfos.add(sInfo);
         if (spInfo != null) {
             sprintInfos.add(spInfo);

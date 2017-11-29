@@ -23,6 +23,7 @@ config:
   rtrvStoryAttUrlsUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/rtrvStoryAttUrls
   rtrvStoryNoteUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/rtrvStoryNote
   rtrvReqmntListUrl: http://localhost:8080/mdvn-reqmnt-papi/rtrvReqmntList
+  rtrvlabelIdBystoryIdUrl: http://localhost:8080/mdvn-reqmnt-sapi/rtrvlabelIdBystoryId
 
   rtrvMembersByRoleIdUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/rtrvMembersByRoleId
   labelIdByStoryIdUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/getLabelIdByStoryId

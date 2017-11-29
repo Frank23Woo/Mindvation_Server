@@ -20,4 +20,5 @@ public interface DashboardService {
 
     RestResponse rtrvAllDashboard(RtrvAllStoryListRequest request);
 
+    RestResponse rtrvAllMVPDashboard(RtrvAllStoryListRequest request);
 }

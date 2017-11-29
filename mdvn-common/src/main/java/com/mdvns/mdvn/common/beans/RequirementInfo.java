@@ -9,7 +9,8 @@ public class RequirementInfo {
 
     /* project ID */
     private String projId;
-    /* requirement ID */
+
+    private String modelId;
 
     public String getProjId() {
         return projId;
@@ -18,7 +19,7 @@ public class RequirementInfo {
     public void setProjId(String projId) {
         this.projId = projId;
     }
-
+    /* requirement ID */
     private String reqmntId;
     /* unique id in db */
     private Integer uuId;
@@ -54,6 +55,14 @@ public class RequirementInfo {
     private Staff creatorInfo;
 
     private List<CommentDetail> commentDetails;
+
+    public String getModelId() {
+        return modelId;
+    }
+
+    public void setModelId(String modelId) {
+        this.modelId = modelId;
+    }
 
     public Integer getMemberCunt() {
         return memberCunt;

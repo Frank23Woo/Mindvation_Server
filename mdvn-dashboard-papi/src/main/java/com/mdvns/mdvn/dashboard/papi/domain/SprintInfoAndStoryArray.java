@@ -7,15 +7,16 @@ import java.util.List;
 
 @Component
 public class SprintInfoAndStoryArray {
-    private Integer uuId;
+//    private Integer uuId;
+    private String name;
     private List<String> stories;
 
-    public Integer getUuId() {
-        return uuId;
+    public String getName() {
+        return name;
     }
 
-    public void setUuId(Integer uuId) {
-        this.uuId = uuId;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<String> getStories() {

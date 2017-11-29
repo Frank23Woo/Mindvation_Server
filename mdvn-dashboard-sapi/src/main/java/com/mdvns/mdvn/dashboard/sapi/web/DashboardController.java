@@ -139,8 +139,13 @@ public class DashboardController {
         return this.dashboardService.itSprint(uuId);
     }
 
-
-
-
-
+    /**
+     * 通过projId和creatorId和name查询sprint的UUid
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/findUuIdByIds")
+    public Integer findUuIdByIds(@RequestBody FindUuIdRequest request) {
+        return this.dashboardService.findUuIdByIds(request);
+    }
 }

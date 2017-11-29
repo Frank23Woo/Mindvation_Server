@@ -7,10 +7,26 @@ import java.util.List;
 
 @Component
 public class UpdateDashboardRequest {
-
-
+    private String projId;
+    private String creatorId;
     private String modelId;
     private List<SprintInfoAndStoryArray> sprintAndStoryArrays;
+
+    public String getProjId() {
+        return projId;
+    }
+
+    public void setProjId(String projId) {
+        this.projId = projId;
+    }
+
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
+    }
 
     public String getModelId() {
         return modelId;
