@@ -275,6 +275,16 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public ResponseEntity<?> getStaffByTags(List<String> tags) {
         List<StaffTag> staffTags = this.staffTagRepository.findByTagIdIn(tags);
+        //移除不存在的标签或者员工（其实删除员工或者标签时，它们的映射表的数据也应该删除）
+        for (int i = 0; i < staffTags.size(); i++) {
+            StaffTag staffTag = staffTags.get(i);
+            String staffId = staffTag.getStaffId();
+            String tagId = staffTag.getTagId();//标签还没判断
+            Staff staff = this.staffRepository.findByStaffId(staffId);
+            if (staff == null) {
+                staffTags.remove(staffTags.get(i));
+            }
+        }
         LOG.info("拥有标签集中任意标签的Staff有：{}个", staffTags.size());
         return ResponseEntity.ok(staffTags);
     }
@@ -312,7 +322,7 @@ public class StaffServiceImpl implements StaffService {
         String beforePW = request.getBeforePassword();
         String afterPW = request.getAfterPassword();
         Staff staff = this.staffRepository.findByStaffId(staffId);
-        if(staff.getPassword().equals(beforePW)){
+        if (staff.getPassword().equals(beforePW)) {
             staff.setPassword(afterPW);
             this.staffRepository.saveAndFlush(staff);
             flag = true;
