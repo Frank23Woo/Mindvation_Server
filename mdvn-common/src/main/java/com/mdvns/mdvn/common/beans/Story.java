@@ -40,6 +40,8 @@ public class Story {
     private Double efficiency;
     //用户故事进度
     private Float progress;
+    //用户故事预期进度
+    private Float expectProgress;
     //storyPointCnt+crStoryPointCnt
     private Float totalStoryPoint;
     //持续时间
@@ -70,6 +72,14 @@ public class Story {
     private Integer memberCunt;
 
     private List<CommentDetail> commentDetails;
+
+    public Float getExpectProgress() {
+        return expectProgress;
+    }
+
+    public void setExpectProgress(Float expectProgress) {
+        this.expectProgress = expectProgress;
+    }
 
     public List<CommentDetail> getCommentDetails() {
         return commentDetails;

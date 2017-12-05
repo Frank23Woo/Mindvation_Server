@@ -31,6 +31,8 @@ public interface DashboardService {
     /*更改看板*/
     List<SprintInfo> updateDashboard(UpdateSprintRequest request);
 
+    SprintInfo updateDashboardForAndroid(UpdateDashboardForAndroidRequest request);
+
     SprintInfo updateSprintInfo(UpdateSprintInfoRequest request);
 
     SprintInfo addStory(AddStoryRequest request);

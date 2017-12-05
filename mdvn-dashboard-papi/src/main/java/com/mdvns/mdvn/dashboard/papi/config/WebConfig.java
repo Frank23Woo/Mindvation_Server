@@ -39,6 +39,15 @@ public class WebConfig {
     private String updateMyDashboardForTaskUrl;
     private String myDashboardInfosForTaskUrl;
     private String findUuIdByIdsUrl;
+    private String updateDashboardForAndroidUrl;
+
+    public String getUpdateDashboardForAndroidUrl() {
+        return updateDashboardForAndroidUrl;
+    }
+
+    public void setUpdateDashboardForAndroidUrl(String updateDashboardForAndroidUrl) {
+        this.updateDashboardForAndroidUrl = updateDashboardForAndroidUrl;
+    }
 
     public String getFindUuIdByIdsUrl() {
         return findUuIdByIdsUrl;

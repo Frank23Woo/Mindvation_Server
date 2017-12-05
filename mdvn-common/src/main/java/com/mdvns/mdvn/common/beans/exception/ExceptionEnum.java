@@ -112,6 +112,7 @@ public enum ExceptionEnum {
 	DASHBOARD_STATUS_START_NOT_UPDATE("1707", "调用SAPI更改SprintInfo(start)时失败"),
 	DASHBOARD_STATUS_CLOSE_NOT_UPDATE("1708", "调用SAPI更改SprintInfo(CLOSE)时失败"),
 	DASHBOARD_NEXT_SPRINT_NOT_RTRV("1709", "调用SAPI获取接下来两个sprint时失败"),
+	DASHBOARD_ANDROID_NOT_UPDATE("1710", "移动端调用SAPI更改SprintInfo时失败"),
 	
 	//Staff
 	USER_NOT_FOUND("1800", "用户不存在!"),

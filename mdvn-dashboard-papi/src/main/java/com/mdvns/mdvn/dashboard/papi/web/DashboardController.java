@@ -36,6 +36,16 @@ public class DashboardController {
     }
 
     /**
+     * 更改看板（移动端，单个移动）
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/updateDashboardForAndroid")
+    public RestResponse updateDashboardForAndroid(@RequestBody UpdateDashboardForAndroidRequest request) {
+        return this.dashboardService.updateDashboardForAndroid(request);
+    }
+
+    /**
      * 更改个人dashboard
      * @param request
      * @return

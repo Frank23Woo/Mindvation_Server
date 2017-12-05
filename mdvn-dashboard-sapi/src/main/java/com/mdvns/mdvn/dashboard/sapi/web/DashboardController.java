@@ -88,6 +88,15 @@ public class DashboardController {
     public List<SprintInfo> updateDashboard(@RequestBody UpdateSprintRequest request) {
         return this.dashboardService.updateDashboard(request);
     }
+    /**
+     * 更改看板（移动端）
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/updateDashboardForAndroid")
+    public SprintInfo updateDashboardForAndroid(@RequestBody UpdateDashboardForAndroidRequest request) {
+        return this.dashboardService.updateDashboardForAndroid(request);
+    }
 
     /**
      * 更改SprintInfo

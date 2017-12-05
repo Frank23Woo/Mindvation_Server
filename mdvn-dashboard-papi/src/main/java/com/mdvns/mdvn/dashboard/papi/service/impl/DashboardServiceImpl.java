@@ -396,6 +396,35 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     /**
+     * 移动端，更改看板（单个story移动）
+     * @param request
+     * @return
+     */
+    @Override
+    public RestResponse updateDashboardForAndroid(UpdateDashboardForAndroidRequest request) {
+        LOG.info("开始执行方法：updateSprintCloseStatus");
+        SprintInfo sprintInfo = new SprintInfo();
+        try {
+            String url = webConfig.getUpdateDashboardForAndroidUrl();
+            sprintInfo = this.restTemplate.postForObject(url, request, SprintInfo.class);
+        } catch (Exception ex) {
+            throw new BusinessException(ExceptionEnum.DASHBOARD_ANDROID_NOT_UPDATE);
+        }
+        String projId = request.getProjId();
+        String creatorId = request.getCreatorId();
+        RtrvDashboardRequest rtrvAllStoryListRequest = new RtrvDashboardRequest();
+        rtrvAllStoryListRequest.setProjId(projId);
+        rtrvAllStoryListRequest.setModleId(request.getModelId());
+        rtrvAllStoryListRequest.setCreatorId(creatorId);
+        restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
+        restResponse.setResponseMsg("请求成功");
+        restResponse.setResponseCode("000");
+        restResponse.setResponseBody(rtrvDashboardByModel(rtrvAllStoryListRequest));
+        LOG.info("结束执行方法：updateSprintCloseStatus");
+        return restResponse;
+    }
+
+    /**
      * 更改个人看板
      *
      * @param request

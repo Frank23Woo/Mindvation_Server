@@ -10,6 +10,8 @@ public interface DashboardService {
 
     RestResponse updateDashboard(UpdateDashboardRequest request);
 
+    RestResponse updateDashboardForAndroid(UpdateDashboardForAndroidRequest request);
+
     RestResponse updateMyDashboard(UpdateMyDashboardRequest request);
 
     RestResponse assignSprint(AssignStoryListByItRequest request);

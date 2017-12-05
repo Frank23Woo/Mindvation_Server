@@ -143,6 +143,45 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     /**
+     * 更改看板（移动端）
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public SprintInfo updateDashboardForAndroid(UpdateDashboardForAndroidRequest request) {
+        String beforeName = request.getBeforeName();
+        String afterName = request.getAfterName();
+        String subjectId = request.getProjId();
+        String modelId = request.getModelId();
+        String storyId = request.getStoryId();
+        //查询移动之前的sprint
+        SprintInfo brforeSprintInfo = this.sprintInfoRepository.findBySubjectIdAndCreatorIdAndModelIdAndNameAndIsDeleted(subjectId, request.getCreatorId(), modelId, beforeName, 0);
+        //查询登录者移动之后的sprint
+        SprintInfo afterSprintInfo = this.sprintInfoRepository.findBySubjectIdAndCreatorIdAndModelIdAndNameAndIsDeleted(subjectId, request.getCreatorId(), modelId, afterName, 0);
+        //移动之前的stories
+        String beforeStoryIds = brforeSprintInfo.getItemIds();
+        String[] beforesprintStoryIds = beforeStoryIds.split(",");
+        List<String> beforesprintStoryIdList = Arrays.asList(beforesprintStoryIds);
+        List arrayList = new ArrayList(beforesprintStoryIdList);
+        arrayList.remove(storyId);
+        //移动之后的stories
+        String afterStoryIds = afterSprintInfo.getItemIds();
+        String[] aftersprintStoryIds = afterStoryIds.split(",");
+        List<String> aftersprintStoryIdList = Arrays.asList(aftersprintStoryIds);
+        List arrList = new ArrayList(aftersprintStoryIdList);
+        //往移动之后的sprint中添加
+        arrList.add(storyId);
+        beforeStoryIds = MdvnStringUtil.join(arrayList, ",");
+        brforeSprintInfo.setItemIds(beforeStoryIds);
+        afterStoryIds = MdvnStringUtil.join(arrList, ",");
+        afterSprintInfo.setItemIds(afterStoryIds);
+        brforeSprintInfo = this.sprintInfoRepository.saveAndFlush(brforeSprintInfo);
+        afterSprintInfo = this.sprintInfoRepository.saveAndFlush(afterSprintInfo);
+        return afterSprintInfo;
+    }
+
+    /**
      * 通过uuId更改sprint
      *
      * @param request uuId
@@ -220,7 +259,7 @@ public class DashboardServiceImpl implements DashboardService {
         //查询要关闭的所有sprint
         List<SprintInfo> sprintInfos = this.sprintInfoRepository.findBySubjectIdAndModelIdAndNameAndIsDeleted(subjectId, modelId, beforeName, 0);
         //查询登录者移动之后的sprint
-        SprintInfo spInfo = this.sprintInfoRepository.findBySubjectIdAndCreatorIdAndModelIdAndNameAndIsDeleted(subjectId,request.getCreatorId(), modelId, afterName, 0);
+        SprintInfo spInfo = this.sprintInfoRepository.findBySubjectIdAndCreatorIdAndModelIdAndNameAndIsDeleted(subjectId, request.getCreatorId(), modelId, afterName, 0);
         if (request.getStories().size() > 0) {
             String storyIds = MdvnStringUtil.join(request.getStories(), ",");
             String[] sprintStoryIds = storyIds.split(",");

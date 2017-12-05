@@ -87,7 +87,8 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
             }
             String statusSql = "UPDATE requirement_info SET status = " + "\""+ status+ "\"" + " WHERE reqmnt_id=" + "\"" + reqmId + "\"";
             this.jdbcTemplate.update(statusSql);
-
+            //获取预期进度
+            list = this.rtrvExpectProgress(list);
             rtrvStoryListResponse.setStories(list);
             rtrvStoryListResponse.setTotalElements(Long.valueOf(list.size()));
             return ResponseEntity.ok(rtrvStoryListResponse);
@@ -110,7 +111,9 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
                 pageable = new PageRequest(page - 1, pageSize, sort);
             }
             storyInfos = this.storyRepository.findAllByReqmntIdAndIsDeleted(request.getReqmntId(), 0, pageable);
-            rtrvStoryListResponse.setStories(storyInfos.getContent());
+            //获取预期进度
+            List<Story> list = this.rtrvExpectProgress(storyInfos.getContent());
+            rtrvStoryListResponse.setStories(list);
             rtrvStoryListResponse.setTotalElements(storyInfos.getTotalElements());
             //获取story列表重新计算reqm的进度
             RtrvAverageReqmProgress rRequest = new RtrvAverageReqmProgress();
@@ -135,6 +138,33 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
         }
     }
 
+    //公共方法（计算列表的预期进度）
+    private  List<Story> rtrvExpectProgress(List<Story> list){
+        List<Story> storyList = new ArrayList<>();
+        //获取预期进度
+        for (int i = 0; i < list.size(); i++) {
+            Story story = list.get(i);
+            Timestamp startDate = story.getStartDate();
+            Timestamp endDate = story.getEndDate();
+            Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+            int days = (int) ((endDate.getTime() - startDate.getTime()) / (1000*3600*24));
+            int nowDays = (int) ((currentTime.getTime() - startDate.getTime()) / (1000*3600*24));
+            Float expectProgress = Float.valueOf(nowDays*100/days);
+            DecimalFormat df = new DecimalFormat("#.00");
+            expectProgress = Float.valueOf(df.format(expectProgress));
+            if(expectProgress<0){
+                expectProgress = Float.valueOf(0);
+            }
+            if (expectProgress>100){
+                expectProgress = Float.valueOf(100);
+            }
+            story.setExpectProgress(expectProgress);
+//            Story sto = this.storyRepository.saveAndFlush(story);
+            storyList.add(story);
+        }
+        return storyList;
+    }
+
     /**
      * 通过reqmntlist获取story整个列表
      *
@@ -147,7 +177,9 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
         RtrvStoryListByReqmntIdsResponse rtrvStoryListResponse = new RtrvStoryListByReqmntIdsResponse();
         List<String> reqmntIds = request.getReqmntIds();
         List<Story> list = this.storyRepository.rtrvStoryInfoList(reqmntIds);
-        rtrvStoryListResponse.setStories(list);
+        //获取预期进度
+        List<Story> storyList = this.rtrvExpectProgress(list);
+        rtrvStoryListResponse.setStories(storyList);
         rtrvStoryListResponse.setTotalElements(Long.valueOf(list.size()));
         return ResponseEntity.ok(rtrvStoryListResponse);
     }
@@ -164,7 +196,9 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
         RtrvStoryListByStoryIdsResponse rtrvStoryListResponse = new RtrvStoryListByStoryIdsResponse();
         List<String> storyIds = request.getStoryIds();
         List<Story> list = this.storyRepository.rtrvStoryInfoByStoryIdsList(storyIds);
-        rtrvStoryListResponse.setStories(list);
+        //获取预期进度
+        List<Story> storyList = this.rtrvExpectProgress(list);
+        rtrvStoryListResponse.setStories(storyList);
         rtrvStoryListResponse.setTotalElements(Long.valueOf(list.size()));
         return ResponseEntity.ok(rtrvStoryListResponse);
     }
@@ -221,6 +255,23 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
         String sql = "UPDATE requirement_info SET progress = " + reqmProgress + " WHERE reqmnt_id=" + "\"" + reqmId + "\"";
         this.jdbcTemplate.update(sql);
         //保存storyId;
+        //保存预期进度
+        if (!StringUtils.isEmpty(createStoryRequest.getStoryInfo().getStartDate()) && !StringUtils.isEmpty(createStoryRequest.getStoryInfo().getEndDate())) {
+            Timestamp startDate = createStoryRequest.getStoryInfo().getStartDate();
+            Timestamp endDate = createStoryRequest.getStoryInfo().getEndDate();
+            int days = (int) ((endDate.getTime() - startDate.getTime()) / (1000*3600*24));
+            int nowDays = (int) ((currentTime.getTime() - startDate.getTime()) / (1000*3600*24));
+            Float expectProgress = Float.valueOf(nowDays*100/days);
+            DecimalFormat df = new DecimalFormat("#.00");
+            expectProgress = Float.valueOf(df.format(expectProgress));
+            if(expectProgress<0){
+                expectProgress = Float.valueOf(0);
+            }
+            if (expectProgress>100){
+                expectProgress = Float.valueOf(100);
+            }
+            story.setExpectProgress(expectProgress);
+        }
         Story st = storyRepository.saveAndFlush(story);
         ResponseEntity<?> responseEntity = new ResponseEntity<Object>(st, HttpStatus.OK);
         return responseEntity;

@@ -4,6 +4,7 @@ url:
  findDashboardInfoByIdsUrl: http://localhost:8080/mdvn-dashboard-sapi/dashboards/dashboardInfo
  findAllDashboardInfoByIdsUrl: http://localhost:8080/mdvn-dashboard-sapi/dashboards/findAllDashboardInfoByIds
  updateDashboardUrl: http://localhost:8080/mdvn-dashboard-sapi/dashboards/updateDashboard
+ updateDashboardForAndroidUrl: http://localhost:8080/mdvn-dashboard-sapi/dashboards/updateDashboardForAndroid
  updateSprintInfoUrl: http://localhost:8080/mdvn-dashboard-sapi/dashboards/updateSprintInfo
  rtrvReqmntInfoBymodelIdUrl: http://localhost:8080/mdvn-reqmnt-sapi/rtrvReqmntInfoBymodelId
  findModelByIdUrl: http://localhost:8080/mdvn-model-sapi/models/findModelById

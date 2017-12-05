@@ -74,8 +74,9 @@ public class StoryServiceImpl implements IStoryService {
 
     @Override
     public RestResponse createStory(CreateStoryRequest createStoryRequest) {
-        if (createStoryRequest == null || createStoryRequest.getStoryInfo().getPriority() == null) {
-            throw new NullPointerException("createStoryRequest 或用户故事优先级不能为空");
+        if (createStoryRequest == null || createStoryRequest.getStoryInfo().getPriority() == null ||
+                createStoryRequest.getStoryInfo().getStartDate() ==null || createStoryRequest.getStoryInfo().getEndDate() == null) {
+            throw new NullPointerException("createStoryRequest 或用户故事优先级 或起止时间 不能为空");
         }
         //先判断过程方法子模块是新建还是选取（访问model模块）
         JudgeSubLabelIdRequest judgeSubLabelIdRequest = new JudgeSubLabelIdRequest();

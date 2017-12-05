@@ -140,8 +140,13 @@ public class WebController {
         return this.staffService.updateStaffDetail(request);
     }
 
-    @PostMapping(value = "/deleteStaff/{staffId}")
-    public Boolean deleteStaff(@PathVariable String staffId) {
+//    @PostMapping(value = "/deleteStaff/{staffId}")
+//    public Boolean deleteStaff(@PathVariable String staffId) {
+//        return this.staffService.deleteStaff(staffId);
+//    }
+
+    @PostMapping(value = "/deleteStaff")
+    public Boolean deleteStaff(@RequestBody String staffId) {
         return this.staffService.deleteStaff(staffId);
     }
 

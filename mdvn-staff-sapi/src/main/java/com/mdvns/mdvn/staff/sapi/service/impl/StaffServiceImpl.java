@@ -262,7 +262,7 @@ public class StaffServiceImpl implements StaffService {
      */
     @Override
     public ResponseEntity<?> findByAccountAndPassword(String account, String password) {
-        Staff staff = this.staffRepository.findByAccountAndPassword(account, password);
+        Staff staff = this.staffRepository.findByAccountAndPasswordAndStatus(account, password,"active");
         return ResponseEntity.ok(staff);
     }
 

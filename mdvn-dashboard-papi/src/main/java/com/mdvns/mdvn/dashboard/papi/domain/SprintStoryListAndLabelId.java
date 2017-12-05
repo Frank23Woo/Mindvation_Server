@@ -1,6 +1,5 @@
 package com.mdvns.mdvn.dashboard.papi.domain;
 
-import com.mdvns.mdvn.common.beans.Story;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

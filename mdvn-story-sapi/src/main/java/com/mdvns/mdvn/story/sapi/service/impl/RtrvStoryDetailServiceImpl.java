@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,12 +51,38 @@ public class RtrvStoryDetailServiceImpl implements IRtrvStoryDetailService {
     public ResponseEntity<?> rtrvStoryBaseInfo(RtrvStoryDetailRequest request) {
         LOG.info("start executing rtrvStoryBaseInfo()方法.", this.CLASS);
         Story story = this.storyRepository.rtrvStoryBaseInfo(request.getStoryId());
-//        if (null == story) {
-//            LOG.error("用户故事不存在.", story);
-//            throw new NullPointerException(story + "用户故事不存在.");
-//        }
+        //保存预期进度
+        Timestamp startDate = story.getStartDate();
+        Timestamp endDate = story.getEndDate();
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+        int days = (int) ((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24));
+        int nowDays = (int) ((currentTime.getTime() - startDate.getTime()) / (1000 * 3600 * 24));
+        Float expectProgress = Float.valueOf(nowDays * 100 / days);
+        DecimalFormat df = new DecimalFormat("#.00");
+        expectProgress = Float.valueOf(df.format(expectProgress));
+        //保存ragStatus
+        if (expectProgress !=0){
+            Float percent = story.getProgress() / expectProgress;
+            if (percent >= 1) {
+                story.setRagStatus("G");
+            }
+            if (percent < 1 && percent >= 0.5) {
+                story.setRagStatus("A");
+            }
+            if (percent<0.5){
+                story.setRagStatus("R");
+            }
+        }
+        if(expectProgress<0){
+            expectProgress = Float.valueOf(0);
+        }
+        if (expectProgress>100){
+            expectProgress = Float.valueOf(100);
+        }
+        story.setExpectProgress(expectProgress);
+        Story sto = this.storyRepository.saveAndFlush(story);
         LOG.info("finish executing rtrvStoryBaseInfo()方法.", this.CLASS);
-        return ResponseEntity.ok().body(story);
+        return ResponseEntity.ok().body(sto);
     }
 
     /**

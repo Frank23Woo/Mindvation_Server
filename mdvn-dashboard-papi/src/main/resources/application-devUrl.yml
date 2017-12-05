@@ -4,6 +4,7 @@ url:
  findDashboardInfoByIdsUrl: http://localhost:10017/mdvn-dashboard-sapi/dashboards/dashboardInfo
  findAllDashboardInfoByIdsUrl: http://localhost:10017/mdvn-dashboard-sapi/dashboards/findAllDashboardInfoByIds
  updateDashboardUrl: http://localhost:10017/mdvn-dashboard-sapi/dashboards/updateDashboard
+ updateDashboardForAndroidUrl: http://localhost:10017/mdvn-dashboard-sapi/dashboards/updateDashboardForAndroid
  updateSprintInfoUrl: http://localhost:10017/mdvn-dashboard-sapi/dashboards/updateSprintInfo
  rtrvReqmntInfoBymodelIdUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntInfoBymodelId
  findModelByIdUrl: http://localhost:10009/mdvn-model-sapi/models/findModelById
@@ -19,6 +20,7 @@ url:
  updateSprintCloseStatusUrl: http://localhost:10017/mdvn-dashboard-sapi/dashboards/updateSprintCloseStatus
  itSprintUrl: http://localhost:10017/mdvn-dashboard-sapi/dashboards/itSprint
  findUuIdByIdsUrl: http://localhost:10017/mdvn-dashboard-sapi/dashboards/findUuIdByIds
+
 
 
 

@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,8 +81,37 @@ public class UpdateStoryServiceImpl implements IUpdateStoryService {
             story.setStartDate(st.getStartDate());
             changeFlag = true;
         }
-        if (!StringUtils.isEmpty(st.getEndDate()) && (!st.getEndDate().equals(story.getEndDate()))) {
+        if (!StringUtils.isEmpty(st.getEndDate())) {
             story.setEndDate(st.getEndDate());
+            //保存预期进度
+            Timestamp startDate = st.getStartDate();
+            Timestamp endDate = st.getEndDate();
+            Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+            int days = (int) ((endDate.getTime() - startDate.getTime()) / (1000*3600*24));
+            int nowDays = (int) ((currentTime.getTime() - startDate.getTime()) / (1000*3600*24));
+            Float expectProgress = Float.valueOf(nowDays*100/days);
+            DecimalFormat df = new DecimalFormat("#.00");
+            expectProgress = Float.valueOf(df.format(expectProgress));
+            //保存ragStatus
+            if (expectProgress !=0){
+                Float percent = story.getProgress() / expectProgress;
+                if (percent >= 1) {
+                    story.setRagStatus("G");
+                }
+                if (percent < 1 && percent >= 0.5) {
+                    story.setRagStatus("A");
+                }
+                if (percent<0.5){
+                    story.setRagStatus("R");
+                }
+            }
+            if(expectProgress<0){
+                expectProgress = Float.valueOf(0);
+            }
+            if (expectProgress>100){
+                expectProgress = Float.valueOf(100);
+            }
+            story.setExpectProgress(expectProgress);
             changeFlag = true;
         }
         if (!StringUtils.isEmpty(st.getPriority()) && (!st.getPriority().equals(story.getPriority()))) {

@@ -58,6 +58,9 @@ public class Story {
     //用户故事进度
     @Column(name = "progress", columnDefinition = "Double default 0")
     private Float progress;
+    //用户故事预期进度
+    @Column(name = "expect_progress", columnDefinition = "Double default 0")
+    private Float expectProgress;
     //storyPointCnt+crStoryPointCnt
     @Column(columnDefinition = "Float default 0")
     private Float totalStoryPoint;
@@ -69,6 +72,14 @@ public class Story {
     private Float finishedSP;
     //缺陷总数
     private Integer defectQty;
+
+    public Float getExpectProgress() {
+        return expectProgress;
+    }
+
+    public void setExpectProgress(Float expectProgress) {
+        this.expectProgress = expectProgress;
+    }
 
     public String getLabelId() {
         return labelId;
