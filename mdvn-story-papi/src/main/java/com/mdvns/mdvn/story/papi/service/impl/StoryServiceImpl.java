@@ -270,6 +270,29 @@ public class StoryServiceImpl implements IStoryService {
             }
         }
 
+        //加上评论list
+        String rCommentInfosUrl = config.getRtrvCommentInfosUrl();
+        RtrvCommentInfosRequest rtrvCommentInfosRequest = new RtrvCommentInfosRequest();
+        rtrvCommentInfosRequest.setProjId(updateStoryDetailRequest.getStoryInfo().getProjId());
+        rtrvCommentInfosRequest.setSubjectId(updateStoryDetailRequest.getStoryInfo().getStoryId());
+        ParameterizedTypeReference trReference = new ParameterizedTypeReference<List<CommentDetail>>() {
+        };
+        List<CommentDetail> comDetails = FetchListUtil.fetch(restTemplate, rCommentInfosUrl, rtrvCommentInfosRequest, trReference);
+        for (int j = 0; j < comDetails.size(); j++) {
+            //创建者返回对象
+            String staffUrl = config.getRtrvStaffInfoUrl();
+            String creatorId = comDetails.get(j).getComment().getCreatorId();
+            com.mdvns.mdvn.common.beans.Staff staff = restTemplate.postForObject(staffUrl, creatorId, com.mdvns.mdvn.common.beans.Staff.class);
+            comDetails.get(j).getComment().setCreatorInfo(staff);
+            //被@的人返回对象
+            if (comDetails.get(j).getComment().getReplyId() != null) {
+                String passiveAt = comDetails.get(j).getReplyDetail().getCreatorId();
+                com.mdvns.mdvn.common.beans.Staff passiveAtInfo = restTemplate.postForObject(staffUrl, passiveAt, com.mdvns.mdvn.common.beans.Staff.class);
+                comDetails.get(j).getReplyDetail().setCreatorInfo(passiveAtInfo);
+            }
+        }
+        storyDetail.setCommentDetails(comDetails);
+
         //之后ragStatus需要后台计算以后传给前台
 //        if (!StringUtils.isEmpty(updateStoryDetailRequest.getRagStatus())) {
 //            story.setRagStatus(updateStoryDetailRequest.getRagStatus());
@@ -469,6 +492,28 @@ public class StoryServiceImpl implements IStoryService {
             throw new BusinessException(ExceptionEnum.STORY_DETAIL_BASEINFO_NOT_RTRV);
         }
         storyDetail.setStoryInfo(story);
+        //加上评论list
+        String rtrvCommentInfosUrl = config.getRtrvCommentInfosUrl();
+            RtrvCommentInfosRequest rtrvCommentInfosRequest = new RtrvCommentInfosRequest();
+            rtrvCommentInfosRequest.setProjId(story.getProjId());
+            rtrvCommentInfosRequest.setSubjectId(story.getStoryId());
+            ParameterizedTypeReference tReference = new ParameterizedTypeReference<List<CommentDetail>>() {
+            };
+            List<CommentDetail> commentDetails = FetchListUtil.fetch(restTemplate, rtrvCommentInfosUrl, rtrvCommentInfosRequest, tReference);
+            for (int j = 0; j < commentDetails.size(); j++) {
+                //创建者返回对象
+                String staffUrl = config.getRtrvStaffInfoUrl();
+                String creatorId = commentDetails.get(j).getComment().getCreatorId();
+                com.mdvns.mdvn.common.beans.Staff staff = restTemplate.postForObject(staffUrl, creatorId,Staff.class);
+                commentDetails.get(j).getComment().setCreatorInfo(staff);
+                //被@的人返回对象
+                if (commentDetails.get(j).getComment().getReplyId() != null) {
+                    String passiveAt = commentDetails.get(j).getReplyDetail().getCreatorId();
+                    com.mdvns.mdvn.common.beans.Staff passiveAtInfo = restTemplate.postForObject(staffUrl, passiveAt, Staff.class);
+                    commentDetails.get(j).getReplyDetail().setCreatorInfo(passiveAtInfo);
+                }
+            }
+        storyDetail.setCommentDetails(commentDetails);
         //1.1 获取storyNote信息
         try {
             String storyId = rtrvStoryDetailRequest.getStoryId();

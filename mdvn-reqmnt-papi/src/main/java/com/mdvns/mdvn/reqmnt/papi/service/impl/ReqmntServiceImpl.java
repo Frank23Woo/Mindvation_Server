@@ -271,6 +271,30 @@ public class ReqmntServiceImpl implements IReqmntService {
         restResponse.setResponseMsg("Success");
         rtrvReqmntInfoResponse.setReqmntInfo(requirementInfo);
 
+        //加上评论list
+        String rCommentInfosUrl = config.getRtrvCommentInfosUrl();
+        RtrvCommentInfosRequest rtrvCommentInfosRequest = new RtrvCommentInfosRequest();
+        rtrvCommentInfosRequest.setProjId(requirementInfo.getProjId());
+        rtrvCommentInfosRequest.setSubjectId(requirementInfo.getReqmntId());
+        ParameterizedTypeReference trReference = new ParameterizedTypeReference<List<CommentDetail>>() {
+        };
+        List<CommentDetail> comDetails = FetchListUtil.fetch(restTemplate, rCommentInfosUrl, rtrvCommentInfosRequest, trReference);
+        for (int j = 0; j < comDetails.size(); j++) {
+            //创建者返回对象
+            String staffUrl = config.getRtrvStaffInfoUrl();
+            String creatorId = comDetails.get(j).getComment().getCreatorId();
+            com.mdvns.mdvn.common.beans.Staff staff = restTemplate.postForObject(staffUrl, creatorId, com.mdvns.mdvn.common.beans.Staff.class);
+            comDetails.get(j).getComment().setCreatorInfo(staff);
+            //被@的人返回对象
+            if (comDetails.get(j).getComment().getReplyId() != null) {
+                String passiveAt = comDetails.get(j).getReplyDetail().getCreatorId();
+                com.mdvns.mdvn.common.beans.Staff passiveAtInfo = restTemplate.postForObject(staffUrl, passiveAt, com.mdvns.mdvn.common.beans.Staff.class);
+                comDetails.get(j).getReplyDetail().setCreatorInfo(passiveAtInfo);
+            }
+        }
+        rtrvReqmntInfoResponse.setCommentDetails(comDetails);
+
+
         //retriveFunctionLable
 
         ParameterizedTypeReference funcLabelTypeReference = new ParameterizedTypeReference<FunctionLabel>() {
@@ -298,7 +322,6 @@ public class ReqmntServiceImpl implements IReqmntService {
                 tagIdList.add(reqmntTags.get(i).getTagId());
             }
         }
-
 
         ParameterizedTypeReference tagTypeReference = new ParameterizedTypeReference<List<Tag>>() {
         };
@@ -441,31 +464,6 @@ public class ReqmntServiceImpl implements IReqmntService {
             LOG.info("rtrvStoryListRequest(ReqmntId)：" + rtrvStoryListRequest.getReqmntId());
             ResponseEntity<RtrvStoryListResponse> rtrvStoryListResponse = this.restTemplate.postForEntity(storyInfoListUrl, rtrvStoryListRequest, RtrvStoryListResponse.class);
 //            restResponse = this.restTemplate.postForObject(storyInfoListUrl, rtrvStoryListRequest, RestResponse.class);
-            //加上评论list
-            String rtrvCommentInfosUrl = config.getRtrvCommentInfosUrl();
-            RtrvCommentInfosRequest rtrvCommentInfosRequest = new RtrvCommentInfosRequest();
-            for (int i = 0; i < rtrvStoryListResponse.getBody().getStories().size(); i++) {
-                Story story = rtrvStoryListResponse.getBody().getStories().get(i);
-                rtrvCommentInfosRequest.setProjId(story.getProjId());
-                rtrvCommentInfosRequest.setSubjectId(story.getStoryId());
-                ParameterizedTypeReference tReference = new ParameterizedTypeReference<List<CommentDetail>>() {
-                };
-                List<CommentDetail> commentDetails = FetchListUtil.fetch(restTemplate, rtrvCommentInfosUrl, rtrvCommentInfosRequest, tReference);
-                for (int j = 0; j < commentDetails.size(); j++) {
-                    //创建者返回对象
-                    String staffUrl = config.getRtrvStaffInfoUrl();
-                    String creatorId = commentDetails.get(j).getComment().getCreatorId();
-                    com.mdvns.mdvn.common.beans.Staff staff = restTemplate.postForObject(staffUrl, creatorId, com.mdvns.mdvn.common.beans.Staff.class);
-                    commentDetails.get(j).getComment().setCreatorInfo(staff);
-                    //被@的人返回对象
-                    if (commentDetails.get(j).getComment().getReplyId() != null) {
-                        String passiveAt = commentDetails.get(j).getReplyDetail().getCreatorId();
-                        com.mdvns.mdvn.common.beans.Staff passiveAtInfo = restTemplate.postForObject(staffUrl, passiveAt, com.mdvns.mdvn.common.beans.Staff.class);
-                        commentDetails.get(j).getReplyDetail().setCreatorInfo(passiveAtInfo);
-                    }
-                }
-                story.setCommentDetails(commentDetails);
-            }
 
             LOG.info("rtrvStoryListResponse为：" + rtrvStoryListResponse);
             LOG.info("rtrvStoryListResponse.getBody()为：" + rtrvStoryListResponse.getBody());
@@ -535,8 +533,8 @@ public class ReqmntServiceImpl implements IReqmntService {
         }
         //先判断过程方法子模块是新建还是选取（访问model模块）
         if (request.getFunctionLabel() != null) {
-            LOG.info("更改reqmnt的时候传入的过程方法模块Id："+request.getFunctionLabel().getLabelId());
-            LOG.info("更改reqmnt的时候传入的过程方法模块Name："+request.getFunctionLabel().getName());
+            LOG.info("更改reqmnt的时候传入的过程方法模块Id：" + request.getFunctionLabel().getLabelId());
+            LOG.info("更改reqmnt的时候传入的过程方法模块Name：" + request.getFunctionLabel().getName());
             JudgeLabelIdRequest judgeLabelIdRequest = new JudgeLabelIdRequest();
             judgeLabelIdRequest.setCreatorId(request.getReqmntInfo().getCreatorId());
             judgeLabelIdRequest.setFunctionLabel(request.getFunctionLabel());
@@ -554,7 +552,7 @@ public class ReqmntServiceImpl implements IReqmntService {
         final String url = config.getUpdateReqmntInfoUrl();
         ResponseEntity<Boolean> responseEntity = restTemplate.postForEntity(url, request, Boolean.class);
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
-            return rtrvReqmntInfo(new RtrvReqmntInfoRequest(request.getStaffId(),request.getReqmntInfo().getReqmntId()));
+            return rtrvReqmntInfo(new RtrvReqmntInfoRequest(request.getStaffId(), request.getReqmntInfo().getReqmntId()));
         } else {
             throw new BusinessException(ExceptionEnum.SAPI_EXCEPTION);
         }

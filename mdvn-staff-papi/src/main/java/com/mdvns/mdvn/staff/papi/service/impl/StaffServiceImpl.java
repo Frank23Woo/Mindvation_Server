@@ -230,7 +230,7 @@ public class StaffServiceImpl implements StaffService {
         Integer positionId = staff.getPositionId();
         List<Position> positions = departmentDetail.getPositions();
         for (int i = 0; i < positions.size(); i++) {
-            if (positions.get(i).getId().equals(positionId)){
+            if (positions.get(i).getId().equals(positionId)) {
                 response.setPosition(positions.get(i));
             }
         }
@@ -246,9 +246,6 @@ public class StaffServiceImpl implements StaffService {
             return ResponseEntity.ok(RestResponseUtil.error(HttpStatus.NOT_MODIFIED, ExceptionEnum.UPDATE_STAFF_FAIL + "", "Fail to update staff info"));
         }
     }
-
-
-
 
 
     /**
@@ -295,7 +292,7 @@ public class StaffServiceImpl implements StaffService {
         RtrvStaffListByNameResponse rtrvStaffListByNameResponse = new RtrvStaffListByNameResponse();
 
         //如果startingStr为空，则按标签获取Staff
-        if (StringUtils.isEmpty(startingStr)) {
+        if (StringUtils.isEmpty(startingStr) && tags != null) {
             //如果name为空，标签id也为空，则抛请求参数异常
             if (tags.isEmpty()) {
                 throw new BusinessException(ExceptionEnum.REQUEST_NOT_VALID);
@@ -329,13 +326,13 @@ public class StaffServiceImpl implements StaffService {
     private RtrvStaffListByNameResponse getStaffByNameStarting(String startingStr) {
         //1.获取name以指定字符串开头的所有sataff
         String rtrvStaffByNameStartingUrl = webConfig.getRtrvStaffByNameStartingUrl();
-        Staff[] staffList = this.restTemplate.postForObject(rtrvStaffByNameStartingUrl+"/"+startingStr, startingStr, Staff[].class);
+        Staff[] staffList = this.restTemplate.postForObject(rtrvStaffByNameStartingUrl + "/" + startingStr, startingStr, Staff[].class);
         //2.根据staffId获取其拥有的tagId集合的Url
         String rtrvTagsByStaffIdUrl = webConfig.getRtrvTagsByStaffIdUrl();
         List<StaffMatched> matcheds = new ArrayList<>();
         for (Staff staff : staffList) {
             //3.根据staffId获取其拥有的tagId集合的
-            String[] tags = this.restTemplate.postForObject(rtrvTagsByStaffIdUrl+"/"+staff.getStaffId(), staff.getStaffId(), String[].class);
+            String[] tags = this.restTemplate.postForObject(rtrvTagsByStaffIdUrl + "/" + staff.getStaffId(), staff.getStaffId(), String[].class);
             StaffMatched matched = getStaffMatched(staff.getStaffId(), Arrays.asList(tags));
             matcheds.add(matched);
         }

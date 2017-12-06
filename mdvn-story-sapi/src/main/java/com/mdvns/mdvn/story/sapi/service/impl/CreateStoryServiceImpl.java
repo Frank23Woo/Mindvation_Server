@@ -147,11 +147,21 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
             Timestamp startDate = story.getStartDate();
             Timestamp endDate = story.getEndDate();
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-            int days = (int) ((endDate.getTime() - startDate.getTime()) / (1000*3600*24));
-            int nowDays = (int) ((currentTime.getTime() - startDate.getTime()) / (1000*3600*24));
+            int days = (int) ((endDate.getTime() - startDate.getTime()) / (1000*3600*24)) + 1;
+            int nowDays = (int) ((currentTime.getTime() - startDate.getTime()) / (1000*3600*24)) +1;
             Float expectProgress = Float.valueOf(nowDays*100/days);
             DecimalFormat df = new DecimalFormat("#.00");
             expectProgress = Float.valueOf(df.format(expectProgress));
+            Float percent = story.getProgress() / expectProgress;
+            if (percent >= 1) {
+                story.setRagStatus("G");
+            }
+            if (percent < 1 && percent >= 0.5) {
+                story.setRagStatus("A");
+            }
+            if (percent<0.5){
+                story.setRagStatus("R");
+            }
             if(expectProgress<0){
                 expectProgress = Float.valueOf(0);
             }
@@ -259,8 +269,8 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
         if (!StringUtils.isEmpty(createStoryRequest.getStoryInfo().getStartDate()) && !StringUtils.isEmpty(createStoryRequest.getStoryInfo().getEndDate())) {
             Timestamp startDate = createStoryRequest.getStoryInfo().getStartDate();
             Timestamp endDate = createStoryRequest.getStoryInfo().getEndDate();
-            int days = (int) ((endDate.getTime() - startDate.getTime()) / (1000*3600*24));
-            int nowDays = (int) ((currentTime.getTime() - startDate.getTime()) / (1000*3600*24));
+            int days = (int) ((endDate.getTime() - startDate.getTime()) / (1000*3600*24)) +1 ;
+            int nowDays = (int) ((currentTime.getTime() - startDate.getTime()) / (1000*3600*24)) +1;
             Float expectProgress = Float.valueOf(nowDays*100/days);
             DecimalFormat df = new DecimalFormat("#.00");
             expectProgress = Float.valueOf(df.format(expectProgress));

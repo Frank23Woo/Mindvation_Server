@@ -71,22 +71,12 @@ public class Story {
 
     private Integer memberCunt;
 
-    private List<CommentDetail> commentDetails;
-
     public Float getExpectProgress() {
         return expectProgress;
     }
 
     public void setExpectProgress(Float expectProgress) {
         this.expectProgress = expectProgress;
-    }
-
-    public List<CommentDetail> getCommentDetails() {
-        return commentDetails;
-    }
-
-    public void setCommentDetails(List<CommentDetail> commentDetails) {
-        this.commentDetails = commentDetails;
     }
 
     public Staff getCreatorInfo() {

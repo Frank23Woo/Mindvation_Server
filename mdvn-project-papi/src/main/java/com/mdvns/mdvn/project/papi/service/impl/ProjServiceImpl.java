@@ -470,33 +470,6 @@ public class ProjServiceImpl implements IProjService {
                 }
             }
 
-
-            //加上评论list
-            String rtrvCommentInfosUrl = config.getRtrvCommentInfosUrl();
-            RtrvCommentInfosRequest rtrvCommentInfosRequest = new RtrvCommentInfosRequest();
-            rtrvCommentInfosRequest.setProjId(rtrvProjectDetailRequest.getProjId());
-            for (int i = 0; i < rtrvReqmntListResponse.getRequirementInfos().size(); i++) {
-                RequirementInfo requirementInfo = rtrvReqmntListResponse.getRequirementInfos().get(i);
-                rtrvCommentInfosRequest.setSubjectId(requirementInfo.getReqmntId());
-                ParameterizedTypeReference typeReference = new ParameterizedTypeReference<List<CommentDetail>>() {
-                };
-                List<CommentDetail> commentDetails = FetchListUtil.fetch(restTemplate, rtrvCommentInfosUrl, rtrvCommentInfosRequest, typeReference);
-                for (int j = 0; j <commentDetails.size() ; j++) {
-                    //创建者返回对象
-                    String staffUrl = config.getRtrvStaffInfoUrl();
-                    String creatorId = commentDetails.get(j).getComment().getCreatorId();
-                    com.mdvns.mdvn.common.beans.Staff staff = restTemplate.postForObject(staffUrl, creatorId, com.mdvns.mdvn.common.beans.Staff.class);
-                    commentDetails.get(j).getComment().setCreatorInfo(staff);
-                    //被@的人返回对象
-                    if (commentDetails.get(j).getComment().getReplyId() != null) {
-                        String passiveAt = commentDetails.get(j).getReplyDetail().getCreatorId();
-                        com.mdvns.mdvn.common.beans.Staff passiveAtInfo = restTemplate.postForObject(staffUrl, passiveAt, com.mdvns.mdvn.common.beans.Staff.class);
-                        commentDetails.get(j).getReplyDetail().setCreatorInfo(passiveAtInfo);
-                    }
-                }
-                requirementInfo.setCommentDetails(commentDetails);
-            }
-
             projectDetail.setReqmntListResponse(rtrvReqmntListResponse);
         } catch (Exception ex) {
             throw new BusinessException(ExceptionEnum.PROJECT_DETAIL_REQMNT_NOT_RTRV);

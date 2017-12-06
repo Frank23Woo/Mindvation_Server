@@ -11,6 +11,7 @@ public class StoryDetail {
 
     //用户故事基本信息
     private Story storyInfo;
+    private List<CommentDetail> commentDetails;
     private StoryNote storyNote;
     //用户故事成员（集合）
     private List<RoleAndMember> members;
@@ -31,6 +32,14 @@ public class StoryDetail {
     //用户故事task(可以创建完后添加)
     private List<TaskDetail> sTasks;
     private List<String> remarks;
+
+    public List<CommentDetail> getCommentDetails() {
+        return commentDetails;
+    }
+
+    public void setCommentDetails(List<CommentDetail> commentDetails) {
+        this.commentDetails = commentDetails;
+    }
 
     public StoryNote getStoryNote() {
         return storyNote;

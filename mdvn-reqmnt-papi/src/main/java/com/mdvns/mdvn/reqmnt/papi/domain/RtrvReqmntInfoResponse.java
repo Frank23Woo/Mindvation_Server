@@ -10,6 +10,8 @@ public class RtrvReqmntInfoResponse{
 
     private RequirementInfo reqmntInfo;
 
+    private List<CommentDetail> commentDetails;
+
     private FunctionLabel labelDetail;
 
     private List<SubFunctionLabel> subFunctionLabels;
@@ -25,6 +27,13 @@ public class RtrvReqmntInfoResponse{
 
     private RtrvStoryListResponse rtrvStoryListResponse;
 
+    public List<CommentDetail> getCommentDetails() {
+        return commentDetails;
+    }
+
+    public void setCommentDetails(List<CommentDetail> commentDetails) {
+        this.commentDetails = commentDetails;
+    }
 
     private List<StaffAuthInfo> staffAuthInfo;
 

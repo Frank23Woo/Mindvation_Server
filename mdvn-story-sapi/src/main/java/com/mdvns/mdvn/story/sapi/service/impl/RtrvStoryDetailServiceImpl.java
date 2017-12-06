@@ -55,8 +55,8 @@ public class RtrvStoryDetailServiceImpl implements IRtrvStoryDetailService {
         Timestamp startDate = story.getStartDate();
         Timestamp endDate = story.getEndDate();
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-        int days = (int) ((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24));
-        int nowDays = (int) ((currentTime.getTime() - startDate.getTime()) / (1000 * 3600 * 24));
+        int days = (int) ((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24)) +1;
+        int nowDays = (int) ((currentTime.getTime() - startDate.getTime()) / (1000 * 3600 * 24)) +1;
         Float expectProgress = Float.valueOf(nowDays * 100 / days);
         DecimalFormat df = new DecimalFormat("#.00");
         expectProgress = Float.valueOf(df.format(expectProgress));

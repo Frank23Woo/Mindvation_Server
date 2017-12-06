@@ -63,10 +63,11 @@ public class TaskServiceImpl implements TaskService {
         this.jdbcTemplate.update(sql);
         //获取task列表时重新计算story的完成用户故事点
         Float storyPoint = taskRepository.rtrvStoryPoint(storyId);
-        Float finishedSP = storyPoint * storyProgress / 100;
-        DecimalFormat df = new DecimalFormat("#.00");
+        Float finishedSP = storyPoint * storyProgress;
+        DecimalFormat df = new DecimalFormat("#0.##");
         finishedSP = Float.valueOf(df.format(finishedSP));
-        String finishedSPSql = "UPDATE story SET finishedsp = " + finishedSP + " WHERE story_id=" + "\"" + storyId + "\"";
+        Float finishSP = finishedSP/100;
+        String finishedSPSql = "UPDATE story SET finishedsp = " + finishSP + " WHERE story_id=" + "\"" + storyId + "\"";
         this.jdbcTemplate.update(finishedSPSql);
 
         for (Task task : tasks) {

@@ -49,5 +49,7 @@ config:
   rtrvAttchListUrl: http://localhost:10019/mdvn-file-sapi/files/
 
   addStoryUrl: http://localhost:10017/mdvn-dashboard-sapi/dashboards/addStory
+  rtrvCommentInfosUrl: http://localhost:10025/mdvn-comment-sapi/comments/rtrvCommentInfos
+  rtrvStaffInfoUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffInfo
 
 

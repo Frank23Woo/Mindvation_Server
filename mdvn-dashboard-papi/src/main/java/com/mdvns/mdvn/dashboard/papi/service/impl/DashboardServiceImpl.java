@@ -403,6 +403,9 @@ public class DashboardServiceImpl implements DashboardService {
     @Override
     public RestResponse updateDashboardForAndroid(UpdateDashboardForAndroidRequest request) {
         LOG.info("开始执行方法：updateSprintCloseStatus");
+        if (request == null || request.getStoryId() == null) {
+            throw new NullPointerException("updateDashboardForAndroid 或storyId 不能为空");
+        }
         SprintInfo sprintInfo = new SprintInfo();
         try {
             String url = webConfig.getUpdateDashboardForAndroidUrl();

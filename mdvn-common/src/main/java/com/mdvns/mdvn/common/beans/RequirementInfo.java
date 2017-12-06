@@ -54,8 +54,6 @@ public class RequirementInfo {
     private Integer memberCunt;
     private Staff creatorInfo;
 
-    private List<CommentDetail> commentDetails;
-
     public String getModelId() {
         return modelId;
     }
@@ -78,14 +76,6 @@ public class RequirementInfo {
 
     public void setCreatorInfo(Staff creatorInfo) {
         this.creatorInfo = creatorInfo;
-    }
-
-    public List<CommentDetail> getCommentDetails() {
-        return commentDetails;
-    }
-
-    public void setCommentDetails(List<CommentDetail> commentDetails) {
-        this.commentDetails = commentDetails;
     }
 
     public String getReqmntId() {

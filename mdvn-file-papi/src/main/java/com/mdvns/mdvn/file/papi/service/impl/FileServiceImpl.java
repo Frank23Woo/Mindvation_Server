@@ -71,7 +71,7 @@ public class FileServiceImpl implements FileService {
             }
         } catch (Exception ex) {
             LOG.info("文件上传失败:{}", ex.getLocalizedMessage());
-            throw new IOException("文件上传失败");
+            throw new IOException("文件上传失败,文件大小不能超过5MB");
         }
 
         return RestResponseUtil.successResponseEntity(attchs);
