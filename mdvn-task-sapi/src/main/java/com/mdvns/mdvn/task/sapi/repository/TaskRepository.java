@@ -1,10 +1,9 @@
 package com.mdvns.mdvn.task.sapi.repository;
 
-import com.mdvns.mdvn.common.beans.Story;
+
 import com.mdvns.mdvn.task.sapi.domain.entity.Task;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

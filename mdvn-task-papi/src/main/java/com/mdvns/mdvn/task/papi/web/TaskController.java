@@ -31,6 +31,19 @@ public class TaskController {
         return taskService.retrieveTaskInfo(request);
     }
 
+    /**
+     * 获取task历史记录
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/retrieveTaskHistoryInfo")
+    private RestResponse getTaskHistoryInfo(@RequestBody RtrvTaskHistoryListRequest request) throws Exception {
+        return taskService.getTaskHistoryInfo(request);
+    }
+
+
+
 //    @PostMapping("/deleteTask")
 //    private RestResponse deleteTask(@RequestBody DeleteTaskRequest request) throws Exception {
 //        return taskService.deleteTask(request);

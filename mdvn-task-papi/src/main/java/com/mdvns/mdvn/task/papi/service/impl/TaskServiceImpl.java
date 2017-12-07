@@ -349,6 +349,70 @@ public class TaskServiceImpl implements TaskService {
         return restResponse;
     }
 
+    /**
+     * 获取某个task的历史记录信息
+     * @param request
+     * @return
+     */
+    @Override
+    public RestResponse getTaskHistoryInfo(RtrvTaskHistoryListRequest request) {
+        RestResponse restResponse = new RestResponse();
+        RtrvTaskHistoryListResponse rtrvTaskHistoryListResponse = new RtrvTaskHistoryListResponse();
+        // 参数检查
+        if (request == null || request.getTaskId() == null) {
+            restResponse.setResponseCode(ExceptionEnum.PARAMS_EXCEPTION.getErroCode());
+            restResponse.setResponseMsg(ExceptionEnum.PARAMS_EXCEPTION.getErrorMsg());
+            return restResponse;
+        }
+
+        try {
+            // 查询task sapi
+            rtrvTaskHistoryListResponse = this.restTemplate.postForObject(urlConfig.getRtrvTaskHistoryInfoUrl(), request,RtrvTaskHistoryListResponse.class);
+            List<TaskHistory> taskHistories = rtrvTaskHistoryListResponse.getTaskHistories();
+            for (int i = 0; i < taskHistories.size(); i++) {
+                TaskHistory taskHistory = taskHistories.get(i);
+                // 查询updateInfo
+                String updateId = taskHistory.getUpdateId();
+                Staff updateInfo = this.restTemplate.postForObject(urlConfig.getRtrvStaffInfoUrl(), updateId, Staff.class);
+                taskHistory.setUpdateInfo(updateInfo);
+                //增加了附件
+                if (!StringUtils.isEmpty(taskHistory.getAddAttachId())){
+                    String addAttchId = taskHistory.getAddAttachId();
+                    ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(urlConfig.getGetAttachmentListByIdsUrl() + addAttchId, RestResponse.class);
+                    List<AttchInfo> attchInfos = (List<AttchInfo>) responseEntity.getBody().getResponseBody();
+                    taskHistory.setAddAttchInfo(attchInfos.get(0));
+                }
+                //删除了附件
+                if (!StringUtils.isEmpty(taskHistory.getDeleteAttachId())){
+                    String deleteAttchId = taskHistory.getDeleteAttachId();
+                    ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(urlConfig.getGetAttachmentListByIdsUrl() + deleteAttchId, RestResponse.class);
+                    List<AttchInfo> attchInfos = (List<AttchInfo>) responseEntity.getBody().getResponseBody();
+                    taskHistory.setDeleteAttchInfo(attchInfos.get(0));
+                }
+                //修改了进度
+                if (!StringUtils.isEmpty(taskHistory.getBeforeProgress()) && !StringUtils.isEmpty(taskHistory.getNowProgress())){
+                    Integer beforeProgress = taskHistory.getBeforeProgress();
+                    Integer nowProgress = taskHistory.getNowProgress();
+                }
+                //修改了备注
+                if (!StringUtils.isEmpty(taskHistory.getBeforeComment()) && !StringUtils.isEmpty(taskHistory.getNowComment())){
+                    String beforeComment = taskHistory.getBeforeComment();
+                    String nowComment = taskHistory.getNowComment();
+                }
+            }
+            restResponse.setResponseCode("000");
+            restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
+            restResponse.setResponseMsg("ok");
+            restResponse.setResponseBody(taskHistories);
+        } catch (RestClientException e) {
+            e.printStackTrace();
+            restResponse.setResponseCode(ExceptionEnum.SAPI_EXCEPTION.getErroCode());
+            restResponse.setResponseMsg(ExceptionEnum.SAPI_EXCEPTION.getErrorMsg());
+        }
+
+        return restResponse;
+    }
+
 
     // 查询task的完整信息
     private void queryFullTaskDetail(TaskDetail detail) {

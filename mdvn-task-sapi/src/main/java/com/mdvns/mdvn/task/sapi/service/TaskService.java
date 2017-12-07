@@ -2,6 +2,7 @@ package com.mdvns.mdvn.task.sapi.service;
 
 import com.mdvns.mdvn.task.sapi.domain.*;
 import com.mdvns.mdvn.task.sapi.domain.entity.Task;
+import com.mdvns.mdvn.task.sapi.domain.entity.TaskHistory;
 
 import java.util.List;
 
@@ -25,4 +26,6 @@ public interface TaskService {
     TaskDetail rtrvTaskInfo(String taskId);
 
     Float averageStoryProgress(RtrvAverageStoryProgress request);
+
+    RtrvTaskHistoryListResponse rtrvTaskHistoryInfo(RtrvTaskHistoryListRequest request);
 }

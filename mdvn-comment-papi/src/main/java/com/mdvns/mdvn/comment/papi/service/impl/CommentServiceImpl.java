@@ -44,6 +44,9 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public RestResponse createCommentInfo(CreateCommentInfoRequest request) {
         LOG.info("开始执行{} createCommentInfo()方法.", this.CLASS);
+        if (request == null || request.getProjId() == null || request.getSubjectId() == null || request.getCreatorId() == null) {
+            throw new NullPointerException("createCommentInfo 或项目Id/subjectId/登录者Id不能为空");
+        }
         CreateCommentInfoResponse createCommentInfoResponse = new CreateCommentInfoResponse();
         String createCommentInfoUrl = webConfig.getCreateCommentInfoUrl();
         try {

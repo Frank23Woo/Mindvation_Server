@@ -10,4 +10,5 @@ public interface TaskService {
     RestResponse updateTask(CreateOrUpdateTaskRequest request) throws Exception;
     RestResponse addAttachForTask(AddAttachRequest request);
     RestResponse deleteAttachForTask(AddAttachRequest request);
+    RestResponse getTaskHistoryInfo(RtrvTaskHistoryListRequest request);
 }

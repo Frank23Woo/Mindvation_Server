@@ -5,7 +5,9 @@ import com.mdvns.mdvn.common.utils.MdvnStringUtil;
 import com.mdvns.mdvn.task.sapi.domain.*;
 import com.mdvns.mdvn.task.sapi.domain.entity.Task;
 import com.mdvns.mdvn.task.sapi.domain.entity.TaskDeliver;
+import com.mdvns.mdvn.task.sapi.domain.entity.TaskHistory;
 import com.mdvns.mdvn.task.sapi.repository.TaskDeliverRepository;
+import com.mdvns.mdvn.task.sapi.repository.TaskHistoryRepository;
 import com.mdvns.mdvn.task.sapi.repository.TaskRepository;
 import com.mdvns.mdvn.task.sapi.service.TaskService;
 import org.slf4j.Logger;
@@ -37,6 +39,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Autowired
     private TaskRepository taskRepository;
+
+    @Autowired
+    private TaskHistoryRepository taskHistoryRepository;
 
     @Autowired
     private TaskDeliverRepository deliverRepository;
@@ -90,6 +95,25 @@ public class TaskServiceImpl implements TaskService {
         TaskDetail detail = new TaskDetail(task);
         detail.setDeliver(deliverRepository.getOne(task.getDeliverId()));
         return detail;
+    }
+
+    /**
+     * 获取task历史信息
+     * @param request
+     * @return
+     */
+    @Override
+    public RtrvTaskHistoryListResponse rtrvTaskHistoryInfo(RtrvTaskHistoryListRequest request) {
+        RtrvTaskHistoryListResponse rtrvTaskHistoryListResponse = new RtrvTaskHistoryListResponse();
+        String taskId = request.getTaskId();
+        List<TaskHistory> taskHistoryList = taskHistoryRepository.findAllByTaskIdAndIsDeleted(taskId, 0);
+        Integer page = request.getPage() == null ? 0 : request.getPage();
+        Integer pageSize = request.getPageSize() == null ? 10 : request.getPageSize();
+        Pageable pageable = new PageRequest(page, pageSize, new Sort(Sort.DEFAULT_DIRECTION, "uuId"));
+        List<TaskHistory> taskHistories = taskHistoryRepository.findAllByTaskIdAndIsDeleted(taskId, 0, pageable).getContent();
+        rtrvTaskHistoryListResponse.setTaskHistories(taskHistories);
+        rtrvTaskHistoryListResponse.setTotalElements(Long.valueOf(taskHistoryList.size()));
+        return rtrvTaskHistoryListResponse;
     }
 
     @Override
@@ -156,6 +180,12 @@ public class TaskServiceImpl implements TaskService {
     public TaskDetail updateTask(CreateTaskRequest request) throws Exception {
         Task taskOld = taskRepository.findFirstByTaskIdAndIsDeleted(request.getTaskId(), 0);
         TaskDetail detail = null;
+        /**
+         * 添加历史记录表
+         */
+        TaskHistory taskHistory = new TaskHistory();
+        taskHistory.setTaskId(taskOld.getTaskId());
+        taskHistory.setUpdateId(taskOld.getCreatorId());
 
         if (taskOld != null) {
             boolean changed = false;
@@ -197,11 +227,15 @@ public class TaskServiceImpl implements TaskService {
                     taskOld.setStatus("inProgress");
                 }
                 taskOld.setProgress(request.getProgress());
+                taskHistory.setBeforeProgress(taskOld.getProgress());
+                taskHistory.setNowProgress(request.getProgress());
                 changed = true;
             }
 
             if (request.getComment() != null && !request.getComment().equals(taskOld.getComment())) {
                 taskOld.setComment(request.getComment());
+                taskHistory.setBeforeComment(taskOld.getComment());
+                taskHistory.setNowComment(request.getComment());
                 changed = true;
             }
 
@@ -238,6 +272,8 @@ public class TaskServiceImpl implements TaskService {
             if (changed) {
                 taskOld.setLastUpdateTime(new Timestamp(System.currentTimeMillis()));
                 taskOld = taskRepository.save(taskOld);
+                taskHistory.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+                taskHistory = taskHistoryRepository.saveAndFlush(taskHistory);
             }
 
             detail = new TaskDetail(taskOld);
@@ -270,6 +306,16 @@ public class TaskServiceImpl implements TaskService {
         TaskDetail detail = new TaskDetail(task);
         detail.setDeliver(deliverRepository.findOne(task.getDeliverId()));
 
+        /**
+         * 添加历史记录表
+         */
+        TaskHistory taskHistory = new TaskHistory();
+        taskHistory.setTaskId(task.getTaskId());
+        taskHistory.setUpdateId(task.getCreatorId());
+        taskHistory.setAddAttachId(request.getAttachmentId());
+        taskHistory.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+        taskHistory = taskHistoryRepository.saveAndFlush(taskHistory);
+
         return detail;
     }
 
@@ -300,6 +346,16 @@ public class TaskServiceImpl implements TaskService {
         task = taskRepository.save(task);
         TaskDetail detail = new TaskDetail(task);
         detail.setDeliver(deliverRepository.findOne(task.getDeliverId()));
+
+        /**
+         * 添加历史记录表
+         */
+        TaskHistory taskHistory = new TaskHistory();
+        taskHistory.setTaskId(task.getTaskId());
+        taskHistory.setUpdateId(task.getCreatorId());
+        taskHistory.setDeleteAttachId(request.getAttachmentId());
+        taskHistory.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+        taskHistory = taskHistoryRepository.saveAndFlush(taskHistory);
 
         return detail;
     }
@@ -380,5 +436,7 @@ public class TaskServiceImpl implements TaskService {
         storyAverageProgress = Float.valueOf(df.format(storyAverageProgress));
         return storyAverageProgress;
     }
+
+
 
 }

@@ -37,6 +37,8 @@ public class FileUtil {
     public static String genUrl(HttpServletRequest request, String fileName) throws UnknownHostException {
         StringBuilder url = new StringBuilder(accessType);
 //        String ip = (null==LocalHostUtil.getIp())?request.getLocalAddr():LocalHostUtil.getIp();
+//        String ip = "112.74.45.247";
+//        String ip = "47.100.100.211";
         String ip = request.getLocalAddr();
 //        Integer port = (null==LocalHostUtil.getPort())?request.getServerPort():LocalHostUtil.getPort();
         Integer port = request.getLocalPort();

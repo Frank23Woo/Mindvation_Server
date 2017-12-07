@@ -3,6 +3,7 @@ package com.mdvns.mdvn.task.sapi.web;
 import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.task.sapi.domain.*;
 import com.mdvns.mdvn.task.sapi.domain.entity.Task;
+import com.mdvns.mdvn.task.sapi.domain.entity.TaskHistory;
 import com.mdvns.mdvn.task.sapi.service.TaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +40,11 @@ public class TaskController {
         return taskService.rtrvTaskInfo(taskId);
     }
 
+    @PostMapping("/rtrvTaskHistoryInfo")
+    private RtrvTaskHistoryListResponse rtrvTaskHistoryInfo(@RequestBody RtrvTaskHistoryListRequest request) throws Exception {
+        return taskService.rtrvTaskHistoryInfo(request);
+    }
+
     @PostMapping("/saveTask")
     private TaskDetail createTask(@RequestBody CreateTaskRequest task) throws Exception {
         return taskService.createTask(task);
@@ -53,6 +59,8 @@ public class TaskController {
     private TaskDetail updateTask(@RequestBody CreateTaskRequest request) throws Exception {
         return taskService.updateTask(request);
     }
+
+
 
     @PostMapping("/addAttachForTask")
     private TaskDetail addAttachForTask(@RequestBody AddAttachRequest request) throws Exception{

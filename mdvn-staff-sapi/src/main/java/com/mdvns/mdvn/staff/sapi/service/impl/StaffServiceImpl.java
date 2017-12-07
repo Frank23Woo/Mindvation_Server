@@ -228,14 +228,14 @@ public class StaffServiceImpl implements StaffService {
         String sortBy = (request.getSortBy() == null) ? "staffId" : request.getSortBy();
         //姓名
         String name = request.getName();
-        //如果name没有值
-        if (StringUtils.isEmpty(name)) {
-            List<String> tags = request.getTags();
-            if (tags == null) {
-                LOG.error("标签参数为空:{}", tags);
-            }
-            return null;
-        }
+//        //如果name没有值
+//        if (StringUtils.isEmpty(name)) {
+//            List<String> tags = request.getTags();
+//            if (tags == null) {
+//                LOG.error("标签参数为空:{}", tags);
+//            }
+//            return null;
+//        }
         //第几页
         Integer page = request.getPage();
         //需获取的数据条数
@@ -246,9 +246,13 @@ public class StaffServiceImpl implements StaffService {
         PageRequest pageable = new PageRequest(page, pageSize);
         //分页对象
         Page<Staff> staffPage;
+        //如果什么都不传，返回所有
+        if (request.getName() == null && request.getTags() == null){
+            staffPage = this.staffRepository.findAllByAccountIsNot("Admin", pageable);
+            return ResponseEntity.ok(staffPage);
+        }
         LOG.info("查询name以：{}开头的员工", name);
         staffPage = this.staffRepository.findByNameStartingWith(name, pageable);
-
         return ResponseEntity.ok(staffPage);
 
     }
@@ -297,7 +301,10 @@ public class StaffServiceImpl implements StaffService {
      */
     @Override
     public ResponseEntity<?> findByNameStartingWith(String startingStr) {
-
+        if(startingStr.equals("null")){
+            List<Staff> list = this.staffRepository.findAllByAccountIsNot("Admin");
+            return ResponseEntity.ok(list);
+        }
         List<Staff> staffPage = this.staffRepository.findByNameStartingWith(startingStr);
         LOG.info("查询name以指定字符串:{}开头的所有Staff...", startingStr);
         return ResponseEntity.ok(staffPage);

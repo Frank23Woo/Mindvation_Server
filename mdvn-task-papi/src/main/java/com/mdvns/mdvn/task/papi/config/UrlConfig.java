@@ -48,6 +48,15 @@ public class UrlConfig {
     private String rtrvStoryBaseInfoUrl;
 
     private String updateStoryBaseInfoUrl;
+    private String rtrvTaskHistoryInfoUrl;
+
+    public String getRtrvTaskHistoryInfoUrl() {
+        return rtrvTaskHistoryInfoUrl;
+    }
+
+    public void setRtrvTaskHistoryInfoUrl(String rtrvTaskHistoryInfoUrl) {
+        this.rtrvTaskHistoryInfoUrl = rtrvTaskHistoryInfoUrl;
+    }
 
     public String getUpdateStoryBaseInfoUrl() {
         return updateStoryBaseInfoUrl;
