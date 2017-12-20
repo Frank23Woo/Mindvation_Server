@@ -9,7 +9,7 @@ public class ReqmntMember {
 
     private String staffId;
 
-       private String roleId;
+    private String roleId;
 
     private String reqmntId;
 

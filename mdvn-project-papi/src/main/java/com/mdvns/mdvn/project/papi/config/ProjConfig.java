@@ -67,6 +67,15 @@ public class ProjConfig {
     private String rtrvStaffsByIdsUrl;
 
     private String rtrvReqmntMembersUrl;
+    private String sendMessageUrl;
+
+    public String getSendMessageUrl() {
+        return sendMessageUrl;
+    }
+
+    public void setSendMessageUrl(String sendMessageUrl) {
+        this.sendMessageUrl = sendMessageUrl;
+    }
 
     public String getRtrvStaffsByIdsUrl() {
         return rtrvStaffsByIdsUrl;

@@ -51,3 +51,5 @@ config:
   addStoryUrl: http://localhost:8080/mdvn-dashboard-sapi/dashboards/addStory
   rtrvCommentInfosUrl: http://localhost:8080/mdvn-comment-sapi/comments/rtrvCommentInfos
   rtrvStaffInfoUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffInfo
+  #  websocket推送信息测试
+  sendMessageUrl: http://localhost:8080/mdvn-websocket/websocket/sendMessage

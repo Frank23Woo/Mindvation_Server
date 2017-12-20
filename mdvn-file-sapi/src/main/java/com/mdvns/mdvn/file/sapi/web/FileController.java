@@ -51,6 +51,16 @@ public class FileController {
         return this.fileService.retrieve(id);
     }
 
+    /**
+     * 查询指定Id的附件详情
+     * @param id
+     * @return
+     */
+    @PostMapping(value = "/rtrvAttachInfo")
+    public AttchInfo rtrvAttachInfo(@RequestBody Integer id) {
+        return this.fileService.rtrvAttachInfo(id);
+    }
+
 
     @GetMapping(value = "/{ids}")
     public ResponseEntity<?> retrieve(@PathVariable String ids) {

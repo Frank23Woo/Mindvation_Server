@@ -1,0 +1,4 @@
+url:
+    rtrvStaffInfoUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffInfo
+    rtrvServerPushInfoListUrl: http://localhost:8080/mdvn-websocket/websocket/rtrvServerPushInfoList
+    deleteServerPushInfoUrl: http://localhost:8080/mdvn-websocket/websocket/deleteServerPushInfo

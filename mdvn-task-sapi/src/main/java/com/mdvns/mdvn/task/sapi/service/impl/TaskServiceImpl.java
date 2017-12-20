@@ -141,12 +141,22 @@ public class TaskServiceImpl implements TaskService {
         task.setLastUpdateTime(now);
         task.setProgress(0);
         task.setStatus("new");
-        task.setComment("");
+        task.setRemarks("");
         task.setAttachmentIds("");
         task.setDeliverId(deliver.getId());
         task = taskRepository.save(task);
         task.setTaskId("T" + task.getUuid());
         task = taskRepository.save(task);
+
+        /**
+         * 添加历史记录表
+         */
+        TaskHistory taskHistory = new TaskHistory();
+        taskHistory.setTaskId(task.getTaskId());
+        taskHistory.setUpdateId(task.getCreatorId());
+        taskHistory.setAction("create");
+        taskHistory.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+        taskHistory = taskHistoryRepository.saveAndFlush(taskHistory);
 
         //创建task重新计算story的进度
         RtrvAverageStoryProgress tRequest = new RtrvAverageStoryProgress();
@@ -186,6 +196,7 @@ public class TaskServiceImpl implements TaskService {
         TaskHistory taskHistory = new TaskHistory();
         taskHistory.setTaskId(taskOld.getTaskId());
         taskHistory.setUpdateId(taskOld.getCreatorId());
+        taskHistory.setAction("update");
 
         if (taskOld != null) {
             boolean changed = false;
@@ -226,16 +237,21 @@ public class TaskServiceImpl implements TaskService {
                 if (request.getProgress().intValue() < 100 && request.getProgress().intValue() > 0) {
                     taskOld.setStatus("inProgress");
                 }
-                taskOld.setProgress(request.getProgress());
                 taskHistory.setBeforeProgress(taskOld.getProgress());
+                taskOld.setProgress(request.getProgress());
                 taskHistory.setNowProgress(request.getProgress());
                 changed = true;
             }
 
-            if (request.getComment() != null && !request.getComment().equals(taskOld.getComment())) {
-                taskOld.setComment(request.getComment());
-                taskHistory.setBeforeComment(taskOld.getComment());
-                taskHistory.setNowComment(request.getComment());
+            if (request.getRemarks() != null && !request.getRemarks().equals(taskOld.getRemarks())) {
+                taskHistory.setBeforeRemarks(taskOld.getRemarks());
+                taskOld.setRemarks(request.getRemarks());
+                /*
+                只更新了备注，没有更新进度，进度也返回（后续应该改为必须修改了进度才能修改备注）
+                 */
+                taskHistory.setBeforeProgress(taskOld.getProgress());
+                taskHistory.setNowProgress(taskOld.getProgress());
+                taskHistory.setNowRemarks(request.getRemarks());
                 changed = true;
             }
 
@@ -311,8 +327,9 @@ public class TaskServiceImpl implements TaskService {
          */
         TaskHistory taskHistory = new TaskHistory();
         taskHistory.setTaskId(task.getTaskId());
+        taskHistory.setAction("upload");
         taskHistory.setUpdateId(task.getCreatorId());
-        taskHistory.setAddAttachId(request.getAttachmentId());
+        taskHistory.setAddAttachId(Integer.valueOf(request.getAttachmentId()));
         taskHistory.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         taskHistory = taskHistoryRepository.saveAndFlush(taskHistory);
 
@@ -351,9 +368,10 @@ public class TaskServiceImpl implements TaskService {
          * 添加历史记录表
          */
         TaskHistory taskHistory = new TaskHistory();
+        taskHistory.setAction("remove");
         taskHistory.setTaskId(task.getTaskId());
         taskHistory.setUpdateId(task.getCreatorId());
-        taskHistory.setDeleteAttachId(request.getAttachmentId());
+        taskHistory.setDeleteAttachId(Integer.valueOf(request.getAttachmentId()));
         taskHistory.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         taskHistory = taskHistoryRepository.saveAndFlush(taskHistory);
 

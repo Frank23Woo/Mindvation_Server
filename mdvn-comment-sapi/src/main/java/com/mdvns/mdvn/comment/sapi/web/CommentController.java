@@ -63,6 +63,31 @@ public class CommentController {
         return this.commentService.likeComment(request);
     }
 
+    /**
+     * 查询所评论的需求或者story的创建者（消息推送时用到）
+     * @param subjectId
+     * @return
+     */
+    @PostMapping(value = "/rtrvCreatorId")
+    public String rtrvCreatorId(@RequestBody String subjectId) {
+        LOG.info("开始执行{} rtrvCreatorId()方法.", this.CLASS);
+        return this.commentService.rtrvCreatorId(subjectId);
+    }
+
+    /**
+     * 查询某个评论的信息
+     * @param commentId
+     * @return
+     */
+    @PostMapping(value = "/rtrvCommentDetailInfo")
+    public Comment rtrvCommentDetailInfo(@RequestBody String commentId) {
+        LOG.info("开始执行{} rtrvCommentDetailInfo()方法.", this.CLASS);
+        return this.commentService.rtrvCommentDetailInfo(commentId);
+    }
+
+
+
+
 
 
 }

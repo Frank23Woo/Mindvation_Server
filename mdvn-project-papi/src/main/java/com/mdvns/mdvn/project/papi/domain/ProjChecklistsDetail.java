@@ -1,5 +1,7 @@
 package com.mdvns.mdvn.project.papi.domain;
 
+
+import com.mdvns.mdvn.common.beans.Staff;
 import org.springframework.stereotype.Component;
 
 @Component

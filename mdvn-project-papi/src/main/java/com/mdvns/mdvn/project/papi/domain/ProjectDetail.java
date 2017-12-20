@@ -1,9 +1,7 @@
 package com.mdvns.mdvn.project.papi.domain;
 
 import com.mdvns.mdvn.common.beans.AttchInfo;
-import com.mdvns.mdvn.common.beans.RequirementInfo;
-import com.mdvns.mdvn.common.beans.RestResponse;
-import org.springframework.http.ResponseEntity;
+import com.mdvns.mdvn.common.beans.Staff;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

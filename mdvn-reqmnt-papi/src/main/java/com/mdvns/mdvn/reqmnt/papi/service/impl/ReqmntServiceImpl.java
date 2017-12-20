@@ -118,18 +118,18 @@ public class ReqmntServiceImpl implements IReqmntService {
         LOG.info("给创建需求者：{}，分配权限：{}成功", createReqmntRequest.getCreatorId(), AuthEnum.Leader.getCode());
 
         //2.保存requirement member信息
+        List<String> memberIds = new ArrayList<>();
         if (createReqmntRequest.getMembers() != null && !createReqmntRequest.getMembers().isEmpty()) {
             List<RoleMember> roleMembers = createReqmntRequest.getMembers();
-            List<ReqmntMember> reqmntMembers = new ArrayList<>();
             ReqmntMember reqmntMember = null;
-
             String roleId = "";
+            List<ReqmntMember> reqmntMembers = new ArrayList<>();
             for (int i = 0; i < roleMembers.size(); i++) {
                 roleId = roleMembers.get(i).getRoleId();
-                List<String> memberIds = roleMembers.get(i).getMemberIds();
-                for (int j = 0; j < memberIds.size(); j++) {
+                List<String> mberIds = roleMembers.get(i).getMemberIds();
+                for (int j = 0; j < mberIds.size(); j++) {
                     reqmntMember = new ReqmntMember();
-                    reqmntMember.setStaffId(memberIds.get(j));
+                    reqmntMember.setStaffId(mberIds.get(j));
                     reqmntMember.setRoleId(roleId);
                     reqmntMember.setReqmntId(requirementInfo.getReqmntId());
                     reqmntMembers.add(reqmntMember);
@@ -164,7 +164,7 @@ public class ReqmntServiceImpl implements IReqmntService {
                 };
                 List<ReqmntMember> data = FetchListUtil.fetch(restTemplate, config.getRtrvReqmntMembersUrl(), requirementInfo.getReqmntId(), parameterizedTypeReference);
                 List<ReqmntMember> reqMembers = data;
-                List<String> memberIds = new ArrayList<>();
+//                List<String> memberIds = new ArrayList<>();
                 for (int i = 0; i < reqMembers.size(); i++) {
                     String id = reqMembers.get(i).getStaffId();
                     if (!memberIds.isEmpty() && memberIds.contains(id)) {
@@ -241,11 +241,29 @@ public class ReqmntServiceImpl implements IReqmntService {
                 throw new RuntimeException("调用SAPI获取项目附件信息保存数据失败.");
             }
         }
-        //response
-//        if (restResponse.getStatusCode().equals(HttpStatus.OK.toString())) {
+
+        /**
+         * 消息推送（创建需求）
+         */
+        try {
+            SendMessageRequest sendMessageRequest = new SendMessageRequest();
+            ServerPush serverPush = new ServerPush();
+            String initiatorId = createReqmntRequest.getCreatorId();
+            Staff initiator = this.restTemplate.postForObject(config.getRtrvStaffInfoUrl(), initiatorId, Staff.class);
+            serverPush.setInitiator(initiator);
+            serverPush.setSubjectType("requirement");
+            serverPush.setSubjectId(requirementInfo.getReqmntId());
+            serverPush.setType("create");
+            sendMessageRequest.setInitiatorId(initiatorId);
+            sendMessageRequest.setStaffIds(memberIds);
+            sendMessageRequest.setServerPushResponse(serverPush);
+            Boolean flag = this.restTemplate.postForObject(config.getSendMessageUrl(), sendMessageRequest, Boolean.class);
+            System.out.println(flag);
+        } catch (Exception e) {
+            LOG.error("消息推送(创建需求)出现异常，异常信息：" + e);
+        }
+
         return restResponse;
-//        }
-//        throw new BusinessException(restResponse.getResponseCode(), restResponse.getResponseBody().toString());
     }
 
     @Override
@@ -552,6 +570,42 @@ public class ReqmntServiceImpl implements IReqmntService {
         final String url = config.getUpdateReqmntInfoUrl();
         ResponseEntity<Boolean> responseEntity = restTemplate.postForEntity(url, request, Boolean.class);
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
+
+            /**
+             * 消息推送(更改需求)
+             */
+            try {
+                SendMessageRequest sendMessageRequest = new SendMessageRequest();
+                ServerPush serverPush = new ServerPush();
+                String initiatorId = request.getStaffId();
+                Staff initiator = this.restTemplate.postForObject(config.getRtrvStaffInfoUrl(), initiatorId, Staff.class);
+                serverPush.setInitiator(initiator);
+                serverPush.setSubjectType("requirement");
+//        serverPushResponse.setRecipients(staffList);
+                serverPush.setSubjectId(request.getReqmntInfo().getReqmntId());
+                serverPush.setType("update");
+                // call reqmnt sapi
+                ParameterizedTypeReference parameterizedTypeReference = new ParameterizedTypeReference<List<ReqmntMember>>() {
+                };
+                List<ReqmntMember> data = FetchListUtil.fetch(restTemplate, config.getRtrvReqmntMembersUrl(), request.getReqmntInfo().getReqmntId(), parameterizedTypeReference);
+                List<ReqmntMember> reqmntMembers = data;
+                List<String> memberIds = new ArrayList<>();
+                for (int i = 0; i < reqmntMembers.size(); i++) {
+                    String id = reqmntMembers.get(i).getStaffId();
+                    if (!memberIds.isEmpty() && memberIds.contains(id)) {
+                        continue;
+                    }
+                    memberIds.add(id);
+                }
+                sendMessageRequest.setInitiatorId(initiatorId);
+                sendMessageRequest.setStaffIds(memberIds);
+                sendMessageRequest.setServerPushResponse(serverPush);
+                Boolean flag = this.restTemplate.postForObject(config.getSendMessageUrl(), sendMessageRequest, Boolean.class);
+                LOG.info("消息推送的结果" + String.valueOf(flag));
+            } catch (Exception e) {
+                LOG.error("消息推送(更改需求)出现异常，异常信息：" + e);
+            }
+
             return rtrvReqmntInfo(new RtrvReqmntInfoRequest(request.getStaffId(), request.getReqmntInfo().getReqmntId()));
         } else {
             throw new BusinessException(ExceptionEnum.SAPI_EXCEPTION);

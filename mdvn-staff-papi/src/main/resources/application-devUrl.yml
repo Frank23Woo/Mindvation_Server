@@ -6,6 +6,7 @@ url:
   assignAuthUrl : http://localhost:10013/mdvn-staff-sapi/staffAuth
   rtrvAuthUrl : http://localhost:10013/mdvn-staff-sapi/rtrvAuth
   findByIdUrl : http://localhost:10013/mdvn-staff-sapi/staff
+  logOutUrl: http://localhost:10013/mdvn-staff-sapi/logOut
 
   createStaffUrl: http://localhost:10013/mdvn-staff-sapi/createStaff
   rtrvStaffDetailUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffDetail
@@ -28,6 +29,7 @@ url:
   rtrvStaffByNameStartingUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffByNameStarting
 
   rtrvDepartmentUrl: http://localhost:10023/mdvn-department-sapi/rtrvDepartment
+
 
 
 

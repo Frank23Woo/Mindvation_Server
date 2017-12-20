@@ -1,3 +1,4 @@
+/*
 package com.mdvns.mdvn.project.papi.domain;
 
 import org.springframework.stereotype.Component;
@@ -112,3 +113,4 @@ public class Staff {
         this.worksaturation = worksaturation;
     }
 }
+*/

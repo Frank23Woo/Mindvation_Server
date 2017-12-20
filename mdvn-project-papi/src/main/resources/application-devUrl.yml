@@ -26,5 +26,7 @@ config:
   rtrvStaffInfoUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffInfo
   rtrvStaffsByIdsUrl: http://localhost:10013/mdvn-staff-sapi/rtrvStaffListByStaffIdList
   rtrvReqmntMembersUrl: http://localhost:10012/mdvn-reqmnt-sapi/rtrvReqmntMembers
+  #  websocket推送信息测试
+  sendMessageUrl: http://localhost:10027/mdvn-websocket/websocket/sendMessage
 
 

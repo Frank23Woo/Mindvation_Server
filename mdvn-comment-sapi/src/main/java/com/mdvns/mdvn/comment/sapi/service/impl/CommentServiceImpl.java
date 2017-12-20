@@ -213,4 +213,16 @@ public class CommentServiceImpl implements CommentService {
         LOG.info("结束执行{} rtrvCommentInfos()方法.", this.CLASS);
         return commentDetails;
     }
+
+    @Override
+    public String rtrvCreatorId(String subjectId) {
+        String createId = this.commentRepository.findCreateId(subjectId);
+        return createId;
+    }
+
+    @Override
+    public Comment rtrvCommentDetailInfo(String commentId) {
+        Comment comm = this.commentRepository.findByCommentId(commentId);
+        return comm;
+    }
 }

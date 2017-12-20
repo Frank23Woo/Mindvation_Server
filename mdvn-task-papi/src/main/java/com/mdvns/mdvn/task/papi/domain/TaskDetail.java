@@ -25,7 +25,6 @@ public class TaskDetail {
     private Long endTime;
     private Integer progress;
     private String status;
-    private String comment;
     private String attachmentIds;
     //工作用时，创建task时自己估算的时间
     private Float usedTime;
@@ -35,6 +34,7 @@ public class TaskDetail {
     private Long createTime;
     private Long lastUpdateTime;
     private Integer isDeleted = 0;
+    //备注
     private String remarks;
 
     private TaskDeliver deliver;
@@ -197,14 +197,6 @@ public class TaskDetail {
         this.progress = progress;
     }
 
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
     public String getAttachmentIds() {
         return attachmentIds;
     }
@@ -276,7 +268,6 @@ public class TaskDetail {
         if (getProgress() != null ? !getProgress().equals(that.getProgress()) : that.getProgress() != null)
             return false;
         if (getStatus() != null ? !getStatus().equals(that.getStatus()) : that.getStatus() != null) return false;
-        if (getComment() != null ? !getComment().equals(that.getComment()) : that.getComment() != null) return false;
         if (getAttachmentIds() != null ? !getAttachmentIds().equals(that.getAttachmentIds()) : that.getAttachmentIds() != null)
             return false;
         if (getDeliverId() != null ? !getDeliverId().equals(that.getDeliverId()) : that.getDeliverId() != null)
@@ -310,7 +301,6 @@ public class TaskDetail {
         result = 31 * result + (getEndTime() != null ? getEndTime().hashCode() : 0);
         result = 31 * result + (getProgress() != null ? getProgress().hashCode() : 0);
         result = 31 * result + (getStatus() != null ? getStatus().hashCode() : 0);
-        result = 31 * result + (getComment() != null ? getComment().hashCode() : 0);
         result = 31 * result + (getAttachmentIds() != null ? getAttachmentIds().hashCode() : 0);
         result = 31 * result + (getDeliverId() != null ? getDeliverId().hashCode() : 0);
         result = 31 * result + (getCreateTime() != null ? getCreateTime().hashCode() : 0);
@@ -339,7 +329,6 @@ public class TaskDetail {
                 ", endTime=" + endTime +
                 ", progress=" + progress +
                 ", status='" + status + '\'' +
-                ", comment='" + comment + '\'' +
                 ", attachmentIds='" + attachmentIds + '\'' +
                 ", deliverId=" + deliverId +
                 ", createTime=" + createTime +

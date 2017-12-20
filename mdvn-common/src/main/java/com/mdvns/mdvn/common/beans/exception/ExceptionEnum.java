@@ -16,7 +16,8 @@ public enum ExceptionEnum {
 	 * 1700~1800 dashboard
 	 * 1800 ~2000 staff
 	 * 2000~2200
-	 * 2201~2202  comment
+	 * 2201~2300  comment
+	 * 2301~2400 serverpush
 	 */
 	
 	//通用
@@ -123,11 +124,15 @@ public enum ExceptionEnum {
 	USER_NAME_EXISTS("1902", "User name already exists"),
 	USER_ACCT_EXISTS("1903", "User account already exists"),
 	UPDATE_STAFF_PASSWORD_FAIL("1904", "原密码输入有误"),
+	LOGOUT_FAIL("1905","退出操作发生异常"),
 
 	//comment
 	COMMENT__NOT_CREATE("2201", "评论未创建成功"),
 	COMMENT__NOT_RTRV("2202", "评论未获取成功"),
-	COMMENT__LIKEORDISLIKE_FAILD("2203", "评论点赞或者踩失败")
+	COMMENT__LIKEORDISLIKE_FAILD("2203", "评论点赞或者踩失败"),
+
+	//serverpush
+	DELETE_SERVERPUSH_FAIL("2301", "Fail to delete serberPush"),
 	;
 
 	

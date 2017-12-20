@@ -81,7 +81,7 @@ public class WebController {
 
 
     /**
-     * 根据指定account获取Staff信息
+     * 根据指定account获取Staff信息(登录时记录在线标志，退出时记录下线标志)
      *
      * @param loginRequest
      * @return
@@ -91,6 +91,17 @@ public class WebController {
 
         return this.staffService.findByAccountAndPassword(loginRequest.getAccount(), loginRequest.getPassword());
     }
+
+    /**
+     * 退出时更改为离线状态
+     * @return
+     */
+    @PostMapping(value = "/logOut")
+    public boolean logOut(@RequestBody String staffId) {
+        return this.staffService.logOut(staffId);
+    }
+
+
 
     /**
      * 添加权限

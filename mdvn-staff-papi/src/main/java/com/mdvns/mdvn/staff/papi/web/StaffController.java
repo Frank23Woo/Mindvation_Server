@@ -33,6 +33,17 @@ public class StaffController {
     }
 
     /**
+     * 退出
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/logOut")
+    public ResponseEntity<?> logOut(@RequestBody logOutRequest request) {
+        return this.staffService.logOut(request);
+    }
+
+
+    /**
      * 获取staff列表信息
      *
      * @param retrieveStaffListRequest

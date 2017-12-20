@@ -16,17 +16,28 @@ public class TaskHistory {
     private Integer uuId;
     @Column(nullable = false)
     private String taskId;
+    private String action;
     private String updateId;
     @Column(nullable = false)
     private Timestamp updateTime;
     private Integer beforeProgress;
     private Integer nowProgress;
-    private String beforeComment;
-    private String nowComment;
-    private String deleteAttachId;
-    private String addAttachId;
+    @Column(columnDefinition = "text")
+    private String beforeRemarks;
+    @Column(columnDefinition = "text")
+    private String nowRemarks;
+    private Integer deleteAttachId;
+    private Integer addAttachId;
     @Column(columnDefinition = "integer default 0")
     private Integer isDeleted = 0;
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
 
     public Integer getIsDeleted() {
         return isDeleted;
@@ -84,35 +95,35 @@ public class TaskHistory {
         this.nowProgress = nowProgress;
     }
 
-    public String getBeforeComment() {
-        return beforeComment;
+    public String getBeforeRemarks() {
+        return beforeRemarks;
     }
 
-    public void setBeforeComment(String beforeComment) {
-        this.beforeComment = beforeComment;
+    public void setBeforeRemarks(String beforeRemarks) {
+        this.beforeRemarks = beforeRemarks;
     }
 
-    public String getNowComment() {
-        return nowComment;
+    public String getNowRemarks() {
+        return nowRemarks;
     }
 
-    public void setNowComment(String nowComment) {
-        this.nowComment = nowComment;
+    public void setNowRemarks(String nowRemarks) {
+        this.nowRemarks = nowRemarks;
     }
 
-    public String getDeleteAttachId() {
+    public Integer getDeleteAttachId() {
         return deleteAttachId;
     }
 
-    public void setDeleteAttachId(String deleteAttachId) {
+    public void setDeleteAttachId(Integer deleteAttachId) {
         this.deleteAttachId = deleteAttachId;
     }
 
-    public String getAddAttachId() {
+    public Integer getAddAttachId() {
         return addAttachId;
     }
 
-    public void setAddAttachId(String addAttachId) {
+    public void setAddAttachId(Integer addAttachId) {
         this.addAttachId = addAttachId;
     }
 }

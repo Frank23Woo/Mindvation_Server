@@ -7,18 +7,20 @@ import com.mdvns.mdvn.comment.papi.domain.CreateCommentInfoRequest;
 import com.mdvns.mdvn.comment.papi.domain.CreateCommentInfoResponse;
 import com.mdvns.mdvn.comment.papi.domain.LikeCommentRequest;
 import com.mdvns.mdvn.comment.papi.service.CommentService;
-import com.mdvns.mdvn.common.beans.RestResponse;
-import com.mdvns.mdvn.common.beans.Staff;
+import com.mdvns.mdvn.common.beans.*;
 import com.mdvns.mdvn.common.beans.exception.BusinessException;
 import com.mdvns.mdvn.common.beans.exception.ExceptionEnum;
+import com.mdvns.mdvn.common.utils.FetchListUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -49,6 +51,15 @@ public class CommentServiceImpl implements CommentService {
         }
         CreateCommentInfoResponse createCommentInfoResponse = new CreateCommentInfoResponse();
         String createCommentInfoUrl = webConfig.getCreateCommentInfoUrl();
+        //如果是回复的话，把回复的人加入到passiveAts中
+        String commentId = request.getReplyId();
+        if (request.getReplyId() != null) {
+            Comment replyComm = restTemplate.postForObject(webConfig.getRtrvCommentDetailInfoUrl(), commentId, Comment.class);
+            List<String> passiveAts = request.getPassiveAts();
+            if (!passiveAts.contains(replyComm.getCreatorId())) {
+                passiveAts.add(replyComm.getCreatorId());
+            }
+        }
         try {
             createCommentInfoResponse = restTemplate.postForObject(createCommentInfoUrl, request, CreateCommentInfoResponse.class);
         } catch (Exception ex) {
@@ -60,6 +71,7 @@ public class CommentServiceImpl implements CommentService {
         String creatorId = createCommentInfoResponse.getComment().getCreatorId();
         Staff staff = restTemplate.postForObject(staffUrl, creatorId, Staff.class);
         createCommentInfoResponse.getComment().setCreatorInfo(staff);
+
         //被@的人返回对象
         if (request.getReplyId() != null) {
             String passiveAt = createCommentInfoResponse.getReplyDetail().getCreatorId();
@@ -71,6 +83,37 @@ public class CommentServiceImpl implements CommentService {
         restResponse.setResponseMsg("请求成功");
         restResponse.setResponseCode("000");
         LOG.info("结束执行{} createCommentInfo()方法.", this.CLASS);
+
+        /**
+         * 消息推送(创建comment)
+         */
+        try {
+            SendMessageRequest sendMessageRequest = new SendMessageRequest();
+            ServerPush serverPush = new ServerPush();
+            String initiatorId = request.getCreatorId();
+            String subjectId = request.getSubjectId();
+            Staff initiator = this.restTemplate.postForObject(webConfig.getRtrvStaffInfoUrl(), initiatorId, Staff.class);
+            serverPush.setInitiator(initiator);
+            serverPush.setSubjectType("comment");
+            serverPush.setSubjectId(subjectId);
+            serverPush.setType("at");
+            //查询所评论的需求或者story的创建者
+            String createId = this.restTemplate.postForObject(webConfig.getRtrvCreatorIdUrl(), subjectId, String.class);
+            if (request.getPassiveAts().size() > 0) {//回复
+                sendMessageRequest.setStaffIds(request.getPassiveAts());
+            } else {//不@人
+                List<String> staffIds = new ArrayList<>();
+                staffIds.add(createId);
+                sendMessageRequest.setStaffIds(staffIds);
+            }
+            sendMessageRequest.setInitiatorId(initiatorId);
+            sendMessageRequest.setServerPushResponse(serverPush);
+            Boolean flag = this.restTemplate.postForObject(webConfig.getSendMessageUrl(), sendMessageRequest, Boolean.class);
+            System.out.println(flag);
+        } catch (Exception e) {
+            LOG.error("消息推送(创建comment)出现异常，异常信息：" + e);
+        }
+
         return restResponse;
     }
 

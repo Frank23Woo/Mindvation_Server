@@ -160,6 +160,21 @@ public class StaffServiceImpl implements StaffService {
         return RestResponseUtil.successResponseEntity(staff);
     }
 
+    /**
+     * 退出
+     * @param request
+     * @return
+     */
+    @Override
+    public ResponseEntity<?> logOut(logOutRequest request) {
+        LOG.info("开始执行StaffPapi Service logOut:{}", request.getStaffId());
+        Boolean flag = this.restTemplate.postForObject(webConfig.getLogOutUrl(),request.getStaffId(),Boolean.TYPE);
+        if (flag == false) {
+            throw new BusinessException(ExceptionEnum.LOGOUT_FAIL);
+        }
+        return RestResponseUtil.successResponseEntity(flag);
+    }
+
     @Override
     public ResponseEntity<?> createStaff(CreateStaffRequest request) {
         String url = webConfig.getCreateStaffUrl();
@@ -190,6 +205,8 @@ public class StaffServiceImpl implements StaffService {
             return ResponseEntity.ok(RestResponseUtil.error(HttpStatus.NOT_MODIFIED, ExceptionEnum.UPDATE_STAFF_PASSWORD_FAIL + "", "Fail to update staff PASSWORD"));
         }
     }
+
+
 
 
     @Override

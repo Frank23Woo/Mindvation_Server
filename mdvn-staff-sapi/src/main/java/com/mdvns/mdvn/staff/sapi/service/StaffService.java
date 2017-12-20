@@ -41,4 +41,6 @@ public interface StaffService {
     List<String> rtrvTagsByStaffId(String staffId);
 
     Boolean updateStaffPassword(UpdatePasswordRequest request);
+
+    boolean logOut(String staffId);
 }

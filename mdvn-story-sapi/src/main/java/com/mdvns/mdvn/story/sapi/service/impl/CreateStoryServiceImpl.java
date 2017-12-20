@@ -246,6 +246,7 @@ public class CreateStoryServiceImpl implements ICreateStoryService {
         story.setStatus("new");
         story.setRagStatus("G");
         story.setProgress((float) 0);
+        //时间必输，算预期进度
         if (!StringUtils.isEmpty(createStoryRequest.getStoryInfo().getStartDate())) {
             story.setStartDate(createStoryRequest.getStoryInfo().getStartDate());
         }

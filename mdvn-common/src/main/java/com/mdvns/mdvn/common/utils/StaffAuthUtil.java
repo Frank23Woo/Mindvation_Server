@@ -36,7 +36,7 @@ public class StaffAuthUtil {
 	public static List<StaffAuthInfo> assignAuth(RestTemplate restTemplate, AssignAuthRequest assignAuthRequest) {
 		ResponseEntity<StaffAuthInfo[]> responseEntity = null;
 		//10014
-		String assignAuthUrl = "http://localhost:10014/mdvn-staff-papi/staff/assignAuth";
+		String assignAuthUrl = "http://localhost:8080/mdvn-staff-papi/staff/assignAuth";
 		try {
 			responseEntity = restTemplate.postForEntity(assignAuthUrl, assignAuthRequest, StaffAuthInfo[].class);
 		} catch (Exception ex) {
@@ -59,7 +59,7 @@ public class StaffAuthUtil {
 	public static List<StaffAuthInfo> rtrvStaffAuthInfo(RestTemplate restTemplate, String projId, String hierarchyId,
 			String staffId) {
 		//10014
-		String rtrvStaffAuthUrl = "http://localhost:10014/mdvn-staff-papi/staff/rtrvAuth";
+		String rtrvStaffAuthUrl = "http://localhost:8080/mdvn-staff-papi/staff/rtrvAuth";
 		RtrvStaffAuthInfoRequest rtrvStaffAuthInfoRequest = new RtrvStaffAuthInfoRequest();
 		rtrvStaffAuthInfoRequest.setProjId(projId);
 		rtrvStaffAuthInfoRequest.setStaffId(staffId);
@@ -82,7 +82,7 @@ public class StaffAuthUtil {
 	 */
 	public static void deleteAllAuth(RestTemplate restTemplate, String projId, String hierarchyId) {
 		//10013
-		String deleteAllAuthUrl = "http://localhost:10013/mdvn-staff-sapi/staff/removeAllAuth"+"/"+projId+"/"+hierarchyId;
+		String deleteAllAuthUrl = "http://localhost:8080/mdvn-staff-sapi/staff/removeAllAuth"+"/"+projId+"/"+hierarchyId;
 		LOG.info("取消权限的Url为："+deleteAllAuthUrl);
 		restTemplate.delete(deleteAllAuthUrl);
 		LOG.info("全部删除项目{}的，{}层的所有权限成功!", projId, hierarchyId);

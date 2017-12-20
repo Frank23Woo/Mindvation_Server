@@ -94,6 +94,20 @@ public class FileServiceImpl implements FileService {
     }
 
     /**
+     * 根据Id获取附件信息
+     * @param id
+     * @return
+     */
+    @Override
+    public AttchInfo rtrvAttachInfo(Integer id) {
+        attchInfo = this.attchRepository.findOne(id);
+        LOG.info("查询到的AttchInfo 是： {}", attchInfo.getId());
+        return attchInfo;
+    }
+
+
+
+    /**
      * 根据指定Id集合查询多个附件信息
      * @param ids
      * @return

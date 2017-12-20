@@ -33,7 +33,6 @@ public class TaskDetail extends Task {
         this.setStoryId(task.getStoryId());
         this.setTaskId(task.getTaskId());
         this.setProgress(task.getProgress());
-        this.setComment(task.getComment());
         this.setAttachmentIds(task.getAttachmentIds());
         this.setIsDeleted(task.getIsDeleted());
         this.setLastUpdateTime(task.getLastUpdateTime());

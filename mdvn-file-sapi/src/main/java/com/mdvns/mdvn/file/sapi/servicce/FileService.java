@@ -15,4 +15,6 @@ public interface FileService {
     ResponseEntity<?> retrieve(Integer id);
 
     ResponseEntity<?> retrieve(String ids);
+
+    AttchInfo rtrvAttachInfo(Integer id);
 }

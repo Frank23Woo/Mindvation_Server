@@ -50,6 +50,17 @@ public class Staff {
 
     private String gender;
 
+    @Column(columnDefinition = "INT default 0")
+    private Integer isOnline;
+
+    public Integer getIsOnline() {
+        return isOnline;
+    }
+
+    public void setIsOnline(Integer isOnline) {
+        this.isOnline = isOnline;
+    }
+
     public String getGender() {
         return gender;
     }

@@ -24,6 +24,9 @@ public class Model {
 
     private String modelId;
     //模型类型
+    /**
+     * software 、  engineering 、  business requirements  、 technology
+     */
     private String modelType;
 //    //父模型Id
 //    private String parentId;

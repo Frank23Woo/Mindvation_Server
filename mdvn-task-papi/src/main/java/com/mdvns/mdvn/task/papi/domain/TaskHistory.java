@@ -7,20 +7,29 @@ import org.springframework.stereotype.Component;
 @Component
 public class TaskHistory {
 
+    private String action;
     private Integer uuId;
     private String taskId;
     private String updateId;
     private Long updateTime;
     private Integer beforeProgress;
     private Integer nowProgress;
-    private String beforeComment;
-    private String nowComment;
-    private String deleteAttachId;
-    private String addAttachId;
+    private String beforeRemarks;
+    private String nowRemarks;
+    private Integer deleteAttachId;
+    private Integer addAttachId;
 
     private Staff updateInfo;
     private AttchInfo addAttchInfo;
     private AttchInfo deleteAttchInfo;
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
 
     public AttchInfo getAddAttchInfo() {
         return addAttchInfo;
@@ -94,35 +103,35 @@ public class TaskHistory {
         this.nowProgress = nowProgress;
     }
 
-    public String getBeforeComment() {
-        return beforeComment;
+    public String getBeforeRemarks() {
+        return beforeRemarks;
     }
 
-    public void setBeforeComment(String beforeComment) {
-        this.beforeComment = beforeComment;
+    public void setBeforeRemarks(String beforeRemarks) {
+        this.beforeRemarks = beforeRemarks;
     }
 
-    public String getNowComment() {
-        return nowComment;
+    public String getNowRemarks() {
+        return nowRemarks;
     }
 
-    public void setNowComment(String nowComment) {
-        this.nowComment = nowComment;
+    public void setNowRemarks(String nowRemarks) {
+        this.nowRemarks = nowRemarks;
     }
 
-    public String getDeleteAttachId() {
+    public Integer getDeleteAttachId() {
         return deleteAttachId;
     }
 
-    public void setDeleteAttachId(String deleteAttachId) {
+    public void setDeleteAttachId(Integer deleteAttachId) {
         this.deleteAttachId = deleteAttachId;
     }
 
-    public String getAddAttachId() {
+    public Integer getAddAttachId() {
         return addAttachId;
     }
 
-    public void setAddAttachId(String addAttachId) {
+    public void setAddAttachId(Integer addAttachId) {
         this.addAttachId = addAttachId;
     }
 }

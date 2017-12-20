@@ -2,4 +2,8 @@ url:
   createCommentInfoUrl: http://localhost:8080/mdvn-comment-sapi/comments/createCommentInfo
   rtrvStaffInfoUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffInfo
   likeOrDislikeUrl: http://localhost:8080/mdvn-comment-sapi/comments/likeOrDislike
+  rtrvCreatorIdUrl: http://localhost:8080/mdvn-comment-sapi/comments/rtrvCreatorId
+  rtrvCommentDetailInfoUrl: http://localhost:8080/mdvn-comment-sapi/comments/rtrvCommentDetailInfo
+#  websocket推送信息测试
+  sendMessageUrl: http://localhost:8080/mdvn-websocket/websocket/sendMessage
 

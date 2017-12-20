@@ -30,6 +30,8 @@ public interface StaffService {
 
     ResponseEntity<?> updateStaffPassword(UpdatePasswordRequest request);
 
+    ResponseEntity<?> logOut(logOutRequest request);
+
 
 //    ResponseEntity<?> rtrvStaff(RtrvStaffRequest rtrvStaffRequest);
 }

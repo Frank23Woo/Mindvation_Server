@@ -49,6 +49,35 @@ public class UrlConfig {
 
     private String updateStoryBaseInfoUrl;
     private String rtrvTaskHistoryInfoUrl;
+    private String retrieveUrl;
+
+    private String rtrvSRoleMembersUrl;
+
+    private String sendMessageUrl;
+
+    public String getSendMessageUrl() {
+        return sendMessageUrl;
+    }
+
+    public void setSendMessageUrl(String sendMessageUrl) {
+        this.sendMessageUrl = sendMessageUrl;
+    }
+
+    public String getRtrvSRoleMembersUrl() {
+        return rtrvSRoleMembersUrl;
+    }
+
+    public void setRtrvSRoleMembersUrl(String rtrvSRoleMembersUrl) {
+        this.rtrvSRoleMembersUrl = rtrvSRoleMembersUrl;
+    }
+
+    public String getRetrieveUrl() {
+        return retrieveUrl;
+    }
+
+    public void setRetrieveUrl(String retrieveUrl) {
+        this.retrieveUrl = retrieveUrl;
+    }
 
     public String getRtrvTaskHistoryInfoUrl() {
         return rtrvTaskHistoryInfoUrl;

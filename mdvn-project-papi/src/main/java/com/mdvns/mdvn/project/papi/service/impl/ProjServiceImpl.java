@@ -10,7 +10,6 @@ import com.mdvns.mdvn.common.utils.StaffAuthUtil;
 import com.mdvns.mdvn.project.papi.config.ProjConfig;
 import com.mdvns.mdvn.project.papi.domain.*;
 import com.mdvns.mdvn.project.papi.domain.Model;
-import com.mdvns.mdvn.project.papi.domain.Staff;
 import com.mdvns.mdvn.project.papi.domain.Tag;
 import com.mdvns.mdvn.project.papi.service.IProjService;
 import org.slf4j.Logger;
@@ -41,7 +40,6 @@ public class ProjServiceImpl implements IProjService {
 
     @Autowired
     private RestTemplate restTemplate;
-
 
 
     /**
@@ -93,10 +91,11 @@ public class ProjServiceImpl implements IProjService {
         List<String> asignee = new ArrayList<String>();
         asignee.add(creatorId);
 
-        StaffAuthUtil.assignAuth(this.restTemplate,new AssignAuthRequest(projId, creatorId, asignee, projId, AuthEnum.BOSS.getCode()));
+        StaffAuthUtil.assignAuth(this.restTemplate, new AssignAuthRequest(projId, creatorId, asignee, projId, AuthEnum.BOSS.getCode()));
 
 
         //2.保存项目负责人信息
+        List<ProjLeaders> pLeaders = new ArrayList<>();
         if (createProjectRequest.getLeaders() != null && !createProjectRequest.getLeaders().isEmpty()) {
             List<ProjLeaders> projLeaders = createProjectRequest.getLeaders();
             for (int i = 0; i < projLeaders.size(); i++) {
@@ -104,14 +103,14 @@ public class ProjServiceImpl implements IProjService {
             }
             String savePLeadersUrl = config.getSavePLeadersUrl();
             try {
-                List<ProjLeaders> pLeaders = restTemplate.postForObject(savePLeadersUrl, projLeaders, List.class);
+                pLeaders = restTemplate.postForObject(savePLeadersUrl, projLeaders, List.class);
             } catch (Exception ex) {
                 throw new BusinessException(ExceptionEnum.PROJECT_STAFF_NOT_CREATE);
             }
 
             //2.1 给项目leader分配权限
             List<String> leaders = new ArrayList<String>();
-            for (int i = 0; i <projLeaders.size() ; i++) {
+            for (int i = 0; i < projLeaders.size(); i++) {
                 leaders.add(projLeaders.get(i).getStaffId());
             }
             StaffAuthUtil.assignAuth(this.restTemplate, new AssignAuthRequest(projId, createProjectRequest.getStaffId(), leaders, projId, AuthEnum.Leader.getCode()));
@@ -174,6 +173,39 @@ public class ProjServiceImpl implements IProjService {
                 throw new BusinessException(ExceptionEnum.PROJECT_ATTCHURL_NOT_CREATE);
             }
         }
+
+        /**
+         * 消息推送（创建项目）
+         */
+        try {
+            SendMessageRequest sendMessageRequest = new SendMessageRequest();
+            ServerPush serverPush = new ServerPush();
+            String initiatorId = createProjectRequest.getStaffId();
+            Staff initiator = this.restTemplate.postForObject(config.getRtrvStaffInfoUrl(), initiatorId, Staff.class);
+            serverPush.setInitiator(initiator);
+            serverPush.setSubjectType("project");
+//        serverPushResponse.setRecipients(staffList);
+            serverPush.setSubjectId(projId);
+            serverPush.setType("create");
+            RtrvProjectDetailRequest rtrvProjectDetailRequest = new RtrvProjectDetailRequest();
+            rtrvProjectDetailRequest.setProjId(projId);
+            String rtrvProjLedersUrl = config.getRtrvProjLedersUrl();
+            ParameterizedTypeReference typeReference = new ParameterizedTypeReference<List<Staff>>() {
+            };
+            List<Staff> projLeaders = FetchListUtil.fetch(restTemplate, rtrvProjLedersUrl, rtrvProjectDetailRequest, typeReference);
+            List<String> staffIds = new ArrayList<>();
+            for (int i = 0; i < projLeaders.size(); i++) {
+                staffIds.add(projLeaders.get(i).getStaffId());
+            }
+            sendMessageRequest.setInitiatorId(initiatorId);
+            sendMessageRequest.setStaffIds(staffIds);
+            sendMessageRequest.setServerPushResponse(serverPush);
+            Boolean flag = this.restTemplate.postForObject(config.getSendMessageUrl(), sendMessageRequest, Boolean.class);
+            System.out.println(flag);
+        } catch (Exception e) {
+            LOG.error("消息推送(创建项目)出现异常，异常信息：" + e);
+        }
+
 
         return restResponse;
     }
@@ -316,7 +348,7 @@ public class ProjServiceImpl implements IProjService {
                 String attachmentIds = MdvnStringUtil.join(idList, ",");
                 if (pAttchUrls.size() != 0) {
                     ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(config.getRtrvAttchListUrl() + attachmentIds, RestResponse.class);
-                    projectDetail.setAttchInfos((List<AttchInfo>)responseEntity.getBody().getResponseBody());
+                    projectDetail.setAttchInfos((List<AttchInfo>) responseEntity.getBody().getResponseBody());
 //                projectDetail.setAttchUrls(pAttchUrls);
                 }
 
@@ -336,6 +368,40 @@ public class ProjServiceImpl implements IProjService {
         restResponse.setResponseMsg("请求成功");
         restResponse.setResponseCode("000");
 
+        /**
+         * 消息推送(更改项目)
+         */
+        try {
+            LOG.info("开始消息推送aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+            SendMessageRequest sendMessageRequest = new SendMessageRequest();
+            ServerPush serverPush = new ServerPush();
+            String initiatorId = updateProjectDetailRequest.getStaffId();
+            Staff initiator = this.restTemplate.postForObject(config.getRtrvStaffInfoUrl(), initiatorId, Staff.class);
+            List<Staff> staffList = updateProjectDetailResponse.getProjectDetail().getLeaders();
+            serverPush.setInitiator(initiator);
+            serverPush.setSubjectType("project");
+//        serverPushResponse.setRecipients(staffList);
+            serverPush.setSubjectId(updateProjectDetailRequest.getProjId());
+            serverPush.setType("update");
+            RtrvProjectDetailRequest rtrvProjectDetailRequest = new RtrvProjectDetailRequest();
+            rtrvProjectDetailRequest.setProjId(updateProjectDetailRequest.getProjId());
+            String rtrvProjLedersUrl = config.getRtrvProjLedersUrl();
+            ParameterizedTypeReference typeReference = new ParameterizedTypeReference<List<Staff>>() {
+            };
+            List<Staff> projLeaders = FetchListUtil.fetch(restTemplate, rtrvProjLedersUrl, rtrvProjectDetailRequest, typeReference);
+            List<String> staffIds = new ArrayList<>();
+            for (int i = 0; i < projLeaders.size(); i++) {
+                staffIds.add(projLeaders.get(i).getStaffId());
+            }
+            sendMessageRequest.setInitiatorId(initiatorId);
+            sendMessageRequest.setStaffIds(staffIds);
+            sendMessageRequest.setServerPushResponse(serverPush);
+            Boolean flag = this.restTemplate.postForObject(config.getSendMessageUrl(), sendMessageRequest, Boolean.class);
+            System.out.println(flag);
+            LOG.info("结束消息推送aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa，消息推送成功");
+        } catch (Exception e) {
+            LOG.error("消息推送(更改项目)出现异常，异常信息cccccccccccccccccccccccccccccccc：" + e);
+        }
         return restResponse;
     }
 
@@ -413,7 +479,7 @@ public class ProjServiceImpl implements IProjService {
             String attachmentIds = MdvnStringUtil.join(idList, ",");
             if (projAttchUrls.size() != 0) {
                 ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(config.getRtrvAttchListUrl() + attachmentIds, RestResponse.class);
-                projectDetail.setAttchInfos((List<AttchInfo>)responseEntity.getBody().getResponseBody());
+                projectDetail.setAttchInfos((List<AttchInfo>) responseEntity.getBody().getResponseBody());
             }
         } catch (Exception ex) {
             LOG.error("获取项目标签信息失败");
@@ -434,7 +500,7 @@ public class ProjServiceImpl implements IProjService {
         try {
             RtrvReqmntListResponse rtrvReqmntListResponse = restTemplate.postForObject(rtrvReqmntListUrl, rtrvReqmntListRequest, RtrvReqmntListResponse.class);
             //查询每个reqmnt的负责人信息和人数
-            for (int j = 0; j < rtrvReqmntListResponse.getRequirementInfos().size() ; j++) {
+            for (int j = 0; j < rtrvReqmntListResponse.getRequirementInfos().size(); j++) {
                 RequirementInfo requirementInfo = rtrvReqmntListResponse.getRequirementInfos().get(j);
                 String creatorId = requirementInfo.getCreatorId();
                 // call staff sapi
@@ -442,10 +508,10 @@ public class ProjServiceImpl implements IProjService {
                 staffs.add(creatorId);
                 Map<String, Object> prams = new HashMap<>();
                 prams.put("staffIdList", staffs);
-                ParameterizedTypeReference tReference = new ParameterizedTypeReference<List<com.mdvns.mdvn.common.beans.Staff>>() {
+                ParameterizedTypeReference tReference = new ParameterizedTypeReference<List<Staff>>() {
                 };
-                LOG.info("获取创建者信息的url为："+config.getRtrvStaffsByIdsUrl());
-                List<com.mdvns.mdvn.common.beans.Staff> staffList = (List<com.mdvns.mdvn.common.beans.Staff>) FetchListUtil.fetch(restTemplate, config.getRtrvStaffsByIdsUrl(), prams, tReference);
+                LOG.info("获取创建者信息的url为：" + config.getRtrvStaffsByIdsUrl());
+                List<Staff> staffList = (List<Staff>) FetchListUtil.fetch(restTemplate, config.getRtrvStaffsByIdsUrl(), prams, tReference);
                 requirementInfo.setCreatorInfo(staffList.get(0));
 
                 // 查询members(不重复的个数)
@@ -480,7 +546,7 @@ public class ProjServiceImpl implements IProjService {
         RtrvStaffAuthInfoRequest rtrvAuthInfoRequest = new RtrvStaffAuthInfoRequest();
         String projId = rtrvProjectDetailRequest.getProjId();
         List<StaffAuthInfo> staffAuthInfos = StaffAuthUtil.rtrvStaffAuthInfo(this.restTemplate, projId, projId, rtrvProjectDetailRequest.getStaffId());
-        LOG.info("获取的权限信息为："+staffAuthInfos);
+        LOG.info("获取的权限信息为：" + staffAuthInfos);
         rtrvProjectDetailResponse.setStaffAuthInfo(staffAuthInfos);
 
         rtrvProjectDetailResponse.setProjectDetail(projectDetail);

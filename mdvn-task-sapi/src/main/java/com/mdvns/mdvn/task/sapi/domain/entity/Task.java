@@ -28,7 +28,6 @@ public class Task {
     private Float usedTime;
     private Integer progress;
     private String status;
-    private String comment;
     private String attachmentIds;
 
     // 交附件
@@ -40,6 +39,8 @@ public class Task {
     @Column(columnDefinition = "integer default 0")
     private Integer isDeleted = 0;
 
+    //备注
+    @Column(columnDefinition = "text")
     private String remarks;
 
     public Task() {
@@ -141,14 +142,6 @@ public class Task {
         this.progress = progress;
     }
 
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
     public Integer getDeliverId() {
         return deliverId;
     }
@@ -210,7 +203,6 @@ public class Task {
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", progress=" + progress +
-                ", comment='" + comment + '\'' +
                 ", attachmentIds='" + attachmentIds + '\'' +
                 ", deliverId=" + deliverId +
                 ", createTime=" + createTime +

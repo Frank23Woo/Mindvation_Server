@@ -259,7 +259,7 @@ public class StaffServiceImpl implements StaffService {
 
 
     /**
-     * 根据指定account查询staff
+     * 根据指定account查询staff(登录时记录在线标志，退出时记录下线标志)
      *
      * @param account
      * @return
@@ -267,7 +267,23 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public ResponseEntity<?> findByAccountAndPassword(String account, String password) {
         Staff staff = this.staffRepository.findByAccountAndPasswordAndStatus(account, password,"active");
+        //登录之后状态改为在线状态
+        staff.setIsOnline(1);
+        staff = this.staffRepository.saveAndFlush(staff);
         return ResponseEntity.ok(staff);
+    }
+
+    /**
+     * 退出时更改为离线状态
+     * @param staffId
+     * @return
+     */
+    @Override
+    public boolean logOut(String staffId) {
+        Staff staff = this.staffRepository.findByStaffId(staffId);
+        staff.setIsOnline(0);
+        staff = this.staffRepository.saveAndFlush(staff);
+        return true;
     }
 
     /**
@@ -280,17 +296,19 @@ public class StaffServiceImpl implements StaffService {
     public ResponseEntity<?> getStaffByTags(List<String> tags) {
         List<StaffTag> staffTags = this.staffTagRepository.findByTagIdIn(tags);
         //移除不存在的标签或者员工（其实删除员工或者标签时，它们的映射表的数据也应该删除）
+        List<StaffTag> staffTagList = new ArrayList<>();
+        staffTagList.addAll(staffTags);
         for (int i = 0; i < staffTags.size(); i++) {
             StaffTag staffTag = staffTags.get(i);
             String staffId = staffTag.getStaffId();
             String tagId = staffTag.getTagId();//标签还没判断
             Staff staff = this.staffRepository.findByStaffId(staffId);
             if (staff == null) {
-                staffTags.remove(staffTags.get(i));
+                staffTagList.remove(staffTags.get(i));
             }
         }
         LOG.info("拥有标签集中任意标签的Staff有：{}个", staffTags.size());
-        return ResponseEntity.ok(staffTags);
+        return ResponseEntity.ok(staffTagList);
     }
 
     /**
@@ -350,6 +368,7 @@ public class StaffServiceImpl implements StaffService {
         }
 
         Staff staff = new Staff();
+        staff.setIsOnline(0);//在线为1,离线为0
         staff.setPassword(request.getPassword());
         staff.setDeptId(request.getDeptId());
         staff.setName(request.getName());

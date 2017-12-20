@@ -24,12 +24,10 @@ public class CreateOrUpdateTaskRequest {
     // 附件
     private List<String> attachmentIds;
     private Integer progress;
-    private String comment;
     //工作用时，创建task时自己估算的时间
     private Float usedTime;
     // 交附件
     private TaskDeliver deliver;
-
     // 备注
     private String remarks;
 
@@ -136,14 +134,6 @@ public class CreateOrUpdateTaskRequest {
 
     public void setProgress(Integer progress) {
         this.progress = progress;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
     }
 
     @Override

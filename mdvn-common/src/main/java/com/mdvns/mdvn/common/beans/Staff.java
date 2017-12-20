@@ -14,7 +14,7 @@ public class Staff {
     private String DeptId;
     private String PositionId;
     //员工入职时间
-    private Timestamp Hiredate;
+    private Long Hiredate;
     //员工效率值
     private Double Effective;
     //员工贡献值
@@ -34,6 +34,55 @@ public class Staff {
     private String phoneNum;
 
     private String status;
+    private Integer isOnline;
+
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public String getPositionLvl() {
+        return positionLvl;
+    }
+
+    public void setPositionLvl(String positionLvl) {
+        this.positionLvl = positionLvl;
+    }
+
+    public String getEmailAddr() {
+        return emailAddr;
+    }
+
+    public void setEmailAddr(String emailAddr) {
+        this.emailAddr = emailAddr;
+    }
+
+    public String getPhoneNum() {
+        return phoneNum;
+    }
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Integer getIsOnline() {
+        return isOnline;
+    }
+
+    public void setIsOnline(Integer isOnline) {
+        this.isOnline = isOnline;
+    }
 
     public Integer getUuId() {
         return uuId;
@@ -83,11 +132,11 @@ public class Staff {
         PositionId = positionId;
     }
 
-    public Timestamp getHiredate() {
+    public Long getHiredate() {
         return Hiredate;
     }
 
-    public void setHiredate(Timestamp hiredate) {
+    public void setHiredate(Long hiredate) {
         Hiredate = hiredate;
     }
 
@@ -121,5 +170,28 @@ public class Staff {
 
     public void setWorksaturation(Double worksaturation) {
         Worksaturation = worksaturation;
+    }
+
+    @Override
+    public String toString() {
+        return "Staff{" +
+                "uuId=" + uuId +
+                ", staffId='" + staffId + '\'' +
+                ", Name='" + Name + '\'' +
+                ", Avatar='" + Avatar + '\'' +
+                ", DeptId='" + DeptId + '\'' +
+                ", PositionId='" + PositionId + '\'' +
+                ", Hiredate=" + Hiredate +
+                ", Effective=" + Effective +
+                ", Contribution=" + Contribution +
+                ", Recommendation=" + Recommendation +
+                ", Worksaturation=" + Worksaturation +
+                ", creatorId='" + creatorId + '\'' +
+                ", positionLvl='" + positionLvl + '\'' +
+                ", emailAddr='" + emailAddr + '\'' +
+                ", phoneNum='" + phoneNum + '\'' +
+                ", status='" + status + '\'' +
+                ", isOnline=" + isOnline +
+                '}';
     }
 }

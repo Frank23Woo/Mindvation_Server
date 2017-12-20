@@ -75,7 +75,7 @@ public class StoryServiceImpl implements IStoryService {
     @Override
     public RestResponse createStory(CreateStoryRequest createStoryRequest) {
         if (createStoryRequest == null || createStoryRequest.getStoryInfo().getPriority() == null ||
-                createStoryRequest.getStoryInfo().getStartDate() ==null || createStoryRequest.getStoryInfo().getEndDate() == null) {
+                createStoryRequest.getStoryInfo().getStartDate() == null || createStoryRequest.getStoryInfo().getEndDate() == null) {
             throw new NullPointerException("createStoryRequest 或用户故事优先级 或起止时间 不能为空");
         }
         //先判断过程方法子模块是新建还是选取（访问model模块）
@@ -112,6 +112,7 @@ public class StoryServiceImpl implements IStoryService {
 
 
         //2.保存用户故事成员信息
+        List<String> memberIds = new ArrayList<>();
         if (createStoryRequest.getMembers() != null && !createStoryRequest.getMembers().isEmpty()) {
             List<RoleMember> members = createStoryRequest.getMembers();
             List<StoryRoleMember> list = new ArrayList<StoryRoleMember>();
@@ -158,7 +159,7 @@ public class StoryServiceImpl implements IStoryService {
                 request.setStoryId(storyInfo.getStoryId());
                 List<StoryRoleMember> data = FetchListUtil.fetch(restTemplate, config.getRtrvSRoleMembersUrl(), request, parameterizedTypeReference);
                 List<StoryRoleMember> storyMembers = data;
-                List<String> memberIds = new ArrayList<>();
+//                List<String> memberIds = new ArrayList<>();
                 for (int i = 0; i < storyMembers.size(); i++) {
                     String id = storyMembers.get(i).getStaffId();
                     if (!memberIds.isEmpty() && memberIds.contains(id)) {
@@ -222,6 +223,29 @@ public class StoryServiceImpl implements IStoryService {
         } catch (Exception ex) {
             throw new BusinessException(ExceptionEnum.STORY_DASHBOARD_NOT_CREATE);
         }
+
+        /**
+         * 消息推送（创建story）
+         */
+        try {
+            SendMessageRequest sendMessageRequest = new SendMessageRequest();
+            ServerPush serverPush = new ServerPush();
+            String initiatorId = createStoryRequest.getCreatorId();
+            Staff initiator = this.restTemplate.postForObject(config.getRtrvStaffInfoUrl(), initiatorId, Staff.class);
+            serverPush.setInitiator(initiator);
+            serverPush.setSubjectType("story");
+            serverPush.setSubjectId(storyId);
+            serverPush.setType("create");
+            sendMessageRequest.setInitiatorId(initiatorId);
+            sendMessageRequest.setStaffIds(memberIds);
+            sendMessageRequest.setServerPushResponse(serverPush);
+            Boolean flag = this.restTemplate.postForObject(config.getSendMessageUrl(), sendMessageRequest, Boolean.class);
+            System.out.println(flag);
+        } catch (Exception e) {
+            LOG.error("消息推送(创建story)出现异常，异常信息：" + e);
+        }
+
+
         return restResponse;
     }
 
@@ -282,12 +306,12 @@ public class StoryServiceImpl implements IStoryService {
             //创建者返回对象
             String staffUrl = config.getRtrvStaffInfoUrl();
             String creatorId = comDetails.get(j).getComment().getCreatorId();
-            com.mdvns.mdvn.common.beans.Staff staff = restTemplate.postForObject(staffUrl, creatorId, com.mdvns.mdvn.common.beans.Staff.class);
+            Staff staff = restTemplate.postForObject(staffUrl, creatorId, Staff.class);
             comDetails.get(j).getComment().setCreatorInfo(staff);
             //被@的人返回对象
             if (comDetails.get(j).getComment().getReplyId() != null) {
                 String passiveAt = comDetails.get(j).getReplyDetail().getCreatorId();
-                com.mdvns.mdvn.common.beans.Staff passiveAtInfo = restTemplate.postForObject(staffUrl, passiveAt, com.mdvns.mdvn.common.beans.Staff.class);
+                Staff passiveAtInfo = restTemplate.postForObject(staffUrl, passiveAt, Staff.class);
                 comDetails.get(j).getReplyDetail().setCreatorInfo(passiveAtInfo);
             }
         }
@@ -467,6 +491,42 @@ public class StoryServiceImpl implements IStoryService {
         restResponse.setResponseMsg("请求成功");
         restResponse.setResponseCode("000");
 
+        /**
+         * 消息推送(更改story)
+         */
+        try {
+            SendMessageRequest sendMessageRequest = new SendMessageRequest();
+            ServerPush serverPush = new ServerPush();
+            String initiatorId = updateStoryDetailRequest.getCreatorId();
+            Staff initiator = this.restTemplate.postForObject(config.getRtrvStaffInfoUrl(), initiatorId, Staff.class);
+            serverPush.setInitiator(initiator);
+            serverPush.setSubjectType("story");
+            serverPush.setSubjectId(updateStoryDetailRequest.getStoryInfo().getStoryId());
+            serverPush.setType("update");
+            RtrvStoryDetailRequest rtrvStoryDetailRequest = new RtrvStoryDetailRequest();
+            rtrvStoryDetailRequest.setStoryId(updateStoryDetailRequest.getStoryInfo().getStoryId());
+            rtrvStoryDetailRequest.setStaffId(initiatorId);
+            ParameterizedTypeReference reqmntTagTypeReference = new ParameterizedTypeReference<List<StoryRoleMember>>() {
+            };
+            List<StoryRoleMember> storyRoleMembers = FetchListUtil.fetch(restTemplate, config.getRtrvSRoleMembersUrl(), rtrvStoryDetailRequest, reqmntTagTypeReference);
+            //选出不同的角色
+            List<String> staffIds = new ArrayList<String>();
+            for (int i = 0; i < storyRoleMembers.size(); i++) {
+                String id = storyRoleMembers.get(i).getStaffId();
+                if (!staffIds.isEmpty() && staffIds.contains(id)) {
+                    continue;
+                }
+                staffIds.add(id);
+            }
+            sendMessageRequest.setInitiatorId(initiatorId);
+            sendMessageRequest.setStaffIds(staffIds);
+            sendMessageRequest.setServerPushResponse(serverPush);
+            Boolean flag = this.restTemplate.postForObject(config.getSendMessageUrl(), sendMessageRequest, Boolean.class);
+            System.out.println(flag);
+        } catch (Exception e) {
+            LOG.error("消息推送(更改story)出现异常，异常信息：" + e);
+        }
+
         return restResponse;
     }
 
@@ -494,25 +554,25 @@ public class StoryServiceImpl implements IStoryService {
         storyDetail.setStoryInfo(story);
         //加上评论list
         String rtrvCommentInfosUrl = config.getRtrvCommentInfosUrl();
-            RtrvCommentInfosRequest rtrvCommentInfosRequest = new RtrvCommentInfosRequest();
-            rtrvCommentInfosRequest.setProjId(story.getProjId());
-            rtrvCommentInfosRequest.setSubjectId(story.getStoryId());
-            ParameterizedTypeReference tReference = new ParameterizedTypeReference<List<CommentDetail>>() {
-            };
-            List<CommentDetail> commentDetails = FetchListUtil.fetch(restTemplate, rtrvCommentInfosUrl, rtrvCommentInfosRequest, tReference);
-            for (int j = 0; j < commentDetails.size(); j++) {
-                //创建者返回对象
-                String staffUrl = config.getRtrvStaffInfoUrl();
-                String creatorId = commentDetails.get(j).getComment().getCreatorId();
-                com.mdvns.mdvn.common.beans.Staff staff = restTemplate.postForObject(staffUrl, creatorId,Staff.class);
-                commentDetails.get(j).getComment().setCreatorInfo(staff);
-                //被@的人返回对象
-                if (commentDetails.get(j).getComment().getReplyId() != null) {
-                    String passiveAt = commentDetails.get(j).getReplyDetail().getCreatorId();
-                    com.mdvns.mdvn.common.beans.Staff passiveAtInfo = restTemplate.postForObject(staffUrl, passiveAt, Staff.class);
-                    commentDetails.get(j).getReplyDetail().setCreatorInfo(passiveAtInfo);
-                }
+        RtrvCommentInfosRequest rtrvCommentInfosRequest = new RtrvCommentInfosRequest();
+        rtrvCommentInfosRequest.setProjId(story.getProjId());
+        rtrvCommentInfosRequest.setSubjectId(story.getStoryId());
+        ParameterizedTypeReference tReference = new ParameterizedTypeReference<List<CommentDetail>>() {
+        };
+        List<CommentDetail> commentDetails = FetchListUtil.fetch(restTemplate, rtrvCommentInfosUrl, rtrvCommentInfosRequest, tReference);
+        for (int j = 0; j < commentDetails.size(); j++) {
+            //创建者返回对象
+            String staffUrl = config.getRtrvStaffInfoUrl();
+            String creatorId = commentDetails.get(j).getComment().getCreatorId();
+            com.mdvns.mdvn.common.beans.Staff staff = restTemplate.postForObject(staffUrl, creatorId, Staff.class);
+            commentDetails.get(j).getComment().setCreatorInfo(staff);
+            //被@的人返回对象
+            if (commentDetails.get(j).getComment().getReplyId() != null) {
+                String passiveAt = commentDetails.get(j).getReplyDetail().getCreatorId();
+                com.mdvns.mdvn.common.beans.Staff passiveAtInfo = restTemplate.postForObject(staffUrl, passiveAt, Staff.class);
+                commentDetails.get(j).getReplyDetail().setCreatorInfo(passiveAtInfo);
             }
+        }
         storyDetail.setCommentDetails(commentDetails);
         //1.1 获取storyNote信息
         try {

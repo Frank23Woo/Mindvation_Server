@@ -37,3 +37,8 @@ config:
   getAttachmentListByIdsUrl: http://localhost:10019/mdvn-file-sapi/files/
   rtrvStoryBaseInfoUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/rtrvStoryBaseInfo
   updateStoryBaseInfoUrl: http://localhost:10015/mdvn-story-sapi/updateStory/updateStoryBaseInfo
+  retrieveUrl : http://localhost:10019/mdvn-file-sapi/files/rtrvAttachInfo
+
+  rtrvSRoleMembersUrl: http://localhost:10015/mdvn-story-sapi/storyDetail/rtrvSRoleMembers
+#  websocket推送信息测试
+  sendMessageUrl: http://localhost:10027/mdvn-websocket/websocket/sendMessage

@@ -23,7 +23,6 @@ public class CreateTaskRequest {
     // 附件
     private List<String> attachmentIds;
     private Integer progress;
-    private String comment;
     //工作用时，创建task时自己估算的时间
     @NotBlank(message = "请求参数错误，task用时不能为空")
     private Float usedTime;
@@ -135,14 +134,6 @@ public class CreateTaskRequest {
 
     public void setProgress(Integer progress) {
         this.progress = progress;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
     }
 
     @Override

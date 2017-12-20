@@ -17,4 +17,7 @@ public interface CommentService {
 
     List<CommentDetail> rtrvCommentInfos(RtrvCommentInfosRequest request);
 
+    String rtrvCreatorId(String subjectId);
+
+    Comment rtrvCommentDetailInfo(String commentId);
 }

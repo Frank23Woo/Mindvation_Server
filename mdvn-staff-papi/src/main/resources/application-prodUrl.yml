@@ -6,6 +6,7 @@ url:
   assignAuthUrl : http://localhost:8080/mdvn-staff-sapi/staffAuth
   rtrvAuthUrl : http://localhost:8080/mdvn-staff-sapi/rtrvAuth
   findByIdUrl : http://localhost:8080/mdvn-staff-sapi/staff
+  logOutUrl: http://localhost:8080/mdvn-staff-sapi/logOut
 
   createStaffUrl: http://localhost:8080/mdvn-staff-sapi/createStaff
   rtrvStaffDetailUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffDetail

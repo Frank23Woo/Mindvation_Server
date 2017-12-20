@@ -55,6 +55,16 @@ public class WebConfig {
 
     private String updateStaffPasswordUrl;
 
+    private String logOutUrl;
+
+    public String getLogOutUrl() {
+        return logOutUrl;
+    }
+
+    public void setLogOutUrl(String logOutUrl) {
+        this.logOutUrl = logOutUrl;
+    }
+
     public String getUpdateStaffPasswordUrl() {
         return updateStaffPasswordUrl;
     }

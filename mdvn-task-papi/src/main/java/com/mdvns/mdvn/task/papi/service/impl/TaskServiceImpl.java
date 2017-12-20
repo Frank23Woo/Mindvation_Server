@@ -101,6 +101,41 @@ public class TaskServiceImpl implements TaskService {
         response.setResponseBody(task);
         response.setResponseCode("000");
         response.setResponseMsg("ok");
+
+        /**
+         * 消息推送(创建task)
+         */
+        try {
+            SendMessageRequest sendMessageRequest = new SendMessageRequest();
+            ServerPush serverPush = new ServerPush();
+            String initiatorId = request.getCreatorId();
+            Staff initiator = this.restTemplate.postForObject(urlConfig.getRtrvStaffInfoUrl(), initiatorId, Staff.class);
+            serverPush.setInitiator(initiator);
+            serverPush.setSubjectType("task");
+            serverPush.setSubjectId(task.getTaskId());
+            serverPush.setType("create");
+            serverPush.setTaskByStoryId(task.getStoryId());
+            rtrvStoryDetailRequest.setStaffId(initiatorId);
+            ParameterizedTypeReference reqmntTagTypeReference = new ParameterizedTypeReference<List<StoryRoleMember>>() {
+            };
+            List<StoryRoleMember> storyRoleMembers = FetchListUtil.fetch(restTemplate, urlConfig.getRtrvSRoleMembersUrl(), rtrvStoryDetailRequest, reqmntTagTypeReference);
+            //选出不同的成员
+            List<String> staffIds = new ArrayList<String>();
+            for (int i = 0; i < storyRoleMembers.size(); i++) {
+                String id = storyRoleMembers.get(i).getStaffId();
+                if (!staffIds.isEmpty() && staffIds.contains(id)) {
+                    continue;
+                }
+                staffIds.add(id);
+            }
+            sendMessageRequest.setInitiatorId(initiatorId);
+            sendMessageRequest.setStaffIds(staffIds);
+            sendMessageRequest.setServerPushResponse(serverPush);
+            Boolean flag = this.restTemplate.postForObject(urlConfig.getSendMessageUrl(), sendMessageRequest, Boolean.class);
+            System.out.println(flag);
+        } catch (Exception e) {
+            LOG.error("消息推送(创建task)出现异常，异常信息：" + e);
+        }
         return response;
     }
 
@@ -153,7 +188,6 @@ public class TaskServiceImpl implements TaskService {
 
 
             }
-
             //附件
             for (TaskDetail detail : taskList) {
                 getTaskAttachment(detail);
@@ -233,9 +267,12 @@ public class TaskServiceImpl implements TaskService {
             restResponse.setResponseMsg(ExceptionEnum.PARAMS_EXCEPTION.getErrorMsg());
             return restResponse;
         }
-
+        //给消息推送选择推送类型（原taskInfo）
+        String taskId = request.getTaskId();
+        TaskDetail taskDetail = restTemplate.postForObject(urlConfig.getRtrvTaskInfoUrl(), taskId, TaskDetail.class);
+        TaskDetail result = new TaskDetail();
         try {
-            TaskDetail result = restTemplate.postForObject(urlConfig.getUpdateTaskUrl(), request, TaskDetail.class);
+            result = restTemplate.postForObject(urlConfig.getUpdateTaskUrl(), request, TaskDetail.class);
             if (result == null) {
                 restResponse.setResponseCode(ExceptionEnum.TASK_DOES_NOT_EXIST.getErroCode());
                 restResponse.setResponseMsg(ExceptionEnum.TASK_DOES_NOT_EXIST.getErrorMsg());
@@ -296,6 +333,52 @@ public class TaskServiceImpl implements TaskService {
             restResponse.setResponseMsg(ExceptionEnum.SAPI_EXCEPTION.getErrorMsg());
         }
 
+        /**
+         * 消息推送(更改task)
+         */
+        try {
+            SendMessageRequest sendMessageRequest = new SendMessageRequest();
+            ServerPush serverPush = new ServerPush();
+            String initiatorId = result.getCreatorId();
+            Staff initiator = this.restTemplate.postForObject(urlConfig.getRtrvStaffInfoUrl(), initiatorId, Staff.class);
+            serverPush.setInitiator(initiator);
+            serverPush.setSubjectType("task");
+            serverPush.setSubjectId(request.getTaskId());
+            serverPush.setTaskByStoryId(result.getStoryId());
+            //选择类型
+            Integer oldProgress = taskDetail.getProgress();
+            Integer newProgress = result.getProgress();
+            if (oldProgress == newProgress) {
+                serverPush.setType("update");
+            } else {
+                serverPush.setOldProgress(oldProgress);
+                serverPush.setNewProgress(newProgress);
+                serverPush.setType("update progress");
+            }
+            RtrvStoryDetailRequest rtrvStoryDetailRequest = new RtrvStoryDetailRequest();
+            rtrvStoryDetailRequest.setStoryId(result.getStoryId());
+            rtrvStoryDetailRequest.setStaffId(initiatorId);
+            ParameterizedTypeReference reqmntTagTypeReference = new ParameterizedTypeReference<List<StoryRoleMember>>() {
+            };
+            List<StoryRoleMember> storyRoleMembers = FetchListUtil.fetch(restTemplate, urlConfig.getRtrvSRoleMembersUrl(), rtrvStoryDetailRequest, reqmntTagTypeReference);
+            //选出不同的角色
+            List<String> staffIds = new ArrayList<String>();
+            for (int i = 0; i < storyRoleMembers.size(); i++) {
+                String id = storyRoleMembers.get(i).getStaffId();
+                if (!staffIds.isEmpty() && staffIds.contains(id)) {
+                    continue;
+                }
+                staffIds.add(id);
+            }
+            sendMessageRequest.setInitiatorId(initiatorId);
+            sendMessageRequest.setStaffIds(staffIds);
+            sendMessageRequest.setServerPushResponse(serverPush);
+            Boolean flag = this.restTemplate.postForObject(urlConfig.getSendMessageUrl(), sendMessageRequest, Boolean.class);
+            System.out.println(flag);
+        } catch (Exception e) {
+            LOG.error("消息推送(更改task)出现异常，异常信息：" + e);
+        }
+
         return restResponse;
     }
 
@@ -309,7 +392,6 @@ public class TaskServiceImpl implements TaskService {
             return restResponse;
         }
 
-
         TaskDetail result = restTemplate.postForObject(urlConfig.getAddAttachForTaskUrl(), request, TaskDetail.class);
         if (result == null) {
             restResponse.setResponseCode(ExceptionEnum.TASK_DOES_NOT_EXIST.getErroCode());
@@ -320,6 +402,44 @@ public class TaskServiceImpl implements TaskService {
             restResponse.setResponseCode("000");
             restResponse.setResponseMsg("ok");
             restResponse.setResponseBody(result);
+        }
+
+        /**
+         * 消息推送(更改task)
+         */
+        try {
+            SendMessageRequest sendMessageRequest = new SendMessageRequest();
+            ServerPush serverPush = new ServerPush();
+            String initiatorId = result.getCreatorId();
+            Staff initiator = this.restTemplate.postForObject(urlConfig.getRtrvStaffInfoUrl(), initiatorId, Staff.class);
+            serverPush.setInitiator(initiator);
+            serverPush.setSubjectType("task");
+            serverPush.setSubjectId(request.getTaskId());
+            serverPush.setTaskByStoryId(result.getStoryId());
+            //选择类型
+            serverPush.setType("update");
+            RtrvStoryDetailRequest rtrvStoryDetailRequest = new RtrvStoryDetailRequest();
+            rtrvStoryDetailRequest.setStoryId(result.getStoryId());
+            rtrvStoryDetailRequest.setStaffId(initiatorId);
+            ParameterizedTypeReference reqmntTagTypeReference = new ParameterizedTypeReference<List<StoryRoleMember>>() {
+            };
+            List<StoryRoleMember> storyRoleMembers = FetchListUtil.fetch(restTemplate, urlConfig.getRtrvSRoleMembersUrl(), rtrvStoryDetailRequest, reqmntTagTypeReference);
+            //选出不同的角色
+            List<String> staffIds = new ArrayList<String>();
+            for (int i = 0; i < storyRoleMembers.size(); i++) {
+                String id = storyRoleMembers.get(i).getStaffId();
+                if (!staffIds.isEmpty() && staffIds.contains(id)) {
+                    continue;
+                }
+                staffIds.add(id);
+            }
+            sendMessageRequest.setInitiatorId(initiatorId);
+            sendMessageRequest.setStaffIds(staffIds);
+            sendMessageRequest.setServerPushResponse(serverPush);
+            Boolean flag = this.restTemplate.postForObject(urlConfig.getSendMessageUrl(), sendMessageRequest, Boolean.class);
+            System.out.println(flag);
+        } catch (Exception e) {
+            LOG.error("消息推送(更改task)出现异常，异常信息：" + e);
         }
 
         return restResponse;
@@ -346,11 +466,51 @@ public class TaskServiceImpl implements TaskService {
             restResponse.setResponseBody(result);
         }
 
+        /**
+         * 消息推送(更改task)
+         */
+        try {
+            //给消息推送选择推送类型（原taskInfo）
+            SendMessageRequest sendMessageRequest = new SendMessageRequest();
+            ServerPush serverPush = new ServerPush();
+            String initiatorId = result.getCreatorId();
+            Staff initiator = this.restTemplate.postForObject(urlConfig.getRtrvStaffInfoUrl(), initiatorId, Staff.class);
+            serverPush.setInitiator(initiator);
+            serverPush.setSubjectType("task");
+            serverPush.setSubjectId(request.getTaskId());
+            serverPush.setTaskByStoryId(result.getStoryId());
+            //选择类型
+            serverPush.setType("update");
+            RtrvStoryDetailRequest rtrvStoryDetailRequest = new RtrvStoryDetailRequest();
+            rtrvStoryDetailRequest.setStoryId(result.getStoryId());
+            rtrvStoryDetailRequest.setStaffId(initiatorId);
+            ParameterizedTypeReference reqmntTagTypeReference = new ParameterizedTypeReference<List<StoryRoleMember>>() {
+            };
+            List<StoryRoleMember> storyRoleMembers = FetchListUtil.fetch(restTemplate, urlConfig.getRtrvSRoleMembersUrl(), rtrvStoryDetailRequest, reqmntTagTypeReference);
+            //选出不同的角色
+            List<String> staffIds = new ArrayList<String>();
+            for (int i = 0; i < storyRoleMembers.size(); i++) {
+                String id = storyRoleMembers.get(i).getStaffId();
+                if (!staffIds.isEmpty() && staffIds.contains(id)) {
+                    continue;
+                }
+                staffIds.add(id);
+            }
+            sendMessageRequest.setInitiatorId(initiatorId);
+            sendMessageRequest.setStaffIds(staffIds);
+            sendMessageRequest.setServerPushResponse(serverPush);
+            Boolean flag = this.restTemplate.postForObject(urlConfig.getSendMessageUrl(), sendMessageRequest, Boolean.class);
+            System.out.println(flag);
+        } catch (Exception e) {
+            LOG.error("消息推送(更改task)出现异常，异常信息：" + e);
+        }
+
         return restResponse;
     }
 
     /**
      * 获取某个task的历史记录信息
+     *
      * @param request
      * @return
      */
@@ -367,7 +527,7 @@ public class TaskServiceImpl implements TaskService {
 
         try {
             // 查询task sapi
-            rtrvTaskHistoryListResponse = this.restTemplate.postForObject(urlConfig.getRtrvTaskHistoryInfoUrl(), request,RtrvTaskHistoryListResponse.class);
+            rtrvTaskHistoryListResponse = this.restTemplate.postForObject(urlConfig.getRtrvTaskHistoryInfoUrl(), request, RtrvTaskHistoryListResponse.class);
             List<TaskHistory> taskHistories = rtrvTaskHistoryListResponse.getTaskHistories();
             for (int i = 0; i < taskHistories.size(); i++) {
                 TaskHistory taskHistory = taskHistories.get(i);
@@ -376,28 +536,30 @@ public class TaskServiceImpl implements TaskService {
                 Staff updateInfo = this.restTemplate.postForObject(urlConfig.getRtrvStaffInfoUrl(), updateId, Staff.class);
                 taskHistory.setUpdateInfo(updateInfo);
                 //增加了附件
-                if (!StringUtils.isEmpty(taskHistory.getAddAttachId())){
-                    String addAttchId = taskHistory.getAddAttachId();
-                    ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(urlConfig.getGetAttachmentListByIdsUrl() + addAttchId, RestResponse.class);
-                    List<AttchInfo> attchInfos = (List<AttchInfo>) responseEntity.getBody().getResponseBody();
-                    taskHistory.setAddAttchInfo(attchInfos.get(0));
+                if (!StringUtils.isEmpty(taskHistory.getAddAttachId())) {
+                    Integer addAttchId = taskHistory.getAddAttachId();
+                    String retrieveUrl = urlConfig.getRetrieveUrl();
+                    LOG.info("URLwei：{}", retrieveUrl);
+                    AttchInfo attchInfo = this.restTemplate.postForObject(retrieveUrl, addAttchId, AttchInfo.class);
+                    taskHistory.setAddAttchInfo(attchInfo);
                 }
                 //删除了附件
-                if (!StringUtils.isEmpty(taskHistory.getDeleteAttachId())){
-                    String deleteAttchId = taskHistory.getDeleteAttachId();
-                    ResponseEntity<RestResponse> responseEntity = restTemplate.getForEntity(urlConfig.getGetAttachmentListByIdsUrl() + deleteAttchId, RestResponse.class);
-                    List<AttchInfo> attchInfos = (List<AttchInfo>) responseEntity.getBody().getResponseBody();
-                    taskHistory.setDeleteAttchInfo(attchInfos.get(0));
+                if (!StringUtils.isEmpty(taskHistory.getDeleteAttachId())) {
+                    Integer deleteAttchId = taskHistory.getDeleteAttachId();
+                    String retrieveUrl = urlConfig.getRetrieveUrl();
+                    LOG.info("URLwei：{}", retrieveUrl);
+                    AttchInfo attchInfo = this.restTemplate.postForObject(retrieveUrl, deleteAttchId, AttchInfo.class);
+                    taskHistory.setDeleteAttchInfo(attchInfo);
                 }
                 //修改了进度
-                if (!StringUtils.isEmpty(taskHistory.getBeforeProgress()) && !StringUtils.isEmpty(taskHistory.getNowProgress())){
+                if (!StringUtils.isEmpty(taskHistory.getBeforeProgress()) && !StringUtils.isEmpty(taskHistory.getNowProgress())) {
                     Integer beforeProgress = taskHistory.getBeforeProgress();
                     Integer nowProgress = taskHistory.getNowProgress();
                 }
                 //修改了备注
-                if (!StringUtils.isEmpty(taskHistory.getBeforeComment()) && !StringUtils.isEmpty(taskHistory.getNowComment())){
-                    String beforeComment = taskHistory.getBeforeComment();
-                    String nowComment = taskHistory.getNowComment();
+                if (!StringUtils.isEmpty(taskHistory.getBeforeRemarks()) && !StringUtils.isEmpty(taskHistory.getNowRemarks())) {
+                    String beforeComment = taskHistory.getBeforeRemarks();
+                    String nowComment = taskHistory.getNowRemarks();
                 }
             }
             restResponse.setResponseCode("000");

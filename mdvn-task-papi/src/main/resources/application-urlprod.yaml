@@ -38,3 +38,8 @@ config:
 
   rtrvStoryBaseInfoUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/rtrvStoryBaseInfo
   updateStoryBaseInfoUrl: http://localhost:8080/mdvn-story-sapi/updateStory/updateStoryBaseInfo
+  retrieveUrl : http://localhost:8080/mdvn-file-sapi/files/rtrvAttachInfo
+
+  rtrvSRoleMembersUrl: http://localhost:8080/mdvn-story-sapi/storyDetail/rtrvSRoleMembers
+#  websocket推送信息测试
+  sendMessageUrl: http://localhost:8080/mdvn-websocket/websocket/sendMessage
