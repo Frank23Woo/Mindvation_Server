@@ -37,8 +37,10 @@ public class Comment {
     //踩这个评论的人数
     private Integer dislikeQty;
     //点赞的所有人的Id
+    @Column(columnDefinition = "text")
     private String likeIds;
     //踩的所有人的Id
+    @Column(columnDefinition = "text")
     private String dislikeIds;
     //创建评论的时间
     @Column(columnDefinition = "timestamp", nullable = false)

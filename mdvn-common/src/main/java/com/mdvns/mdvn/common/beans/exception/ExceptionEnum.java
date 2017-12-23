@@ -18,6 +18,7 @@ public enum ExceptionEnum {
 	 * 2000~2200
 	 * 2201~2300  comment
 	 * 2301~2400 serverpush
+	 * 2401~2500 issue
 	 */
 	
 	//通用
@@ -133,6 +134,10 @@ public enum ExceptionEnum {
 
 	//serverpush
 	DELETE_SERVERPUSH_FAIL("2301", "Fail to delete serberPush"),
+
+	//issue
+	STAFF_IS_NOT_CREATOR("2401", "只有发布问题者才可以采纳answer"),
+	ISSUE_ALREADY_RESOLVED("2402", "该问题已经被解决"),
 	;
 
 	

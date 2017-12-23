@@ -162,13 +162,14 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * 退出
+     *
      * @param request
      * @return
      */
     @Override
     public ResponseEntity<?> logOut(logOutRequest request) {
         LOG.info("开始执行StaffPapi Service logOut:{}", request.getStaffId());
-        Boolean flag = this.restTemplate.postForObject(webConfig.getLogOutUrl(),request.getStaffId(),Boolean.TYPE);
+        Boolean flag = this.restTemplate.postForObject(webConfig.getLogOutUrl(), request.getStaffId(), Boolean.TYPE);
         if (flag == false) {
             throw new BusinessException(ExceptionEnum.LOGOUT_FAIL);
         }
@@ -205,8 +206,6 @@ public class StaffServiceImpl implements StaffService {
             return ResponseEntity.ok(RestResponseUtil.error(HttpStatus.NOT_MODIFIED, ExceptionEnum.UPDATE_STAFF_PASSWORD_FAIL + "", "Fail to update staff PASSWORD"));
         }
     }
-
-
 
 
     @Override
@@ -322,14 +321,21 @@ public class StaffServiceImpl implements StaffService {
             List<StaffTagScore> stsList = rtrvStaffTagScore(staffList, tags, idList);
             //4.根据StaffTagScore集合获取每员工的个人及匹配标签的详细信息
             List<StaffMatched> staffMatcheds = getStaffMatchedByScore(stsList);
-
-            rtrvStaffListByNameResponse.setStaffMatched(staffMatcheds);
+            if (request.getPage() != null && request.getPageSize() != null) {
+                /**
+                 * 分页
+                 */
+                List courseList = this.paging(staffMatcheds, request);
+                rtrvStaffListByNameResponse.setStaffMatched(courseList);
+            } else {
+                rtrvStaffListByNameResponse.setStaffMatched(staffMatcheds);
+            }
             rtrvStaffListByNameResponse.setTotalNumber((long) stsList.size());
             restResponse = RestResponseUtil.success(rtrvStaffListByNameResponse);
             return ResponseEntity.ok(restResponse);
         }
         //startingStr不为空，则按查询name以startingStr开始的用户
-        rtrvStaffListByNameResponse = getStaffByNameStarting(startingStr);
+        rtrvStaffListByNameResponse = getStaffByNameStarting(startingStr, request);
         restResponse = RestResponseUtil.success(rtrvStaffListByNameResponse);
         return ResponseEntity.ok(restResponse);
     }
@@ -340,7 +346,7 @@ public class StaffServiceImpl implements StaffService {
      * @param startingStr
      * @return
      */
-    private RtrvStaffListByNameResponse getStaffByNameStarting(String startingStr) {
+    private RtrvStaffListByNameResponse getStaffByNameStarting(String startingStr, RtrvStaffListByNameRequest request) {
         //1.获取name以指定字符串开头的所有sataff
         String rtrvStaffByNameStartingUrl = webConfig.getRtrvStaffByNameStartingUrl();
         Staff[] staffList = this.restTemplate.postForObject(rtrvStaffByNameStartingUrl + "/" + startingStr, startingStr, Staff[].class);
@@ -354,9 +360,54 @@ public class StaffServiceImpl implements StaffService {
             matcheds.add(matched);
         }
         RtrvStaffListByNameResponse rtrvStaffListByNameResponse = new RtrvStaffListByNameResponse();
-        rtrvStaffListByNameResponse.setStaffMatched(matcheds);
+        if (request.getPage() != null && request.getPageSize() != null) {
+            /**
+             * 分页
+             */
+            List courseList = this.paging(matcheds, request);
+            rtrvStaffListByNameResponse.setStaffMatched(courseList);
+        } else {
+            rtrvStaffListByNameResponse.setStaffMatched(matcheds);
+        }
         rtrvStaffListByNameResponse.setTotalNumber((long) matcheds.size());
         return rtrvStaffListByNameResponse;
+    }
+
+    /**
+     * 分页
+     *
+     * @param staffMatcheds
+     * @return
+     */
+    private List paging(List<StaffMatched> staffMatcheds, RtrvStaffListByNameRequest request) {
+        /**
+         * 排序完再分页(得到结果集后分页)
+         */
+        List courseList = new ArrayList();
+        Integer pageSize = request.getPageSize();
+        Integer page = request.getPage();
+        List clist = staffMatcheds;//将查询结果存放在List集合里
+        PageBean pagebean = new PageBean();
+        pagebean.setPageSize(pageSize);
+        pagebean = new PageBean(clist.size());//初始化PageBean对象
+        //设置当前页
+        pagebean.setCurPage(page); //这里page是从页面上获取的一个参数，代表页数
+        //获得分页大小
+        int pagesize = pageSize;
+//        int pagesize = pagebean.getPageSize();
+        //获得分页数据在list集合中的索引
+        int firstIndex = (page - 1) * pagesize;
+        int toIndex = page * pagesize;
+        if (toIndex > clist.size()) {
+            toIndex = clist.size();
+        }
+        if (firstIndex > toIndex) {
+            firstIndex = 0;
+            pagebean.setCurPage(1);
+        }
+        //截取数据集合，获得分页数据
+        courseList = clist.subList(firstIndex, toIndex);
+        return courseList;
     }
 
     /**

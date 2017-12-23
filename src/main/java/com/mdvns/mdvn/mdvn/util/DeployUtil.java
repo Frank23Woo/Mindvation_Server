@@ -15,8 +15,8 @@ import java.util.Properties;
 public class DeployUtil {
     public static void main(String[] args) {
 
-        makeWarPackage();
-//        localhostIntegration();//打包前记得改common端口号
+//        makeWarPackage();
+        localhostIntegration();//打包前记得改common端口号
 //        makeWarPackageForProd();
     }
 
@@ -110,6 +110,7 @@ public class DeployUtil {
         packageList.add("mdvn-comment-sapi");
         packageList.add("mdvn-websocket");
         packageList.add("mdvn-websocket-papi");
+        packageList.add("mdvn-issue");
         return packageList;
     }
 

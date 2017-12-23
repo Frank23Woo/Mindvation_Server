@@ -56,8 +56,12 @@ public class CommentServiceImpl implements CommentService {
         if (request.getReplyId() != null) {
             Comment replyComm = restTemplate.postForObject(webConfig.getRtrvCommentDetailInfoUrl(), commentId, Comment.class);
             List<String> passiveAts = request.getPassiveAts();
+            if (passiveAts == null) {
+                passiveAts = new ArrayList<>();
+            }
             if (!passiveAts.contains(replyComm.getCreatorId())) {
                 passiveAts.add(replyComm.getCreatorId());
+                request.setPassiveAts(passiveAts);
             }
         }
         try {
