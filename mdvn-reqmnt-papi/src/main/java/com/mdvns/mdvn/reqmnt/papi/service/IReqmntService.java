@@ -2,9 +2,12 @@ package com.mdvns.mdvn.reqmnt.papi.service;
 
 import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.reqmnt.papi.domain.*;
+import org.springframework.http.ResponseEntity;
 
 
 public interface IReqmntService {
+    ResponseEntity<?> rtrvRequirementList(RtrvReqmntListRequest rtrvReqmntListRequest);
+
     /**
      * 获取requirement整个列表
      * @param rtrvReqmntListRequest

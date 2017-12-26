@@ -57,8 +57,6 @@ public class ProjConfig {
     //获取reqmnt列表pageSize默认值
     private String reqmntListPageSize;
 
-    private String rtrvReqmntListUrl;
-
     private String rtrvAttchListUrl;
 
     private String rtrvCommentInfosUrl;
@@ -68,6 +66,16 @@ public class ProjConfig {
 
     private String rtrvReqmntMembersUrl;
     private String sendMessageUrl;
+
+    private String rtrvRequirementListUrl;
+
+    public String getRtrvRequirementListUrl() {
+        return rtrvRequirementListUrl;
+    }
+
+    public void setRtrvRequirementListUrl(String rtrvRequirementListUrl) {
+        this.rtrvRequirementListUrl = rtrvRequirementListUrl;
+    }
 
     public String getSendMessageUrl() {
         return sendMessageUrl;
@@ -299,13 +307,5 @@ public class ProjConfig {
 
     public void setChecklistsListByUuIdUrl(String checklistsListByUuIdUrl) {
         this.checklistsListByUuIdUrl = checklistsListByUuIdUrl;
-    }
-
-    public String getRtrvReqmntListUrl() {
-        return rtrvReqmntListUrl;
-    }
-
-    public void setRtrvReqmntListUrl(String rtrvReqmntListUrl) {
-        this.rtrvReqmntListUrl = rtrvReqmntListUrl;
     }
 }

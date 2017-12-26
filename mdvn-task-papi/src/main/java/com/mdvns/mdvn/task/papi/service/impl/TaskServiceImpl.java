@@ -128,6 +128,11 @@ public class TaskServiceImpl implements TaskService {
                 }
                 staffIds.add(id);
             }
+            //查询该task上story的创建者
+            String createId = story.getCreatorId();
+            if (!staffIds.contains(createId)) {
+                staffIds.add(createId);
+            }
             sendMessageRequest.setInitiatorId(initiatorId);
             sendMessageRequest.setStaffIds(staffIds);
             sendMessageRequest.setServerPushResponse(serverPush);
@@ -271,6 +276,7 @@ public class TaskServiceImpl implements TaskService {
         String taskId = request.getTaskId();
         TaskDetail taskDetail = restTemplate.postForObject(urlConfig.getRtrvTaskInfoUrl(), taskId, TaskDetail.class);
         TaskDetail result = new TaskDetail();
+        Story story = new Story();
         try {
             result = restTemplate.postForObject(urlConfig.getUpdateTaskUrl(), request, TaskDetail.class);
             if (result == null) {
@@ -298,7 +304,7 @@ public class TaskServiceImpl implements TaskService {
                 RtrvStoryDetailRequest rtrvStoryDetailRequest = new RtrvStoryDetailRequest();
                 rtrvStoryDetailRequest.setStoryId(result.getStoryId());
                 String rtrvStoryBaseInfoUrl = urlConfig.getRtrvStoryBaseInfoUrl();
-                Story story = restTemplate.postForObject(rtrvStoryBaseInfoUrl, rtrvStoryDetailRequest, Story.class);
+                story = restTemplate.postForObject(rtrvStoryBaseInfoUrl, rtrvStoryDetailRequest, Story.class);
                 //所有的task进度都为100时，story的状态变为done
                 Integer progresses = 0;
                 for (int i = 0; i < tasks.size(); i++) {
@@ -370,6 +376,11 @@ public class TaskServiceImpl implements TaskService {
                 }
                 staffIds.add(id);
             }
+            //查询该task上story的创建者
+            String createId = story.getCreatorId();
+            if (!staffIds.contains(createId)) {
+                staffIds.add(createId);
+            }
             sendMessageRequest.setInitiatorId(initiatorId);
             sendMessageRequest.setStaffIds(staffIds);
             sendMessageRequest.setServerPushResponse(serverPush);
@@ -403,18 +414,32 @@ public class TaskServiceImpl implements TaskService {
             restResponse.setResponseMsg("ok");
             restResponse.setResponseBody(result);
         }
+        /**
+         * 消息推送(更改task)
+         */
+        this.serverPushAttach(result);
 
+        return restResponse;
+    }
+
+    /**
+     * 删除或者添加附件之后的消息推送
+     * @param result
+     * @return
+     */
+    public void serverPushAttach(TaskDetail result){
         /**
          * 消息推送(更改task)
          */
         try {
+            //给消息推送选择推送类型（原taskInfo）
             SendMessageRequest sendMessageRequest = new SendMessageRequest();
             ServerPush serverPush = new ServerPush();
             String initiatorId = result.getCreatorId();
             Staff initiator = this.restTemplate.postForObject(urlConfig.getRtrvStaffInfoUrl(), initiatorId, Staff.class);
             serverPush.setInitiator(initiator);
             serverPush.setSubjectType("task");
-            serverPush.setSubjectId(request.getTaskId());
+            serverPush.setSubjectId(result.getTaskId());
             serverPush.setTaskByStoryId(result.getStoryId());
             //选择类型
             serverPush.setType("update");
@@ -433,6 +458,11 @@ public class TaskServiceImpl implements TaskService {
                 }
                 staffIds.add(id);
             }
+            //查询该task上story的创建者
+            String createId = this.restTemplate.postForObject(urlConfig.getRtrvCreatorIdUrl(), result.getStoryId(), String.class);
+            if (!staffIds.contains(createId)) {
+                staffIds.add(createId);
+            }
             sendMessageRequest.setInitiatorId(initiatorId);
             sendMessageRequest.setStaffIds(staffIds);
             sendMessageRequest.setServerPushResponse(serverPush);
@@ -441,8 +471,6 @@ public class TaskServiceImpl implements TaskService {
         } catch (Exception e) {
             LOG.error("消息推送(更改task)出现异常，异常信息：" + e);
         }
-
-        return restResponse;
     }
 
     @Override
@@ -465,45 +493,10 @@ public class TaskServiceImpl implements TaskService {
             restResponse.setResponseMsg("ok");
             restResponse.setResponseBody(result);
         }
-
         /**
          * 消息推送(更改task)
          */
-        try {
-            //给消息推送选择推送类型（原taskInfo）
-            SendMessageRequest sendMessageRequest = new SendMessageRequest();
-            ServerPush serverPush = new ServerPush();
-            String initiatorId = result.getCreatorId();
-            Staff initiator = this.restTemplate.postForObject(urlConfig.getRtrvStaffInfoUrl(), initiatorId, Staff.class);
-            serverPush.setInitiator(initiator);
-            serverPush.setSubjectType("task");
-            serverPush.setSubjectId(request.getTaskId());
-            serverPush.setTaskByStoryId(result.getStoryId());
-            //选择类型
-            serverPush.setType("update");
-            RtrvStoryDetailRequest rtrvStoryDetailRequest = new RtrvStoryDetailRequest();
-            rtrvStoryDetailRequest.setStoryId(result.getStoryId());
-            rtrvStoryDetailRequest.setStaffId(initiatorId);
-            ParameterizedTypeReference reqmntTagTypeReference = new ParameterizedTypeReference<List<StoryRoleMember>>() {
-            };
-            List<StoryRoleMember> storyRoleMembers = FetchListUtil.fetch(restTemplate, urlConfig.getRtrvSRoleMembersUrl(), rtrvStoryDetailRequest, reqmntTagTypeReference);
-            //选出不同的角色
-            List<String> staffIds = new ArrayList<String>();
-            for (int i = 0; i < storyRoleMembers.size(); i++) {
-                String id = storyRoleMembers.get(i).getStaffId();
-                if (!staffIds.isEmpty() && staffIds.contains(id)) {
-                    continue;
-                }
-                staffIds.add(id);
-            }
-            sendMessageRequest.setInitiatorId(initiatorId);
-            sendMessageRequest.setStaffIds(staffIds);
-            sendMessageRequest.setServerPushResponse(serverPush);
-            Boolean flag = this.restTemplate.postForObject(urlConfig.getSendMessageUrl(), sendMessageRequest, Boolean.class);
-            System.out.println(flag);
-        } catch (Exception e) {
-            LOG.error("消息推送(更改task)出现异常，异常信息：" + e);
-        }
+        this.serverPushAttach(result);
 
         return restResponse;
     }

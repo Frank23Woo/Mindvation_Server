@@ -197,6 +197,11 @@ public class ProjServiceImpl implements IProjService {
             for (int i = 0; i < projLeaders.size(); i++) {
                 staffIds.add(projLeaders.get(i).getStaffId());
             }
+            //查询proj的创建者
+            String createId = proj.getCreatorId();
+            if (!staffIds.contains(createId)) {
+                staffIds.add(createId);
+            }
             sendMessageRequest.setInitiatorId(initiatorId);
             sendMessageRequest.setStaffIds(staffIds);
             sendMessageRequest.setServerPushResponse(serverPush);
@@ -339,7 +344,6 @@ public class ProjServiceImpl implements IProjService {
                 ParameterizedTypeReference typeReference = new ParameterizedTypeReference<List<ProjAttchUrls>>() {
                 };
                 List<ProjAttchUrls> pAttchUrls = FetchListUtil.fetch(restTemplate, updateProjAttchUrlsUrl, updatePAttchUrlsRequest, typeReference);
-//                List<ProjAttchUrls> pAttchUrls = restTemplate.postForObject(updateProjAttchUrlsUrl, updatePAttchUrlsRequest, List.class);
                 List<String> idList = new ArrayList<String>();
                 for (int i = 0; i < pAttchUrls.size(); i++) {
                     Integer attachmentId = pAttchUrls.get(i).getAttachmentId();
@@ -351,7 +355,6 @@ public class ProjServiceImpl implements IProjService {
                     projectDetail.setAttchInfos((List<AttchInfo>) responseEntity.getBody().getResponseBody());
 //                projectDetail.setAttchUrls(pAttchUrls);
                 }
-
             } catch (Exception ex) {
                 throw new BusinessException(ExceptionEnum.PROJECT_ATTCHURL_NOT_UPDATE);
             }
@@ -372,7 +375,7 @@ public class ProjServiceImpl implements IProjService {
          * 消息推送(更改项目)
          */
         try {
-            LOG.info("开始消息推送aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+            LOG.info("开始消息推送");
             SendMessageRequest sendMessageRequest = new SendMessageRequest();
             ServerPush serverPush = new ServerPush();
             String initiatorId = updateProjectDetailRequest.getStaffId();
@@ -393,14 +396,19 @@ public class ProjServiceImpl implements IProjService {
             for (int i = 0; i < projLeaders.size(); i++) {
                 staffIds.add(projLeaders.get(i).getStaffId());
             }
+            //查询proj的创建者
+            String createId = proj.getCreatorId();
+            if (!staffIds.contains(createId)) {
+                staffIds.add(createId);
+            }
             sendMessageRequest.setInitiatorId(initiatorId);
             sendMessageRequest.setStaffIds(staffIds);
             sendMessageRequest.setServerPushResponse(serverPush);
             Boolean flag = this.restTemplate.postForObject(config.getSendMessageUrl(), sendMessageRequest, Boolean.class);
             System.out.println(flag);
-            LOG.info("结束消息推送aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa，消息推送成功");
+            LOG.info("结束消息推送，消息推送成功");
         } catch (Exception e) {
-            LOG.error("消息推送(更改项目)出现异常，异常信息cccccccccccccccccccccccccccccccc：" + e);
+            LOG.error("消息推送(更改项目)出现异常，异常信息：" + e);
         }
         return restResponse;
     }
@@ -425,7 +433,12 @@ public class ProjServiceImpl implements IProjService {
             LOG.error("获取项目基本信息不存在.");
             throw new BusinessException(ExceptionEnum.PROJECT_DETAIL_BASEINFO_NOT_RTRV);
         }
+        //返回project创建者对象信息
+        String staffUrl = config.getRtrvStaffInfoUrl();
+        Staff projStaff = restTemplate.postForObject(staffUrl, proj.getCreatorId(), Staff.class);
+        proj.setCreatorInfo(projStaff);
         projectDetail.setProject(proj);
+
         //2.获取项目负责人信息
         String rtrvProjLedersUrl = config.getRtrvProjLedersUrl();
         try {
@@ -486,7 +499,7 @@ public class ProjServiceImpl implements IProjService {
             throw new BusinessException(ExceptionEnum.PROJECT_DETAIL_ATTCHURL_NOT_RTRV);
         }
         //7.获取requirment列表信息
-        String rtrvReqmntListUrl = config.getRtrvReqmntListUrl();
+        String rtrvReqmntListUrl = config.getRtrvRequirementListUrl();
         RtrvReqmntListRequest rtrvReqmntListRequest = new RtrvReqmntListRequest();
         String porjId = rtrvProjectDetailRequest.getProjId();
         //项目需求列表分页信息按默认值处理
@@ -499,48 +512,10 @@ public class ProjServiceImpl implements IProjService {
         rtrvReqmntListRequest.setProjId(rtrvProjectDetailRequest.getProjId());
         try {
             RtrvReqmntListResponse rtrvReqmntListResponse = restTemplate.postForObject(rtrvReqmntListUrl, rtrvReqmntListRequest, RtrvReqmntListResponse.class);
-            //查询每个reqmnt的负责人信息和人数
-            for (int j = 0; j < rtrvReqmntListResponse.getRequirementInfos().size(); j++) {
-                RequirementInfo requirementInfo = rtrvReqmntListResponse.getRequirementInfos().get(j);
-                String creatorId = requirementInfo.getCreatorId();
-                // call staff sapi
-                List staffs = new ArrayList();
-                staffs.add(creatorId);
-                Map<String, Object> prams = new HashMap<>();
-                prams.put("staffIdList", staffs);
-                ParameterizedTypeReference tReference = new ParameterizedTypeReference<List<Staff>>() {
-                };
-                LOG.info("获取创建者信息的url为：" + config.getRtrvStaffsByIdsUrl());
-                List<Staff> staffList = (List<Staff>) FetchListUtil.fetch(restTemplate, config.getRtrvStaffsByIdsUrl(), prams, tReference);
-                requirementInfo.setCreatorInfo(staffList.get(0));
-
-                // 查询members(不重复的个数)
-                try {
-                    // call reqmnt sapi
-                    ParameterizedTypeReference parameterizedTypeReference = new ParameterizedTypeReference<List<ReqmntMember>>() {
-                    };
-                    List<ReqmntMember> data = FetchListUtil.fetch(restTemplate, config.getRtrvReqmntMembersUrl(), requirementInfo.getReqmntId(), parameterizedTypeReference);
-                    List<ReqmntMember> reqmntMembers = data;
-                    List<String> memberIds = new ArrayList<>();
-                    for (int i = 0; i < reqmntMembers.size(); i++) {
-                        String id = reqmntMembers.get(i).getStaffId();
-                        if (!memberIds.isEmpty() && memberIds.contains(id)) {
-                            continue;
-                        }
-                        memberIds.add(reqmntMembers.get(i).getStaffId());
-                    }
-                    requirementInfo.setMemberCunt(memberIds.size());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    throw new BusinessException(ExceptionEnum.REQMNT_QUERY_MEMBER_FAIELD);
-                }
-            }
-
             projectDetail.setReqmntListResponse(rtrvReqmntListResponse);
         } catch (Exception ex) {
             throw new BusinessException(ExceptionEnum.PROJECT_DETAIL_REQMNT_NOT_RTRV);
         }
-
 
         //获取用户在项目中的权限信息
         RtrvStaffAuthInfoRequest rtrvAuthInfoRequest = new RtrvStaffAuthInfoRequest();

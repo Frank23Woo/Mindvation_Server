@@ -20,7 +20,7 @@ config:
   rtrvProjModelsUrl: http://localhost:8080/mdvn-project-sapi/projDetail/rtrvProjModels
   rtrvProjCheckListsUrl: http://localhost:8080/mdvn-project-sapi/projDetail/rtrvProjCheckLists
   rtrvProjAttUrlsUrl: http://localhost:8080/mdvn-project-sapi/projDetail/rtrvProjAttUrls
-  rtrvReqmntListUrl: http://localhost:8080/mdvn-reqmnt-sapi/rtrvReqmntList
+  rtrvRequirementListUrl: http://localhost:8080/mdvn-reqmnt-papi/reqmnts/rtrvRequirementList
   rtrvAttchListUrl: http://localhost:8080/mdvn-file-sapi/files/
   rtrvCommentInfosUrl: http://localhost:8080/mdvn-comment-sapi/comments/rtrvCommentInfos
   rtrvStaffInfoUrl: http://localhost:8080/mdvn-staff-sapi/rtrvStaffInfo

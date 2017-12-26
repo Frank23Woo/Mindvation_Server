@@ -4,6 +4,7 @@ import com.mdvns.mdvn.common.beans.RestResponse;
 import com.mdvns.mdvn.reqmnt.papi.domain.*;
 import com.mdvns.mdvn.reqmnt.papi.service.IReqmntService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -21,6 +22,16 @@ public class ReqmntController {
     @PostMapping(value="/rtrvReqmntList")
     public RestResponse rtrvReqmntList(@RequestBody RtrvReqmntListRequest rtrvReqmntListRequest){
         return this.iReqmntService.rtrvReqmntList(rtrvReqmntListRequest);
+    }
+
+    /**
+     * 为了给project PAPI 可以调用添加的service
+     * @param rtrvReqmntListRequest
+     * @return
+     */
+    @PostMapping(value="/rtrvRequirementList")
+    public ResponseEntity<?> rtrvRequirementList(@RequestBody RtrvReqmntListRequest rtrvReqmntListRequest){
+        return this.iReqmntService.rtrvRequirementList(rtrvReqmntListRequest);
     }
 
     /**

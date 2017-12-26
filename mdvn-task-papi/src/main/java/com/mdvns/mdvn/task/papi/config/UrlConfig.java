@@ -55,6 +55,16 @@ public class UrlConfig {
 
     private String sendMessageUrl;
 
+    private String rtrvCreatorIdUrl;
+
+    public String getRtrvCreatorIdUrl() {
+        return rtrvCreatorIdUrl;
+    }
+
+    public void setRtrvCreatorIdUrl(String rtrvCreatorIdUrl) {
+        this.rtrvCreatorIdUrl = rtrvCreatorIdUrl;
+    }
+
     public String getSendMessageUrl() {
         return sendMessageUrl;
     }

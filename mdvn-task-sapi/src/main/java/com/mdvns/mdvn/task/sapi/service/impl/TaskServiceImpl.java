@@ -72,6 +72,7 @@ public class TaskServiceImpl implements TaskService {
         DecimalFormat df = new DecimalFormat("#0.##");
         finishedSP = Float.valueOf(df.format(finishedSP));
         Float finishSP = finishedSP/100;
+        finishSP = Float.valueOf(df.format(finishSP));
         String finishedSPSql = "UPDATE story SET finishedsp = " + finishSP + " WHERE story_id=" + "\"" + storyId + "\"";
         this.jdbcTemplate.update(finishedSPSql);
 

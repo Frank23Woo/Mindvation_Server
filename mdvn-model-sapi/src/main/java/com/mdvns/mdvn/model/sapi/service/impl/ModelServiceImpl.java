@@ -1,6 +1,5 @@
 package com.mdvns.mdvn.model.sapi.service.impl;
 
-import com.mdvns.mdvn.common.beans.TaskDeliver;
 import com.mdvns.mdvn.model.sapi.domain.*;
 
 import com.mdvns.mdvn.model.sapi.domain.entity.*;

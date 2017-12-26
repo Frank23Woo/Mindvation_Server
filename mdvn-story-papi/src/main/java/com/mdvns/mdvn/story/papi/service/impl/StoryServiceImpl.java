@@ -237,6 +237,11 @@ public class StoryServiceImpl implements IStoryService {
             serverPush.setSubjectId(storyId);
             serverPush.setType("create");
             sendMessageRequest.setInitiatorId(initiatorId);
+            //查询该story的创建者
+            String createId = story.getCreatorId();
+            if (!memberIds.contains(createId)) {
+                memberIds.add(createId);
+            }
             sendMessageRequest.setStaffIds(memberIds);
             sendMessageRequest.setServerPushResponse(serverPush);
             Boolean flag = this.restTemplate.postForObject(config.getSendMessageUrl(), sendMessageRequest, Boolean.class);
@@ -518,6 +523,11 @@ public class StoryServiceImpl implements IStoryService {
                 }
                 staffIds.add(id);
             }
+            //查询该story的创建者
+            String createId = updateStoryDetailRequest.getStoryInfo().getCreatorId();
+            if (!staffIds.contains(createId)) {
+                staffIds.add(createId);
+            }
             sendMessageRequest.setInitiatorId(initiatorId);
             sendMessageRequest.setStaffIds(staffIds);
             sendMessageRequest.setServerPushResponse(serverPush);
@@ -551,6 +561,10 @@ public class StoryServiceImpl implements IStoryService {
             LOG.error("获取用户故事基本信息不存在.");
             throw new BusinessException(ExceptionEnum.STORY_DETAIL_BASEINFO_NOT_RTRV);
         }
+        //返回story创建者对象信息
+        String staffUrl = config.getRtrvStaffInfoUrl();
+        Staff storyStaff = restTemplate.postForObject(staffUrl, story.getCreatorId(), Staff.class);
+        story.setCreatorInfo(storyStaff);
         storyDetail.setStoryInfo(story);
         //加上评论list
         String rtrvCommentInfosUrl = config.getRtrvCommentInfosUrl();
@@ -562,7 +576,6 @@ public class StoryServiceImpl implements IStoryService {
         List<CommentDetail> commentDetails = FetchListUtil.fetch(restTemplate, rtrvCommentInfosUrl, rtrvCommentInfosRequest, tReference);
         for (int j = 0; j < commentDetails.size(); j++) {
             //创建者返回对象
-            String staffUrl = config.getRtrvStaffInfoUrl();
             String creatorId = commentDetails.get(j).getComment().getCreatorId();
             com.mdvns.mdvn.common.beans.Staff staff = restTemplate.postForObject(staffUrl, creatorId, Staff.class);
             commentDetails.get(j).getComment().setCreatorInfo(staff);

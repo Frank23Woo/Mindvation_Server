@@ -267,9 +267,9 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public ResponseEntity<?> findByAccountAndPassword(String account, String password) {
         Staff staff = this.staffRepository.findByAccountAndPasswordAndStatus(account, password,"active");
-        //登录之后状态改为在线状态
-        staff.setIsOnline(1);
-        staff = this.staffRepository.saveAndFlush(staff);
+//        //登录之后状态改为在线状态
+//        staff.setIsOnline(1);
+//        staff = this.staffRepository.saveAndFlush(staff);
         return ResponseEntity.ok(staff);
     }
 
@@ -281,8 +281,8 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public boolean logOut(String staffId) {
         Staff staff = this.staffRepository.findByStaffId(staffId);
-        staff.setIsOnline(0);
-        staff = this.staffRepository.saveAndFlush(staff);
+//        staff.setIsOnline(0);
+//        staff = this.staffRepository.saveAndFlush(staff);
         return true;
     }
 
@@ -368,7 +368,7 @@ public class StaffServiceImpl implements StaffService {
         }
 
         Staff staff = new Staff();
-        staff.setIsOnline(0);//在线为1,离线为0
+//        staff.setIsOnline(0);//在线为1,离线为0
         staff.setPassword(request.getPassword());
         staff.setDeptId(request.getDeptId());
         staff.setName(request.getName());

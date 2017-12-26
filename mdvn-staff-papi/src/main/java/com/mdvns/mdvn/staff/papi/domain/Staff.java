@@ -41,16 +41,6 @@ public class Staff {
 
     private Integer tagsCnt;
 
-    private Integer isOnline;
-
-    public Integer getIsOnline() {
-        return isOnline;
-    }
-
-    public void setIsOnline(Integer isOnline) {
-        this.isOnline = isOnline;
-    }
-
     public Integer getTagsCnt() {
         return tagsCnt;
     }

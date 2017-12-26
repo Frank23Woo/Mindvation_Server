@@ -31,46 +31,81 @@ public class ReqmntServiceImpl implements IReqmntService {
     @Autowired
     private ReqmntConfig config;
 
-//    @Autowired
-//    private RequirementInfo requirementInfo;
-
     @Autowired
     private RestResponse restResponse;
 
     @Autowired
     private RestTemplate restTemplate;
 
-    @Autowired
-    private RtrvReqmntInfoResponse rtrvReqmntInfoResponse;
+    /**
+     * 获取requirment整个列表
+     *
+     * @return
+     */
+    @Override
+    public ResponseEntity<?> rtrvRequirementList(RtrvReqmntListRequest rtrvReqmntListRequest) {
+        String reqmntListUrl = config.getRtrvReqmntListUrl();
+        RtrvReqmntListResponse rtrvReqmntListResponse = new RtrvReqmntListResponse();
+        ResponseEntity<RtrvReqmntListResponse> respEntity = this.restTemplate.postForEntity(reqmntListUrl, rtrvReqmntListRequest, RtrvReqmntListResponse.class);
+        rtrvReqmntListResponse = respEntity.getBody();
+        return ResponseEntity.ok(rtrvCreatorAndMCunt(rtrvReqmntListResponse));
+    }
 
-//    /**
-//     * 获取project列表详细信息
-//     *
-//     * @param rtrvProjectListRequest
-//     * @return
-//     */
-//    public ResponseEntity<?> rtrvProjInfoList(RtrvProjectListRequest rtrvProjectListRequest) {
-//        rtrvProjectListRequest.setPage(rtrvProjectListRequest.getPage()-1);
-//        String projInfoListUrl = config.getRtrvProjInfoListUrl();
-//        restResponse = this.restTemplate.postForObject(projInfoListUrl, rtrvProjectListRequest, restResponse.class);
-//        ResponseEntity<restResponse> responseEntity = null;
-//        if (restResponse.getStatusCode().equals(HttpStatus.OK.toString())) {
-////            HttpHeaders httpHeaders = new HttpHeaders();
-////            httpHeaders.setAccessControlAllowOrigin("*");
-//            responseEntity = new ResponseEntity<restResponse>(restResponse,HttpStatus.OK);
-//            return responseEntity;
-//        }
-//        throw new BusinessException(restResponse.getResponseCode(), restResponse.getResponseBody().toString());
-//    }
+    /**
+     * 查询每个reqmnt的负责人信息和人数
+     *
+     * @param rtrvReqmntListResponse
+     * @return
+     */
+    private RtrvReqmntListResponse rtrvCreatorAndMCunt(RtrvReqmntListResponse rtrvReqmntListResponse) {
+        //查询每个reqmnt的负责人信息和人数
+        for (int j = 0; j < rtrvReqmntListResponse.getRequirementInfos().size(); j++) {
+            RequirementInfo requirementInfo = rtrvReqmntListResponse.getRequirementInfos().get(j);
+            String creatorId = requirementInfo.getCreatorId();
+            // call staff sapi
+            List staffs = new ArrayList();
+            staffs.add(creatorId);
+            Map<String, Object> prams = new HashMap<>();
+            prams.put("staffIdList", staffs);
+            ParameterizedTypeReference tReference = new ParameterizedTypeReference<List<Staff>>() {
+            };
+            LOG.info("获取创建者信息的url为：" + config.getRtrvStaffsByIdsUrl());
+            List<Staff> staffList = (List<Staff>) FetchListUtil.fetch(restTemplate, config.getRtrvStaffsByIdsUrl(), prams, tReference);
+            requirementInfo.setCreatorInfo(staffList.get(0));
+
+            // 查询members(不重复的个数)
+            try {
+                // call reqmnt sapi
+                ParameterizedTypeReference parameterizedTypeReference = new ParameterizedTypeReference<List<ReqmntMember>>() {
+                };
+                List<ReqmntMember> data = FetchListUtil.fetch(restTemplate, config.getRtrvReqmntMembersUrl(), requirementInfo.getReqmntId(), parameterizedTypeReference);
+                List<ReqmntMember> reqmntMembers = data;
+                List<String> memberIds = new ArrayList<>();
+                for (int i = 0; i < reqmntMembers.size(); i++) {
+                    String id = reqmntMembers.get(i).getStaffId();
+                    if (!memberIds.isEmpty() && memberIds.contains(id)) {
+                        continue;
+                    }
+                    memberIds.add(reqmntMembers.get(i).getStaffId());
+                }
+                requirementInfo.setMemberCunt(memberIds.size());
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new BusinessException(ExceptionEnum.REQMNT_QUERY_MEMBER_FAIELD);
+            }
+        }
+        return rtrvReqmntListResponse;
+    }
 
     @Override
     public RestResponse rtrvReqmntList(RtrvReqmntListRequest rtrvReqmntListRequest) {
         String reqmntListUrl = config.getRtrvReqmntListUrl();
         RtrvReqmntListResponse rtrvReqmntListResponse = new RtrvReqmntListResponse();
         ResponseEntity<RtrvReqmntListResponse> respEntity = this.restTemplate.postForEntity(reqmntListUrl, rtrvReqmntListRequest, RtrvReqmntListResponse.class);
+        rtrvReqmntListResponse = respEntity.getBody();
         restResponse.setStatusCode(String.valueOf(HttpStatus.OK));
         restResponse.setResponseCode("000");
-        restResponse.setResponseBody(respEntity.getBody());
+        restResponse.setResponseBody(rtrvCreatorAndMCunt(rtrvReqmntListResponse));
         return restResponse;
     }
 
@@ -255,6 +290,11 @@ public class ReqmntServiceImpl implements IReqmntService {
             serverPush.setSubjectId(requirementInfo.getReqmntId());
             serverPush.setType("create");
             sendMessageRequest.setInitiatorId(initiatorId);
+            //查询该reqmnt的创建者
+            String createId = requirementInfo.getCreatorId();
+            if (!memberIds.contains(createId)) {
+                memberIds.add(createId);
+            }
             sendMessageRequest.setStaffIds(memberIds);
             sendMessageRequest.setServerPushResponse(serverPush);
             Boolean flag = this.restTemplate.postForObject(config.getSendMessageUrl(), sendMessageRequest, Boolean.class);
@@ -288,6 +328,10 @@ public class ReqmntServiceImpl implements IReqmntService {
         restResponse.setResponseCode("000");
         restResponse.setResponseMsg("Success");
         rtrvReqmntInfoResponse.setReqmntInfo(requirementInfo);
+        //返回reqmnt创建者对象信息
+        String staffUrl = config.getRtrvStaffInfoUrl();
+        Staff reqStaff = restTemplate.postForObject(staffUrl, requirementInfo.getCreatorId(), Staff.class);
+        requirementInfo.setCreatorInfo(reqStaff);
 
         //加上评论list
         String rCommentInfosUrl = config.getRtrvCommentInfosUrl();
@@ -299,7 +343,6 @@ public class ReqmntServiceImpl implements IReqmntService {
         List<CommentDetail> comDetails = FetchListUtil.fetch(restTemplate, rCommentInfosUrl, rtrvCommentInfosRequest, trReference);
         for (int j = 0; j < comDetails.size(); j++) {
             //创建者返回对象
-            String staffUrl = config.getRtrvStaffInfoUrl();
             String creatorId = comDetails.get(j).getComment().getCreatorId();
             com.mdvns.mdvn.common.beans.Staff staff = restTemplate.postForObject(staffUrl, creatorId, com.mdvns.mdvn.common.beans.Staff.class);
             comDetails.get(j).getComment().setCreatorInfo(staff);
@@ -359,7 +402,6 @@ public class ReqmntServiceImpl implements IReqmntService {
             modelIdMap.put("modelId", modelId);
             RtrvModelByIdResponse MRresp = restTemplate.postForObject(config.getRtrvModelRoleByModelIdUrl(), modelIdMap, RtrvModelByIdResponse.class);
             List<ModelRole> modelRoleList = MRresp.getModelRoles();
-
 
             // call reqmnt sapi
             ParameterizedTypeReference parameterizedTypeReference = new ParameterizedTypeReference<List<ReqmntMember>>() {
@@ -596,6 +638,11 @@ public class ReqmntServiceImpl implements IReqmntService {
                         continue;
                     }
                     memberIds.add(id);
+                }
+                //查询该reqmnt的创建者
+                String createId = request.getReqmntInfo().getCreatorId();
+                if (!memberIds.contains(createId)) {
+                    memberIds.add(createId);
                 }
                 sendMessageRequest.setInitiatorId(initiatorId);
                 sendMessageRequest.setStaffIds(memberIds);

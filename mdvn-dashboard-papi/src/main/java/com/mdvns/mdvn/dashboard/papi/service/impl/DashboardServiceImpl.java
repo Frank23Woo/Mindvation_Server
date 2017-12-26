@@ -397,6 +397,7 @@ public class DashboardServiceImpl implements DashboardService {
 
     /**
      * 移动端，更改看板（单个story移动）
+     *
      * @param request
      * @return
      */
@@ -878,6 +879,7 @@ public class DashboardServiceImpl implements DashboardService {
 
     /**
      * 关闭sprint之后返回这个模板下的dashboard
+     *
      * @param request
      * @return
      */
@@ -995,7 +997,8 @@ public class DashboardServiceImpl implements DashboardService {
                     storyAndLabelId.setStory(storyList.get(k));
                     storyAndLabelIds.add(storyAndLabelId);
                 }
-                sprintStoryList.setStories(storyAndLabelIds);
+                sprintStoryList.setStories(this.sortStories(storyAndLabelIds));
+//                sprintStoryList.setStories(storyAndLabelIds);
                 sprintStoryList.setTotalElements(response.getBody().getTotalElements());
                 sprintStoryList.setRemarks(response.getBody().getRemarks());
             } catch (Exception ex) {
@@ -1007,5 +1010,41 @@ public class DashboardServiceImpl implements DashboardService {
         LOG.info("结束执行方法：rtrvDashboardByModel");
         return rtrvDashboardResponse;
     }
+
+    /**
+     * storyList排序（先按优先级分类，再把各个优先级按进度排序）
+     */
+    private List<StoryAndLabelId> sortStories(List<StoryAndLabelId> storyAndLabelIds) {
+        /**
+         * 先按优先级分类
+         */
+        List<StoryAndLabelId> highStoryAndLabelIds = new ArrayList<>();
+        List<StoryAndLabelId> middleStoryAndLabelIds = new ArrayList<>();
+        List<StoryAndLabelId> lowStoryAndLabelIds = new ArrayList<>();
+        List<StoryAndLabelId> sortStoryAndLabelIds = new ArrayList<>();
+        for (int i = 0; i < storyAndLabelIds.size(); i++) {
+            Integer priority = storyAndLabelIds.get(i).getStory().getPriority();
+            if (priority == 3) {
+                highStoryAndLabelIds.add(storyAndLabelIds.get(i));
+            }
+            if (priority == 2) {
+                middleStoryAndLabelIds.add(storyAndLabelIds.get(i));
+            }
+            if (priority == 1) {
+                lowStoryAndLabelIds.add(storyAndLabelIds.get(i));
+            }
+        }
+        /**
+         * 再按进度排序
+         */
+        Collections.sort(highStoryAndLabelIds);
+        Collections.sort(middleStoryAndLabelIds);
+        Collections.sort(lowStoryAndLabelIds);
+        sortStoryAndLabelIds.addAll(highStoryAndLabelIds);
+        sortStoryAndLabelIds.addAll(middleStoryAndLabelIds);
+        sortStoryAndLabelIds.addAll(lowStoryAndLabelIds);
+        return sortStoryAndLabelIds;
+    }
+
 
 }
